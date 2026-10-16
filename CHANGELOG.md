@@ -1,3 +1,9 @@
+## [2.13.0](https://github.com/markrahq/markra/compare/v2.12.1...v2.13.0) (2026-10-16)
+
+### Features
+
+* **desktop:** support custom user data directories ([#756](https://github.com/markrahq/markra/issues/756)) ([fa3f9e9](https://github.com/markrahq/markra/commit/fa3f9e9ac8e6ee6bdddbacab6ed4ba3e3480f5fa))
+
 ## [2.12.1](https://github.com/markrahq/markra/compare/v2.12.0...v2.12.1) (2026-10-05)
 
 ### Bug Fixes
