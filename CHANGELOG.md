@@ -1,3 +1,13 @@
+## [2.13.1](https://github.com/markrahq/markra/compare/v2.13.0...v2.13.1) (2026-10-19)
+
+### Features
+
+* **release:** add Windows x64 WinGet distribution ([#760](https://github.com/markrahq/markra/issues/760)) ([4560ba1](https://github.com/markrahq/markra/commit/4560ba1f878f8bd5111dc602ccf5de0a5110085e)), closes [#757](https://github.com/markrahq/markra/issues/757)
+
+### Bug Fixes
+
+* **desktop:** improve PDF export discovery and diagnostics ([#761](https://github.com/markrahq/markra/issues/761)) ([a5afb86](https://github.com/markrahq/markra/commit/a5afb8632fa6c2e7a3047fc8cf1bad7d516723db)), refs [#759](https://github.com/markrahq/markra/issues/759)
+
 ## [2.13.0](https://github.com/markrahq/markra/compare/v2.12.1...v2.13.0) (2026-10-16)
 
 ### Features
