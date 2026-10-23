@@ -1,3 +1,14 @@
+## [2.14.0](https://github.com/markrahq/markra/compare/v2.13.1...v2.14.0) (2026-10-23)
+
+### Features
+
+* **web:** add desktop offline PWA support ([#764](https://github.com/markrahq/markra/issues/764)) ([bc0977f](https://github.com/markrahq/markra/commit/bc0977fb0840143699d5b55212544cd471a37b95))
+
+### Bug Fixes
+
+* **editor:** stabilize typewriter mode during drag selection ([#765](https://github.com/markrahq/markra/issues/765)) ([96168ab](https://github.com/markrahq/markra/commit/96168ab02d47d5a100efd355581d54d8189dcc54))
+* **web:** allow clipboard files beside the document ([#763](https://github.com/markrahq/markra/issues/763)) ([8b48c73](https://github.com/markrahq/markra/commit/8b48c73de1aa7a22d3315e1178ae2175aacec57c)), closes [#762](https://github.com/markrahq/markra/issues/762)
+
 ## [2.13.1](https://github.com/markrahq/markra/compare/v2.13.0...v2.13.1) (2026-10-19)
 
 ### Features
