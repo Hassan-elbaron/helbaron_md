@@ -17,6 +17,7 @@ import { helbaronSlashMenu } from "./slash-menu.ts";
 import { helbaronSetextHeading } from "./setext-heading.ts";
 import { helbaronTheme } from "./theme.ts";
 import { helbaronTextDirection } from "./bidi.ts";
+import { helbaronEditorMotion } from "./motion.ts";
 
 export type {
   AiEditorPreviewLabels,
@@ -235,6 +236,7 @@ export {
   updateCodeMirrorSpellcheckOptions,
 } from "./spellcheck.ts";
 export { helbaronTheme } from "./theme.ts";
+export { helbaronEditorMotion } from "./motion.ts";
 export type { HelbaronTextDirection } from "./bidi.ts";
 export {
   getDefaultHelbaronTextDirection,
@@ -286,6 +288,7 @@ export function liveMarkdown(config: LiveMarkdownConfig = {}): Extension {
     livePreview(previewConfig),
     helbaronTheme,
     helbaronTextDirection(),
+    helbaronEditorMotion(),
     helbaronPlugins(plugins),
     slashMenu ? helbaronSlashMenu() : [],
   ];

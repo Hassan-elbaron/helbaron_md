@@ -3,6 +3,7 @@ import {
   Suspense,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -38,7 +39,11 @@ import {
   type MarkdownTabsBarDocumentItem
 } from "./components/MarkdownTabsBar";
 import { NativeTitleBar } from "./components/NativeTitleBar";
-import { WordToolbar } from "./components/WordToolbar";
+import { Ribbon } from "./components/Ribbon";
+import { Backstage } from "./components/Backstage";
+import { MotionRoot } from "./components/motion/MotionRoot";
+import { runViewTransition, transitionOriginFromEvent } from "./lib/view-transition";
+import { applyUiStyle, readStoredUiStyle, storeUiStyle, type UiStyle } from "./lib/ui-style";
 import { applyTextDirection, readStoredTextDirection } from "./lib/text-direction";
 import { exportMarkdownAsWord, importWordAsMarkdown } from "./lib/word-documents";
 import { QuietStatus } from "./components/QuietStatus";
@@ -203,6 +208,7 @@ import {
   splitVisualPanePercentMax,
   splitVisualPanePercentMin,
   saveStoredEditorPreferences,
+  editorBodyFontSizeOptions,
   saveStoredAiAgentSessionTitle,
   saveStoredWorkspaceState,
   setStoredAiAgentSessionArchived,
@@ -470,6 +476,13 @@ function SettingsRouteApp() {
 
 function WorkspaceApp() {
   const desktopPlatform = resolveDesktopPlatform();
+  const [uiStyle, setUiStyle] = useState<UiStyle>(() => readStoredUiStyle(desktopPlatform));
+  useLayoutEffect(() => {
+    globalThis.document.documentElement.dataset.platform = desktopPlatform ?? "web";
+  }, [desktopPlatform]);
+  useLayoutEffect(() => {
+    applyUiStyle(uiStyle);
+  }, [uiStyle]);
   const desktopOsVersion = resolveDesktopOsVersion();
   const webKitScrollWorkaround = webKitScrollWorkaroundForPlatform(desktopPlatform, desktopOsVersion);
   const nativeRuntimeAvailable = getAppRuntime().events.isAvailable();
@@ -534,6 +547,8 @@ function WorkspaceApp() {
   const [editorMode, setEditorMode] = useState<EditorMode>("visual");
   const [activeEditorSurface, setActiveEditorSurface] = useState<EditorSurface>("visual");
   const [readOnlyMode, setReadOnlyMode] = useState(false);
+  const [backstageOpen, setBackstageOpen] = useState(false);
+  const [focusMode, setFocusMode] = useState(false);
   const [quickOpenOpen, setQuickOpenOpen] = useState(false);
   const [documentHistoryOpen, setDocumentHistoryOpen] = useState(false);
   const [documentHistoryRefreshKey, setDocumentHistoryRefreshKey] = useState(0);
@@ -4039,6 +4054,42 @@ function WorkspaceApp() {
     setTextDirection(direction);
     applyTextDirection(direction);
   }, []);
+  const handleEditorPreferencePatch = useCallback((patch: Partial<EditorPreferences>) => {
+    const nextPreferences = { ...editorPreferences.preferences, ...patch } satisfies EditorPreferences;
+    editorPreferences.updatePreferences(nextPreferences);
+    saveStoredEditorPreferences(nextPreferences)
+      .then(() => notifyAppEditorPreferencesChanged(nextPreferences))
+      .catch(() => {
+        showAppToast({ message: translate("app.editorPreferencesSaveFailed"), status: "error" });
+      });
+  }, [editorPreferences.preferences, editorPreferences.updatePreferences, translate]);
+  const handleBodyFontStep = useCallback((delta: 1 | -1) => {
+    const options: readonly number[] = editorBodyFontSizeOptions;
+    const current = options.indexOf(editorPreferences.preferences.bodyFontSize);
+    const next = options[Math.min(options.length - 1, Math.max(0, (current < 0 ? options.indexOf(16) : current) + delta))];
+    if (next !== undefined && next !== editorPreferences.preferences.bodyFontSize) {
+      handleEditorPreferencePatch({ bodyFontSize: next });
+    }
+  }, [editorPreferences.preferences.bodyFontSize, handleEditorPreferencePatch]);
+  const handleAnimatedThemeToggle = useCallback((event?: { currentTarget?: EventTarget | null }) => {
+    runViewTransition("theme", () => appTheme.toggleTheme(), transitionOriginFromEvent(event));
+  }, [appTheme.toggleTheme]);
+  const handleAnimatedLanguageToggle = useCallback(() => {
+    const nextLanguage = appLanguage.language === "ar" ? "en" : "ar";
+    runViewTransition("language", () => appLanguage.selectLanguage(nextLanguage));
+  }, [appLanguage.language, appLanguage.selectLanguage]);
+  const handleAnimatedEditorModeSelect = useCallback((mode: EditorMode) => {
+    runViewTransition("mode", () => handleEditorModeSelect(mode));
+  }, [handleEditorModeSelect]);
+  const handleUiStyleSelect = useCallback((style: UiStyle, event?: { currentTarget?: EventTarget | null }) => {
+    storeUiStyle(style);
+    runViewTransition("theme", () => setUiStyle(style), transitionOriginFromEvent(event));
+  }, []);
+  useLayoutEffect(() => {
+    globalThis.document.documentElement.dataset.scheme = appTheme.resolvedTheme;
+  }, [appTheme.resolvedTheme]);
+  const handleFocusModeToggle = useCallback(() => setFocusMode((current) => !current), []);
+  const handleBackstageClose = useCallback(() => setBackstageOpen(false), []);
   const handleExportWordDocument = useCallback(() => {
     const context = exportContextRef.current;
     if (!context.hasOpenDocument || context.activeImageFile) return;
@@ -4818,9 +4869,27 @@ function WorkspaceApp() {
   const wordToolbarVisible = hasOpenDocument && !activeImageFile && viewModeChrome.statusBar;
 
   return (
-    <>
+    <MotionRoot>
       <AppToaster language={appLanguage.language} />
-      <main className="app-shell group/app relative grid h-full w-full grid-rows-[minmax(0,1fr)] overflow-hidden overscroll-none bg-(--bg-primary) text-(--text-primary)">
+      <Backstage
+        language={appLanguage.language}
+        open={backstageOpen}
+        recentFiles={recentMarkdownFiles}
+        onClose={handleBackstageClose}
+        onExportHtml={exportFeatureEnabled ? exportHtmlDocument : undefined}
+        onExportPdf={exportFeatureEnabled ? exportPdfDocument : undefined}
+        onExportWord={exportFeatureEnabled ? handleExportWordDocument : undefined}
+        onNew={handleQuickCreateMarkdownTreeFile}
+        onOpen={handleOpenMarkdownFile}
+        onOpenRecent={handleOpenRecentMarkdownFile}
+        onOpenWord={handleImportWordDocument}
+        onSave={handleSaveDocument}
+        onSaveAs={saveDocumentAs}
+        onSettings={handleOpenSettings}
+        uiStyle={uiStyle}
+        onUiStyle={handleUiStyleSelect}
+      />
+      <main data-focus-mode={focusMode ? "true" : undefined} className="app-shell group/app relative grid h-full w-full grid-rows-[minmax(0,1fr)] overflow-hidden overscroll-none bg-(--bg-primary) text-(--text-primary)">
         <NativeTitleBar
           aiAgentOpen={visibleAiAgentOpen}
           aiAgentResizing={aiAgentPanelResizing}
@@ -5078,37 +5147,77 @@ function WorkspaceApp() {
                     onFocusCapture={handleMainDocumentPaneFocus}
                   >
                     {wordToolbarVisible ? (
-                      <div className="word-toolbar-slot pointer-events-none absolute inset-x-0 top-10.5 z-30 flex justify-center px-3">
-                        <WordToolbar
+                      <div className="word-toolbar-slot ribbon-slot absolute inset-x-0 top-10.5 z-30 flex justify-center px-3">
+                        <Ribbon
+                          ai={aiFeatureEnabled ? { onCommand: handleAiCommandToggle, onTogglePanel: handleAiAgentToggle } : undefined}
                           direction={textDirection}
                           disabled={readOnlyMode}
+                          editor={{
+                            find: handleDocumentSearchOpen,
+                            insertImage: handleInsertMarkdownImage,
+                            insertLink: handleInsertMarkdownLink,
+                            insertSnippet: (open, close, placeholder) => {
+                              if (readOnlyMode) return;
+                              handleInsertMarkdownSnippet(open, close, placeholder);
+                            },
+                            insertTable: handleInsertMarkdownTable,
+                            redo: () => handleRunEditorShortcut("z", { shiftKey: true }),
+                            replace: handleDocumentReplaceOpen,
+                            runCommand: (commandId) => {
+                              if (readOnlyMode) return;
+                              editor.runEditorCommand(commandId);
+                              syncVisualMarkdownAfterEditorCommand();
+                            },
+                            runFormatting: (action) => {
+                              if (readOnlyMode) return;
+                              editor.runSelectionFormattingAction(action);
+                              syncVisualMarkdownAfterEditorCommand();
+                            },
+                            setHeading: (level) => {
+                              if (readOnlyMode) return;
+                              editor.setSelectionHeadingLevel(level);
+                              syncVisualMarkdownAfterEditorCommand();
+                            },
+                            undo: () => handleRunEditorShortcut("z")
+                          }}
                           getFormattingState={editor.getSelectionFormattingState}
                           language={appLanguage.language}
+                          layout={{
+                            contentWidth: editorPreferences.preferences.contentWidth,
+                            fontSize: editorPreferences.preferences.bodyFontSize,
+                            lineHeight: editorPreferences.preferences.lineHeight,
+                            onContentWidth: (contentWidth) => handleEditorPreferencePatch({ contentWidth, contentWidthPx: null }),
+                            onFontStep: handleBodyFontStep,
+                            onLineHeight: (lineHeight) => handleEditorPreferencePatch({ lineHeight })
+                          }}
+                          review={{
+                            onExportPdf: exportFeatureEnabled ? exportPdfDocument : undefined,
+                            onExportWord: exportFeatureEnabled ? handleExportWordDocument : undefined,
+                            onHistory: handleDocumentHistoryOpen,
+                            onOpenWord: handleImportWordDocument,
+                            onToggleSpellcheck: () => handleEditorPreferencePatch({ spellcheckEnabled: !editorPreferences.preferences.spellcheckEnabled }),
+                            spellcheck: editorPreferences.preferences.spellcheckEnabled
+                          }}
+                          view={{
+                            dark: appTheme.resolvedTheme === "dark",
+                            editorMode,
+                            focusMode,
+                            onEditorMode: handleAnimatedEditorModeSelect,
+                            onQuickOpen: handleQuickOpenOpen,
+                            onToggleFocus: handleFocusModeToggle,
+                            onToggleLanguage: handleAnimatedLanguageToggle,
+                            onToggleNavigation: handleFileTreeToggle,
+                            onToggleReadOnly: handleReadOnlyModeToggle,
+                            onToggleTheme: handleAnimatedThemeToggle,
+                            onToggleTypewriter: handleTypewriterModeToggle,
+                            readOnly: readOnlyMode,
+                            typewriter: editorPreferences.preferences.typewriterModeEnabled,
+                            uiStyle,
+                            onUiStyle: handleUiStyleSelect
+                          }}
                           onDirectionChange={handleTextDirectionChange}
-                          onExportPdf={exportFeatureEnabled ? exportPdfDocument : undefined}
-                          onExportWord={exportFeatureEnabled ? handleExportWordDocument : undefined}
-                          onInsertHorizontalRule={() => handleInsertMarkdownSnippet("\n\n---\n\n", "", "")}
-                          onInsertImage={handleInsertMarkdownImage}
-                          onInsertLink={handleInsertMarkdownLink}
-                          onInsertTable={handleInsertMarkdownTable}
-                          onOpenWord={handleImportWordDocument}
-                          onRedo={() => handleRunEditorShortcut("z", { shiftKey: true })}
-                          onRunCommand={(commandId) => {
-                            if (readOnlyMode) return;
-                            editor.runEditorCommand(commandId);
-                            syncVisualMarkdownAfterEditorCommand();
-                          }}
-                          onRunFormatting={(action) => {
-                            if (readOnlyMode) return;
-                            editor.runSelectionFormattingAction(action);
-                            syncVisualMarkdownAfterEditorCommand();
-                          }}
-                          onSetHeadingLevel={(level) => {
-                            if (readOnlyMode) return;
-                            editor.setSelectionHeadingLevel(level);
-                            syncVisualMarkdownAfterEditorCommand();
-                          }}
-                          onUndo={() => handleRunEditorShortcut("z")}
+                          onExport={exportFeatureEnabled ? handleExportWordDocument : undefined}
+                          onOpenBackstage={() => setBackstageOpen(true)}
                         />
                       </div>
                     ) : null}
@@ -5227,7 +5336,11 @@ function WorkspaceApp() {
                       selectedWordCount={selectedWordCount}
                       showWordCount={viewModeChrome.wordCount && editorPreferences.preferences.showWordCount}
                       syncLabel={syncStatusLabel}
+                      viewMode={sourceModeAvailable ? editorMode : undefined}
                       wordCount={wordCount}
+                      zoomPercent={Math.round((editorPreferences.preferences.bodyFontSize / 16) * 100)}
+                      onViewModeChange={sourceModeAvailable ? handleAnimatedEditorModeSelect : undefined}
+                      onZoomStep={handleBodyFontStep}
                     />
                   ) : null}
                   </div>
@@ -5360,6 +5473,6 @@ function WorkspaceApp() {
           onRendered={handleRenderedExport}
         />
       ) : null}
-    </>
+    </MotionRoot>
   );
 }

@@ -1,0 +1,124 @@
+/* ---------------------------------------------------------------------------
+   Unified chrome tokens: Word-blue accent, ribbon surfaces and per-platform
+   radii, so Windows feels like Office (Mica, tight corners), macOS like Pages
+   (glass, soft corners) and Linux like GNOME (Adwaita 12px corners).
+   ------------------------------------------------------------------------- */
+:root {
+  --hb-accent: #185abd;
+  --hb-accent-hover: #1f6ad6;
+  --hb-accent-soft: color-mix(in srgb, var(--hb-accent) 12%, transparent);
+  --hb-r-xs: 4px;
+  --hb-r-s: 5px;
+  --hb-r-m: 8px;
+  --hb-r-l: 10px;
+  --hb-ribbon-bg: color-mix(in oklab, var(--bg-primary) 92%, var(--bg-secondary));
+  --hb-ribbon-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 14px -6px rgba(0, 0, 0, 0.1);
+  --hb-desk: color-mix(in oklab, var(--bg-secondary) 70%, #d9dde3);
+  --hb-page-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 10px 32px -12px rgba(15, 23, 42, 0.22);
+}
+
+/* Ribbon */
+.ribbon-slot {
+  animation: hb-drop var(--dur-gentle) var(--ease-out-strong) both;
+}
+
+.ribbon-button svg {
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.ribbon-button:not(:disabled):hover svg {
+  transform: translateY(-1px) scale(1.08);
+}
+
+.ribbon-button[aria-pressed="true"] svg {
+  animation: hb-press-pop var(--dur-gentle) var(--ease-out) both;
+}
+
+.ribbon-file-tab {
+  transition: filter var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.ribbon-tab {
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* Backstage handles its own motion. */
+[data-hb-custom-motion] {
+  animation: none !important;
+}
+
+@keyframes hb-press-pop {
+  0% { transform: scale(0.78); }
+  55% { transform: scale(1.14); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ribbon-slot,
+  .ribbon-button svg { animation: none !important; transition: none !important; }
+}
+
+/* ---------------------------------------------------------------------------
+   Print layout (Word "Print Layout" / Pages): the document sits on a desk as
+   a page with real margins and a soft shadow. Only in the single visual view
+   with the ribbon shown; split view keeps the flat surface.
+   ------------------------------------------------------------------------- */
+.ribbon-slot {
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in oklab, var(--border-default) 70%, transparent);
+}
+
+[data-word-toolbar="true"]:not(:has(.editor-split-surface)) .paper-scroll {
+  background: var(--hb-desk);
+}
+
+[data-word-toolbar="true"]:not(:has(.editor-split-surface)) .markdown-paper {
+  margin-block: calc(8.75rem + 6px) 48px;
+  padding-top: 64px;
+  padding-bottom: 72px;
+  background: var(--bg-primary);
+  border-radius: var(--hb-r-xs);
+  box-shadow: var(--hb-page-shadow);
+  min-height: calc(100vh - 8.75rem - 60px);
+  animation: hb-page-in var(--dur-slow) var(--ease-out-strong) both;
+}
+
+@media (max-width: 900px) {
+  [data-word-toolbar="true"]:not(:has(.editor-split-surface)) .markdown-paper {
+    margin-block: calc(8.5rem + 4px) 24px;
+    padding-top: 40px;
+  }
+}
+
+/* Status bar: word count ticks up, save state swaps with a check draw. */
+.quiet-status-count {
+  animation: hb-tick-in var(--dur-base) var(--ease-out-strong) both;
+}
+
+.quiet-status-save {
+  animation: hb-fade-in var(--dur-base) var(--ease-out) both;
+}
+
+.quiet-status-check {
+  color: #16a34a;
+  stroke-dasharray: 24;
+  animation: hb-check-draw var(--dur-slow) var(--ease-out) both;
+}
+
+.quiet-status-dot {
+  animation: hb-pulse-dot 1.6s var(--ease-in-out) infinite;
+}
+
+[data-word-status="true"] {
+  border-top: 1px solid color-mix(in oklab, var(--border-default) 60%, transparent);
+  background: var(--bg-primary);
+  min-height: 2rem;
+  padding-block: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiet-status-count,
+  .quiet-status-save,
+  .quiet-status-check,
+  .quiet-status-dot { animation: none !important; }
+}

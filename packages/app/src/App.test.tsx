@@ -138,6 +138,16 @@ const defaultFileTreeListOptions = { managedAttachmentFolder: "assets" };
 
 // The persistent Word-style toolbar repeats formatting labels ("Bold"), so
 // selection-toolbar assertions are scoped to the floating selection toolbar.
+function getDocumentTabs() {
+  return screen.getAllByRole("tab").filter((tab) => !tab.classList.contains("ribbon-tab"));
+}
+
+function getNonRibbonButton(name: string) {
+  const button = screen.getAllByRole("button", { name }).find((element) => !element.classList.contains("ribbon-button"));
+  if (!button) throw new Error(`No ${name} button outside the ribbon`);
+  return button;
+}
+
 function findAiSelectionToolbar() {
   return waitFor(() => {
     const toolbar = document.querySelector<HTMLElement>(".ai-selection-toolbar");
@@ -733,7 +743,9 @@ describe("Helbaron workspace", () => {
     expect(screen.getByLabelText("Markdown editor")).toBeInTheDocument();
     expect(screen.getByLabelText("Markdown editor")).toHaveAttribute("data-editor-engine", "codemirror");
     await waitFor(() => expect(container.querySelector(".cm-editor")).toBeInTheDocument());
-    expect(screen.queryByText("File")).not.toBeInTheDocument();
+    // The only "File" in the window is the ribbon's File tab (Backstage), not a menu bar.
+    expect(screen.getAllByText("File")).toHaveLength(1);
+    expect(screen.getByText("File")).toHaveClass("ribbon-file-tab");
     expect(container.querySelector(".native-title")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Toggle file list" })).toBeInTheDocument();
     expect(container.querySelector(".quiet-status")?.closest(".editor-content-slot")).toBeInTheDocument();
@@ -4321,11 +4333,11 @@ describe("Helbaron workspace", () => {
     fireEvent.keyDown(window, { key: "o", metaKey: true });
     await expectVisibleMarkdownText("Native file");
     fireEvent.click(screen.getByRole("button", { name: "New tab" }));
-    expect(screen.getAllByRole("tab")).toHaveLength(2);
+    expect(getDocumentTabs()).toHaveLength(2);
 
     fireEvent.keyDown(window, { key: "w", metaKey: true });
 
-    await waitFor(() => expect(screen.getAllByRole("tab")).toHaveLength(1));
+    await waitFor(() => expect(getDocumentTabs()).toHaveLength(1));
     expect(mockedCloseNativeWindow).not.toHaveBeenCalled();
   });
 
@@ -8740,7 +8752,7 @@ describe("Helbaron workspace", () => {
     fireEvent.change(screen.getByRole("textbox", { name: "Replace" }), {
       target: { value: "Hello" }
     });
-    fireEvent.click(screen.getByRole("button", { name: "Replace" }));
+    fireEvent.click(getNonRibbonButton("Replace"));
 
     expect(readMarkdownSource(sourceEditor)).toContain("# Hello to Helbaron");
   });

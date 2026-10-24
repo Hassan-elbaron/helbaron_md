@@ -3,6 +3,10 @@
 @import "@fontsource-variable/noto-sans-sc/wght.css";
 @import "@fontsource-variable/noto-sans-arabic/wght.css";
 @import "@fontsource-variable/noto-naskh-arabic/wght.css";
+@import "./motion.css";
+@import "./surfaces-motion.css";
+@import "./chrome.css";
+@import "./ui-styles.css";
 @source ".";
 @source "../../../packages/ui/src";
 @import "katex/dist/katex.css";
@@ -4858,12 +4862,12 @@
    Unlayered so it wins over the pt-* utility on the paper element. */
 [data-word-toolbar="true"] .markdown-paper,
 [data-word-toolbar="true"] .markdown-source-paper {
-  padding-top: 6.75rem;
+  padding-top: 8.75rem;
 }
 
 @media (max-width: 900px) {
   [data-word-toolbar="true"] .markdown-paper,
   [data-word-toolbar="true"] .markdown-source-paper {
-    padding-top: 6rem;
+    padding-top: 8.5rem;
   }
 }

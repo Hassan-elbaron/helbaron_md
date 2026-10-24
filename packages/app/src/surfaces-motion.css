@@ -1,0 +1,166 @@
+/* ---------------------------------------------------------------------------
+   Surface animations: applied by role/class so every menu, popover, dialog,
+   panel and list in the app animates the same way without per-component code.
+   Entrance-only keyframes are safe for React (no state needed); components
+   that must also animate out use Motion's AnimatePresence instead.
+   ------------------------------------------------------------------------- */
+
+/* Popovers, menus, listboxes and tooltips pop from their anchor. */
+[role="menu"],
+[role="listbox"]:not(select):not([data-hb-static]),
+.helbaron-slash-menu,
+.helbaron-document-link-menu,
+.cm-tooltip:not(.cm-tooltip-hover) {
+  animation: hb-pop-in var(--dur-quick) var(--ease-out) both;
+  transform-origin: top var(--hb-origin-x, right);
+}
+
+:root:dir(ltr) {
+  --hb-origin-x: left;
+}
+
+[role="tooltip"] {
+  animation: hb-pop-up var(--dur-fast) var(--ease-out) both;
+}
+
+/* Modal dialogs: backdrop fades, panel springs up. */
+[role="dialog"],
+[role="alertdialog"] {
+  animation: hb-dialog-in var(--dur-gentle) var(--ease-out-strong) both;
+}
+
+.fixed.inset-0:has(> [role="dialog"]),
+.fixed.inset-0:has(> [role="alertdialog"]) {
+  animation: hb-fade-in var(--dur-base) var(--ease-out) both;
+}
+
+/* Command surfaces drop in from the title bar. */
+.quick-open-panel,
+.global-search-panel:not(.global-search-panel-sidebar),
+.document-search-bar {
+  animation: hb-drop var(--dur-base) var(--ease-out-strong) both;
+}
+
+/* Side panels slide in from their own edge (the AI panel animates itself). */
+.markdown-file-tree-root {
+  animation: hb-slide-from-start var(--dur-gentle) var(--ease-out-strong) both;
+}
+
+/* File tree and outline rows cascade in. */
+.markdown-file-tree-files [role="treeitem"],
+.markdown-file-tree-outline-list > * {
+  animation: hb-slide-from-start var(--dur-base) var(--ease-out) both;
+}
+
+.markdown-file-tree-files [role="treeitem"]:nth-child(2),
+.markdown-file-tree-outline-list > :nth-child(2) { animation-delay: calc(var(--stagger) * 1); }
+.markdown-file-tree-files [role="treeitem"]:nth-child(3),
+.markdown-file-tree-outline-list > :nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
+.markdown-file-tree-files [role="treeitem"]:nth-child(4),
+.markdown-file-tree-outline-list > :nth-child(4) { animation-delay: calc(var(--stagger) * 3); }
+.markdown-file-tree-files [role="treeitem"]:nth-child(5),
+.markdown-file-tree-outline-list > :nth-child(5) { animation-delay: calc(var(--stagger) * 4); }
+.markdown-file-tree-files [role="treeitem"]:nth-child(6),
+.markdown-file-tree-outline-list > :nth-child(6) { animation-delay: calc(var(--stagger) * 5); }
+.markdown-file-tree-files [role="treeitem"]:nth-child(n + 7),
+.markdown-file-tree-outline-list > :nth-child(n + 7) { animation-delay: calc(var(--stagger) * 6); }
+
+/* Settings: window rises, sidebar slides, each category panel fades up. */
+.settings-window {
+  animation: hb-dialog-in var(--dur-gentle) var(--ease-out-strong) both;
+}
+
+.settings-sidebar {
+  animation: hb-slide-from-start var(--dur-gentle) var(--ease-out-strong) both;
+}
+
+.settings-content > * {
+  animation: hb-rise var(--dur-gentle) var(--ease-out) both;
+}
+
+/* Document tabs. */
+.document-tabs-row [role="tab"] {
+  animation: hb-pop-up var(--dur-base) var(--ease-out) both;
+}
+
+/* Status bar appears last when the app opens. */
+.quiet-status {
+  animation: hb-rise var(--dur-slow) var(--ease-out) both;
+  animation-delay: 120ms;
+}
+
+/* The writing page lifts into place when a document opens. */
+.markdown-paper,
+.markdown-source-paper {
+  animation: hb-page-in var(--dur-slower) var(--ease-out-strong) both;
+}
+
+/* Tactile feedback on every button. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="tab"],
+[role="menuitem"],
+[role="option"] {
+  transition-property: background-color, color, border-color, box-shadow, opacity, transform, scale;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease-out);
+}
+
+button:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active,
+[role="tab"]:active {
+  scale: var(--press-scale);
+}
+
+/* Menus and lists: the highlighted row glides instead of snapping. */
+[role="menuitem"],
+[role="option"],
+.helbaron-slash-menu-option {
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), padding var(--dur-base) var(--ease-out);
+}
+
+.helbaron-slash-menu-option[aria-selected="true"] {
+  padding-inline-start: 14px;
+}
+
+/* Smooth caret: CodeMirror reuses cursor elements, so their movement can glide. */
+.cm-cursorLayer .cm-cursor {
+  transition: left 90ms var(--ease-out), top 90ms var(--ease-out), height 90ms var(--ease-out);
+}
+
+.cm-editor.hb-caret-jump .cm-cursorLayer .cm-cursor,
+.cm-editor[data-helbaron-composing="true"] .cm-cursorLayer .cm-cursor {
+  transition: none;
+}
+
+/* Selection fades in rather than flashing. */
+.cm-selectionBackground {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+/* Focus mode (View ▸ Focus): everything but the current paragraph dims. */
+.cm-editor .cm-line {
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+[data-focus-mode="true"] .cm-editor .cm-line:not(.cm-helbaron-focus-current) {
+  opacity: 0.28;
+}
+
+/* Toasts already animate (sonner); give them a springier rise. */
+[data-sonner-toast] {
+  transition-timing-function: var(--ease-out-strong) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-cursorLayer .cm-cursor,
+  .cm-editor .cm-line {
+    transition: none;
+  }
+
+  button:not(:disabled):active,
+  [role="button"]:active,
+  [role="tab"]:active {
+    scale: 1;
+  }
+}

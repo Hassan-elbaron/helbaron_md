@@ -1,0 +1,160 @@
+/* ---------------------------------------------------------------------------
+   Helbaron motion system.
+   One set of tokens drives every animation so the app moves consistently.
+   Durations/easings follow Fluent 2 and Material 3 emphasized curves.
+   Everything collapses to near-instant under prefers-reduced-motion.
+   ------------------------------------------------------------------------- */
+:root {
+  --dur-instant: 60ms;
+  --dur-fast: 120ms;
+  --dur-quick: 160ms;
+  --dur-base: 220ms;
+  --dur-gentle: 280ms;
+  --dur-slow: 360ms;
+  --dur-slower: 480ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: linear(0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017 20.5%, 1.043 24.5%, 1.035 28.4%, 1.007 36%, 0.997 41.6%, 1 53.4%);
+
+  --press-scale: 0.95;
+  --pop-scale-from: 0.94;
+  --pop-offset: 8px;
+  --stagger: 28ms;
+
+  /* +1 in LTR, -1 in RTL: multiply horizontal translations by this. */
+  --dir: 1;
+}
+
+:root:dir(rtl) {
+  --dir: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --press-scale: 1;
+    --pop-scale-from: 1;
+    --pop-offset: 0px;
+    --stagger: 0ms;
+    --dur-gentle: 120ms;
+    --dur-slow: 120ms;
+    --dur-slower: 140ms;
+  }
+}
+
+@keyframes hb-pop-in {
+  from { opacity: 0; transform: translateY(calc(var(--pop-offset) * -1)) scale(var(--pop-scale-from)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-pop-up {
+  from { opacity: 0; transform: translateY(var(--pop-offset)) scale(var(--pop-scale-from)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes hb-dialog-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); filter: blur(2px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes hb-slide-from-start {
+  from { opacity: 0; transform: translateX(calc(var(--dir) * -28px)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-slide-from-end {
+  from { opacity: 0; transform: translateX(calc(var(--dir) * 28px)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-drop {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Translate only: scaling a CodeMirror host would skew its hit-testing mid-animation. */
+@keyframes hb-page-in {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-tick-in {
+  from { opacity: 0; transform: translateY(45%); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-check-draw {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes hb-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+
+@keyframes hb-shine {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+/* ---- View Transitions (theme, language, view mode, tab switch) ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-out);
+}
+
+:root[data-vt="theme"]::view-transition-old(root) {
+  animation: none;
+}
+
+:root[data-vt="theme"]::view-transition-new(root) {
+  animation: hb-theme-reveal var(--dur-slower) var(--ease-out-strong);
+}
+
+@keyframes hb-theme-reveal {
+  from { clip-path: circle(0% at var(--vt-x, 50%) var(--vt-y, 0%)); }
+  to { clip-path: circle(150% at var(--vt-x, 50%) var(--vt-y, 0%)); }
+}
+
+:root[data-vt="language"]::view-transition-old(root) {
+  animation: hb-vt-out var(--dur-base) var(--ease-in) both;
+}
+
+:root[data-vt="language"]::view-transition-new(root) {
+  animation: hb-vt-in var(--dur-slow) var(--ease-out-strong) both;
+}
+
+@keyframes hb-vt-out {
+  to { opacity: 0; transform: scale(0.985); filter: blur(3px); }
+}
+
+@keyframes hb-vt-in {
+  from { opacity: 0; transform: scale(1.015); filter: blur(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 120ms !important;
+  }
+
+  :root[data-vt="theme"]::view-transition-new(root) {
+    animation: hb-fade-in 120ms linear;
+  }
+}
