@@ -1,0 +1,198 @@
+/* ---------------------------------------------------------------------------
+   El Baron compass mark: colours per scheme and its three motions.
+   ------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Helbaron Wordmark";
+  src: url("./assets/fonts/orbitron-latin-600-normal.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --hb-mark-ink1: #26262a;
+  --hb-mark-ink2: #050506;
+  --hb-mark-steel1: #9a9a9f;
+  --hb-mark-steel2: #55555b;
+}
+
+:root[data-scheme="dark"] {
+  --hb-mark-ink1: #ffffff;
+  --hb-mark-ink2: #d4d4d8;
+  --hb-mark-steel1: #cfcfd4;
+  --hb-mark-steel2: #7c7c83;
+}
+
+.hb-brand {
+  --ink1: var(--hb-mark-ink1);
+  --ink2: var(--hb-mark-ink2);
+  --steel1: var(--hb-mark-steel1);
+  --steel2: var(--hb-mark-steel2);
+  display: inline-block;
+  flex: none;
+  overflow: visible;
+}
+
+.hb-brand .b-top,
+.hb-brand .b-bot,
+.hb-brand .ring,
+.hb-brand .ring-arc,
+.hb-brand .star,
+.hb-brand .pt,
+.hb-brand .dot,
+.hb-brand .ripple,
+.hb-brand .shine {
+  transform-box: view-box;
+  transform-origin: 1000px 1000px;
+}
+
+.hb-brand .ripple,
+.hb-brand .ring-arc,
+.hb-brand .shine-wrap {
+  opacity: 0;
+}
+
+/* Idle: always alive while the app is open, but calm enough to ignore. */
+.hb-brand[data-mode="idle"] .star {
+  animation: hb-mark-spin 16s linear infinite;
+}
+
+.hb-brand[data-mode="idle"] .dot {
+  animation: hb-mark-glow 3.2s ease-in-out infinite;
+}
+
+/* Busy: the red dot lights up and fades while the points spin round it. */
+.hb-brand[data-mode="busy"] .star {
+  animation: hb-mark-spin 2.4s linear infinite;
+}
+
+.hb-brand[data-mode="busy"] .dot {
+  animation: hb-mark-glow 1.4s ease-in-out infinite;
+}
+
+/* Hover: the needle swings and settles, like a compass you just picked up. */
+.hb-brand[data-mode="idle"]:hover .star,
+button:hover > .hb-brand[data-mode="idle"] .star {
+  animation: hb-mark-calibrate 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Launch: compass calibrates once (S1). */
+.hb-brand[data-mode="launch"] .b-top { animation: hb-mark-from-start 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.hb-brand[data-mode="launch"] .b-bot { animation: hb-mark-from-start 0.5s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.hb-brand[data-mode="launch"] .ring { animation: hb-mark-ring-in 0.55s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.hb-brand[data-mode="launch"] .star { animation: hb-mark-calibrate-in 1s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.hb-brand[data-mode="launch"] .dot { animation: hb-mark-pop 0.5s 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+@keyframes hb-mark-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes hb-mark-glow {
+  0%, 100% { opacity: 0.55; filter: none; }
+  50% { opacity: 1; filter: drop-shadow(0 0 70px #ff2a33) brightness(1.25); }
+}
+
+@keyframes hb-mark-calibrate {
+  0% { transform: rotate(0); }
+  30% { transform: rotate(34deg); }
+  55% { transform: rotate(-14deg); }
+  78% { transform: rotate(5deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes hb-mark-from-start {
+  from { opacity: 0; transform: translateX(calc(-90px * var(--dir, 1))); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-mark-ring-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hb-mark-calibrate-in {
+  0% { opacity: 0; transform: rotate(-150deg) scale(0.5); }
+  45% { opacity: 1; transform: rotate(16deg) scale(1.04); }
+  70% { transform: rotate(-6deg) scale(1); }
+  86% { transform: rotate(2deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes hb-mark-pop {
+  0% { opacity: 0; transform: scale(0); }
+  70% { opacity: 1; transform: scale(1.18); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* Start-up flash */
+.hb-launch {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--bg-primary);
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.hb-launch[data-phase="fade"] {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+.hb-launch-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.hb-launch-word {
+  direction: ltr;
+  font-family: "Helbaron Wordmark", var(--font-ui);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+  animation: hb-fade-in 0.5s 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hb-launch-word b {
+  color: #d90a16;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-brand *,
+  .hb-launch-word {
+    animation: none !important;
+  }
+}
+
+/* Helbaron menu (File view) */
+.backstage-word {
+  font-family: "Helbaron Wordmark", var(--font-ui);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-heading);
+}
+
+.backstage-word b {
+  color: #d90a16;
+  font-weight: 600;
+}
+
+.backstage-item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-block: 9px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--hb-accent);
+}
+
+.backstage-item svg {
+  color: var(--text-secondary);
+}

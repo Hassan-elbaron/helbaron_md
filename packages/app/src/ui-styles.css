@@ -16,60 +16,64 @@
   --hb-heading-font: inherit;
 }
 
-/* ===== Word — Windows 11 / Office: Mica greys, tight corners, Word blue ===== */
-:root[data-ui-style="word"] {
-  --hb-accent: #185abd;
-  --hb-accent-hover: #1f6ad6;
-  --hb-accent-soft: rgba(24, 90, 189, 0.1);
-  --hb-accent-deep: #1f3864;
-  --hb-desk: #e8eaed;
-  --hb-chrome-bg: #f3f3f3;
-  --hb-ribbon-bg: #ffffff;
-  --hb-ribbon-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --hb-page-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.08);
-  --hb-r-xs: 4px;
-  --hb-r-s: 4px;
-  --hb-r-m: 8px;
-  --hb-r-l: 8px;
+/* ===== Baron — Helbaron's own look: graphite chrome, brand red, paper on a quiet desk ===== */
+:root[data-ui-style="baron"] {
+  --hb-accent: #c8102e;
+  --hb-accent-hover: #de1f3d;
+  --hb-accent-soft: rgba(200, 16, 46, 0.09);
+  --hb-accent-deep: #111114;
+  --hb-primary: #1c1c1f;
+  --hb-primary-ink: #ffffff;
+  --hb-desk: #e8e8ea;
+  --hb-chrome-bg: #f6f6f7;
+  --hb-ribbon-bg: rgba(255, 255, 255, 0.86);
+  --hb-ribbon-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px -14px rgba(0, 0, 0, 0.22);
+  --hb-page-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 14px 40px -18px rgba(0, 0, 0, 0.25);
+  --hb-r-xs: 6px;
+  --hb-r-s: 8px;
+  --hb-r-m: 12px;
+  --hb-r-l: 16px;
 }
-:root[data-ui-style="word"][data-scheme="dark"] {
-  --hb-accent: #4c8df6;
-  --hb-accent-hover: #6aa1f8;
-  --hb-accent-soft: rgba(76, 141, 246, 0.2);
-  --hb-accent-deep: #8ab4f8;
-  --hb-desk: #1c1c1c;
-  --hb-chrome-bg: #202020;
-  --hb-ribbon-bg: #2b2b2b;
-  --hb-ribbon-shadow: none;
-  --hb-page-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 4px 16px rgba(0, 0, 0, 0.5);
+:root[data-ui-style="baron"][data-scheme="dark"] {
+  --hb-accent: #f0435a;
+  --hb-accent-hover: #f45e72;
+  --hb-accent-soft: rgba(240, 67, 90, 0.16);
+  --hb-accent-deep: #f4f4f6;
+  --hb-primary: #f2f2f4;
+  --hb-primary-ink: #111114;
+  --hb-desk: #111113;
+  --hb-chrome-bg: #1a1a1d;
+  --hb-ribbon-bg: rgba(30, 30, 33, 0.86);
+  --hb-ribbon-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 30px -14px rgba(0, 0, 0, 0.7);
+  --hb-page-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 16px 44px -18px rgba(0, 0, 0, 0.8);
 }
-:root[data-ui-style="word"][data-theme="light"] {
+:root[data-ui-style="baron"][data-theme="light"] {
   --bg-primary: #ffffff;
-  --bg-secondary: #f9f9f9;
-  --bg-chrome: #f3f3f3;
-  --bg-hover: #f0f0f0;
-  --bg-active: #e6e6e6;
-  --text-primary: #424242;
-  --text-heading: #242424;
-  --text-secondary: #8a8886;
-  --border-default: #e1dfdd;
-  --border-strong: #c8c6c4;
+  --bg-secondary: #f4f4f5;
+  --bg-chrome: #f6f6f7;
+  --bg-hover: rgba(17, 17, 20, 0.05);
+  --bg-active: rgba(17, 17, 20, 0.09);
+  --text-primary: #3a3a40;
+  --text-heading: #111114;
+  --text-secondary: #8b8b92;
+  --border-default: #e4e4e7;
+  --border-strong: #cfcfd4;
 }
-:root[data-ui-style="word"][data-theme="dark"] {
-  --bg-primary: #2b2b2b;
-  --bg-secondary: #272727;
-  --bg-chrome: #202020;
-  --bg-hover: #333333;
-  --bg-active: #3d3d3d;
-  --text-primary: #d6d6d6;
-  --text-heading: #f0f0f0;
-  --text-secondary: #9e9e9e;
-  --border-default: #3a3a3a;
-  --border-strong: #4a4a4a;
+:root[data-ui-style="baron"][data-theme="dark"] {
+  --bg-primary: #1e1e21;
+  --bg-secondary: #252529;
+  --bg-chrome: #1a1a1d;
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: rgba(255, 255, 255, 0.1);
+  --text-primary: #d4d4d8;
+  --text-heading: #f4f4f6;
+  --text-secondary: #8e8e96;
+  --border-default: #2e2e33;
+  --border-strong: #3f3f46;
 }
 
-/* ===== Mac — Pages / Sonoma: warm greys, glass ribbon, soft corners ===== */
-:root[data-ui-style="mac"] {
+/* ===== Glass — frosted toolbar, soft corners, warm greys ===== */
+:root[data-ui-style="glass"] {
   --hb-accent: #007aff;
   --hb-accent-hover: #2b8fff;
   --hb-accent-soft: rgba(0, 122, 255, 0.11);
@@ -85,7 +89,7 @@
   --hb-r-m: 12px;
   --hb-r-l: 16px;
 }
-:root[data-ui-style="mac"][data-scheme="dark"] {
+:root[data-ui-style="glass"][data-scheme="dark"] {
   --hb-accent: #0a84ff;
   --hb-accent-hover: #409cff;
   --hb-accent-soft: rgba(10, 132, 255, 0.22);
@@ -96,7 +100,7 @@
   --hb-ribbon-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   --hb-page-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 44px -14px rgba(0, 0, 0, 0.7);
 }
-:root[data-ui-style="mac"][data-theme="light"] {
+:root[data-ui-style="glass"][data-theme="light"] {
   --bg-primary: #ffffff;
   --bg-secondary: #f5f5f4;
   --bg-chrome: #f2f1ef;
@@ -108,7 +112,7 @@
   --border-default: #e5e4e2;
   --border-strong: #d1d0ce;
 }
-:root[data-ui-style="mac"][data-theme="dark"] {
+:root[data-ui-style="glass"][data-theme="dark"] {
   --bg-primary: #232325;
   --bg-secondary: #2a2a2c;
   --bg-chrome: #2a2a2c;
@@ -121,8 +125,8 @@
   --border-strong: #48484a;
 }
 
-/* ===== GNOME — Adwaita / libadwaita: flat, 12px corners, GNOME blue ===== */
-:root[data-ui-style="gnome"] {
+/* ===== Slate — flat, calm surfaces, rounded corners, cool blue ===== */
+:root[data-ui-style="slate"] {
   --hb-accent: #3584e4;
   --hb-accent-hover: #4a92e8;
   --hb-accent-soft: rgba(53, 132, 228, 0.12);
@@ -137,7 +141,7 @@
   --hb-r-m: 12px;
   --hb-r-l: 12px;
 }
-:root[data-ui-style="gnome"][data-scheme="dark"] {
+:root[data-ui-style="slate"][data-scheme="dark"] {
   --hb-accent: #78aeed;
   --hb-accent-hover: #8cbaf0;
   --hb-accent-soft: rgba(120, 174, 237, 0.2);
@@ -147,7 +151,7 @@
   --hb-ribbon-bg: #36363a;
   --hb-page-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 8px rgba(0, 0, 0, 0.45);
 }
-:root[data-ui-style="gnome"][data-theme="light"] {
+:root[data-ui-style="slate"][data-theme="light"] {
   --bg-primary: #fafafb;
   --bg-secondary: #f2f2f4;
   --bg-chrome: #ebebed;
@@ -159,7 +163,7 @@
   --border-default: #dcdcdf;
   --border-strong: #c0bfc4;
 }
-:root[data-ui-style="gnome"][data-theme="dark"] {
+:root[data-ui-style="slate"][data-theme="dark"] {
   --bg-primary: #28282c;
   --bg-secondary: #2a2a2e;
   --bg-chrome: #2e2e32;
@@ -172,8 +176,8 @@
   --border-strong: #4f4f55;
 }
 
-/* ===== Fusion — the merged design: warm paper, coral accent, Naskh headings ===== */
-:root[data-ui-style="fusion"] {
+/* ===== Paper — warm paper, coral accent, Naskh headings ===== */
+:root[data-ui-style="paper"] {
   --hb-accent: #d9534a;
   --hb-accent-hover: #e0655c;
   --hb-accent-soft: rgba(217, 83, 74, 0.11);
@@ -190,7 +194,7 @@
   --hb-r-m: 14px;
   --hb-r-l: 18px;
 }
-:root[data-ui-style="fusion"][data-scheme="dark"] {
+:root[data-ui-style="paper"][data-scheme="dark"] {
   --hb-accent: #ef7a6f;
   --hb-accent-hover: #f28c83;
   --hb-accent-soft: rgba(239, 122, 111, 0.2);
@@ -201,7 +205,7 @@
   --hb-ribbon-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   --hb-page-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 20px 52px -18px rgba(0, 0, 0, 0.8);
 }
-:root[data-ui-style="fusion"][data-theme="light"] {
+:root[data-ui-style="paper"][data-theme="light"] {
   --bg-primary: #fffdfa;
   --bg-secondary: #f4f2ef;
   --bg-chrome: #f4f2ef;
@@ -213,7 +217,7 @@
   --border-default: #e6e0d8;
   --border-strong: #c4bdb4;
 }
-:root[data-ui-style="fusion"][data-theme="dark"] {
+:root[data-ui-style="paper"][data-theme="dark"] {
   --bg-primary: #232019;
   --bg-secondary: #1f1b17;
   --bg-chrome: #1f1b17;
@@ -226,11 +230,11 @@
   --border-strong: #4a433c;
 }
 
-/* ===== Classic — Helbaron's original calm, flat writing surface ===== */
-:root[data-ui-style="classic"] {
-  --hb-accent: #2f5bea;
-  --hb-accent-hover: #4570f0;
-  --hb-accent-soft: rgba(47, 91, 234, 0.1);
+/* ===== Minimal — a flat, distraction-free writing surface ===== */
+:root[data-ui-style="minimal"] {
+  --hb-accent: #2a3140;
+  --hb-accent-hover: #3a4357;
+  --hb-accent-soft: rgba(42, 49, 64, 0.08);
   --hb-accent-deep: #2a3140;
   --hb-desk: var(--bg-primary);
   --hb-chrome-bg: var(--bg-primary);
@@ -242,10 +246,10 @@
   --hb-r-m: 10px;
   --hb-r-l: 12px;
 }
-:root[data-ui-style="classic"][data-scheme="dark"] {
-  --hb-accent: #7b9bff;
-  --hb-accent-hover: #93adff;
-  --hb-accent-soft: rgba(123, 155, 255, 0.18);
+:root[data-ui-style="minimal"][data-scheme="dark"] {
+  --hb-accent: #c9d1e0;
+  --hb-accent-hover: #dde3ee;
+  --hb-accent-soft: rgba(201, 209, 224, 0.14);
   --hb-accent-deep: #e3e6ec;
 }
 
@@ -255,7 +259,6 @@
   backdrop-filter: var(--hb-chrome-blur);
 }
 
-.ribbon-slot,
 [data-word-status="true"] {
   background: var(--hb-chrome-bg);
   -webkit-backdrop-filter: var(--hb-chrome-blur);
@@ -266,7 +269,7 @@
   background: var(--hb-page-bg);
 }
 
-:root[data-ui-style="classic"] [data-word-toolbar="true"] .markdown-paper {
+:root[data-ui-style="minimal"] [data-word-toolbar="true"] .markdown-paper {
   box-shadow: none;
   border-radius: 0;
 }
@@ -280,8 +283,8 @@
   --editor-h3-color: var(--hb-accent-deep);
 }
 
-:root[data-ui-style="fusion"][data-theme="light"] .markdown-paper,
-:root[data-ui-style="fusion"][data-theme="dark"] .markdown-paper {
+:root[data-ui-style="paper"][data-theme="light"] .markdown-paper,
+:root[data-ui-style="paper"][data-theme="dark"] .markdown-paper {
   --editor-heading-font-family: var(--hb-heading-font);
 }
 

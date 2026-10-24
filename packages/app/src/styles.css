@@ -7,6 +7,8 @@
 @import "./surfaces-motion.css";
 @import "./chrome.css";
 @import "./ui-styles.css";
+@import "./brand-motion.css";
+@import "./arabic-typography.css";
 @source ".";
 @source "../../../packages/ui/src";
 @import "katex/dist/katex.css";
@@ -1126,7 +1128,8 @@
 
   .markdown-paper .cm-helbaron-link {
     color: var(--editor-link-color) !important;
-    cursor: var(--editor-text-cursor);
+    /* Links read as links: the hand shows on hover, Ctrl/Cmd+click follows them. */
+    cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 0.16em;
     -webkit-user-drag: none;
@@ -4862,12 +4865,12 @@
    Unlayered so it wins over the pt-* utility on the paper element. */
 [data-word-toolbar="true"] .markdown-paper,
 [data-word-toolbar="true"] .markdown-source-paper {
-  padding-top: 8.75rem;
+  padding-top: 6.5rem;
 }
 
 @media (max-width: 900px) {
   [data-word-toolbar="true"] .markdown-paper,
   [data-word-toolbar="true"] .markdown-source-paper {
-    padding-top: 8.5rem;
+    padding-top: 6.25rem;
   }
 }

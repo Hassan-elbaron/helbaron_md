@@ -50,7 +50,7 @@
 
   ; Default apps (Settings > Apps > Default apps > Helbaron).
   WriteRegStr SHCTX "Software\Helbaron\Capabilities" "ApplicationName" "Helbaron"
-  WriteRegStr SHCTX "Software\Helbaron\Capabilities" "ApplicationDescription" "Arabic-first Markdown editor that works like Word."
+  WriteRegStr SHCTX "Software\Helbaron\Capabilities" "ApplicationDescription" "A modern Markdown editor."
   WriteRegStr SHCTX "Software\Helbaron\Capabilities" "ApplicationIcon" "$\"$INSTDIR\${MAINBINARYNAME}.exe$\",0"
   WriteRegStr SHCTX "Software\RegisteredApplications" "Helbaron" "Software\Helbaron\Capabilities"
 

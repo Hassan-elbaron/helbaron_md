@@ -88,16 +88,17 @@ pub(crate) fn language_for_initial_launch(
         return language;
     }
 
-    // Helbaron is an Arabic-first edition: the first launch is Arabic whatever the
-    // system locale. Users can switch language in Settings, and it is remembered.
-    if ARABIC_FIRST_EDITION {
-        return AppLanguage::Ar;
+    // Helbaron opens in English the first time, whatever the system locale; Arabic
+    // (and every other language) is one switch away in Settings and is remembered.
+    // Arabic *text* is fully supported in every UI language.
+    if ENGLISH_FIRST_EDITION {
+        return AppLanguage::En;
     }
 
     language_from_system_locales(system_locales).unwrap_or(AppLanguage::En)
 }
 
-const ARABIC_FIRST_EDITION: bool = true;
+const ENGLISH_FIRST_EDITION: bool = true;
 
 fn system_locale_candidates() -> Vec<String> {
     sys_locale::get_locales().collect()
@@ -210,10 +211,10 @@ mod tests {
     }
 
     #[test]
-    fn missing_language_starts_in_arabic_for_this_edition() {
-        assert_eq!(language_for_initial_launch(None, &["zh_Hant_TW"]), AppLanguage::Ar);
-        assert_eq!(language_for_initial_launch(None, &["en_US"]), AppLanguage::Ar);
-        assert_eq!(language_for_initial_launch(None, &[]), AppLanguage::Ar);
+    fn missing_language_starts_in_english_for_this_edition() {
+        assert_eq!(language_for_initial_launch(None, &["ar_EG"]), AppLanguage::En);
+        assert_eq!(language_for_initial_launch(None, &["zh_Hant_TW"]), AppLanguage::En);
+        assert_eq!(language_for_initial_launch(None, &[]), AppLanguage::En);
     }
 
     #[test]

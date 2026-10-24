@@ -743,9 +743,7 @@ describe("Helbaron workspace", () => {
     expect(screen.getByLabelText("Markdown editor")).toBeInTheDocument();
     expect(screen.getByLabelText("Markdown editor")).toHaveAttribute("data-editor-engine", "codemirror");
     await waitFor(() => expect(container.querySelector(".cm-editor")).toBeInTheDocument());
-    // The only "File" in the window is the ribbon's File tab (Backstage), not a menu bar.
-    expect(screen.getAllByText("File")).toHaveLength(1);
-    expect(screen.getByText("File")).toHaveClass("ribbon-file-tab");
+    expect(screen.queryByText("File")).not.toBeInTheDocument();
     expect(container.querySelector(".native-title")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Toggle file list" })).toBeInTheDocument();
     expect(container.querySelector(".quiet-status")?.closest(".editor-content-slot")).toBeInTheDocument();

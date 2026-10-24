@@ -19,6 +19,7 @@ import {
 import { isRtlLanguage, t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import { springs } from "./motion/MotionRoot";
 import { UiStyleCards } from "./UiStylePicker";
+import { BrandMark } from "./brand/BrandMark";
 import type { UiStyle } from "../lib/ui-style";
 
 export type BackstageRecentFile = { name: string; path: string };
@@ -107,7 +108,7 @@ export function Backstage(props: BackstageProps) {
       {open ? (
         <m.div
           animate={{ opacity: 1 }}
-          aria-label={label("backstage.title")}
+          aria-label={label("cmd.menu")}
           aria-modal="true"
           className="backstage fixed inset-0 z-[60] flex bg-(--bg-primary)"
           data-hb-custom-motion=""
@@ -117,21 +118,25 @@ export function Backstage(props: BackstageProps) {
         >
           <m.nav
             animate={{ x: 0 }}
-            className="flex w-60 shrink-0 flex-col gap-0.5 bg-(--hb-accent) px-2 py-4 text-white"
+            className="backstage-nav flex w-64 shrink-0 flex-col gap-0.5 border-e border-(--border-default) bg-(--hb-chrome-bg) px-3 py-4 text-(--text-primary)"
             exit={{ x: fromStart * 2, transition: { duration: 0.18 } }}
             initial={{ x: fromStart * 2 }}
             transition={springs.layout}
           >
-            <button
-              autoFocus
-              className="mb-3 inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/40 bg-transparent text-white hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              title={label("backstage.back")}
-              aria-label={label("backstage.back")}
-              type="button"
-              onClick={onClose}
-            >
-              <ArrowLeft aria-hidden="true" size={18} />
-            </button>
+            <div className="mb-4 flex items-center gap-2.5 px-1">
+              <button
+                autoFocus
+                className="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-(--border-default) bg-(--bg-primary) text-(--text-primary) hover:bg-(--bg-hover) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--hb-accent)"
+                title={label("backstage.back")}
+                aria-label={label("backstage.back")}
+                type="button"
+                onClick={onClose}
+              >
+                <ArrowLeft aria-hidden="true" size={17} />
+              </button>
+              <BrandMark mode="idle" size={26} />
+              <span className="backstage-word" dir="ltr"><b>HEl</b>baron</span>
+            </div>
             {visibleActions.map((action, index) => (
               <m.div
                 animate={{ opacity: 1, x: 0 }}
@@ -139,9 +144,9 @@ export function Backstage(props: BackstageProps) {
                 key={action.id}
                 transition={{ ...springs.snappy, delay: 0.04 + index * 0.028 }}
               >
-                {action.separatorBefore ? <div className="mx-2 my-2 h-px bg-white/25" /> : null}
+                {action.separatorBefore ? <div className="mx-2 my-2 h-px bg-(--border-default)" /> : null}
                 <button
-                  className="flex h-10 w-full cursor-pointer items-center gap-3 rounded-(--hb-r-s) border-0 bg-transparent px-3 text-start text-[13.5px] text-white hover:bg-white/15 focus-visible:bg-white/20 focus-visible:outline-none aria-[current=page]:bg-white/20"
+                  className="backstage-item relative flex h-10 w-full cursor-pointer items-center gap-3 rounded-(--hb-r-s) border-0 bg-transparent px-3 text-start text-[13.5px] text-(--text-primary) hover:bg-(--bg-hover) focus-visible:bg-(--bg-hover) focus-visible:outline-none aria-[current=page]:bg-(--bg-primary) aria-[current=page]:font-semibold aria-[current=page]:text-(--text-heading) aria-[current=page]:shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
                   type="button"
                   aria-current={action.id === page ? "page" : undefined}
                   onClick={action.id === "appearance" ? () => setPage("appearance") : choose(action.onSelect)}

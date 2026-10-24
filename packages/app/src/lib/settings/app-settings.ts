@@ -987,7 +987,7 @@ export async function getStoredLanguage(): Promise<AppLanguage> {
 }
 
 // The edition's default language is declared once, by the entry page
-// (`<html lang="ar">`), so first launch matches the first paint.
+// (`<html lang="en">`), so first launch matches the first paint.
 function declaredDocumentLanguage(): AppLanguage {
   const declared = typeof document === "undefined" ? null : document.documentElement.getAttribute("lang");
   return isAppLanguage(declared) ? declared : "en";

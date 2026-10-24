@@ -66,6 +66,14 @@ describe("helbaronTextDirection", () => {
     expect(lineDirections(createView("Helbaron محرر نصوص عربي سريع"))[0]).toBe("rtl");
   });
 
+  it("tags Arabic-script lines with lang=ar but leaves Hebrew and English alone", () => {
+    const view = createView("مرحبا بالعالم\n\nשלום עולם\n\nHello world");
+    const langs = Array.from(view.contentDOM.querySelectorAll<HTMLElement>(":scope > .cm-line"))
+      .filter((line) => line.textContent)
+      .map((line) => line.getAttribute("lang"));
+    expect(langs).toEqual(["ar", null, null]);
+  });
+
   it("re-evaluates a line's direction while typing", () => {
     const view = createView("Hello");
     expect(lineDirections(view)[0]).toBe("ltr");

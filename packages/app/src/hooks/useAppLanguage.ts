@@ -19,7 +19,7 @@ function startupLanguageFromLocation(): AppLanguage | null {
   return isAppLanguage(language) ? language : null;
 }
 
-// The entry HTML declares the edition's language (`<html lang="ar">`), so the
+// The entry HTML declares the edition's language (`<html lang="en">`), so the
 // first paint already uses it before stored settings load.
 function documentDeclaredLanguage(): AppLanguage {
   if (typeof document === "undefined") return "en";

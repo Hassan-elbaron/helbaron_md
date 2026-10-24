@@ -1110,16 +1110,20 @@ const messages: BaseLocaleMessages = {
   "backstage.appearanceHint": "كل شكل له نسخة فاتحة ونسخة داكنة، وتبدّل بينهم من الوضع الليلي.",
   "uiStyle.light": "فاتح",
   "uiStyle.dark": "داكن",
-  "uiStyle.word": "Word",
-  "uiStyle.wordDescription": "ويندوز وأوفيس: رمادي Mica وزوايا حادة وأزرق Word.",
-  "uiStyle.mac": "ماك",
-  "uiStyle.macDescription": "زي Pages على ماك: شريط زجاجي وزوايا ناعمة ورمادي دافي.",
-  "uiStyle.gnome": "جنوم",
-  "uiStyle.gnomeDescription": "لينكس Adwaita: أسطح مسطحة وزوايا 12px وأزرق جنوم.",
-  "uiStyle.fusion": "فيوجن",
-  "uiStyle.fusionDescription": "التصميم المدمج: ورق دافي ولون مرجاني وعناوين بخط النسخ.",
-  "uiStyle.classic": "كلاسيك",
-  "uiStyle.classicDescription": "سطح الكتابة الهادي الأصلي لهيلبارون."
+  "uiStyle.baron": "بارون",
+  "uiStyle.baronDescription": "شكل هيلبارون الخاص: إطار رمادي غامق، ولون أحمر مميز، وورقة على مكتب هادئ.",
+  "uiStyle.glass": "زجاج",
+  "uiStyle.glassDescription": "شريط أدوات زجاجي، وزوايا ناعمة، ورمادي دافئ.",
+  "uiStyle.slate": "أردواز",
+  "uiStyle.slateDescription": "أسطح مسطحة هادئة، وزوايا مستديرة، وأزرق بارد.",
+  "uiStyle.paper": "ورق",
+  "uiStyle.paperDescription": "ورق دافئ، ولون مرجاني، وعناوين بخط النسخ.",
+  "uiStyle.minimal": "بسيط",
+  "uiStyle.minimalDescription": "سطح كتابة مسطح بلا مشتتات.",
+  "editor.openLink": "فتح الرابط",
+  "app.logoBusy": "جارٍ العمل…",
+  "cmd.toolbar": "شريط التنسيق",
+  "cmd.menu": "قائمة هيلبارون"
 };
 
 export default messages;

@@ -72,6 +72,7 @@ type MarkdownPaperProps = {
 
 type MarkdownPaperStyle = CSSProperties & {
   "--editor-body-font-size"?: string;
+  "--editor-line-height"?: string;
   "--editor-font-family"?: string;
   "--editor-heading-font-family"?: string;
   "--editor-paragraph-spacing"?: string;
@@ -152,6 +153,7 @@ export function MarkdownPaper({
       : {}),
     fontSize: `${bodyFontSize}px`,
     "--editor-body-font-size": `${bodyFontSize}px`,
+    "--editor-line-height": String(lineHeight),
     lineHeight,
     maxWidth: `${resolvedContentWidth}px`,
     "--editor-paragraph-spacing": `${paragraphSpacingPx}px`,

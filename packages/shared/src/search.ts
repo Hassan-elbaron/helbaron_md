@@ -30,11 +30,33 @@ export function findSearchRanges(text: string, query: string, options: SearchOpt
   return searchRangesWithOriginalOffsets(text, offsetMappedQuery, maxMatches);
 }
 
-function caseFoldSearchText(value: string) {
+// Arabic: harakat, tanween, shadda, sukun, dagger alef, Quranic marks and tatweel
+// are ignored, and letter variants are folded the way Arabic readers expect search
+// to work (أحمد finds احمد, مدرسة finds مدرسه, على finds علي).
+const arabicIgnoredMarks = /[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E8\u06EA-\u06ED\u0640]/gu;
+const arabicLetterFolds: Record<string, string> = {
+  "\u0622": "\u0627", // آ → ا
+  "\u0623": "\u0627", // أ → ا
+  "\u0625": "\u0627", // إ → ا
+  "\u0671": "\u0627", // ٱ → ا
+  "\u0649": "\u064A", // ى → ي
+  "\u0626": "\u064A", // ئ → ي
+  "\u0624": "\u0648", // ؤ → و
+  "\u0629": "\u0647" // ة → ه
+};
+const arabicLetterFoldPattern = /[\u0622\u0623\u0625\u0671\u0649\u0626\u0624\u0629]/gu;
+
+export function foldArabicSearchText(value: string) {
   return value
+    .replace(arabicIgnoredMarks, "")
+    .replace(arabicLetterFoldPattern, (letter) => arabicLetterFolds[letter] ?? letter);
+}
+
+function caseFoldSearchText(value: string) {
+  return foldArabicSearchText(value
     .toLocaleLowerCase()
     .replaceAll("ς", "σ")
-    .replaceAll("ß", "ss");
+    .replaceAll("ß", "ss"));
 }
 
 function searchRangesInText(text: string, query: string, maxMatches: number) {
@@ -65,6 +87,12 @@ function searchRangesWithOriginalOffsets(text: string, normalizedQuery: string, 
   for (const character of text) {
     const originalEnd = originalOffset + character.length;
     const normalizedCharacter = caseFoldSearchText(character);
+
+    // An ignored mark (e.g. a vowel sign) belongs to the letter before it, so a
+    // match on that letter also covers its marks.
+    if (normalizedCharacter.length === 0 && originalEnds.length > 0) {
+      originalEnds[originalEnds.length - 1] = originalEnd;
+    }
 
     for (let index = 0; index < normalizedCharacter.length; index += 1) {
       normalizedCharacters.push(normalizedCharacter[index] ?? "");

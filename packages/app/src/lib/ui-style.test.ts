@@ -1,4 +1,4 @@
-import { applyUiStyle, isUiStyle, platformDefaultUiStyle, readStoredUiStyle, storeUiStyle, uiStyleInfo, uiStyles } from "./ui-style";
+import { applyUiStyle, defaultUiStyle, isUiStyle, readStoredUiStyle, storeUiStyle, uiStyleInfo, uiStyles } from "./ui-style";
 
 describe("ui styles", () => {
   afterEach(() => {
@@ -6,20 +6,24 @@ describe("ui styles", () => {
     delete document.documentElement.dataset.uiStyle;
   });
 
-  it("matches the operating system by default", () => {
-    expect(platformDefaultUiStyle("windows")).toBe("word");
-    expect(platformDefaultUiStyle("macos")).toBe("mac");
-    expect(platformDefaultUiStyle("linux")).toBe("gnome");
-    expect(platformDefaultUiStyle(null)).toBe("word");
+  it("starts in Helbaron's own Baron style", () => {
+    expect(defaultUiStyle).toBe("baron");
+    expect(readStoredUiStyle()).toBe("baron");
   });
 
   it("remembers the chosen style and ignores unknown values", () => {
-    expect(readStoredUiStyle("linux")).toBe("gnome");
-    storeUiStyle("fusion");
-    expect(readStoredUiStyle("linux")).toBe("fusion");
+    storeUiStyle("paper");
+    expect(readStoredUiStyle()).toBe("paper");
     window.localStorage.setItem("helbaron.uiStyle", "nope");
-    expect(readStoredUiStyle("macos")).toBe("mac");
-    expect(isUiStyle("classic")).toBe(true);
+    expect(readStoredUiStyle()).toBe("baron");
+    expect(isUiStyle("minimal")).toBe(true);
+  });
+
+  it("carries over choices saved under the old style names", () => {
+    window.localStorage.setItem("helbaron.uiStyle", "word");
+    expect(readStoredUiStyle()).toBe("baron");
+    window.localStorage.setItem("helbaron.uiStyle", "fusion");
+    expect(readStoredUiStyle()).toBe("paper");
   });
 
   it("gives every style a light and a dark preview and applies it to the root", () => {
@@ -27,7 +31,7 @@ describe("ui styles", () => {
       expect(uiStyleInfo[style].light.accent).toMatch(/^#/);
       expect(uiStyleInfo[style].dark.accent).toMatch(/^#/);
     }
-    applyUiStyle("mac");
-    expect(document.documentElement.dataset.uiStyle).toBe("mac");
+    applyUiStyle("glass");
+    expect(document.documentElement.dataset.uiStyle).toBe("glass");
   });
 });

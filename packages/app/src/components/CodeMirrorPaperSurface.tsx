@@ -176,6 +176,7 @@ function markdownExtension({
 }: MarkdownExtensionOptions) {
   const linkOptions = openExternalUrl() || openLocalAttachment()
     ? {
+        label: t(language, "editor.openLink"),
         open: ({ source, target }: { source: string; target: string }) => {
           const localAttachment = isLocalAttachmentHref(source);
           const localOpener = openLocalAttachment();

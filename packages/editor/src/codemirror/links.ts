@@ -252,6 +252,11 @@ function revealLinkSourceAt(view: CodeMirrorView, position: number) {
   return true;
 }
 
+function linkFollowHint(label: string) {
+  const mac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/u.test(navigator.platform ?? "");
+  return `${label} (${mac ? "⌘" : "Ctrl"}+Click)`;
+}
+
 function syncLinkModifierCursor(
   view: CodeMirrorView,
   event: Pick<KeyboardEvent | MouseEvent, "ctrlKey" | "metaKey">,
@@ -312,6 +317,18 @@ export function linksPlugin(options: LinksPluginOptions) {
             },
             keydown(event, view) {
               syncLinkModifierCursor(view, event);
+              return false;
+            },
+            mouseover(event, view) {
+              const target = event.target;
+              if (!(target instanceof Element)) return false;
+              const link = target.closest(".cm-helbaron-link");
+              if (!link || !view.contentDOM.contains(link)) return false;
+              syncLinkModifierCursor(view, event);
+              // Word-style hint so a plain click (which edits) is not mistaken for following.
+              if (activation === "modifier" && !link.hasAttribute("title")) {
+                link.setAttribute("title", linkFollowHint(options.label ?? "Open link"));
+              }
               return false;
             },
             keyup(event, view) {

@@ -74,6 +74,14 @@ const lineDirectionDecorations = {
   rtl: Decoration.line({ attributes: { dir: "rtl" } }),
 };
 
+// Right-to-left lines written in Arabic script also carry lang="ar", so the
+// browser applies Arabic shaping and the app can tune Arabic typography.
+const arabicLineDecoration = Decoration.line({
+  attributes: { dir: "rtl", lang: "ar", "data-helbaron-script": "arabic" },
+});
+
+const arabicScriptPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/u;
+
 const codeLineDecoration = Decoration.line({
   attributes: { dir: "ltr", "data-helbaron-bidi": "code" },
 });
@@ -111,7 +119,9 @@ function collectCodeLineStarts(view: EditorView) {
 function proseDecoration(mode: HelbaronTextDirection, text: string) {
   if (mode !== "auto") return lineDirectionDecorations[mode];
 
-  const detected = detectTextDirection(stripMarkdownForDirection(text));
+  const prose = stripMarkdownForDirection(text);
+  const detected = detectTextDirection(prose);
+  if (detected === "rtl" && arabicScriptPattern.test(prose)) return arabicLineDecoration;
   return detected ? lineDirectionDecorations[detected] : lineDirectionDecorations.auto;
 }
 

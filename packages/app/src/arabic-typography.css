@@ -1,0 +1,40 @@
+/* ---------------------------------------------------------------------------
+   Arabic typography, whatever the interface language.
+   Lines written in Arabic script carry lang="ar" (see editor/codemirror/bidi.ts).
+   ------------------------------------------------------------------------- */
+
+.markdown-paper .cm-line[lang="ar"],
+.markdown-source-paper .cm-line[lang="ar"] {
+  /* Tracking breaks the cursive joins of Arabic letters, so it is never applied. */
+  letter-spacing: 0 !important;
+  word-spacing: 0.03em;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "rlig" 1, "mark" 1, "mkmk" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Arabic glyphs read smaller than Latin at the same size and their vowel marks
+   need air above and below, so body paragraphs get a touch more of both. */
+.markdown-paper .cm-line[lang="ar"]:not(.cm-helbaron-h1):not(.cm-helbaron-h2):not(.cm-helbaron-h3):not(.cm-helbaron-h4):not(.cm-helbaron-h5):not(.cm-helbaron-h6) {
+  font-size: 1.06em;
+  line-height: calc(var(--editor-line-height, 1.65) + 0.12);
+}
+
+/* Headings: Arabic has no capitals, so weight carries hierarchy; keep joins intact. */
+.markdown-paper .cm-line[lang="ar"]:is(.cm-helbaron-h1, .cm-helbaron-h2, .cm-helbaron-h3, .cm-helbaron-h4, .cm-helbaron-h5, .cm-helbaron-h6) {
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Arabic names in the interface (tabs, title, file tree, outline) find their own
+   direction without flipping the surrounding layout. */
+.native-title span,
+.document-tabs-scroll [role="tab"] span,
+.markdown-file-tree-files [role="treeitem"] span,
+.markdown-file-tree-outline-list a,
+.markdown-file-tree-outline-list button,
+.backstage li span {
+  unicode-bidi: plaintext;
+  text-align: match-parent;
+}

@@ -1110,16 +1110,20 @@ const messages: LocaleMessages = {
   "backstage.appearanceHint": "Every style has a light and a dark version. Switch between them with dark mode.",
   "uiStyle.light": "Light",
   "uiStyle.dark": "Dark",
-  "uiStyle.word": "Word",
-  "uiStyle.wordDescription": "Windows and Office: Mica greys, crisp corners, Word blue.",
-  "uiStyle.mac": "Mac",
-  "uiStyle.macDescription": "Like Pages on macOS: glass toolbar, soft corners, warm greys.",
-  "uiStyle.gnome": "GNOME",
-  "uiStyle.gnomeDescription": "Linux Adwaita: flat surfaces, rounded 12px corners, GNOME blue.",
-  "uiStyle.fusion": "Fusion",
-  "uiStyle.fusionDescription": "The merged design: warm paper, coral accent, Naskh headings.",
-  "uiStyle.classic": "Classic",
-  "uiStyle.classicDescription": "Helbaron's original calm, flat writing surface."
+  "uiStyle.baron": "Baron",
+  "uiStyle.baronDescription": "Helbaron's own look: graphite chrome, brand red, paper on a quiet desk.",
+  "uiStyle.glass": "Glass",
+  "uiStyle.glassDescription": "Frosted toolbar, soft corners and warm greys.",
+  "uiStyle.slate": "Slate",
+  "uiStyle.slateDescription": "Flat, calm surfaces with rounded corners and a cool blue.",
+  "uiStyle.paper": "Paper",
+  "uiStyle.paperDescription": "Warm paper, coral accent and Naskh headings.",
+  "uiStyle.minimal": "Minimal",
+  "uiStyle.minimalDescription": "A flat, distraction-free writing surface.",
+  "editor.openLink": "Open link",
+  "app.logoBusy": "Working…",
+  "cmd.toolbar": "Formatting toolbar",
+  "cmd.menu": "Helbaron menu"
 };
 
 export default messages;

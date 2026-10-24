@@ -39,6 +39,18 @@ afterEach(() => {
 });
 
 describe("linksPlugin", () => {
+  it("shows a follow hint on hover so a plain click is not mistaken for opening", () => {
+    const view = createView("[Docs](https://example.test/docs)", {
+      label: "Open link",
+      open: vi.fn(),
+      resolveTarget: ({ source }) => source,
+    }, 0);
+    const link = view.contentDOM.querySelector<HTMLElement>(".cm-helbaron-link");
+    expect(link).not.toBeNull();
+    link!.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+    expect(link!.getAttribute("title")).toMatch(/^Open link \((Ctrl|⌘)\+Click\)$/u);
+  });
+
   it("accepts navigation-safe targets and rejects executable protocols", () => {
     expect(resolveSafeLinkTarget("https://example.test/docs")).toBe(
       "https://example.test/docs",

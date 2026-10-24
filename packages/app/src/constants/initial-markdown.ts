@@ -1,18 +1,20 @@
 const englishWelcomeMarkdown = `# Welcome to Helbaron
 
-Helbaron is becoming a quiet, local-first Markdown editor with AI available only when you ask for it.
+Helbaron is a local-first **Markdown** editor, with AI available only when you ask for it.
 
-## Today
+## Start here
 
-Every surface should disappear into the writing. Open a file, edit the page, save the draft.
+- Format with the **toolbar** above. Everything else is in its **Insert** and **View** menus.
+- Open **Word (.docx)** files as Markdown, or export your document to Word in one click.
+- Click the **logo** for files, export and **Appearance**. Each interface style has a light and a dark version.
 
-> AI is a writing instrument here, not a second application competing for attention.
+## Arabic, built in
 
-## Next
+Every paragraph finds its own direction, so Arabic and English sit side by side without any settings:
 
-- Keep Markdown editing fast, local, and extensible
-- Keep the default view as a single document
-- Reveal AI actions only around selected text
+مرحباً! هذه الفقرة مكتوبة بالعربية، فتظهر من اليمين إلى اليسار تلقائياً، حتى لو احتوت على كلمات إنجليزية مثل Markdown أو أرقام مثل 2026.
+
+> Exported Word files keep Arabic paragraphs right-to-left, too.
 `;
 
 const arabicWelcomeMarkdown = `# مرحباً بك في Helbaron
@@ -21,7 +23,7 @@ Helbaron محرر **Markdown** يعمل على جهازك، بواجهة عرب�
 
 ## ابدأ من هنا
 
-- استخدم **شريط الأدوات** بالأعلى للتنسيق، تماماً مثل Word.
+- استخدم **شريط الأدوات** بالأعلى للتنسيق.
 - كل فقرة تأخذ اتجاهها تلقائياً: العربية من اليمين، و English from the left.
 - افتح ملفات **Word (.docx)** وحوّلها إلى Markdown، أو صدّر مستندك إلى Word بضغطة واحدة.
 

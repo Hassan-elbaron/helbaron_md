@@ -39,3 +39,25 @@ describe("document search", () => {
     ]);
   });
 });
+
+describe("Arabic-aware search", () => {
+  it("ignores harakat and tatweel and covers them in the match", () => {
+    const text = "قالَ مُحَمَّدٌ: العــربية جميلة";
+    const [range] = findSearchRanges(text, "محمد");
+    expect(range).toBeDefined();
+    expect(text.slice(range!.from, range!.to)).toBe("مُحَمَّدٌ");
+    expect(findSearchRanges(text, "العربية")).toHaveLength(1);
+  });
+
+  it("folds hamza forms, alef maqsura and ta marbuta both ways", () => {
+    expect(findSearchRanges("أحمد وإيمان في المدرسة على الطريق", "احمد")).toHaveLength(1);
+    expect(findSearchRanges("أحمد وإيمان في المدرسة على الطريق", "ايمان")).toHaveLength(1);
+    expect(findSearchRanges("أحمد وإيمان في المدرسة على الطريق", "المدرسه")).toHaveLength(1);
+    expect(findSearchRanges("أحمد وإيمان في المدرسة على الطريق", "علي")).toHaveLength(1);
+    expect(findSearchRanges("مسؤول", "مسوول")).toHaveLength(1);
+  });
+
+  it("keeps exact matching when match case is on", () => {
+    expect(findSearchRanges("أحمد", "احمد", { caseSensitive: true })).toHaveLength(0);
+  });
+});

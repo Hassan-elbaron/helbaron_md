@@ -39,9 +39,10 @@ import {
   type MarkdownTabsBarDocumentItem
 } from "./components/MarkdownTabsBar";
 import { NativeTitleBar } from "./components/NativeTitleBar";
-import { Ribbon } from "./components/Ribbon";
+import { CommandBar } from "./components/CommandBar";
 import { Backstage } from "./components/Backstage";
 import { MotionRoot } from "./components/motion/MotionRoot";
+import { LaunchSplash } from "./components/brand/BrandMark";
 import { runViewTransition, transitionOriginFromEvent } from "./lib/view-transition";
 import { applyUiStyle, readStoredUiStyle, storeUiStyle, type UiStyle } from "./lib/ui-style";
 import { applyTextDirection, readStoredTextDirection } from "./lib/text-direction";
@@ -476,7 +477,7 @@ function SettingsRouteApp() {
 
 function WorkspaceApp() {
   const desktopPlatform = resolveDesktopPlatform();
-  const [uiStyle, setUiStyle] = useState<UiStyle>(() => readStoredUiStyle(desktopPlatform));
+  const [uiStyle, setUiStyle] = useState<UiStyle>(() => readStoredUiStyle());
   useLayoutEffect(() => {
     globalThis.document.documentElement.dataset.platform = desktopPlatform ?? "web";
   }, [desktopPlatform]);
@@ -4890,6 +4891,7 @@ function WorkspaceApp() {
 
   return (
     <MotionRoot>
+      <LaunchSplash />
       <AppToaster language={appLanguage.language} />
       <Backstage
         language={appLanguage.language}
@@ -5168,8 +5170,9 @@ function WorkspaceApp() {
                   >
                     {wordToolbarVisible ? (
                       <div className="word-toolbar-slot ribbon-slot absolute inset-x-0 top-10.5 z-30 flex justify-center px-3">
-                        <Ribbon
+                        <CommandBar
                           ai={aiFeatureEnabled ? { onCommand: handleAiCommandToggle, onTogglePanel: handleAiAgentToggle } : undefined}
+                          busy={aiCommand.submitting || aiAgent.status === "thinking" || aiAgent.status === "streaming"}
                           direction={textDirection}
                           disabled={readOnlyMode}
                           editor={{
@@ -5236,7 +5239,6 @@ function WorkspaceApp() {
                             onUiStyle: handleUiStyleSelect
                           }}
                           onDirectionChange={handleTextDirectionChange}
-                          onExport={exportFeatureEnabled ? handleExportWordDocument : undefined}
                           onOpenBackstage={() => setBackstageOpen(true)}
                         />
                       </div>

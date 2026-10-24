@@ -65,13 +65,9 @@
         "headerImage": "windows/nsis/header.bmp",
         "sidebarImage": "windows/nsis/sidebar.bmp",
         "languages": [
-          "Arabic",
           "English"
         ],
-        "customLanguageFiles": {
-          "Arabic": "windows/nsis/Arabic.nsh"
-        },
-        "displayLanguageSelector": true
+        "displayLanguageSelector": false
       },
       "wix": {
         "fragmentPaths": [
@@ -98,7 +94,9 @@
         "Resources/zh-Hans.lproj": "macos-locales/zh-Hans.lproj",
         "Resources/zh-Hant.lproj": "macos-locales/zh-Hant.lproj"
       }
-    }
+    },
+    "shortDescription": "A modern Markdown editor.",
+    "longDescription": "Helbaron is a modern Markdown editor for writing, formatting and sharing documents."
   },
   "plugins": {
     "updater": {
