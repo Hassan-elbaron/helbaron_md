@@ -60,7 +60,18 @@
     ],
     "windows": {
       "nsis": {
-        "installerHooks": "./windows/explorer-menu.nsh"
+        "installerHooks": "./windows/explorer-menu.nsh",
+        "installerIcon": "icons/icon.ico",
+        "headerImage": "windows/nsis/header.bmp",
+        "sidebarImage": "windows/nsis/sidebar.bmp",
+        "languages": [
+          "Arabic",
+          "English"
+        ],
+        "customLanguageFiles": {
+          "Arabic": "windows/nsis/Arabic.nsh"
+        },
+        "displayLanguageSelector": true
       },
       "wix": {
         "fragmentPaths": [

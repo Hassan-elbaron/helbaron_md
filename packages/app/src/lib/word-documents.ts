@@ -1,5 +1,5 @@
 import type { DocxImageData, DocxTextDirection } from "@helbaron/markdown/docx";
-import { openNativeWordFile, readNativeMarkdownImageFile, saveNativeWordFile } from "./tauri";
+import { openNativeWordFile, readNativeMarkdownImageFile, readNativeWordFile, saveNativeWordFile } from "./tauri";
 
 export type WordImportResult = {
   markdown: string;
@@ -101,6 +101,21 @@ export async function exportMarkdownAsWord(input: {
   });
 
   return saveNativeWordFile({ bytes, suggestedName: wordNameForMarkdownFile(input.documentName) });
+}
+
+export function isWordDocumentPath(path: string) {
+  return /\.docx$/iu.test(path.trim());
+}
+
+/** Converts a .docx the OS handed us (Explorer "Open with", double-click). */
+export async function importWordPathAsMarkdown(path: string): Promise<WordImportResult | null> {
+  const file = await readNativeWordFile(path);
+  if (!file) return null;
+
+  const { docxToMarkdown } = await loadConverters();
+  const { markdown, warnings } = await docxToMarkdown(file.bytes);
+
+  return { markdown, name: markdownNameForWordFile(file.name), warnings };
 }
 
 export async function importWordAsMarkdown(pickerTitle?: string): Promise<WordImportResult | null> {

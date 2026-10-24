@@ -544,6 +544,10 @@ export function openNativeWordFile(labels?: NativeMarkdownPickerLabels) {
   return getAppRuntime().files.openWordFile?.(labels) ?? Promise.resolve(null);
 }
 
+export function readNativeWordFile(path: string) {
+  return getAppRuntime().files.readWordFile?.(path) ?? Promise.resolve(null);
+}
+
 export function saveNativeWordFile(input: SaveNativeWordFileInput) {
   return getAppRuntime().files.saveWordFile?.(input) ?? Promise.resolve(null);
 }

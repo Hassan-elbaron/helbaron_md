@@ -1018,6 +1018,16 @@ export async function openNativeMarkdownFile(labels?: NativeMarkdownPickerLabels
   return readNativeMarkdownFile(selectedPath);
 }
 
+export async function readNativeWordFile(path: string): Promise<NativeWordFile | null> {
+  const bytes = await invokeNative<number[]>("read_word_file", { path });
+
+  return {
+    bytes: new Uint8Array(bytes),
+    name: fileNameFromPath(path),
+    path
+  };
+}
+
 export async function openNativeWordFile(labels?: NativeMarkdownPickerLabels): Promise<NativeWordFile | null> {
   const selectedPath = await open({
     multiple: false,

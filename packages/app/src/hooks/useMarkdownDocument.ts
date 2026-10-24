@@ -165,6 +165,8 @@ type UseMarkdownDocumentOptions = {
     openTree?: boolean
   ) => unknown | Promise<unknown>;
   onTreeRootFromFilePath: (path: string) => unknown;
+  /** Word documents the OS opened with the app; resolves true once converted into a document. */
+  onOpenWordDocumentPath?: (path: string) => Promise<boolean>;
   onWorkspaceSessionChange?: (sessionId: string) => unknown;
   openDroppedFilesInTabs?: boolean;
   preferencesReady?: boolean;
@@ -263,6 +265,7 @@ export function useMarkdownDocument({
   onMarkdownTreeChange,
   onTreeRootFromFolderPath,
   onTreeRootFromFilePath,
+  onOpenWordDocumentPath,
   onWorkspaceSessionChange,
   openDroppedFilesInTabs = false,
   preferencesReady = true,
@@ -1856,6 +1859,8 @@ export function useMarkdownDocument({
     ]
   );
 
+  const openWordDocumentPathRef = useRef(onOpenWordDocumentPath);
+  openWordDocumentPathRef.current = onOpenWordDocumentPath;
   const handleNativeOpenedMarkdownPaths = useCallback(async (paths: string[]) => {
     if (paths.length === 0) return false;
 
@@ -1863,6 +1868,11 @@ export function useMarkdownDocument({
 
     for (const path of paths) {
       try {
+        if (/\.docx$/iu.test(path.trim())) {
+          if (await openWordDocumentPathRef.current?.(path)) openedPath = true;
+          continue;
+        }
+
         const target = await resolveNativeMarkdownPath(path);
 
         if (target.kind === "folder") {

@@ -130,6 +130,7 @@ export const desktopRuntime = {
     savePandocFile: files.saveNativePandocFile,
     savePdfFile: files.saveNativePdfFile,
     openWordFile: files.openNativeWordFile,
+    readWordFile: files.readNativeWordFile,
     saveWordFile: files.saveNativeWordFile,
     saveSettingsFile: files.saveNativeSettingsFile,
     searchMarkdownFiles: files.searchNativeMarkdownFilesForPath,

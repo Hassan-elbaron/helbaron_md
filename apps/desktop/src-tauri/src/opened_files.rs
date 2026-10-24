@@ -14,8 +14,19 @@ struct OpenedMarkdownPathsPayload {
     paths: Vec<String>,
 }
 
+fn is_word_document_path(path: &Path) -> bool {
+    path.is_file()
+        && path
+            .extension()
+            .and_then(|extension| extension.to_str())
+            .is_some_and(|extension| extension.eq_ignore_ascii_case("docx"))
+}
+
 fn opened_markdown_path_from_path(path: PathBuf) -> Option<String> {
-    markdown_open_path_for_path(&path).ok()?;
+    // Word documents opened from Explorer ("Open with") are converted to Markdown in the webview.
+    if !is_word_document_path(&path) {
+        markdown_open_path_for_path(&path).ok()?;
+    }
     Some(
         path.canonicalize()
             .unwrap_or(path)
@@ -237,5 +248,28 @@ mod tests {
         );
 
         fs::remove_dir_all(root).expect("test folder should be removed");
+    }
+
+    #[test]
+    fn accepts_word_documents_opened_from_the_shell() {
+        let root = test_root("docx");
+        fs::create_dir_all(&root).expect("test root should be created");
+        let word_file = root.join("report.docx");
+        fs::write(&word_file, b"PK").expect("docx fixture should be written");
+        let other_file = root.join("photo.jpg");
+        fs::write(&other_file, b"x").expect("jpg fixture should be written");
+
+        let paths = opened_markdown_paths_from_args_with_cwd(
+            [
+                "helbaron".to_string(),
+                "report.docx".to_string(),
+                "photo.jpg".to_string(),
+            ],
+            &root,
+        );
+
+        assert_eq!(paths.len(), 1);
+        assert!(paths[0].ends_with("report.docx"));
+        let _ = fs::remove_dir_all(root);
     }
 }

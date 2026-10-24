@@ -45,7 +45,7 @@ import { MotionRoot } from "./components/motion/MotionRoot";
 import { runViewTransition, transitionOriginFromEvent } from "./lib/view-transition";
 import { applyUiStyle, readStoredUiStyle, storeUiStyle, type UiStyle } from "./lib/ui-style";
 import { applyTextDirection, readStoredTextDirection } from "./lib/text-direction";
-import { exportMarkdownAsWord, importWordAsMarkdown } from "./lib/word-documents";
+import { exportMarkdownAsWord, importWordAsMarkdown, importWordPathAsMarkdown } from "./lib/word-documents";
 import { QuietStatus } from "./components/QuietStatus";
 import { QuickOpenPanel } from "./components/QuickOpenPanel";
 import { SideDocumentPane } from "./components/SideDocumentPane";
@@ -548,6 +548,7 @@ function WorkspaceApp() {
   const [activeEditorSurface, setActiveEditorSurface] = useState<EditorSurface>("visual");
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [backstageOpen, setBackstageOpen] = useState(false);
+  const openWordDocumentPathRef = useRef<((path: string) => Promise<boolean>) | null>(null);
   const [focusMode, setFocusMode] = useState(false);
   const [quickOpenOpen, setQuickOpenOpen] = useState(false);
   const [documentHistoryOpen, setDocumentHistoryOpen] = useState(false);
@@ -842,6 +843,7 @@ function WorkspaceApp() {
     onMarkdownTreeChange: refreshMarkdownFileTree,
     onTreeRootFromFolderPath: openFolderPath,
     onTreeRootFromFilePath: setRootFromMarkdownFilePath,
+    onOpenWordDocumentPath: (path) => openWordDocumentPathRef.current?.(path) ?? Promise.resolve(false),
     onWorkspaceSessionChange: setAiAgentSessionId,
     openDroppedFilesInTabs: editorPreferences.preferences.openDroppedFilesInTabs,
     preferencesReady: !editorPreferences.loading,
@@ -4111,6 +4113,24 @@ function WorkspaceApp() {
       showAppToast({ message: translate("docx.exportFailed"), status: "error", surface: "notice" });
     });
   }, [notifyExportSaved, readCurrentMarkdownForDocument, textDirection, translate]);
+  openWordDocumentPathRef.current = async (path: string) => {
+    try {
+      const imported = await importWordPathAsMarkdown(path);
+      if (!imported) return false;
+      const created = await createBlankDocument({ content: imported.markdown, name: imported.name });
+      if (!created) return false;
+      showAppToast({
+        description: imported.warnings.length > 0 ? translate("docx.importWarnings") : imported.name,
+        message: translate("docx.imported"),
+        status: "success",
+        surface: "notice"
+      });
+      return true;
+    } catch {
+      showAppToast({ message: translate("docx.importFailed"), status: "error", surface: "notice" });
+      return false;
+    }
+  };
   const handleImportWordDocument = useCallback(() => {
     importWordAsMarkdown(translate("wordToolbar.openWord")).then(async (imported) => {
       if (!imported) return;

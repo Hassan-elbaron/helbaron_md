@@ -227,6 +227,7 @@ export type AppFileRuntime = {
   savePdfFile: (input: SaveNativePdfFileInput) => Promise<SavedNativePdfFile | null>;
   /** Picks a Word (.docx) file and returns its bytes for conversion to Markdown. */
   openWordFile?: (labels?: NativeMarkdownPickerLabels) => Promise<NativeWordFile | null>;
+  readWordFile?: (path: string) => Promise<NativeWordFile | null>;
   /** Saves converted Word (.docx) bytes chosen by the user. */
   saveWordFile?: (input: SaveNativeWordFileInput) => Promise<SavedNativeWordFile | null>;
   saveSettingsFile: (input: SaveNativeSettingsFileInput) => Promise<SavedNativeSettingsFile | null>;
