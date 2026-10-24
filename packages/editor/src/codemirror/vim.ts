@@ -143,7 +143,7 @@ function createCodeMirrorVimExperience(
           const found =
             cm.indexFromPos(cm.getCursor()) !== previousSearch.from;
           const message = document.createElement("div");
-          message.className = "cm-vim-message markra-vim-feedback";
+          message.className = "cm-vim-message helbaron-vim-feedback";
           message.setAttribute("role", "status");
           message.textContent = formatVimLabel(
             found
@@ -176,11 +176,11 @@ function createCodeMirrorVimExperience(
         const vimState = cm?.state.vim;
         if (!cm || !statusbar || !vimState) return;
 
-        statusbar.querySelector(".markra-vim-hint")?.remove();
+        statusbar.querySelector(".helbaron-vim-hint")?.remove();
         if (cm.state.dialog) return;
 
         const hint = document.createElement("span");
-        hint.className = "markra-vim-hint";
+        hint.className = "helbaron-vim-hint";
         hint.textContent = vimState.insertMode
           ? labels.insertHint
           : vimState.visualMode

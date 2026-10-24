@@ -1,4 +1,4 @@
-# Markra Product And Brand
+# Helbaron Product And Brand
 
 ## Register
 
@@ -6,11 +6,11 @@ product
 
 ## One-Line Positioning
 
-Markra is a quiet, local-first WYSIWYG Markdown editor with AI built into the writing workflow.
+Helbaron is a quiet, local-first WYSIWYG Markdown editor with AI built into the writing workflow.
 
 ## Product Purpose
 
-Markra helps people write, edit, and organize Markdown documents without leaving the document surface. It keeps Markdown portable and local while making AI feel like a native editing instrument instead of a separate chatbot.
+Helbaron helps people write, edit, and organize Markdown documents without leaving the document surface. It keeps Markdown portable and local while making AI feel like a native editing instrument instead of a separate chatbot.
 
 The product should make writing feel direct: open a file, work in a polished document view, ask AI for help when needed, confirm any change before it touches the file, and keep control of the source material.
 
@@ -30,7 +30,7 @@ Your files stay local. Markdown stays portable. AI helps inside the editor, only
 - Quiet: the interface should step back and let the document carry the screen.
 - Capable: advanced features should feel reliable and discoverable, not flashy.
 - Respectful: AI suggestions are proposals, never invisible document mutations.
-- Native: Markra should feel at home on macOS, Windows, and Linux rather than like a web page in a shell.
+- Native: Helbaron should feel at home on macOS, Windows, and Linux rather than like a web page in a shell.
 - Open: the product should feel transparent, auditable, and free of lock-in.
 
 ## Experience Principles
@@ -73,7 +73,7 @@ Advanced editing and AI behavior can be deep, but the surface should remain comp
 
 ## Anti-References
 
-Markra should not feel like:
+Helbaron should not feel like:
 
 - A marketing SaaS dashboard with oversized cards, decorative gradients, and feature copy everywhere.
 - A chat app that happens to edit Markdown.

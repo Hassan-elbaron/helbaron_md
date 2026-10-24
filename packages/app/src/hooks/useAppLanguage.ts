@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { isAppLanguage } from "@markra/shared";
+import { isAppLanguage, isRtlLanguage } from "@helbaron/shared";
 import { getStoredLanguage, saveStoredLanguage, type AppLanguage } from "../lib/settings/app-settings";
 import { listenAppLanguageChanged, notifyAppLanguageChanged } from "../lib/settings/settings-events";
 
@@ -7,6 +7,8 @@ const startupLanguageParam = "startupLanguage";
 
 function applyAppLanguage(language: AppLanguage) {
   document.documentElement.lang = language;
+  // Arabic and other right-to-left UI languages mirror the whole app shell.
+  document.documentElement.dir = isRtlLanguage(language) ? "rtl" : "ltr";
 }
 
 function startupLanguageFromLocation(): AppLanguage | null {
@@ -17,9 +19,18 @@ function startupLanguageFromLocation(): AppLanguage | null {
   return isAppLanguage(language) ? language : null;
 }
 
+// The entry HTML declares the edition's language (`<html lang="ar">`), so the
+// first paint already uses it before stored settings load.
+function documentDeclaredLanguage(): AppLanguage {
+  if (typeof document === "undefined") return "en";
+
+  const declared = document.documentElement.getAttribute("lang");
+  return isAppLanguage(declared) ? declared : "en";
+}
+
 export function useAppLanguage() {
   const startupLanguageRef = useRef<AppLanguage | null>(startupLanguageFromLocation());
-  const [language, setLanguage] = useState<AppLanguage>(() => startupLanguageRef.current ?? "en");
+  const [language, setLanguage] = useState<AppLanguage>(() => startupLanguageRef.current ?? documentDeclaredLanguage());
   const [ready, setReady] = useState(() => startupLanguageRef.current !== null);
   const liveLanguageReceivedRef = useRef(false);
 
@@ -43,7 +54,7 @@ export function useAppLanguage() {
       if (!active) return;
 
       if (startupLanguageRef.current === null) {
-        setLanguage("en");
+        setLanguage(documentDeclaredLanguage());
       }
       setReady(true);
     });

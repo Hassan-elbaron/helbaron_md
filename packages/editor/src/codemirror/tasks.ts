@@ -17,7 +17,7 @@ class TaskWidget extends WidgetType {
 
   toDOM(view: EditorView) {
     const checkbox = document.createElement("input");
-    checkbox.className = "cm-markra-task-checkbox";
+    checkbox.className = "cm-helbaron-task-checkbox";
     checkbox.type = "checkbox";
     checkbox.checked = this.checked;
     checkbox.setAttribute(

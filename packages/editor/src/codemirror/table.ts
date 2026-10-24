@@ -1,3 +1,5 @@
+import { detectTextDirection, stripMarkdownForDirection } from "@helbaron/shared";
+import { readHelbaronTextDirection } from "./bidi.ts";
 import {
   activeTableCell,
   clearTableSelection,
@@ -15,7 +17,7 @@ import {
   type EditorView as CodeMirrorView,
 } from "@codemirror/view";
 import { createTableControls, defaultTableLabels, type TableControlLabels } from "./table-controls.ts";
-import type { MarkraSourceRange } from "../math-syntax.ts";
+import type { HelbaronSourceRange } from "../math-syntax.ts";
 import {
   renderInlineMarkdown,
   serializeInlineMarkdown,
@@ -23,11 +25,11 @@ import {
 } from "./inline-markdown.ts";
 import type { ImagePreviewPluginOptions } from "./image.ts";
 import {
-  openMarkraLinkSource,
+  openHelbaronLinkSource,
   type LinksPluginOptions,
 } from "./links.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
-import { getMarkraRenderers, markraRenderer } from "./renderers.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
+import { getHelbaronRenderers, helbaronRenderer } from "./renderers.ts";
 
 export type CodeMirrorTableAlignment = "center" | "left" | "right" | null;
 export type CodeMirrorTableWidthMode = "auto" | "even";
@@ -85,12 +87,12 @@ interface TableEditingSession {
 
 const tableSizePickerColumns = 8;
 const tableSizePickerRows = 10;
-const tablePreviewRendererId = "markra.table-preview";
-const tableWidthModeStoragePrefix = "markra:table-width-mode";
+const tablePreviewRendererId = "helbaron.table-preview";
+const tableWidthModeStoragePrefix = "helbaron:table-width-mode";
 const tableEditingSessions = new WeakMap<CodeMirrorView, TableEditingSession>();
 
 export function tablePreviewEnabled(state: EditorState) {
-  return getMarkraRenderers(state, "Table").some(
+  return getHelbaronRenderers(state, "Table").some(
     (renderer) => renderer.id === tablePreviewRendererId,
   );
 }
@@ -474,16 +476,16 @@ function applyWidthModeToTableControls(
   mode: CodeMirrorTableWidthMode,
 ) {
   for (const wrapper of view.dom.querySelectorAll<HTMLElement>(
-    ".cm-markra-table-wrap[data-table-from]",
+    ".cm-helbaron-table-wrap[data-table-from]",
   )) {
     wrapper.dataset.widthMode = mode;
-    const table = wrapper.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = wrapper.querySelector<HTMLTableElement>(".cm-helbaron-table");
     if (table) {
       table.dataset.widthMode = mode;
-      table.classList.toggle("markra-table-width-auto", mode === "auto");
+      table.classList.toggle("helbaron-table-width-auto", mode === "auto");
     }
     const button = wrapper.querySelector<HTMLButtonElement>(
-      ".markra-table-width-button",
+      ".helbaron-table-width-button",
     );
     if (button) {
       button.ariaPressed = String(mode === "auto");
@@ -542,7 +544,7 @@ function activeVisualTableCell(
   // WebKit can lift the selection to the row/table after deleting the final
   // character. The editing session still identifies the cell that must sync.
   const session = tableEditingSessions.get(view);
-  const wrapper = table.closest<HTMLElement>(".cm-markra-table-wrap");
+  const wrapper = table.closest<HTMLElement>(".cm-helbaron-table-wrap");
   if (
     !session ||
     wrapper?.dataset.tableFrom !== String(session.tableFrom)
@@ -620,7 +622,7 @@ export function focusVisualTableCell(
   queueMicrotask(() => {
     if (!view.dom.isConnected) return;
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      `.cm-markra-table-wrap[data-table-from="${tableFrom}"] ` +
+      `.cm-helbaron-table-wrap[data-table-from="${tableFrom}"] ` +
         `[data-table-row="${rowIndex}"][data-table-column="${columnIndex}"]` +
         `[data-table-header="${String(header)}"]`,
     );
@@ -629,7 +631,7 @@ export function focusVisualTableCell(
     const lineBreak = lineBreakIndex === undefined
       ? undefined
       : cell.querySelectorAll<HTMLBRElement>(
-          'br[data-markra-source-break="true"]',
+          'br[data-helbaron-source-break="true"]',
         )[lineBreakIndex];
     if (!lineBreak) {
       placeVisualTableCellCaret(cell, caretOffset);
@@ -667,7 +669,7 @@ function insertVisualTableCellLineBreak(
 
   range.deleteContents();
   const lineBreak = cell.ownerDocument.createElement("br");
-  lineBreak.dataset.markraSourceBreak = "true";
+  lineBreak.dataset.helbaronSourceBreak = "true";
   range.insertNode(lineBreak);
   const caretHost = createVisualTableCaretHost(cell.ownerDocument);
   lineBreak.after(caretHost.host);
@@ -678,7 +680,7 @@ function insertVisualTableCellLineBreak(
 
   const lineBreakIndex = Array.from(
     cell.querySelectorAll<HTMLBRElement>(
-      'br[data-markra-source-break="true"]',
+      'br[data-helbaron-source-break="true"]',
     ),
   ).indexOf(lineBreak);
   const changed = replaceVisualTableCell(
@@ -730,10 +732,10 @@ function handleVisualTableCellEnter(
   const session = tableEditingSessions.get(view);
   if (!session?.inlineSourceVisible) {
     const math = cell.querySelector<HTMLElement>(
-      "[data-markra-math-markdown]",
+      "[data-helbaron-math-markdown]",
     );
     const editMathSource = visualTableMathSourceEditors.get(cell);
-    const markdown = math?.dataset.markraMathMarkdown;
+    const markdown = math?.dataset.helbaronMathMarkdown;
     if (math && editMathSource && markdown) {
       editMathSource(math, markdown);
       return;
@@ -812,7 +814,7 @@ function updateVisualTableMathSourceRange(
     return;
   }
   const element = cell.querySelector<HTMLElement>(
-    "[data-markra-table-math-source]",
+    "[data-helbaron-table-math-source]",
   );
   const value = element?.textContent ?? "";
   if (!value) {
@@ -872,7 +874,7 @@ function revealVisualTableInlineSource(
   if (!markdown) return false;
   const source = cell.ownerDocument.createTextNode(markdown);
   const icon = element.nextElementSibling;
-  if (icon?.classList.contains("markra-live-link-icon")) icon.remove();
+  if (icon?.classList.contains("helbaron-live-link-icon")) icon.remove();
   element.replaceWith(source);
   cell.focus();
   const selection = cell.ownerDocument.getSelection();
@@ -892,7 +894,7 @@ function renderVisualTableCell(
   source: string,
   images: ImagePreviewPluginOptions | undefined,
   links: LinksPluginOptions | undefined,
-  revealedMathRange?: MarkraSourceRange,
+  revealedMathRange?: HelbaronSourceRange,
 ) {
   const imageResolver = images?.resolveSource;
   const linkResolver = links?.resolveTarget;
@@ -946,8 +948,8 @@ function appendCell(
 ) {
   const cell = row.ownerDocument.createElement(header ? "th" : "td");
   const editMathSource: EditVisualTableMathSource = (element, markdown) => {
-    const mathFrom = Number(element.dataset.markraMathFrom);
-    const mathTo = Number(element.dataset.markraMathTo);
+    const mathFrom = Number(element.dataset.helbaronMathFrom);
+    const mathTo = Number(element.dataset.helbaronMathTo);
     const previousSession = tableEditingSessions.get(view);
     const originalSource = visualTableCellSource(cell);
     tableEditingSessions.set(view, {
@@ -972,7 +974,7 @@ function appendCell(
         { from: mathFrom, to: mathTo },
       );
       const source = cell.querySelector<HTMLElement>(
-        "[data-markra-table-math-source]",
+        "[data-helbaron-table-math-source]",
       );
       const text = source?.firstChild;
       if (source && text) {
@@ -1028,17 +1030,17 @@ function appendCell(
     if (event.button !== 0) return;
     const target = event.target instanceof Element ? event.target : null;
     const link = target?.closest<HTMLElement>(
-      "[data-markra-link-markdown]",
+      "[data-helbaron-link-markdown]",
     );
     if (link && cell.contains(link)) {
-      const source = link.dataset.markraLinkSource;
+      const source = link.dataset.helbaronLinkSource;
       const modifier = event.metaKey || event.ctrlKey;
       const handled = modifier
-        ? Boolean(source && links && openMarkraLinkSource(view, source, links))
+        ? Boolean(source && links && openHelbaronLinkSource(view, source, links))
         : revealVisualTableInlineSource(
             cell,
             link,
-            link.dataset.markraLinkMarkdown,
+            link.dataset.helbaronLinkMarkdown,
           );
       if (handled && !modifier) {
         tableEditingSessions.set(view, {
@@ -1057,13 +1059,13 @@ function appendCell(
       return;
     }
     const image = target?.closest<HTMLElement>(
-      "[data-markra-image-markdown]",
+      "[data-helbaron-image-markdown]",
     );
     if (image && cell.contains(image)) {
       const handled = revealVisualTableInlineSource(
         cell,
         image,
-        image.dataset.markraImageMarkdown,
+        image.dataset.helbaronImageMarkdown,
       );
       if (handled) {
         tableEditingSessions.set(view, {
@@ -1290,7 +1292,7 @@ class TableWidget extends WidgetType {
     let composing = false;
 
     wrapper.className =
-      "cm-markra-table-wrap tableWrapper markra-table-controls-wrapper";
+      "cm-helbaron-table-wrap tableWrapper helbaron-table-controls-wrapper";
     wrapper.dataset.tableFrom = String(this.preview.from);
     wrapper.dataset.tableAlignment = tableAlignment;
     wrapper.dataset.widthMode = widthMode;
@@ -1298,13 +1300,13 @@ class TableWidget extends WidgetType {
       if (view.state.readOnly) return false;
       const target = eventTarget instanceof Element ? eventTarget : null;
       const math = target?.closest<HTMLElement>(
-        "[data-markra-math-markdown]",
+        "[data-helbaron-math-markdown]",
       );
       const cell = math?.closest<HTMLTableCellElement>("th, td");
       const editMathSource = cell
         ? visualTableMathSourceEditors.get(cell)
         : undefined;
-      const markdown = math?.dataset.markraMathMarkdown;
+      const markdown = math?.dataset.helbaronMathMarkdown;
       if (
         !math ||
         !cell ||
@@ -1341,7 +1343,7 @@ class TableWidget extends WidgetType {
       const target = event.target instanceof Node ? event.target : null;
       if (!cell) return;
       const activeSource = cell.querySelector<HTMLElement>(
-        "[data-markra-table-math-source]",
+        "[data-helbaron-table-math-source]",
       );
       if (target && activeSource?.contains(target)) return;
 
@@ -1349,10 +1351,10 @@ class TableWidget extends WidgetType {
         ? target
         : target?.parentElement;
       const nextMath = targetElement?.closest<HTMLElement>(
-        "[data-markra-math-markdown]",
+        "[data-helbaron-math-markdown]",
       );
-      const nextMathFrom = nextMath?.dataset.markraMathFrom;
-      const nextMathTo = nextMath?.dataset.markraMathTo;
+      const nextMathFrom = nextMath?.dataset.helbaronMathFrom;
+      const nextMathTo = nextMath?.dataset.helbaronMathTo;
       const nextMathInCell = Boolean(nextMath && cell.contains(nextMath));
       if (nextMathInCell) {
         event.preventDefault();
@@ -1362,11 +1364,11 @@ class TableWidget extends WidgetType {
       if (!nextMathInCell || !nextMathFrom || !nextMathTo) return;
 
       const replacement = cell.querySelector<HTMLElement>(
-        `[data-markra-math-from="${nextMathFrom}"]` +
-          `[data-markra-math-to="${nextMathTo}"]`,
+        `[data-helbaron-math-from="${nextMathFrom}"]` +
+          `[data-helbaron-math-to="${nextMathTo}"]`,
       );
       const editMathSource = visualTableMathSourceEditors.get(cell);
-      const markdown = replacement?.dataset.markraMathMarkdown;
+      const markdown = replacement?.dataset.helbaronMathMarkdown;
       if (replacement && editMathSource && markdown) {
         editMathSource(replacement, markdown);
       }
@@ -1374,15 +1376,22 @@ class TableWidget extends WidgetType {
     this.runtime.inlineSourceDocument = document;
     this.runtime.inlineSourceMouseDownHandler = inlineSourceMouseDownHandler;
     document.addEventListener("mousedown", inlineSourceMouseDownHandler, true);
-    tableScroll.className = "markra-table-scroll";
+    tableScroll.className = "helbaron-table-scroll";
     tableScroll.dataset.tableAlignment = tableAlignment;
-    table.className = "cm-markra-table";
+    table.className = "cm-helbaron-table";
+    // Arabic tables lay their columns out right-to-left when Arabic words
+    // dominate the table; a forced document direction wins.
+    const textDirection = readHelbaronTextDirection(view.state);
+    const tableSource = view.state.sliceDoc(this.preview.from, this.preview.to);
+    table.dir = textDirection === "auto"
+      ? detectTextDirection(stripMarkdownForDirection(tableSource)) ?? "auto"
+      : textDirection;
     // Individual contenteditable cells trap native ranges inside one cell.
     // One shared editing host lets drag selections cross the complete table.
     table.setAttribute("contenteditable", String(!view.state.readOnly));
     table.dataset.tableAlignment = tableAlignment;
     table.dataset.widthMode = widthMode;
-    table.classList.toggle("markra-table-width-auto", widthMode === "auto");
+    table.classList.toggle("helbaron-table-width-auto", widthMode === "auto");
     table.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === "Escape") {
         const cell = activeVisualTableCell(view, table);
@@ -1581,21 +1590,21 @@ class TableWidget extends WidgetType {
 }
 
 const tableTheme = EditorView.baseTheme({
-  ".cm-markra-table-wrap": {
+  ".cm-helbaron-table-wrap": {
     display: "block",
     margin: "1.5em 0",
     overflow: "visible",
     padding: "1.75em 2.25em 2.25em 0",
     position: "relative",
   },
-  ".cm-markra-table-hidden-line": {
+  ".cm-helbaron-table-hidden-line": {
     display: "none",
   },
-  ".markra-table-scroll": {
+  ".helbaron-table-scroll": {
     display: "block",
     overflowX: "auto",
   },
-  ".markra-table-align-controls": {
+  ".helbaron-table-align-controls": {
     alignItems: "center",
     display: "flex",
     gap: "0.125em",
@@ -1604,10 +1613,10 @@ const tableTheme = EditorView.baseTheme({
     top: "0",
     zIndex: "10",
   },
-  ".markra-table-size-controls": {
+  ".helbaron-table-size-controls": {
     display: "flex",
   },
-  ".markra-table-control": {
+  ".helbaron-table-control": {
     alignItems: "center",
     borderRadius: "999px",
     cursor: "pointer",
@@ -1621,32 +1630,32 @@ const tableTheme = EditorView.baseTheme({
     transition: "opacity 150ms ease, scale 150ms ease",
     width: "1.5em",
   },
-  ".cm-markra-table-wrap:hover .markra-table-control, .cm-markra-table-wrap:focus-within .markra-table-control": {
+  ".cm-helbaron-table-wrap:hover .helbaron-table-control, .cm-helbaron-table-wrap:focus-within .helbaron-table-control": {
     opacity: "1",
     pointerEvents: "auto",
   },
-  ".markra-table-size-button, .markra-table-align-button, .markra-table-width-button, .markra-table-delete-table, .markra-table-extra-control": {
+  ".helbaron-table-size-button, .helbaron-table-align-button, .helbaron-table-width-button, .helbaron-table-delete-table, .helbaron-table-extra-control": {
     borderRadius: "0.375em",
     position: "static",
   },
-  ".markra-table-add-column": {
+  ".helbaron-table-add-column": {
     right: "0.375em",
     top: "50%",
     transform: "translateY(-50%)",
   },
-  ".markra-table-add-row": {
+  ".helbaron-table-add-row": {
     bottom: "0.375em",
     left: "50%",
     transform: "translateX(-50%)",
   },
-  ".markra-table-delete-control": {
+  ".helbaron-table-delete-control": {
     transform: "translate(-50%, -50%)",
   },
-  ".cm-markra-table": {
+  ".cm-helbaron-table": {
     borderCollapse: "collapse",
     width: "100%",
   },
-  ".markra-table-size-popover": {
+  ".helbaron-table-size-popover": {
     background: "var(--bg-primary, Canvas)",
     border: "1px solid var(--border-default, currentColor)",
     borderRadius: "0.5em",
@@ -1654,39 +1663,39 @@ const tableTheme = EditorView.baseTheme({
     padding: "0.55em",
     zIndex: "100",
   },
-  ".markra-table-size-grid": {
+  ".helbaron-table-size-grid": {
     display: "grid",
     gap: "0.18em",
     gridTemplateColumns: `repeat(${tableSizePickerColumns}, 1.05em)`,
   },
-  ".markra-table-size-cell": {
+  ".helbaron-table-size-cell": {
     aspectRatio: "1",
     background: "color-mix(in srgb, currentColor 4%, transparent)",
     border: "1px solid color-mix(in srgb, currentColor 20%, transparent)",
     borderRadius: "0.12em",
     padding: "0",
   },
-  ".markra-table-size-cell:hover, .markra-table-size-cell:focus": {
+  ".helbaron-table-size-cell:hover, .helbaron-table-size-cell:focus": {
     background: "color-mix(in srgb, var(--accent, currentColor) 22%, transparent)",
     borderColor: "var(--accent, currentColor)",
   },
-  ".markra-table-size-footer": {
+  ".helbaron-table-size-footer": {
     alignItems: "center",
     display: "flex",
     gap: "0.35em",
     justifyContent: "center",
     marginTop: "0.5em",
   },
-  ".markra-table-size-input": {
+  ".helbaron-table-size-input": {
     width: "3.5em",
   },
-  '.cm-markra-table[data-width-mode="auto"]': {
+  '.cm-helbaron-table[data-width-mode="auto"]': {
     tableLayout: "auto",
   },
-  '.cm-markra-table[data-width-mode="even"]': {
+  '.cm-helbaron-table[data-width-mode="even"]': {
     tableLayout: "fixed",
   },
-  ".cm-markra-table th, .cm-markra-table td": {
+  ".cm-helbaron-table th, .cm-helbaron-table td": {
     border: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
     cursor: "text",
     outline: "none",
@@ -1694,10 +1703,10 @@ const tableTheme = EditorView.baseTheme({
     position: "relative",
     verticalAlign: "top",
   },
-  '.cm-markra-table[contenteditable="true"] th:focus, .cm-markra-table[contenteditable="true"] td:focus': {
+  '.cm-helbaron-table[contenteditable="true"] th:focus, .cm-helbaron-table[contenteditable="true"] td:focus': {
     boxShadow: "inset 0 0 0 2px currentColor",
   },
-  ".cm-markra-table th": {
+  ".cm-helbaron-table th": {
     backgroundColor: "color-mix(in srgb, currentColor 5%, transparent)",
     fontWeight: "650",
   },
@@ -1710,10 +1719,10 @@ export function tablePreviewPlugin(
   const widthMode = options.widthMode ?? "auto";
   const getDocumentKey = options.getDocumentKey ?? (() => undefined);
 
-  return defineMarkraPlugin({
+  return defineHelbaronPlugin({
     id: tablePreviewRendererId,
     extension: [
-      markraRenderer({
+      helbaronRenderer({
         id: tablePreviewRendererId,
         nodeNames: ["Table"],
         render(context) {
@@ -1747,7 +1756,7 @@ export function tablePreviewPlugin(
           ) {
             const line = context.state.doc.line(lineNumber);
             context.add(
-              Decoration.line({ class: "cm-markra-table-hidden-line" }).range(
+              Decoration.line({ class: "cm-helbaron-table-hidden-line" }).range(
                 line.from,
               ),
             );

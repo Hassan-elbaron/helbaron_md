@@ -2,14 +2,14 @@ import { EditorSelection, EditorState } from "@codemirror/state";
 import { EditorView, runScopeHandlers } from "@codemirror/view";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-  closeMarkraDocumentLinks,
+  closeHelbaronDocumentLinks,
   documentLinksPlugin,
-  getMarkraDocumentLinksState,
+  getHelbaronDocumentLinksState,
   liveMarkdown,
-  type MarkraDocumentLinkItem,
+  type HelbaronDocumentLinkItem,
 } from "./index.ts";
 
-const items: readonly MarkraDocumentLinkItem[] = [
+const items: readonly HelbaronDocumentLinkItem[] = [
   {
     detail: "docs/getting-started.md",
     href: "./docs/getting-started.md",
@@ -21,7 +21,7 @@ const items: readonly MarkraDocumentLinkItem[] = [
     detail: "docs/plugins.md",
     href: "./docs/plugins.md",
     id: "plugins",
-    keywords: ["extension", "Markra"],
+    keywords: ["extension", "Helbaron"],
     label: "Plugin authoring",
   },
 ];
@@ -66,17 +66,17 @@ afterEach(() => {
 describe("documentLinksPlugin", () => {
   it("opens for [[query and filters host-provided document items", () => {
     const source = vi.fn(() => items);
-    const doc = "See [[markra";
+    const doc = "See [[helbaron";
     const view = createView({ doc, source });
-    const menu = getMarkraDocumentLinksState(view);
+    const menu = getHelbaronDocumentLinksState(view);
 
     expect(source).toHaveBeenCalledWith(
-      expect.objectContaining({ query: "markra", state: view.state, view }),
+      expect.objectContaining({ query: "helbaron", state: view.state, view }),
     );
     expect(menu).toMatchObject({
       from: 4,
       open: true,
-      query: "markra",
+      query: "helbaron",
       selectedIndex: 0,
       to: doc.length,
     });
@@ -95,27 +95,27 @@ describe("documentLinksPlugin", () => {
     });
 
     expect(runScopeHandlers(view, down, "editor")).toBe(true);
-    expect(getMarkraDocumentLinksState(view).selectedIndex).toBe(1);
+    expect(getHelbaronDocumentLinksState(view).selectedIndex).toBe(1);
     expect(runScopeHandlers(view, enter, "editor")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       "Open [Plugin authoring](./docs/plugins.md)",
     );
     expect(view.state.selection.main.head).toBe(view.state.doc.length);
-    expect(getMarkraDocumentLinksState(view).open).toBe(false);
+    expect(getHelbaronDocumentLinksState(view).open).toBe(false);
   });
 
   it("lets an item provide custom Markdown and run from host UI", () => {
     const view = createView({
       source: () => [
         {
-          href: "markra://documents/mock",
+          href: "helbaron://documents/mock",
           id: "mock",
           label: "Mock document",
           markdown: "[[documents/mock|Mock document]]",
         },
       ],
     });
-    const action = getMarkraDocumentLinksState(view).items[0];
+    const action = getHelbaronDocumentLinksState(view).items[0];
 
     expect(action?.run()).toBe(true);
     expect(view.state.doc.toString()).toBe(
@@ -134,7 +134,7 @@ describe("documentLinksPlugin", () => {
       ],
     });
 
-    expect(getMarkraDocumentLinksState(view).items[0]?.run()).toBe(true);
+    expect(getHelbaronDocumentLinksState(view).items[0]?.run()).toBe(true);
     expect(view.state.doc.toString()).toBe(
       "Open [Mock \\[guide\\]](./docs/Mock%20guide.md#intro)",
     );
@@ -143,16 +143,16 @@ describe("documentLinksPlugin", () => {
   it("keeps an escaped completion closed until its range changes", () => {
     const view = createView();
 
-    expect(closeMarkraDocumentLinks(view)).toBe(true);
-    expect(getMarkraDocumentLinksState(view).open).toBe(false);
+    expect(closeHelbaronDocumentLinks(view)).toBe(true);
+    expect(getHelbaronDocumentLinksState(view).open).toBe(false);
     view.dispatch({});
-    expect(getMarkraDocumentLinksState(view).open).toBe(false);
+    expect(getHelbaronDocumentLinksState(view).open).toBe(false);
 
     view.dispatch({
       changes: { from: view.state.doc.length, insert: "p" },
       selection: EditorSelection.cursor(view.state.doc.length + 1),
     });
-    expect(getMarkraDocumentLinksState(view)).toMatchObject({
+    expect(getHelbaronDocumentLinksState(view)).toMatchObject({
       open: true,
       query: "p",
     });
@@ -165,8 +165,8 @@ describe("documentLinksPlugin", () => {
     const selectedView = createView();
     selectedView.dispatch({ selection: EditorSelection.range(0, 4) });
 
-    expect(getMarkraDocumentLinksState(codeView).open).toBe(false);
-    expect(getMarkraDocumentLinksState(readOnlyView).open).toBe(false);
-    expect(getMarkraDocumentLinksState(selectedView).open).toBe(false);
+    expect(getHelbaronDocumentLinksState(codeView).open).toBe(false);
+    expect(getHelbaronDocumentLinksState(readOnlyView).open).toBe(false);
+    expect(getHelbaronDocumentLinksState(selectedView).open).toBe(false);
   });
 });

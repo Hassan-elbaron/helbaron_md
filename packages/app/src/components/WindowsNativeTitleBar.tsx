@@ -2,8 +2,8 @@ import { FileText, FolderOpen, ImageIcon, PanelLeft, PanelRight } from "lucide-r
 import {
   defaultMarkdownShortcuts,
   markdownShortcutToNativeAccelerator
-} from "@markra/editor";
-import type { t } from "@markra/shared";
+} from "@helbaron/editor";
+import type { t } from "@helbaron/shared";
 import type {
   CSSProperties,
   MouseEvent as ReactMouseEvent,
@@ -17,7 +17,7 @@ import {
   type ContextMenuEntry
 } from "./ContextMenu";
 import { WindowsWindowControls } from "./WindowsWindowControls";
-import { IconButton, Tooltip } from "@markra/ui";
+import { IconButton, Tooltip } from "@helbaron/ui";
 import { AppMenuBar, type AppMenuConfig } from "./AppMenuBar";
 
 type WindowsAppMenuId = "app" | "file" | "edit" | "format" | "view";
@@ -140,7 +140,7 @@ export function WindowsNativeTitleBar({
   const windowsTitlebarLeft = markdownFilesWidth + (showWindowsAppChrome ? -1 : 1);
   const windowsTitlebarEdgeClassName = showWindowsAppChrome
     ? markdownFilesOpen
-      ? "rounded-tl-md"
+      ? "rounded-ss-md"
       : "border-t border-(--border-default)"
     : "";
   const windowsTitlebarPositionTransitionClassName = markdownFilesResizing
@@ -167,7 +167,7 @@ export function WindowsNativeTitleBar({
   // so the document titlebar must keep the sidebar's only restore control.
   const browserSidebarToggleVisible = !nativeWindowChrome && markdownFilesButtonVisible;
   const renderBrowserSidebarToggle = () => browserSidebarToggleVisible ? (
-    <div className="titlebar-spacer relative z-20 flex h-10 items-center pl-2">
+    <div className="titlebar-spacer relative z-20 flex h-10 items-center ps-2">
       <IconButton
         className="opacity-55 hover:opacity-100 focus-visible:opacity-100"
         label={label("app.toggleMarkdownFiles")}
@@ -181,7 +181,7 @@ export function WindowsNativeTitleBar({
   const windowsAppMenus: AppMenuConfig[] = [
     {
       id: "app",
-      label: "Markra",
+      label: "Helbaron",
       triggerClassName: "font-[620] text-(--text-heading)"
     },
     { id: "file", label: label("menu.file"), triggerClassName: "text-(--text-primary)" },
@@ -195,7 +195,7 @@ export function WindowsNativeTitleBar({
   const windowsAppMenuEntries = (menuId: string): ContextMenuEntry[] => {
     if (menuId === "app") {
       return [
-        windowsMenuItem("showAbout", label("menu.aboutMarkra"), undefined, onShowAbout),
+        windowsMenuItem("showAbout", label("menu.aboutHelbaron"), undefined, onShowAbout),
         contextMenuSeparator(),
         windowsMenuItem("openSettings", label("menu.settings"), "Ctrl+,", onOpenSettings),
         windowsMenuItem("checkForUpdates", label("settings.update.check"), undefined, menuHandlers?.checkForUpdates),
@@ -378,24 +378,24 @@ export function WindowsNativeTitleBar({
   const renderWindowsTitlebarSidebarDivider = () => showWindowsAppChrome && markdownFilesOpen ? (
     <span
       aria-hidden="true"
-      className="windows-titlebar-sidebar-divider pointer-events-none absolute top-1.5 bottom-0 left-0 w-px bg-(--border-default)"
+      className="windows-titlebar-sidebar-divider pointer-events-none absolute top-1.5 bottom-0 start-0 w-px bg-(--border-default)"
     />
   ) : null;
   const renderWindowsTitlebarTopDivider = () => showWindowsAppChrome && markdownFilesOpen ? (
     <span
       aria-hidden="true"
-      className="windows-titlebar-top-divider pointer-events-none absolute top-0 right-0 left-1.5 h-px bg-(--border-default)"
+      className="windows-titlebar-top-divider pointer-events-none absolute top-0 end-0 start-1.5 h-px bg-(--border-default)"
     />
   ) : null;
   const renderWindowsTitlebarCornerDivider = () => showWindowsAppChrome && markdownFilesOpen ? (
     <span
       aria-hidden="true"
-      className="windows-titlebar-corner-divider pointer-events-none absolute top-0 left-0 size-1.5 rounded-tl-md border-t border-l border-(--border-default)"
+      className="windows-titlebar-corner-divider pointer-events-none absolute top-0 start-0 size-1.5 rounded-ss-md border-t border-s border-(--border-default)"
     />
   ) : null;
 
   if (titleContent) {
-    const windowsTitleSlotPaddingClassName = markdownFilesOpen ? "pl-2.5" : "pl-3";
+    const windowsTitleSlotPaddingClassName = markdownFilesOpen ? "ps-2.5" : "ps-3";
     const windowsTitlebarStyle: CSSProperties = {
       ...(markdownFilesOpen ? { left: windowsTitlebarLeft } : {}),
       gridTemplateColumns: [
@@ -420,9 +420,9 @@ export function WindowsNativeTitleBar({
           {renderWindowsTitlebarTopDivider()}
           {renderWindowsTitlebarSidebarDivider()}
           {renderBrowserSidebarToggle()}
-          {renderTitleContent(`native-title-slot min-w-0 h-10 pr-3 ${windowsTitleSlotPaddingClassName}`)}
+          {renderTitleContent(`native-title-slot min-w-0 h-10 pe-3 ${windowsTitleSlotPaddingClassName}`)}
           <div
-            className={`windows-titlebar-actions relative z-10 flex h-10 items-center justify-end gap-0.5 pr-3.5 text-(--text-secondary) opacity-40 ${windowsTitlebarActionsTransitionClassName} hover:opacity-100 focus-within:opacity-100 motion-reduce:transition-none`}
+            className={`windows-titlebar-actions relative z-10 flex h-10 items-center justify-end gap-0.5 pe-3.5 text-(--text-secondary) opacity-40 ${windowsTitlebarActionsTransitionClassName} hover:opacity-100 focus-within:opacity-100 motion-reduce:transition-none`}
           >
             {renderDocumentActions("document-actions relative flex h-10 items-center justify-end gap-0.5")}
           </div>

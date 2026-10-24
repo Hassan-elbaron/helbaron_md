@@ -1,6 +1,6 @@
 import type { AgentEvent } from "@earendil-works/pi-agent-core";
 import { applyAgentEventToProcesses, createInitialAgentProcesses } from "./process-trace";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 
 const translate = (key: I18nKey) => key;
 
@@ -135,7 +135,7 @@ describe("agentProcessTrace", () => {
           details: {
             count: 3,
             providerId: "local-bing",
-            query: "Markra web search"
+            query: "Helbaron web search"
           }
         },
         toolCallId: "call_web_search",

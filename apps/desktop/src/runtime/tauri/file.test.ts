@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { confirm, open, save } from "@tauri-apps/plugin-dialog";
-import { getStoredNetworkSettings } from "@markra/app/settings";
+import { getStoredNetworkSettings } from "@helbaron/app/settings";
 import {
   confirmNativeMarkdownFileDelete,
   confirmNativeUnsavedMarkdownDocumentDiscard,
@@ -79,7 +79,7 @@ vi.mock("@tauri-apps/plugin-dialog", () => ({
   save: vi.fn()
 }));
 
-vi.mock("@markra/app/settings", () => ({
+vi.mock("@helbaron/app/settings", () => ({
   getStoredNetworkSettings: vi.fn()
 }));
 
@@ -161,7 +161,7 @@ describe("native file access", () => {
     listener?.({ payload: { paths: [] } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://opened-markdown-paths", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://opened-markdown-paths", expect.any(Function));
     expect(onPaths).toHaveBeenCalledTimes(1);
     expect(onPaths).toHaveBeenCalledWith([mockReadmePath]);
     expect(unlisten).toHaveBeenCalledTimes(1);
@@ -208,27 +208,27 @@ describe("native file access", () => {
     expect(mockedInvoke).not.toHaveBeenCalled();
   });
 
-  it("opens a Markra settings JSON file through the native dialog", async () => {
-    mockedOpen.mockResolvedValue("/mock-files/markra-settings.json");
+  it("opens a Helbaron settings JSON file through the native dialog", async () => {
+    mockedOpen.mockResolvedValue("/mock-files/helbaron-settings.json");
     mockedInvoke.mockResolvedValue({
-      path: "/mock-files/markra-settings.json",
-      contents: "{\"format\":\"markra-settings\"}"
+      path: "/mock-files/helbaron-settings.json",
+      contents: "{\"format\":\"helbaron-settings\"}"
     });
 
-    await expect(openNativeSettingsFile({ title: "Import Markra settings" })).resolves.toEqual({
-      path: "/mock-files/markra-settings.json",
-      name: "markra-settings.json",
-      content: "{\"format\":\"markra-settings\"}"
+    await expect(openNativeSettingsFile({ title: "Import Helbaron settings" })).resolves.toEqual({
+      path: "/mock-files/helbaron-settings.json",
+      name: "helbaron-settings.json",
+      content: "{\"format\":\"helbaron-settings\"}"
     });
 
     expect(mockedOpen).toHaveBeenCalledWith({
       multiple: false,
       fileAccessMode: "scoped",
-      filters: [{ name: "Markra settings", extensions: ["json"] }],
-      title: "Import Markra settings"
+      filters: [{ name: "Helbaron settings", extensions: ["json"] }],
+      title: "Import Helbaron settings"
     });
     expect(mockedInvoke).toHaveBeenCalledWith("read_text_file", {
-      path: "/mock-files/markra-settings.json"
+      path: "/mock-files/helbaron-settings.json"
     });
   });
 
@@ -671,7 +671,7 @@ describe("native file access", () => {
     const batches: Array<Awaited<ReturnType<typeof loadNativeMarkdownFilesForPath>>> = [];
 
     mockedListen.mockImplementation(async (event, handler) => {
-      if (event === "markra://markdown-tree-load") {
+      if (event === "helbaron://markdown-tree-load") {
         emitTreeLoad = (payload) => handler({ payload } as never);
       }
 
@@ -714,7 +714,7 @@ describe("native file access", () => {
       }
     ]);
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://markdown-tree-load", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://markdown-tree-load", expect.any(Function));
     expect(mockedInvoke).toHaveBeenCalledWith("load_markdown_files_for_path", {
       globalIgnoreRules: "generated/",
       managedAttachmentFolder: "assets",
@@ -1079,27 +1079,27 @@ describe("native file access", () => {
     expect(mockedInvoke).not.toHaveBeenCalled();
   });
 
-  it("saves a Markra settings JSON file through the native save dialog", async () => {
-    mockedSave.mockResolvedValue("/mock-files/markra-settings.json");
+  it("saves a Helbaron settings JSON file through the native save dialog", async () => {
+    mockedSave.mockResolvedValue("/mock-files/helbaron-settings.json");
     mockedInvoke.mockResolvedValue(undefined);
 
     await expect(
       saveNativeSettingsFile({
-        suggestedName: "markra-settings.json",
-        contents: "{\"format\":\"markra-settings\"}"
+        suggestedName: "helbaron-settings.json",
+        contents: "{\"format\":\"helbaron-settings\"}"
       })
     ).resolves.toEqual({
-      path: "/mock-files/markra-settings.json",
-      name: "markra-settings.json"
+      path: "/mock-files/helbaron-settings.json",
+      name: "helbaron-settings.json"
     });
 
     expect(mockedSave).toHaveBeenCalledWith({
-      defaultPath: "markra-settings.json",
-      filters: [{ name: "Markra settings", extensions: ["json"] }]
+      defaultPath: "helbaron-settings.json",
+      filters: [{ name: "Helbaron settings", extensions: ["json"] }]
     });
     expect(mockedInvoke).toHaveBeenCalledWith("write_text_file", {
-      path: "/mock-files/markra-settings.json",
-      contents: "{\"format\":\"markra-settings\"}"
+      path: "/mock-files/helbaron-settings.json",
+      contents: "{\"format\":\"helbaron-settings\"}"
     });
   });
 
@@ -1466,13 +1466,13 @@ describe("native file access", () => {
       username: "mock-user"
     };
     mockedInvoke
-      .mockResolvedValueOnce('{"format":"markra-settings-backup"}')
+      .mockResolvedValueOnce('{"format":"helbaron-settings-backup"}')
       .mockResolvedValueOnce(undefined);
 
     await expect(readNativeWebDavTextFile({
-      remotePath: "markra/settings/markra-settings.json",
+      remotePath: "helbaron/settings/helbaron-settings.json",
       settings
-    })).resolves.toBe('{"format":"markra-settings-backup"}');
+    })).resolves.toBe('{"format":"helbaron-settings-backup"}');
     expect(mockedInvoke).toHaveBeenNthCalledWith(1, "read_webdav_text_file", {
       request: {
         network: {
@@ -1481,27 +1481,27 @@ describe("native file access", () => {
           proxyUrl: "https://proxy.example.test"
         },
         password: "mock-password",
-        remotePath: "markra/settings/markra-settings.json",
+        remotePath: "helbaron/settings/helbaron-settings.json",
         serverUrl: "https://dav.example.test/base",
         username: "mock-user"
       }
     });
 
     await expect(writeNativeWebDavTextFile({
-      contents: '{"format":"markra-settings-backup"}',
-      remotePath: "markra/settings/markra-settings.json",
+      contents: '{"format":"helbaron-settings-backup"}',
+      remotePath: "helbaron/settings/helbaron-settings.json",
       settings
     })).resolves.toBeUndefined();
     expect(mockedInvoke).toHaveBeenNthCalledWith(2, "write_webdav_text_file", {
       request: {
-        contents: '{"format":"markra-settings-backup"}',
+        contents: '{"format":"helbaron-settings-backup"}',
         network: {
           bypassLocalAddresses: true,
           proxyEnabled: true,
           proxyUrl: "https://proxy.example.test"
         },
         password: "mock-password",
-        remotePath: "markra/settings/markra-settings.json",
+        remotePath: "helbaron/settings/helbaron-settings.json",
         serverUrl: "https://dav.example.test/base",
         username: "mock-user"
       }
@@ -1524,13 +1524,13 @@ describe("native file access", () => {
       uploadPath: "images"
     };
     mockedInvoke
-      .mockResolvedValueOnce('{"format":"markra-settings-backup"}')
+      .mockResolvedValueOnce('{"format":"helbaron-settings-backup"}')
       .mockResolvedValueOnce(undefined);
 
     await expect(readNativeS3TextFile({
-      objectKey: "markra/settings/markra-settings.json",
+      objectKey: "helbaron/settings/helbaron-settings.json",
       settings
-    })).resolves.toBe('{"format":"markra-settings-backup"}');
+    })).resolves.toBe('{"format":"helbaron-settings-backup"}');
     expect(mockedInvoke).toHaveBeenNthCalledWith(1, "read_s3_text_file", {
       request: {
         accessKeyId: "mock-access-key",
@@ -1541,29 +1541,29 @@ describe("native file access", () => {
           proxyEnabled: true,
           proxyUrl: "https://proxy.example.test"
         },
-        objectKey: "markra/settings/markra-settings.json",
+        objectKey: "helbaron/settings/helbaron-settings.json",
         region: "ap-southeast-1",
         secretAccessKey: "mock-secret"
       }
     });
 
     await expect(writeNativeS3TextFile({
-      contents: '{"format":"markra-settings-backup"}',
-      objectKey: "markra/settings/markra-settings.json",
+      contents: '{"format":"helbaron-settings-backup"}',
+      objectKey: "helbaron/settings/helbaron-settings.json",
       settings
     })).resolves.toBeUndefined();
     expect(mockedInvoke).toHaveBeenNthCalledWith(2, "write_s3_text_file", {
       request: {
         accessKeyId: "mock-access-key",
         bucket: "mock-settings",
-        contents: '{"format":"markra-settings-backup"}',
+        contents: '{"format":"helbaron-settings-backup"}',
         endpointUrl: "https://s3.example.test",
         network: {
           bypassLocalAddresses: false,
           proxyEnabled: true,
           proxyUrl: "https://proxy.example.test"
         },
-        objectKey: "markra/settings/markra-settings.json",
+        objectKey: "helbaron/settings/helbaron-settings.json",
         region: "ap-southeast-1",
         secretAccessKey: "mock-secret"
       }
@@ -1613,7 +1613,7 @@ describe("native file access", () => {
         image,
         settings: {
           accessKeyId: "access-key",
-          bucket: "markra-images",
+          bucket: "helbaron-images",
           endpointUrl: "https://s3.example.com",
           publicBaseUrl: "https://cdn.example.com/images",
           region: "us-east-1",
@@ -1629,7 +1629,7 @@ describe("native file access", () => {
     expect(mockedInvoke).toHaveBeenCalledWith("upload_s3_image", {
       request: {
         accessKeyId: "access-key",
-        bucket: "markra-images",
+        bucket: "helbaron-images",
         bytes: [7, 8, 9],
         endpointUrl: "https://s3.example.com",
         fileName: "custom-image.png",
@@ -1653,7 +1653,7 @@ describe("native file access", () => {
       image,
       settings: {
         accessKeyId: "access-key",
-        bucket: "markra-images",
+        bucket: "helbaron-images",
         endpointUrl: "https://s3.example.com",
         publicBaseUrl: "https://cdn.example.com/images",
         region: "",
@@ -1790,7 +1790,7 @@ describe("native file access", () => {
     let emitTreeChange: (payload: { path: string; rootPath: string }) => unknown = () => {};
 
     mockedListen.mockImplementation(async (event, handler) => {
-      if (event === "markra://tree-changed") {
+      if (event === "helbaron://tree-changed") {
         emitTreeChange = (payload) => {
           handler({ payload } as never);
         };
@@ -1814,8 +1814,8 @@ describe("native file access", () => {
       }
     );
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://file-changed", expect.any(Function));
-    expect(mockedListen).toHaveBeenCalledWith("markra://tree-changed", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://file-changed", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://tree-changed", expect.any(Function));
     expect(mockedInvoke).toHaveBeenCalledWith("watch_markdown_file", {
       globalIgnoreRules: "generated/",
       ignoreRootPath: mockFolderPath,
@@ -1860,7 +1860,7 @@ describe("native file access", () => {
       { globalIgnoreRules: "generated/" }
     );
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://tree-changed", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://tree-changed", expect.any(Function));
     expect(mockedInvoke).toHaveBeenCalledWith("watch_markdown_tree", {
       globalIgnoreRules: "generated/",
       rootPath: mockFolderPath

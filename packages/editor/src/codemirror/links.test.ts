@@ -3,10 +3,10 @@ import { EditorView, runScopeHandlers } from "@codemirror/view";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   linksPlugin,
-  listMarkraUi,
+  listHelbaronUi,
   liveMarkdown,
   resolveSafeLinkTarget,
-  runMarkraCommand,
+  runHelbaronCommand,
   type LinksPluginOptions,
 } from "./index.ts";
 
@@ -56,7 +56,7 @@ describe("linksPlugin", () => {
     expect(resolveSafeLinkTarget("javascript\\:alert(1)")).toBeNull();
     expect(resolveSafeLinkTarget("data:text/html,unsafe")).toBeNull();
     expect(resolveSafeLinkTarget("file:///mock/private.md")).toBeNull();
-    expect(resolveSafeLinkTarget("markra://documents/mock.md")).toBeNull();
+    expect(resolveSafeLinkTarget("helbaron://documents/mock.md")).toBeNull();
     expect(resolveSafeLinkTarget("https://example.test/\u0000unsafe")).toBeNull();
   });
 
@@ -65,7 +65,7 @@ describe("linksPlugin", () => {
       "Read [Synthetic alt](https://example.test/guide) now\n\nEdit here";
     const open = vi.fn();
     const view = createView(doc, { open });
-    const link = view.dom.querySelector<HTMLElement>(".cm-markra-link");
+    const link = view.dom.querySelector<HTMLElement>(".cm-helbaron-link");
 
     expect(link).not.toBeNull();
     expect(link?.dispatchEvent(new MouseEvent("mousedown", {
@@ -78,12 +78,12 @@ describe("linksPlugin", () => {
     expect(view.state.selection.main.head).toBe(
       doc.indexOf("Synthetic alt") + 1,
     );
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-link-source-label")?.textContent)
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-source-label")?.textContent)
       .toBe("Synthetic alt");
     expect(
       Array.from(
-        view.dom.querySelectorAll<HTMLElement>(".cm-markra-link-source"),
+        view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-link-source"),
         (element) => element.textContent,
       ).join(""),
     ).toBe("[](https://example.test/guide)");
@@ -115,7 +115,7 @@ describe("linksPlugin", () => {
       "Read [Synthetic guide](https://example.test/guide) now\n\nEdit here";
     const open = vi.fn();
     const view = createView(doc, { open });
-    const link = view.dom.querySelector<HTMLElement>(".cm-markra-link");
+    const link = view.dom.querySelector<HTMLElement>(".cm-helbaron-link");
     const modifierPointerDown = new MouseEvent("mousedown", {
       bubbles: true,
       button: 0,
@@ -158,21 +158,21 @@ describe("linksPlugin", () => {
   ])("shows a pointer cursor while %s is held over links", (_label, init) => {
     const doc = "Read [Synthetic guide](https://example.test/guide) now";
     const view = createView(doc, { open: vi.fn() });
-    expect(view.dom.querySelector(".cm-markra-link")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).not.toBeNull();
 
     view.contentDOM.dispatchEvent(new KeyboardEvent("keydown", {
       bubbles: true,
       ...init,
     }));
 
-    expect(view.dom.dataset.markraLinkModifier).toBe("true");
+    expect(view.dom.dataset.helbaronLinkModifier).toBe("true");
 
     view.contentDOM.dispatchEvent(new KeyboardEvent("keyup", {
       bubbles: true,
       key: init.key,
     }));
 
-    expect(view.dom.dataset.markraLinkModifier).toBeUndefined();
+    expect(view.dom.dataset.helbaronLinkModifier).toBeUndefined();
   });
 
   it.each([
@@ -190,7 +190,7 @@ describe("linksPlugin", () => {
     ].join("\n");
     const open = vi.fn();
     const view = createView(doc, { open });
-    const link = view.dom.querySelector<HTMLElement>(".cm-markra-link");
+    const link = view.dom.querySelector<HTMLElement>(".cm-helbaron-link");
 
     expect(link?.textContent).toBe("Synthetic guide");
     expect(link?.dispatchEvent(new MouseEvent("mousedown", {
@@ -214,8 +214,8 @@ describe("linksPlugin", () => {
       const open = vi.fn();
       const view = createView(doc, { open }, doc.indexOf("label") + 1);
 
-      expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
-      expect(runMarkraCommand(view, "link.open")).toBe(false);
+      expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
+      expect(runHelbaronCommand(view, "link.open")).toBe(false);
       expect(open).not.toHaveBeenCalled();
       expect(view.state.doc.toString()).toBe(doc);
     },
@@ -234,7 +234,7 @@ describe("linksPlugin", () => {
     const visibleSource = markdown.replace(/^<|>$/gu, "");
     const open = vi.fn();
     const view = createView(doc, { open });
-    const link = view.dom.querySelector<HTMLElement>(".cm-markra-link");
+    const link = view.dom.querySelector<HTMLElement>(".cm-helbaron-link");
 
     expect(link?.tagName).toBe("A");
     expect(link?.getAttribute("href")).toBe(target);
@@ -269,16 +269,16 @@ describe("linksPlugin", () => {
     const open = vi.fn();
     const view = createView(doc, { label: "打开链接", open }, doc.indexOf("guide"));
 
-    expect(listMarkraUi(view, "context-menu")).toMatchObject([
+    expect(listHelbaronUi(view, "context-menu")).toMatchObject([
       {
         command: "link.open",
         enabled: true,
         icon: "external-link",
         label: "打开链接",
-        plugin: "markra.links",
+        plugin: "helbaron.links",
       },
     ]);
-    expect(runMarkraCommand(view, "link.open")).toBe(true);
+    expect(runHelbaronCommand(view, "link.open")).toBe(true);
 
     const shortcut = new KeyboardEvent("keydown", {
       bubbles: true,
@@ -289,11 +289,11 @@ describe("linksPlugin", () => {
     expect(open).toHaveBeenCalledTimes(2);
   });
 
-  it("lets Markra resolve application links through a host callback", () => {
-    const doc = "Open [Mock document](markra://documents/mock.md)";
+  it("lets Helbaron resolve application links through a host callback", () => {
+    const doc = "Open [Mock document](helbaron://documents/mock.md)";
     const open = vi.fn();
     const resolveTarget = vi.fn(({ source }) =>
-      source.startsWith("markra://") ? `/documents/${source.slice(9)}` : null,
+      source.startsWith("helbaron://") ? `/documents/${source.slice("helbaron://".length)}` : null,
     );
     const view = createView(
       doc,
@@ -301,16 +301,16 @@ describe("linksPlugin", () => {
       doc.indexOf("Mock document"),
     );
 
-    expect(runMarkraCommand(view, "link.open")).toBe(true);
+    expect(runHelbaronCommand(view, "link.open")).toBe(true);
     expect(resolveTarget).toHaveBeenCalledWith(
       expect.objectContaining({
-        source: "markra://documents/mock.md",
+        source: "helbaron://documents/mock.md",
         view,
       }),
     );
     expect(open).toHaveBeenCalledWith(
       expect.objectContaining({
-        source: "markra://documents/mock.md",
+        source: "helbaron://documents/mock.md",
         target: "/documents/documents/mock.md",
         view,
       }),
@@ -322,8 +322,8 @@ describe("linksPlugin", () => {
     const open = vi.fn();
     const view = createView(doc, { open }, doc.indexOf("Unsafe"));
 
-    expect(listMarkraUi(view, "context-menu")).toEqual([]);
-    expect(runMarkraCommand(view, "link.open")).toBe(false);
+    expect(listHelbaronUi(view, "context-menu")).toEqual([]);
+    expect(runHelbaronCommand(view, "link.open")).toBe(false);
     expect(open).not.toHaveBeenCalled();
   });
 
@@ -331,7 +331,7 @@ describe("linksPlugin", () => {
     const doc = "Read [Synthetic guide](https://example.test/guide) now\n\nEdit";
     const open = vi.fn();
     const view = createView(doc, { activation: "click", open });
-    const link = view.dom.querySelector<HTMLElement>(".cm-markra-link");
+    const link = view.dom.querySelector<HTMLElement>(".cm-helbaron-link");
     const pointerDown = new MouseEvent("mousedown", {
       bubbles: true,
       button: 0,

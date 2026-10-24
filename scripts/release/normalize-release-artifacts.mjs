@@ -334,7 +334,7 @@ function createWindowsPortableZip(releaseRoot, bundleRoot, context) {
     });
   }
 
-  const manifestName = "markra-portable.json";
+  const manifestName = "helbaron-portable.json";
   const manifest = {
     formatVersion: 1,
     executable: `${productName}.exe`,
@@ -349,8 +349,8 @@ function createWindowsPortableZip(releaseRoot, bundleRoot, context) {
   writeZip(outputPath, portableFiles);
 }
 
-const appSlug = process.env.APP_SLUG?.trim() || "markra";
-const productName = process.env.APP_PRODUCT_NAME?.trim() || "Markra";
+const appSlug = process.env.APP_SLUG?.trim() || "helbaron";
+const productName = process.env.APP_PRODUCT_NAME?.trim() || "Helbaron";
 const desktopDir = process.env.DESKTOP_DIR?.trim() || "apps/desktop";
 const target = requireEnv("TARGET");
 const platform = requireEnv("ASSET_PLATFORM");

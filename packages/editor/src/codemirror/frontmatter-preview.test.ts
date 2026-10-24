@@ -51,9 +51,9 @@ describe("frontmatterPreviewPlugin", () => {
     },
   ])("renders leading $kind metadata without changing source", ({ kind, source }) => {
     const view = createView(source);
-    const preview = view.dom.querySelector<HTMLElement>(".cm-markra-frontmatter");
+    const preview = view.dom.querySelector<HTMLElement>(".cm-helbaron-frontmatter");
     const editor = preview?.querySelector<HTMLTextAreaElement>(
-      ".cm-markra-frontmatter-editor",
+      ".cm-helbaron-frontmatter-editor",
     );
 
     expect(preview?.dataset.frontmatterKind).toBe(kind);
@@ -65,20 +65,20 @@ describe("frontmatterPreviewPlugin", () => {
     const source = ["---", "title: Synthetic", "---", "", "# Body"].join("\n");
     const view = createView(source);
     const editor = view.dom.querySelector<HTMLTextAreaElement>(
-      ".cm-markra-frontmatter-editor",
+      ".cm-helbaron-frontmatter-editor",
     );
     const label = view.dom.querySelector<HTMLElement>(
-      ".cm-markra-frontmatter-label",
+      ".cm-helbaron-frontmatter-label",
     );
 
     expect(editor?.value).toBe("title: Synthetic");
-    expect(view.dom.querySelector(".cm-markra-frontmatter")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-frontmatter")).not.toBeNull();
     const labelFontFamily = label && getComputedStyle(label).fontFamily;
     expect(labelFontFamily).toContain("var(--font-ui");
     expect(labelFontFamily).toContain("Noto Sans SC Variable");
     expect(editor && getComputedStyle(editor).fontFamily).toContain("ui-monospace");
     expect(
-      [...view.dom.querySelectorAll<HTMLElement>(".cm-markra-frontmatter-hidden-line")]
+      [...view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-frontmatter-hidden-line")]
         .every((line) => getComputedStyle(line).display === "none"),
     ).toBe(true);
 
@@ -88,8 +88,8 @@ describe("frontmatterPreviewPlugin", () => {
       editor.dispatchEvent(new InputEvent("input", { bubbles: true }));
     }
     expect(view.state.doc.toString()).toBe("---\ntitle: Mock\n---\n\n# Body");
-    expect(view.dom.querySelectorAll(".cm-markra-h1")).toHaveLength(1);
-    expect(view.dom.querySelector(".cm-markra-frontmatter-editor")).toBe(editor);
+    expect(view.dom.querySelectorAll(".cm-helbaron-h1")).toHaveLength(1);
+    expect(view.dom.querySelector(".cm-helbaron-frontmatter-editor")).toBe(editor);
     expect(view.dom.ownerDocument.activeElement).toBe(editor);
   });
 
@@ -97,7 +97,7 @@ describe("frontmatterPreviewPlugin", () => {
     const source = ["+++", 'title = ""', "+++", "", "# Body"].join("\n");
     const view = createView(source);
     const editor = view.dom.querySelector<HTMLTextAreaElement>(
-      ".cm-markra-frontmatter-editor",
+      ".cm-helbaron-frontmatter-editor",
     );
 
     editor?.focus();
@@ -139,8 +139,8 @@ describe("frontmatterPreviewPlugin", () => {
   it("ignores non-leading or malformed metadata", () => {
     const malformed = createView('{"title":"Synthetic",}\n\n# Body');
     const nonLeading = createView("# Intro\n\n---\ntitle: Synthetic\n---");
-    expect(malformed.dom.querySelector(".cm-markra-frontmatter")).toBeNull();
-    expect(nonLeading.dom.querySelector(".cm-markra-frontmatter")).toBeNull();
+    expect(malformed.dom.querySelector(".cm-helbaron-frontmatter")).toBeNull();
+    expect(nonLeading.dom.querySelector(".cm-helbaron-frontmatter")).toBeNull();
   });
 
   it("creates an editable YAML card when the opening delimiter is confirmed", () => {
@@ -157,14 +157,14 @@ describe("frontmatterPreviewPlugin", () => {
     expect(view.state.doc.toString()).toBe("---\n\n---");
     expect(view.state.selection.main.head).toBe(4);
     expect(
-      view.dom.querySelector<HTMLTextAreaElement>(".cm-markra-frontmatter-editor")
+      view.dom.querySelector<HTMLTextAreaElement>(".cm-helbaron-frontmatter-editor")
         ?.value,
     ).toBe("");
     expect(view.dom.ownerDocument.activeElement).toBe(
-      view.dom.querySelector(".cm-markra-frontmatter-editor"),
+      view.dom.querySelector(".cm-helbaron-frontmatter-editor"),
     );
     expect(
-      [...view.dom.querySelectorAll<HTMLElement>(".cm-markra-frontmatter-hidden-line")]
+      [...view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-frontmatter-hidden-line")]
         .every((line) => getComputedStyle(line).display === "none"),
     ).toBe(true);
   });
@@ -173,7 +173,7 @@ describe("frontmatterPreviewPlugin", () => {
     const source = ["---", "title: Synthetic", "---", "", "# Body"].join("\n");
     const view = createView(source);
     const editor = view.dom.querySelector<HTMLTextAreaElement>(
-      ".cm-markra-frontmatter-editor",
+      ".cm-helbaron-frontmatter-editor",
     );
     editor?.focus();
     editor?.setSelectionRange(0, editor.value.length);
@@ -187,7 +187,7 @@ describe("frontmatterPreviewPlugin", () => {
 
     expect(deletion.defaultPrevented).toBe(true);
     expect(view.state.doc.toString()).toBe("# Body");
-    expect(view.dom.querySelector(".cm-markra-frontmatter")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-frontmatter")).toBeNull();
     expect(view.dom.textContent).not.toContain("---");
   });
 
@@ -222,7 +222,7 @@ describe("frontmatterPreviewPlugin", () => {
     view.dispatch({ selection: EditorSelection.range(0, source.length) });
 
     expect(
-      view.dom.querySelector<HTMLTextAreaElement>(".cm-markra-frontmatter-editor")
+      view.dom.querySelector<HTMLTextAreaElement>(".cm-helbaron-frontmatter-editor")
         ?.value,
     ).toContain("Synthetic");
   });
@@ -236,7 +236,7 @@ describe("frontmatterPreviewPlugin", () => {
       "# Body",
     ].join("\n");
     const view = createView(source);
-    const preview = view.dom.querySelector<HTMLElement>(".cm-markra-frontmatter");
+    const preview = view.dom.querySelector<HTMLElement>(".cm-helbaron-frontmatter");
     const style = preview && getComputedStyle(preview);
 
     expect(style?.boxSizing).toBe("border-box");

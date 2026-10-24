@@ -210,7 +210,7 @@ struct AttachmentStaging {
 fn create_attachment_staging(target_folder: &Dir) -> Result<AttachmentStaging, String> {
     for _ in 0..1000 {
         let sequence = ATTACHMENT_STAGING_SEQUENCE.fetch_add(1, Ordering::Relaxed);
-        let name = format!(".markra-attachment-{}-{sequence}", std::process::id());
+        let name = format!(".helbaron-attachment-{}-{sequence}", std::process::id());
         match target_folder.create_dir(&name) {
             Ok(()) => {}
             Err(error) if error.kind() == io::ErrorKind::AlreadyExists => continue,
@@ -775,7 +775,7 @@ mod tests {
         fn new() -> Self {
             let sequence = ATTACHMENT_FIXTURE_SEQUENCE.fetch_add(1, Ordering::Relaxed);
             let root = std::env::temp_dir().join(format!(
-                "markra-attachment-test-{}-{sequence}",
+                "helbaron-attachment-test-{}-{sequence}",
                 std::time::SystemTime::now()
                     .duration_since(std::time::UNIX_EPOCH)
                     .expect("system clock should be after epoch")
@@ -850,7 +850,7 @@ mod tests {
 
         let fixture = AttachmentFixture::new();
         let outside = std::env::temp_dir().join(format!(
-            "markra-attachment-outside-test-{}",
+            "helbaron-attachment-outside-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1111,7 +1111,7 @@ mod tests {
     #[test]
     fn saves_clipboard_attachments_below_the_current_markdown_file_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-clipboard-attachment-test-{}",
+            "helbaron-clipboard-attachment-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

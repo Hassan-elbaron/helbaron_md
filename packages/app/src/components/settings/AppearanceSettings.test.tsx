@@ -279,7 +279,7 @@ describe("AppearanceSettings", () => {
 
   it("exports custom theme CSS as a stylesheet file", async () => {
     const css = ":root[data-theme=\"custom\"] { --accent: #8fbcbb; }";
-    const objectUrl = "blob:markra-custom-theme";
+    const objectUrl = "blob:helbaron-custom-theme";
     const createObjectUrl = vi.spyOn(URL, "createObjectURL").mockReturnValue(objectUrl);
     const revokeObjectUrl = vi.spyOn(URL, "revokeObjectURL").mockImplementation(() => {});
     const clickAnchor = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});

@@ -280,8 +280,8 @@ export function decorateRawHtmlRoot(
   rawHtml: string,
   editing = false,
 ) {
-  root.classList.add("markra-html-node");
-  root.classList.toggle("markra-html-node-editing", editing);
+  root.classList.add("helbaron-html-node");
+  root.classList.toggle("helbaron-html-node-editing", editing);
   root.dataset.type = "html";
   root.dataset.value = rawHtml;
   root.contentEditable = "false";

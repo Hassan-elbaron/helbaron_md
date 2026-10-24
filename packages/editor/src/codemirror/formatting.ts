@@ -7,9 +7,9 @@ import {
 } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
 import {
-  defineMarkraPlugin,
-  type MarkraCommand,
-  type MarkraUiContribution,
+  defineHelbaronPlugin,
+  type HelbaronCommand,
+  type HelbaronUiContribution,
 } from "./plugin.ts";
 
 export type FormattingCommandId =
@@ -252,7 +252,7 @@ function formattingCommand(
   spec: FormattingSpec,
   labels: FormattingLabels,
   keybindings: boolean,
-): MarkraCommand {
+): HelbaronCommand {
   return {
     id: spec.id,
     label: labels[spec.id],
@@ -265,7 +265,7 @@ function formattingCommand(
   };
 }
 
-function formattingUi(spec: FormattingSpec): MarkraUiContribution {
+function formattingUi(spec: FormattingSpec): HelbaronUiContribution {
   return {
     command: spec.id,
     group: "format",
@@ -279,8 +279,8 @@ export function formattingPlugin(options: FormattingPluginOptions = {}) {
   const labels = { ...defaultFormattingLabels, ...options.labels };
   const keybindings = options.keybindings ?? true;
 
-  return defineMarkraPlugin({
-    id: "markra.formatting",
+  return defineHelbaronPlugin({
+    id: "helbaron.formatting",
     commands: formattingSpecs.map((spec) =>
       formattingCommand(spec, labels, keybindings)),
     ui: formattingSpecs.map(formattingUi),

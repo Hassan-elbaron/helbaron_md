@@ -4,8 +4,8 @@ import {
   createDefaultAiSettings,
   fetchAiProviderModels,
   testAiProviderConnection
-} from "@markra/providers";
-import { t, type I18nKey } from "@markra/shared";
+} from "@helbaron/providers";
+import { t, type I18nKey } from "@helbaron/shared";
 import {
   getStoredAiSettings,
   getStoredAcpAgentSettings,
@@ -141,7 +141,7 @@ export type SettingsCategory =
 
 export type SettingsFocusTarget = "pandocPath";
 
-const settingsExportSuggestedName = "markra-settings.json";
+const settingsExportSuggestedName = "helbaron-settings.json";
 
 function settingsTargetFromSearch(search: string): NativeSettingsWindowTarget | null {
   const target = new URLSearchParams(search).get("settingsTarget");

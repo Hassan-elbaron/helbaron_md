@@ -10,13 +10,13 @@ import {
   type PortableStoredAppSettings
 } from "./app-settings";
 
-const settingsBackupFormat = "markra-settings-backup";
+const settingsBackupFormat = "helbaron-settings-backup";
 const settingsBackupVersion = 1;
-const legacySettingsExportFormat = "markra-settings";
-const invalidSettingsBackupFileMessage = "Invalid Markra settings backup file.";
+const legacySettingsExportFormat = "helbaron-settings";
+const invalidSettingsBackupFileMessage = "Invalid Helbaron settings backup file.";
 
-export const settingsBackupRemotePath = "markra/settings/markra-settings.json";
-export const settingsBackupFileSuggestedName = "markra-settings-backup.json";
+export const settingsBackupRemotePath = "helbaron/settings/helbaron-settings.json";
+export const settingsBackupFileSuggestedName = "helbaron-settings-backup.json";
 
 export type SettingsBackupProvider = ImageUploadProvider;
 

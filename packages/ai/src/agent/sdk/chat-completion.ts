@@ -9,7 +9,7 @@ import { createOpenAI, openai } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createTogetherAI } from "@ai-sdk/togetherai";
 import { createXai } from "@ai-sdk/xai";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import {
   buildAnthropicThinkingRequestOptions,
   buildDeepSeekThinkingRequestOptions,
@@ -17,8 +17,8 @@ import {
   providerRequiresApiKey,
   readAiProviderCustomHeaders,
   requestStyleForProviderType
-} from "@markra/providers";
-import { isRecord } from "@markra/shared";
+} from "@helbaron/providers";
+import { isRecord } from "@helbaron/shared";
 import type { Tool as PiTool } from "@earendil-works/pi-ai";
 import {
   jsonSchema,

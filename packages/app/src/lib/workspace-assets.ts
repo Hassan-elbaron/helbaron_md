@@ -3,7 +3,7 @@ import {
   resolveAssetFolder,
   type MarkdownAssetReference,
   resolveMarkdownLocalPath
-} from "@markra/markdown";
+} from "@helbaron/markdown";
 import { normalizeComparablePath } from "./path-move";
 
 export type WorkspaceAssetFile = {

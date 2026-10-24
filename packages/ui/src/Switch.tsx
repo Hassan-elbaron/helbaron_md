@@ -38,7 +38,7 @@ export function Switch({
       {...props}
     >
       <span
-        className="inline-block size-3.5 translate-x-0.75 rounded-full bg-(--text-secondary) transition-transform duration-150 ease-out aria-checked:translate-x-4.5 aria-checked:bg-(--bg-primary)"
+        className="inline-block size-3.5 translate-x-0.75 rounded-full bg-(--text-secondary) transition-transform duration-150 ease-out aria-checked:translate-x-4.5 aria-checked:bg-(--bg-primary) rtl:-translate-x-0.75 rtl:aria-checked:-translate-x-4.5"
         aria-checked={checked}
       />
     </button>

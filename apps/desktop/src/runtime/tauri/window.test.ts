@@ -121,7 +121,7 @@ describe("native window actions", () => {
     onEvent();
     await Promise.resolve(stopListening());
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://app-exit-requested", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://app-exit-requested", expect.any(Function));
     expect(onExitRequested).toHaveBeenCalledTimes(1);
     expect(cleanup).toHaveBeenCalledTimes(1);
   });
@@ -197,9 +197,9 @@ describe("native window actions", () => {
   });
 
   it("reads the current Tauri window label", async () => {
-    mockedGetCurrentWindow.mockReturnValue({ label: "markra-editor-1" } as unknown as ReturnType<typeof getCurrentWindow>);
+    mockedGetCurrentWindow.mockReturnValue({ label: "helbaron-editor-1" } as unknown as ReturnType<typeof getCurrentWindow>);
 
-    await expect(getCurrentNativeWindowLabel()).resolves.toBe("markra-editor-1");
+    await expect(getCurrentNativeWindowLabel()).resolves.toBe("helbaron-editor-1");
   });
 
   it("applies interface zoom to the current Tauri webview", async () => {
@@ -317,7 +317,7 @@ describe("native window actions", () => {
     onEvent({ payload: { target: "unknown" } });
     await Promise.resolve(stopListening());
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://settings-window-target", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://settings-window-target", expect.any(Function));
     expect(onTarget).toHaveBeenCalledTimes(1);
     expect(onTarget).toHaveBeenCalledWith("exportPandocPath");
     expect(cleanup).toHaveBeenCalledTimes(1);

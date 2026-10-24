@@ -120,7 +120,7 @@ export function MacWindowControls({
 
   return (
     <div
-      className={`mac-window-controls group/window-controls flex h-10 select-none items-center gap-2 pl-4 pr-2 [-webkit-user-select:none] ${className}`}
+      className={`mac-window-controls group/window-controls flex h-10 select-none items-center gap-2 ps-4 pe-2 [-webkit-user-select:none] ${className}`}
       aria-hidden={false}
     >
       <WindowControlButton

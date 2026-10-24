@@ -11,7 +11,7 @@ function runResolver(releaseTag) {
     encoding: "utf8",
     env: {
       ...process.env,
-      GITHUB_REPOSITORY: "example/markra",
+      GITHUB_REPOSITORY: "example/helbaron",
       RELEASE_TAG: releaseTag,
     },
   });
@@ -21,7 +21,7 @@ test("resolve-updater-endpoint keeps stable releases on the GitHub latest channe
   const result = runResolver("v2.0.0");
 
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(result.stdout.trim(), "https://github.com/example/markra/releases/latest/download/latest.json");
+  assert.equal(result.stdout.trim(), "https://github.com/example/helbaron/releases/latest/download/latest.json");
 });
 
 test("resolve-updater-endpoint routes prereleases to the rolling preview channel", () => {
@@ -29,6 +29,6 @@ test("resolve-updater-endpoint routes prereleases to the rolling preview channel
     const result = runResolver(releaseTag);
 
     assert.equal(result.status, 0, result.stderr);
-    assert.equal(result.stdout.trim(), "https://github.com/example/markra/releases/download/preview/latest.json");
+    assert.equal(result.stdout.trim(), "https://github.com/example/helbaron/releases/download/preview/latest.json");
   }
 });

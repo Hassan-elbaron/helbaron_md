@@ -14,7 +14,7 @@ import {
   type EditorView as CodeMirrorView,
   type ViewUpdate,
 } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
 export type CodeMirrorFrontmatterKind = "json" | "toml" | "yaml";
 
@@ -156,15 +156,15 @@ class FrontmatterWidget extends WidgetType {
   }
 
   updateDOM(dom: HTMLElement, view: CodeMirrorView) {
-    if (!dom.classList.contains("cm-markra-frontmatter")) return false;
+    if (!dom.classList.contains("cm-helbaron-frontmatter")) return false;
     this.syncDOM(dom, view);
     return true;
   }
 
   private syncDOM(root: HTMLElement, view: CodeMirrorView) {
-    const label = root.querySelector<HTMLElement>(".cm-markra-frontmatter-label");
+    const label = root.querySelector<HTMLElement>(".cm-helbaron-frontmatter-label");
     const editor = root.querySelector<HTMLTextAreaElement>(
-      ".cm-markra-frontmatter-editor",
+      ".cm-helbaron-frontmatter-editor",
     );
     root.dataset.frontmatterKind = this.range.kind;
     label?.replaceChildren(this.range.kind.toUpperCase());
@@ -183,10 +183,10 @@ class FrontmatterWidget extends WidgetType {
     const label = document.createElement("span");
     const editor = document.createElement("textarea");
 
-    root.className = "cm-markra-frontmatter markra-frontmatter";
+    root.className = "cm-helbaron-frontmatter helbaron-frontmatter";
     root.dataset.type = "frontmatter";
-    label.className = "cm-markra-frontmatter-label";
-    editor.className = "cm-markra-frontmatter-editor";
+    label.className = "cm-helbaron-frontmatter-label";
+    editor.className = "cm-helbaron-frontmatter-editor";
     editor.setAttribute(
       "aria-label",
       `Edit ${this.range.kind.toUpperCase()} frontmatter`,
@@ -211,7 +211,7 @@ class FrontmatterWidget extends WidgetType {
         userEvent: "input",
       });
       const nextEditor = view.dom.querySelector<HTMLTextAreaElement>(
-        ".cm-markra-frontmatter-editor",
+        ".cm-helbaron-frontmatter-editor",
       );
       // Updating the hidden Markdown lines may rebuild CodeMirror's line DOM.
       // Restore the textarea focus so continuous typing never drops a character.
@@ -274,7 +274,7 @@ function buildFrontmatterDecorations(view: CodeMirrorView) {
     if (line.from >= segmentTo) continue;
     if (segmentTo === line.to) {
       decorations.push(
-        Decoration.line({ class: "cm-markra-frontmatter-hidden-line" }).range(
+        Decoration.line({ class: "cm-helbaron-frontmatter-hidden-line" }).range(
           line.from,
         ),
       );
@@ -303,7 +303,7 @@ function createLeadingYamlFrontmatter(view: CodeMirrorView) {
     userEvent: "input",
   });
   view.dom.querySelector<HTMLTextAreaElement>(
-    ".cm-markra-frontmatter-editor",
+    ".cm-helbaron-frontmatter-editor",
   )?.focus();
   return true;
 }
@@ -328,10 +328,10 @@ function removeFrontmatterAtBoundary(
 }
 
 const frontmatterTheme = EditorView.baseTheme({
-  ".cm-markra-frontmatter-hidden-line": {
+  ".cm-helbaron-frontmatter-hidden-line": {
     display: "none",
   },
-  ".cm-markra-frontmatter": {
+  ".cm-helbaron-frontmatter": {
     background: "color-mix(in srgb, currentColor 4%, transparent)",
     border: "1px solid color-mix(in srgb, currentColor 14%, transparent)",
     borderRadius: "0.5em",
@@ -344,7 +344,7 @@ const frontmatterTheme = EditorView.baseTheme({
     whiteSpace: "pre-wrap",
     width: "100%",
   },
-  ".cm-markra-frontmatter-label": {
+  ".cm-helbaron-frontmatter-label": {
     display: "block",
     fontFamily: 'var(--font-ui, "Noto Sans SC Variable", sans-serif)',
     fontSize: "0.72em",
@@ -352,7 +352,7 @@ const frontmatterTheme = EditorView.baseTheme({
     marginBottom: "0.4em",
     opacity: "0.55",
   },
-  ".cm-markra-frontmatter-editor": {
+  ".cm-helbaron-frontmatter-editor": {
     background: "transparent",
     border: "0",
     color: "inherit",
@@ -374,14 +374,14 @@ const frontmatterTheme = EditorView.baseTheme({
     whiteSpace: "pre-wrap",
     width: "100%",
   },
-  ".cm-markra-frontmatter-editor::selection": {
+  ".cm-helbaron-frontmatter-editor::selection": {
     background: "color-mix(in srgb, Highlight 72%, transparent)",
   },
 });
 
 export function frontmatterPreviewPlugin() {
-  return defineMarkraPlugin({
-    id: "markra.frontmatter-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.frontmatter-preview",
     extension: [
       ViewPlugin.fromClass(
         class {

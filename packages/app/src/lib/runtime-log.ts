@@ -5,7 +5,7 @@ import {
   sanitizeDiagnosticText,
   stringifyDiagnosticValue,
   type DiagnosticDetailValue
-} from "@markra/shared";
+} from "@helbaron/shared";
 import { appLogger, registerAppLogSink, type AppLogArea, type AppLogEvent, type AppLogLevel } from "./app-logger";
 
 export type RuntimeLogLevel = AppLogLevel;
@@ -34,8 +34,8 @@ type RuntimeLogErrorInput = {
   message: string;
 };
 
-const runtimeLogStorageKey = "markra.runtimeLog.entries";
-const runtimeLogChangedEvent = "markra:runtime-log-changed";
+const runtimeLogStorageKey = "helbaron.runtimeLog.entries";
+const runtimeLogChangedEvent = "helbaron:runtime-log-changed";
 const defaultRuntimeLogEntryLimit = 200;
 const runtimeLogAreas = [
   "ai",

@@ -1,17 +1,17 @@
 import {
-  getMarkraDocumentLinksState,
-  getMarkraSlashMenuState,
-  listMarkraUi,
-  type MarkraDocumentLinksState,
-  type MarkraSlashMenuState,
-  type MarkraUiAction,
-  type MarkraUiPlacement,
-} from "@markra/editor/codemirror";
+  getHelbaronDocumentLinksState,
+  getHelbaronSlashMenuState,
+  listHelbaronUi,
+  type HelbaronDocumentLinksState,
+  type HelbaronSlashMenuState,
+  type HelbaronUiAction,
+  type HelbaronUiPlacement,
+} from "@helbaron/editor/codemirror";
 import { useEffect, useMemo, useState } from "react";
-import { useMarkraEditorContext } from "./MarkraEditorProvider.tsx";
+import { useHelbaronEditorContext } from "./HelbaronEditorProvider.tsx";
 
-const emptyActions: readonly MarkraUiAction[] = [];
-const emptySlashMenu: MarkraSlashMenuState = {
+const emptyActions: readonly HelbaronUiAction[] = [];
+const emptySlashMenu: HelbaronSlashMenuState = {
   actions: emptyActions,
   from: null,
   open: false,
@@ -20,7 +20,7 @@ const emptySlashMenu: MarkraSlashMenuState = {
   source: null,
   to: null,
 };
-const emptyDocumentLinks: MarkraDocumentLinksState = {
+const emptyDocumentLinks: HelbaronDocumentLinksState = {
   from: null,
   items: [],
   open: false,
@@ -29,14 +29,14 @@ const emptyDocumentLinks: MarkraDocumentLinksState = {
   to: null,
 };
 
-export interface MarkraEditorSelectionToolbarState {
-  readonly actions: readonly MarkraUiAction[];
+export interface HelbaronEditorSelectionToolbarState {
+  readonly actions: readonly HelbaronUiAction[];
   readonly from: number | null;
   readonly open: boolean;
   readonly to: number | null;
 }
 
-export interface MarkraEditorUiAnchor {
+export interface HelbaronEditorUiAnchor {
   readonly left: number;
   readonly top: number;
 }
@@ -48,8 +48,8 @@ function useMeasuredAnchor(
   to: number | null,
   mode: AnchorMode,
 ) {
-  const { revision, view } = useMarkraEditorContext();
-  const [anchor, setAnchor] = useState<MarkraEditorUiAnchor | null>(null);
+  const { revision, view } = useHelbaronEditorContext();
+  const [anchor, setAnchor] = useState<HelbaronEditorUiAnchor | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -95,49 +95,49 @@ function useMeasuredAnchor(
   return anchor;
 }
 
-export function useMarkraEditorCaretAnchor(position: number | null) {
+export function useHelbaronEditorCaretAnchor(position: number | null) {
   return useMeasuredAnchor(position, position, "caret");
 }
 
-export function useMarkraEditorSelectionAnchor(
+export function useHelbaronEditorSelectionAnchor(
   from: number | null,
   to: number | null,
 ) {
   return useMeasuredAnchor(from, to, "selection");
 }
 
-export function useMarkraEditorUi(placement: MarkraUiPlacement) {
-  const { revision, view } = useMarkraEditorContext();
+export function useHelbaronEditorUi(placement: HelbaronUiPlacement) {
+  const { revision, view } = useHelbaronEditorContext();
   return useMemo(
-    () => (view ? listMarkraUi(view, placement) : emptyActions),
+    () => (view ? listHelbaronUi(view, placement) : emptyActions),
     [placement, revision, view],
   );
 }
 
-export function useMarkraEditorSlashMenu() {
-  const { revision, view } = useMarkraEditorContext();
+export function useHelbaronEditorSlashMenu() {
+  const { revision, view } = useHelbaronEditorContext();
   return useMemo(
-    () => (view ? getMarkraSlashMenuState(view) : emptySlashMenu),
+    () => (view ? getHelbaronSlashMenuState(view) : emptySlashMenu),
     [revision, view],
   );
 }
 
-export function useMarkraEditorDocumentLinks() {
-  const { revision, view } = useMarkraEditorContext();
+export function useHelbaronEditorDocumentLinks() {
+  const { revision, view } = useHelbaronEditorContext();
   return useMemo(
-    () => (view ? getMarkraDocumentLinksState(view) : emptyDocumentLinks),
+    () => (view ? getHelbaronDocumentLinksState(view) : emptyDocumentLinks),
     [revision, view],
   );
 }
 
-export function useMarkraEditorSelectionToolbar(): MarkraEditorSelectionToolbarState {
-  const { revision, view } = useMarkraEditorContext();
+export function useHelbaronEditorSelectionToolbar(): HelbaronEditorSelectionToolbarState {
+  const { revision, view } = useHelbaronEditorContext();
   return useMemo(() => {
     if (!view) {
       return { actions: emptyActions, from: null, open: false, to: null };
     }
 
-    const actions = listMarkraUi(view, "selection-toolbar");
+    const actions = listHelbaronUi(view, "selection-toolbar");
     const selection = view.state.selection.main;
     const open = !selection.empty && actions.some((action) => action.enabled);
     return {

@@ -12,15 +12,15 @@ import {
   documentLinksPlugin,
   formattingPlugin,
   liveMarkdown,
-} from "@markra/editor/codemirror";
+} from "@helbaron/editor/codemirror";
 import {
-  MarkraEditorProvider,
-  markraEditorReactBridge,
-  useMarkraEditorCaretAnchor,
-  useMarkraEditorDocumentLinks,
-  useMarkraEditorSelectionToolbar,
-  useMarkraEditorSlashMenu,
-  useMarkraEditorUi,
+  HelbaronEditorProvider,
+  helbaronEditorReactBridge,
+  useHelbaronEditorCaretAnchor,
+  useHelbaronEditorDocumentLinks,
+  useHelbaronEditorSelectionToolbar,
+  useHelbaronEditorSlashMenu,
+  useHelbaronEditorUi,
 } from "./index.ts";
 
 const roots: Root[] = [];
@@ -65,7 +65,7 @@ function createView({
       selection,
       extensions: [
         liveMarkdown({ plugins, slashMenu }),
-        markraEditorReactBridge,
+        helbaronEditorReactBridge,
       ],
     }),
   });
@@ -79,13 +79,13 @@ function render(view: EditorView | null, children: ReactNode) {
   const root = createRoot(host);
   roots.push(root);
   act(() =>
-    root.render(<MarkraEditorProvider view={view}>{children}</MarkraEditorProvider>),
+    root.render(<HelbaronEditorProvider view={view}>{children}</HelbaronEditorProvider>),
   );
   return host;
 }
 
 function SlashProbe() {
-  const menu = useMarkraEditorSlashMenu();
+  const menu = useHelbaronEditorSlashMenu();
   return (
     <section data-open={menu.open} data-query={menu.query}>
       {menu.actions.map((action, index) => (
@@ -103,7 +103,7 @@ function SlashProbe() {
 }
 
 function FormattingProbe() {
-  const actions = useMarkraEditorUi("selection-toolbar");
+  const actions = useHelbaronEditorUi("selection-toolbar");
   return (
     <div>
       {actions.map((action) => (
@@ -121,7 +121,7 @@ function FormattingProbe() {
 }
 
 function DocumentLinksProbe() {
-  const completion = useMarkraEditorDocumentLinks();
+  const completion = useHelbaronEditorDocumentLinks();
   return (
     <section data-open={completion.open} data-query={completion.query}>
       {completion.items.map((item, index) => (
@@ -139,7 +139,7 @@ function DocumentLinksProbe() {
 }
 
 function SelectionProbe() {
-  const toolbar = useMarkraEditorSelectionToolbar();
+  const toolbar = useHelbaronEditorSelectionToolbar();
   return (
     <section
       data-actions={toolbar.actions.length}
@@ -151,7 +151,7 @@ function SelectionProbe() {
 }
 
 function AnchorProbe() {
-  const anchor = useMarkraEditorCaretAnchor(0);
+  const anchor = useHelbaronEditorCaretAnchor(0);
   return <section data-left={anchor?.left ?? ""} data-top={anchor?.top ?? ""} />;
 }
 
@@ -170,7 +170,7 @@ afterEach(() => {
   document.body.replaceChildren();
 });
 
-describe("@markra/editor-react", () => {
+describe("@helbaron/editor-react", () => {
   it("publishes slash-menu state and rerenders after editor updates", () => {
     const view = createView({ doc: "/", slashMenu: true });
     const host = render(view, <SlashProbe />);

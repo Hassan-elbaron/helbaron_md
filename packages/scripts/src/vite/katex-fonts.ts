@@ -34,7 +34,7 @@ export function katexFontsPlugin(): Plugin {
   return {
     apply: "build",
     enforce: "post",
-    name: "markra-katex-fonts",
+    name: "helbaron-katex-fonts",
     generateBundle(_options, bundle) {
       const cssSources: string[] = [];
 

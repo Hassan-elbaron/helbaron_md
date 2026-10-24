@@ -1,4 +1,4 @@
-import { getStoredNetworkSettings, type NetworkSettings } from "@markra/app/settings";
+import { getStoredNetworkSettings, type NetworkSettings } from "@helbaron/app/settings";
 
 export type NativeNetworkSettings = NetworkSettings;
 

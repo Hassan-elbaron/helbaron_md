@@ -74,7 +74,7 @@ function findMenuItemById(items: TestMenuItem[], id: string): TestActionMenuItem
 }
 
 function domMenu() {
-  return document.querySelector("[data-markra-context-menu]");
+  return document.querySelector("[data-helbaron-context-menu]");
 }
 
 function domMenuItemById(id: string) {
@@ -144,7 +144,7 @@ describe("native menu", () => {
     const stopListening = await listenNativeApplicationMenuCommands(handlers);
     const listener = mockedListen.mock.calls[0]?.[1];
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://menu-command", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://menu-command", expect.any(Function));
 
     await listener?.({ payload: { command: "openDocument" } } as Parameters<NonNullable<typeof listener>>[0]);
     await listener?.({ payload: { command: "openRecentFile", recentFile } } as Parameters<NonNullable<typeof listener>>[0]);
@@ -178,7 +178,7 @@ describe("native menu", () => {
       syncNow: "Mod+Shift+U"
     }, recentFiles);
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://menu-command", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://menu-command", expect.any(Function));
     expect(mockedInvoke).toHaveBeenCalledWith("install_application_menu", {
       accelerators: {
         formatBold: "CmdOrCtrl+Alt+B",
@@ -230,7 +230,7 @@ describe("native menu", () => {
     await listener?.({
       payload: {
         command: "toggleSourceMode",
-        targetWindowLabel: "markra-editor-1"
+        targetWindowLabel: "helbaron-editor-1"
       }
     } as unknown as Parameters<NonNullable<typeof listener>>[0]);
 
@@ -271,7 +271,7 @@ describe("native menu", () => {
     expect(popup).not.toHaveBeenCalled();
     expect(domMenu()).not.toBeNull();
 
-    const table = domMenuItemById("markra:context:table");
+    const table = domMenuItemById("helbaron:context:table");
     expect(table.textContent).toContain("Table");
     expect(table.textContent).toContain("Cmd/Ctrl+Shift+Alt+T");
 
@@ -304,8 +304,8 @@ describe("native menu", () => {
     });
     paragraph.dispatchEvent(event);
 
-    const menu = document.querySelector<HTMLElement>("[data-markra-context-menu]");
-    const boldItem = document.querySelector<HTMLButtonElement>("[data-menu-item-id='markra:context:bold']");
+    const menu = document.querySelector<HTMLElement>("[data-helbaron-context-menu]");
+    const boldItem = document.querySelector<HTMLButtonElement>("[data-menu-item-id='helbaron:context:bold']");
 
     expect(event.defaultPrevented).toBe(true);
     expect(mockedMenuNew).not.toHaveBeenCalled();
@@ -316,7 +316,7 @@ describe("native menu", () => {
     boldItem?.click();
 
     expect(bold).toHaveBeenCalledTimes(1);
-    expect(document.querySelector("[data-markra-context-menu]")).toBeNull();
+    expect(document.querySelector("[data-helbaron-context-menu]")).toBeNull();
 
     cleanup();
   });
@@ -337,7 +337,7 @@ describe("native menu", () => {
 
     paper.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
 
-    const bold = domMenuItemById("markra:context:bold");
+    const bold = domMenuItemById("helbaron:context:bold");
     expect(bold.textContent).toContain("Bold");
     expect(bold.textContent).toContain("Cmd/Ctrl+Alt+B");
   });
@@ -371,12 +371,12 @@ describe("native menu", () => {
     });
 
     paper.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
-    expect(domMenuItemById("markra:context:link").textContent).toContain("Link");
-    expect(domMenuItemById("markra:context:link").textContent).toContain("Cmd/Ctrl+Alt+K");
-    expect(domMenuItemById("markra:context:image").textContent).toContain("Image");
-    expect(domMenuItemById("markra:context:image").textContent).toContain("Cmd/Ctrl+Alt+I");
-    expect(domMenuItemById("markra:context:table").textContent).toContain("Table");
-    expect(domMenuItemById("markra:context:table").textContent).toContain("Cmd/Ctrl+Shift+T");
+    expect(domMenuItemById("helbaron:context:link").textContent).toContain("Link");
+    expect(domMenuItemById("helbaron:context:link").textContent).toContain("Cmd/Ctrl+Alt+K");
+    expect(domMenuItemById("helbaron:context:image").textContent).toContain("Image");
+    expect(domMenuItemById("helbaron:context:image").textContent).toContain("Cmd/Ctrl+Alt+I");
+    expect(domMenuItemById("helbaron:context:table").textContent).toContain("Table");
+    expect(domMenuItemById("helbaron:context:table").textContent).toContain("Cmd/Ctrl+Shift+T");
   });
 
   it("uses the native rich clipboard command for editor context menu paste", async () => {
@@ -410,7 +410,7 @@ describe("native menu", () => {
     await installNativeEditorContextMenu(target, {}, "en");
 
     paper.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
-    domMenuItemById("markra:context:paste").click();
+    domMenuItemById("helbaron:context:paste").click();
     await flushNativeMenuPopup();
     await flushNativeMenuPopup();
 
@@ -447,7 +447,7 @@ describe("native menu", () => {
     await installNativeEditorContextMenu(target, {}, "en");
 
     content.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
-    domMenuItemById("markra:context:paste-plain-text").click();
+    domMenuItemById("helbaron:context:paste-plain-text").click();
     await vi.waitFor(() => expect(paste).toHaveBeenCalledTimes(1));
 
     expect(mockedInvoke).toHaveBeenCalledWith("read_clipboard_text");
@@ -456,7 +456,7 @@ describe("native menu", () => {
     expect(clipboardEvent.clipboardData?.getData("text/plain")).toBe(
       "native clipboard text"
     );
-    expect(clipboardEvent.clipboardData?.getData("application/x-markra-plain-text-paste")).toBe("true");
+    expect(clipboardEvent.clipboardData?.getData("application/x-helbaron-plain-text-paste")).toBe("true");
   });
 
   it("pastes into the editor that opened the native context menu", async () => {
@@ -496,7 +496,7 @@ describe("native menu", () => {
     await installNativeEditorContextMenu(target, {}, "en");
 
     sideContent.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
-    domMenuItemById("markra:context:paste").click();
+    domMenuItemById("helbaron:context:paste").click();
     await vi.waitFor(() => expect(sidePaste).toHaveBeenCalledTimes(1));
 
     expect(mainPaste).not.toHaveBeenCalled();
@@ -570,39 +570,39 @@ describe("native menu", () => {
 
     openMenu();
 
-    expect(domMenuItemById("markra:context:format").textContent).toContain("Format");
-    expect(domMenuItemById("markra:context:strikethrough").textContent).toContain("Strikethrough");
-    expect(domMenuItemById("markra:context:inline-code").textContent).toContain("Inline Code");
-    expect(domMenuItemById("markra:context:heading-2").textContent).toContain("Heading 2");
-    expect(domMenuItemById("markra:context:ordered-list").textContent).toContain("Ordered List");
-    expect(domMenuItemById("markra:context:quote").textContent).toContain("Quote");
-    expect(domMenuItemById("markra:context:code-block").textContent).toContain("Code Block");
-    expect(domMenuItemById("markra:context:image").textContent).toContain("Image");
-    expect(domMenuItemById("markra:context:export").textContent).toContain("Export");
-    expect(domSubmenuById("markra:context:export").textContent).toContain("Export PDF");
-    expect(domSubmenuById("markra:context:export").textContent).toContain("Export HTML");
-    expect(domSubmenuById("markra:context:export").textContent).toContain("Export Markdown with attachments");
-    expect(domSubmenuById("markra:context:export").textContent).toContain("Export DOCX");
-    expect(domSubmenuById("markra:context:export").textContent).toContain("Export EPUB");
-    expect(domSubmenuById("markra:context:export").textContent).toContain("Export LaTeX");
+    expect(domMenuItemById("helbaron:context:format").textContent).toContain("Format");
+    expect(domMenuItemById("helbaron:context:strikethrough").textContent).toContain("Strikethrough");
+    expect(domMenuItemById("helbaron:context:inline-code").textContent).toContain("Inline Code");
+    expect(domMenuItemById("helbaron:context:heading-2").textContent).toContain("Heading 2");
+    expect(domMenuItemById("helbaron:context:ordered-list").textContent).toContain("Ordered List");
+    expect(domMenuItemById("helbaron:context:quote").textContent).toContain("Quote");
+    expect(domMenuItemById("helbaron:context:code-block").textContent).toContain("Code Block");
+    expect(domMenuItemById("helbaron:context:image").textContent).toContain("Image");
+    expect(domMenuItemById("helbaron:context:export").textContent).toContain("Export");
+    expect(domSubmenuById("helbaron:context:export").textContent).toContain("Export PDF");
+    expect(domSubmenuById("helbaron:context:export").textContent).toContain("Export HTML");
+    expect(domSubmenuById("helbaron:context:export").textContent).toContain("Export Markdown with attachments");
+    expect(domSubmenuById("helbaron:context:export").textContent).toContain("Export DOCX");
+    expect(domSubmenuById("helbaron:context:export").textContent).toContain("Export EPUB");
+    expect(domSubmenuById("helbaron:context:export").textContent).toContain("Export LaTeX");
 
-    domMenuItemById("markra:context:strikethrough").click();
+    domMenuItemById("helbaron:context:strikethrough").click();
     openMenu();
-    domMenuItemById("markra:context:code-block").click();
+    domMenuItemById("helbaron:context:code-block").click();
     openMenu();
-    domMenuItemById("markra:context:image").click();
+    domMenuItemById("helbaron:context:image").click();
     openMenu();
-    domMenuItemById("markra:context:export-pdf").click();
+    domMenuItemById("helbaron:context:export-pdf").click();
     openMenu();
-    domMenuItemById("markra:context:export-html").click();
+    domMenuItemById("helbaron:context:export-html").click();
     openMenu();
-    domMenuItemById("markra:context:export-markdown").click();
+    domMenuItemById("helbaron:context:export-markdown").click();
     openMenu();
-    domMenuItemById("markra:context:export-docx").click();
+    domMenuItemById("helbaron:context:export-docx").click();
     openMenu();
-    domMenuItemById("markra:context:export-epub").click();
+    domMenuItemById("helbaron:context:export-epub").click();
     openMenu();
-    domMenuItemById("markra:context:export-latex").click();
+    domMenuItemById("helbaron:context:export-latex").click();
 
     expect(handlers.formatStrikethrough).toHaveBeenCalledTimes(1);
     expect(handlers.formatCodeBlock).toHaveBeenCalledTimes(1);
@@ -633,30 +633,30 @@ describe("native menu", () => {
 
     paper.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
 
-    expect(queryDomMenuItemById("markra:context:ai")).toBeNull();
+    expect(queryDomMenuItemById("helbaron:context:ai")).toBeNull();
 
     aiCommandsAvailable = true;
 
     paper.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
 
-    const aiMenu = domMenuItemById("markra:context:ai");
+    const aiMenu = domMenuItemById("helbaron:context:ai");
     expect(aiMenu.textContent).toContain("AI toolkit");
     const aiActionItems = [
-      ["markra:context:ai-polish", "Polish"],
-      ["markra:context:ai-rewrite", "Rewrite"],
-      ["markra:context:ai-continue-writing", "Continue writing"],
-      ["markra:context:ai-summarize", "Summarize"],
-      ["markra:context:ai-translate", "Translate"]
+      ["helbaron:context:ai-polish", "Polish"],
+      ["helbaron:context:ai-rewrite", "Rewrite"],
+      ["helbaron:context:ai-continue-writing", "Continue writing"],
+      ["helbaron:context:ai-summarize", "Summarize"],
+      ["helbaron:context:ai-translate", "Translate"]
     ] as const;
 
     for (const [id, text] of aiActionItems) {
       expect(domMenuItemById(id).textContent).toContain(text);
     }
 
-    domMenuItemById("markra:context:ai-polish").click();
+    domMenuItemById("helbaron:context:ai-polish").click();
     aiCommandsAvailable = true;
     paper.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true }));
-    domMenuItemById("markra:context:ai-translate").click();
+    domMenuItemById("helbaron:context:ai-translate").click();
 
     expect(aiPolish).toHaveBeenCalledTimes(1);
     expect(aiTranslate).toHaveBeenCalledTimes(1);
@@ -692,28 +692,28 @@ describe("native menu", () => {
 
     await showMenu();
 
-    expect(domMenuItemById("markra:file-tree:new").textContent).toContain("New file");
-    expect(domMenuItemById("markra:file-tree:new-from-template").textContent).toContain("New from template");
-    expect(domMenuItemById("markra:file-tree:new-from-template:daily-note").textContent).toContain("Daily note");
-    expect(domMenuItemById("markra:file-tree:new-folder").textContent).toContain("New Folder");
-    expect(domMenuItemById("markra:file-tree:open-to-side").textContent).toContain("Open to side");
-    expect(domMenuItemById("markra:file-tree:save-as-template").textContent).toContain("Save as template");
-    expect(domMenuItemById("markra:file-tree:rename").textContent).toContain("Rename file");
-    expect(domMenuItemById("markra:file-tree:delete").textContent).toContain("Delete file");
+    expect(domMenuItemById("helbaron:file-tree:new").textContent).toContain("New file");
+    expect(domMenuItemById("helbaron:file-tree:new-from-template").textContent).toContain("New from template");
+    expect(domMenuItemById("helbaron:file-tree:new-from-template:daily-note").textContent).toContain("Daily note");
+    expect(domMenuItemById("helbaron:file-tree:new-folder").textContent).toContain("New Folder");
+    expect(domMenuItemById("helbaron:file-tree:open-to-side").textContent).toContain("Open to side");
+    expect(domMenuItemById("helbaron:file-tree:save-as-template").textContent).toContain("Save as template");
+    expect(domMenuItemById("helbaron:file-tree:rename").textContent).toContain("Rename file");
+    expect(domMenuItemById("helbaron:file-tree:delete").textContent).toContain("Delete file");
 
-    domMenuItemById("markra:file-tree:new").click();
+    domMenuItemById("helbaron:file-tree:new").click();
     await showMenu();
-    domMenuItemById("markra:file-tree:new-from-template:daily-note").click();
+    domMenuItemById("helbaron:file-tree:new-from-template:daily-note").click();
     await showMenu();
-    domMenuItemById("markra:file-tree:new-folder").click();
+    domMenuItemById("helbaron:file-tree:new-folder").click();
     await showMenu();
-    domMenuItemById("markra:file-tree:open-to-side").click();
+    domMenuItemById("helbaron:file-tree:open-to-side").click();
     await showMenu();
-    domMenuItemById("markra:file-tree:save-as-template").click();
+    domMenuItemById("helbaron:file-tree:save-as-template").click();
     await showMenu();
-    domMenuItemById("markra:file-tree:rename").click();
+    domMenuItemById("helbaron:file-tree:rename").click();
     await showMenu();
-    domMenuItemById("markra:file-tree:delete").click();
+    domMenuItemById("helbaron:file-tree:delete").click();
 
     expect(createFile).toHaveBeenCalledTimes(1);
     expect(createDailyNote).toHaveBeenCalledTimes(1);
@@ -740,7 +740,7 @@ describe("native menu", () => {
       renameFile: vi.fn()
     }, "en", file);
 
-    expect(queryDomMenuItemById("markra:file-tree:open-to-side")).toBeNull();
+    expect(queryDomMenuItemById("helbaron:file-tree:open-to-side")).toBeNull();
   });
 
   it("disables the markdown file tree side-open action when unavailable for the target", async () => {
@@ -760,7 +760,7 @@ describe("native menu", () => {
       renameFile: vi.fn()
     }, "en", file);
 
-    const openToSide = domMenuItemById("markra:file-tree:open-to-side");
+    const openToSide = domMenuItemById("helbaron:file-tree:open-to-side");
 
     expect(openToSide.textContent).toContain("Open to side");
     expect(openToSide).toBeDisabled();
@@ -789,10 +789,10 @@ describe("native menu", () => {
       renameFile
     }, "en", folder);
 
-    const renameItem = domMenuItemById("markra:file-tree:rename");
+    const renameItem = domMenuItemById("helbaron:file-tree:rename");
 
     expect(renameItem.textContent).toContain("Rename folder");
-    expect(domMenuItemById("markra:file-tree:delete").textContent).toContain("Delete folder");
+    expect(domMenuItemById("helbaron:file-tree:delete").textContent).toContain("Delete folder");
 
     renameItem.click();
     await showNativeMarkdownFileTreeContextMenu({
@@ -801,7 +801,7 @@ describe("native menu", () => {
       deleteFile,
       renameFile
     }, "en", folder);
-    domMenuItemById("markra:file-tree:delete").click();
+    domMenuItemById("helbaron:file-tree:delete").click();
 
     expect(deleteFile).toHaveBeenCalledWith(folder);
     expect(renameFile).toHaveBeenCalledWith(folder);
@@ -816,8 +816,8 @@ describe("native menu", () => {
       renameFile: vi.fn()
     }, "en");
 
-    expect(domMenuItemById("markra:file-tree:new").textContent).toContain("New file");
-    expect(domMenuItemById("markra:file-tree:new-folder").textContent).toContain("New Folder");
-    expect(queryDomMenuItemById("markra:file-tree:delete")).toBeNull();
+    expect(domMenuItemById("helbaron:file-tree:new").textContent).toContain("New file");
+    expect(domMenuItemById("helbaron:file-tree:new-folder").textContent).toContain("New Folder");
+    expect(queryDomMenuItemById("helbaron:file-tree:delete")).toBeNull();
   });
 });

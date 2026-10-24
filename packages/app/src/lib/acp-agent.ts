@@ -21,15 +21,15 @@ import {
   isAcpAuthRequiredError,
   normalizeInlineAiReplacement,
   safeAcpPermissionOutcome
-} from "@markra/ai";
+} from "@helbaron/ai";
 import type { AgentEvent } from "@earendil-works/pi-agent-core";
 import { getAppRuntime, type RuntimeCleanup } from "../runtime";
 import { appVersion } from "./app-version";
 import type { AcpAgentSettings } from "./settings/app-settings";
 
-const markraAcpClientInfo = {
-  name: "markra",
-  title: "Markra",
+const helbaronAcpClientInfo = {
+  name: "helbaron",
+  title: "Helbaron",
   // ACP 0.23 agents reject clientInfo when its required version is missing.
   version: appVersion
 };
@@ -148,7 +148,7 @@ export async function runAcpDocumentAgent({
         const safeOutcome = safeAcpPermissionOutcome(request.options);
         const startSummary = onPermissionRequest
           ? "Waiting for user permission."
-          : acpPermissionOutcomeSummary(safeOutcome, request.options, "Markra");
+          : acpPermissionOutcomeSummary(safeOutcome, request.options, "Helbaron");
         const startDetails = acpPermissionDetails(request, startSummary, "pending");
 
         onEvent?.({
@@ -165,7 +165,7 @@ export async function runAcpDocumentAgent({
               toolCallId
             })
           : safeOutcome;
-        const actor = onPermissionRequest ? "user" : "Markra";
+        const actor = onPermissionRequest ? "user" : "Helbaron";
         const endSummary = acpPermissionOutcomeSummary(outcome, request.options, actor);
         const endDetails = acpPermissionDetails(request, endSummary, outcome.outcome);
 
@@ -229,7 +229,7 @@ export async function runAcpDocumentAgent({
   }
 
   try {
-    const initializeResponse = await agentFailure.race(client.initialize(markraAcpClientInfo));
+    const initializeResponse = await agentFailure.race(client.initialize(helbaronAcpClientInfo));
     const session = await createAcpSession({
       agentFailure,
       client,
@@ -275,7 +275,7 @@ export async function runAcpInlineAiAgent({
 }: AcpInlineAiAgentRunOptions) {
   const cwd = resolveAcpAgentCwd(settings, documentPath, workspaceKey);
   throwIfAcpRunAborted(signal);
-  // Inline ACP returns text for Markra's existing preview flow; it should not write files directly.
+  // Inline ACP returns text for Helbaron's existing preview flow; it should not write files directly.
   const fileSystem: AcpFileSystem | undefined = documentPath
     ? {
         readTextFile: ({ path }) => {
@@ -322,7 +322,7 @@ export async function runAcpInlineAiAgent({
   }
 
   try {
-    const initializeResponse = await agentFailure.race(client.initialize(markraAcpClientInfo));
+    const initializeResponse = await agentFailure.race(client.initialize(helbaronAcpClientInfo));
     const session = await createAcpSession({
       agentFailure,
       client,
@@ -833,7 +833,7 @@ function acpPermissionDetails(request: AcpPermissionRequest, summary: string, st
 function acpPermissionOutcomeSummary(
   outcome: AcpPermissionRequestOutcome,
   options: AcpPermissionRequest["options"],
-  actor: "Markra" | "user"
+  actor: "Helbaron" | "user"
 ) {
   if (outcome.outcome === "cancelled") return `Permission cancelled by ${actor}.`;
 
@@ -1117,7 +1117,7 @@ function createAcpPromptBlocks({
     resource: {
       mimeType: "text/markdown",
       text: documentContent,
-      uri: documentPath ? `file://${documentPath}` : "markra://current-document"
+      uri: documentPath ? `file://${documentPath}` : "helbaron://current-document"
     },
     type: "resource"
   });
@@ -1142,7 +1142,7 @@ function acpImageResourceBlock(image: DocumentAiChatImage): AcpContentBlock {
     resource: {
       blob: base64DataFromDataUrl(image.dataUrl),
       mimeType: image.mimeType,
-      uri: `markra://chat-attachment/${image.id}`
+      uri: `helbaron://chat-attachment/${image.id}`
     },
     type: "resource"
   };
@@ -1186,7 +1186,7 @@ function createAcpInlinePromptBlocks({
   return [
     {
       text: [
-        "Markra inline edit task:",
+        "Helbaron inline edit task:",
         systemPrompt,
         targetRange ? `Target range:\n${targetRange}` : null,
         userPrompt
@@ -1204,7 +1204,7 @@ function formatAcpEditorContextText(selection: AiSelectionContext | null | undef
   const textLabel = source === "block" ? "Block text:" : "Selected text:";
 
   return [
-    "Markra editor context:",
+    "Helbaron editor context:",
     snapshotLabel,
     `Range: ${selection.from}-${selection.to}`,
     `Cursor: ${selection.cursor ?? selection.to}`,

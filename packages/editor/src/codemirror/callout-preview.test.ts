@@ -32,25 +32,25 @@ describe("calloutPreviewPlugin", () => {
   it("renders a GitHub alert as a callout without changing Markdown", () => {
     const doc = "> [!WARNING]\n>\n> Synthetic detail\n\nEdit";
     const view = createView(doc);
-    const calloutLines = view.dom.querySelectorAll(".cm-markra-callout");
+    const calloutLines = view.dom.querySelectorAll(".cm-helbaron-callout");
 
-    const header = view.dom.querySelector<HTMLElement>(".markra-callout-header");
-    const select = view.dom.querySelector<HTMLElement>(".markra-callout-type-select");
+    const header = view.dom.querySelector<HTMLElement>(".helbaron-callout-header");
+    const select = view.dom.querySelector<HTMLElement>(".helbaron-callout-type-select");
     expect(header?.textContent).toContain("Warning");
     expect(header && getComputedStyle(header).display).toBe("inline-flex");
     expect(header && getComputedStyle(header).width).not.toBe("100%");
     expect(select && getComputedStyle(select).position).toBe("absolute");
     expect(calloutLines).toHaveLength(3);
     expect(calloutLines[0]?.getAttribute("data-callout-type")).toBe("warning");
-    expect(calloutLines[0]?.classList.contains("markra-callout-first")).toBe(true);
-    expect(calloutLines[0]?.classList.contains("markra-callout-last")).toBe(false);
-    expect(calloutLines[1]?.classList.contains("markra-callout-first")).toBe(false);
-    expect(calloutLines[1]?.classList.contains("markra-callout-last")).toBe(false);
-    expect(calloutLines[2]?.classList.contains("markra-callout-first")).toBe(false);
-    expect(calloutLines[2]?.classList.contains("markra-callout-last")).toBe(true);
+    expect(calloutLines[0]?.classList.contains("helbaron-callout-first")).toBe(true);
+    expect(calloutLines[0]?.classList.contains("helbaron-callout-last")).toBe(false);
+    expect(calloutLines[1]?.classList.contains("helbaron-callout-first")).toBe(false);
+    expect(calloutLines[1]?.classList.contains("helbaron-callout-last")).toBe(false);
+    expect(calloutLines[2]?.classList.contains("helbaron-callout-first")).toBe(false);
+    expect(calloutLines[2]?.classList.contains("helbaron-callout-last")).toBe(true);
     expect(
       Array.from(calloutLines).some((line) =>
-        line.classList.contains("markra-callout-active"),
+        line.classList.contains("helbaron-callout-active"),
       ),
     ).toBe(false);
     expect(view.state.doc.toString()).toBe(doc);
@@ -64,11 +64,11 @@ describe("calloutPreviewPlugin", () => {
       selection: EditorSelection.cursor(doc.indexOf("Synthetic") + 4),
     });
 
-    const calloutLines = view.dom.querySelectorAll(".cm-markra-callout");
+    const calloutLines = view.dom.querySelectorAll(".cm-helbaron-callout");
     expect(calloutLines).toHaveLength(3);
     expect(
       Array.from(calloutLines).every((line) =>
-        line.classList.contains("markra-callout-active"),
+        line.classList.contains("helbaron-callout-active"),
       ),
     ).toBe(true);
   });
@@ -79,11 +79,11 @@ describe("calloutPreviewPlugin", () => {
     const view = createView(doc);
 
     view.dispatch({ selection: EditorSelection.cursor(anchor) });
-    expect(view.dom.querySelector(".markra-callout-header")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-callout-header")).toBeNull();
 
     view.dispatch({ selection: EditorSelection.range(anchor, anchor + 4) });
 
-    expect(view.dom.querySelector(".markra-callout-header")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-callout-header")).toBeNull();
     expect(view.dom.textContent).toContain("[!NOTE]");
   });
 
@@ -93,36 +93,36 @@ describe("calloutPreviewPlugin", () => {
 
     view.dispatch({ selection: EditorSelection.range(0, doc.length) });
 
-    expect(view.dom.querySelector(".markra-callout-header")?.textContent).toContain("Note");
+    expect(view.dom.querySelector(".helbaron-callout-header")?.textContent).toContain("Note");
     expect(
-      Array.from(view.dom.querySelectorAll(".cm-markra-callout")).some((line) =>
-        line.classList.contains("markra-callout-active"),
+      Array.from(view.dom.querySelectorAll(".cm-helbaron-callout")).some((line) =>
+        line.classList.contains("helbaron-callout-active"),
       ),
     ).toBe(false);
   });
 
   it("uses measured block spacers instead of line margins around a callout", () => {
     const view = createView("Before\n\n> [!NOTE]\n> Synthetic detail\n\nAfter");
-    const spacers = view.dom.querySelectorAll(".markra-callout-spacer");
+    const spacers = view.dom.querySelectorAll(".helbaron-callout-spacer");
 
     expect(spacers).toHaveLength(2);
     expect(
-      spacers[0]?.classList.contains("markra-callout-spacer-before"),
+      spacers[0]?.classList.contains("helbaron-callout-spacer-before"),
     ).toBe(true);
     expect(
-      spacers[1]?.classList.contains("markra-callout-spacer-after"),
+      spacers[1]?.classList.contains("helbaron-callout-spacer-after"),
     ).toBe(true);
     expect(
       Number.parseFloat(
         getComputedStyle(
-          view.dom.querySelector<HTMLElement>(".markra-callout-first")!,
+          view.dom.querySelector<HTMLElement>(".helbaron-callout-first")!,
         ).marginTop,
       ),
     ).toBe(0);
     expect(
       Number.parseFloat(
         getComputedStyle(
-          view.dom.querySelector<HTMLElement>(".markra-callout-last")!,
+          view.dom.querySelector<HTMLElement>(".helbaron-callout-last")!,
         ).marginBottom,
       ),
     ).toBe(0);
@@ -130,16 +130,16 @@ describe("calloutPreviewPlugin", () => {
 
   it("marks a one-line callout as both the first and last visual row", () => {
     const view = createView("> [!NOTE]");
-    const callout = view.dom.querySelector(".cm-markra-callout");
+    const callout = view.dom.querySelector(".cm-helbaron-callout");
 
-    expect(callout?.classList.contains("markra-callout-first")).toBe(true);
-    expect(callout?.classList.contains("markra-callout-last")).toBe(true);
+    expect(callout?.classList.contains("helbaron-callout-first")).toBe(true);
+    expect(callout?.classList.contains("helbaron-callout-last")).toBe(true);
   });
 
   it("changes the callout type through its header control", () => {
     const doc = "> [!NOTE]\n> Synthetic detail\n\nEdit";
     const view = createView(doc);
-    const select = view.dom.querySelector<HTMLSelectElement>(".markra-callout-type-select");
+    const select = view.dom.querySelector<HTMLSelectElement>(".helbaron-callout-type-select");
 
     expect(select).not.toBeNull();
     if (select) {
@@ -148,15 +148,15 @@ describe("calloutPreviewPlugin", () => {
     }
 
     expect(view.state.doc.toString()).toBe("> [!CAUTION]\n> Synthetic detail\n\nEdit");
-    expect(view.dom.querySelector(".markra-callout-header")?.textContent).toContain("Caution");
+    expect(view.dom.querySelector(".helbaron-callout-header")?.textContent).toContain("Caution");
   });
 
   it("respects the GitHub alert preference gate", () => {
     const doc = "> [!TIP]\n> Synthetic detail\n\nEdit";
     const view = createView(doc, false);
 
-    expect(view.dom.querySelector(".markra-callout-header")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-callout")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-callout-header")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-callout")).toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 });

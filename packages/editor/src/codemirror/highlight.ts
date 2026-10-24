@@ -13,7 +13,7 @@ const highlightDelimiter: DelimiterType = {
 export const markdownSyntaxHighlighting = syntaxHighlighting(
   HighlightStyle.define([
     {
-      class: "cm-markra-syntax-character",
+      class: "cm-helbaron-syntax-character",
       // GFM task markers and horizontal rules use atom/contentSeparator
       // instead of the processingInstruction tag used by other delimiters.
       tag: [
@@ -28,7 +28,7 @@ export const markdownSyntaxHighlighting = syntaxHighlighting(
 export const markdownSourceSyntaxHighlighting = syntaxHighlighting(
   HighlightStyle.define([
     {
-      class: "cm-markra-source-metadata",
+      class: "cm-helbaron-source-metadata",
       tag: [tags.url, tags.labelName, tags.string],
     },
   ]),
@@ -37,21 +37,21 @@ export const markdownSourceSyntaxHighlighting = syntaxHighlighting(
 export const jsonSyntaxHighlighting = syntaxHighlighting(
   HighlightStyle.define([
     {
-      class: "cm-markra-json-property",
+      class: "cm-helbaron-json-property",
       tag: tags.propertyName,
     },
     {
-      class: "cm-markra-json-string",
+      class: "cm-helbaron-json-string",
       tag: tags.string,
     },
     {
-      class: "cm-markra-json-literal",
+      class: "cm-helbaron-json-literal",
       tag: [tags.number, tags.bool, tags.null],
     },
   ]),
 );
 
-export const markraHighlight: MarkdownExtension = {
+export const helbaronHighlight: MarkdownExtension = {
   defineNodes: [
     "Highlight",
     {
@@ -62,7 +62,7 @@ export const markraHighlight: MarkdownExtension = {
   parseInline: [
     {
       after: "Emphasis",
-      name: "MarkraHighlight",
+      name: "HelbaronHighlight",
       parse(context, next, position) {
         if (
           next !== 61 ||

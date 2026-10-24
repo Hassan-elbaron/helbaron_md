@@ -4,8 +4,8 @@ const { renderMermaid } = vi.hoisted(() => ({
   renderMermaid: vi.fn(async () => '<svg data-testid="mock-mermaid"><g></g></svg>')
 }));
 
-vi.mock("@markra/editor", async (importOriginal) => ({
-  ...await importOriginal<typeof import("@markra/editor")>(),
+vi.mock("@helbaron/editor", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@helbaron/editor")>(),
   renderMermaidToSvg: renderMermaid
 }));
 
@@ -71,15 +71,15 @@ describe("MarkdownPreviewDocument", () => {
     );
 
     await waitFor(() => expect(onRendered).toHaveBeenCalled());
-    const error = container.querySelector(".markra-mermaid-render-invalid");
+    const error = container.querySelector(".helbaron-mermaid-render-invalid");
     expect(error?.textContent).toBe(`Unable to render Mermaid diagram\n\n${diagnostic}`);
     expect(error?.querySelector("img")).toBeNull();
-    expect(container.querySelector(".markra-mermaid-render svg")).not.toBeNull();
+    expect(container.querySelector(".helbaron-mermaid-render svg")).not.toBeNull();
   });
 
   it("renders a reusable visible Markdown preview with extended content", async () => {
     const onRendered = vi.fn();
-    const resolveImageSrc = vi.fn((src: string) => `markra-preview://${src}`);
+    const resolveImageSrc = vi.fn((src: string) => `helbaron-preview://${src}`);
 
     const { container } = render(
       <MarkdownPreviewDocument
@@ -104,11 +104,11 @@ describe("MarkdownPreviewDocument", () => {
     const article = container.querySelector("article");
     expect(article).toHaveClass("markdown-paper", "markdown-preview-paper");
     expect(article).toHaveTextContent("Check this synthetic preview.");
-    expect(article?.querySelector(".markra-callout-warning")).not.toBeNull();
-    expect(article?.querySelector(".markra-math-render-inline")).not.toBeNull();
-    expect(article?.querySelector("img")).toHaveAttribute("src", "markra-preview://assets/mock.png");
+    expect(article?.querySelector(".helbaron-callout-warning")).not.toBeNull();
+    expect(article?.querySelector(".helbaron-math-render-inline")).not.toBeNull();
+    expect(article?.querySelector("img")).toHaveAttribute("src", "helbaron-preview://assets/mock.png");
 
-    await waitFor(() => expect(article?.querySelector(".markra-mermaid-render svg")).not.toBeNull());
+    await waitFor(() => expect(article?.querySelector(".helbaron-mermaid-render svg")).not.toBeNull());
     expect(onRendered).toHaveBeenCalledWith(article);
   });
 });

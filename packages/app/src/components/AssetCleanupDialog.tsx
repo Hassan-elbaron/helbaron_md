@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Clock3, RefreshCw, Trash2, X } from "lucide-react";
-import { createMarkdownImageSrcResolver } from "@markra/markdown";
-import { t, type AppLanguage, type I18nKey } from "@markra/shared";
-import { Button, IconButton } from "@markra/ui";
+import { createMarkdownImageSrcResolver } from "@helbaron/markdown";
+import { t, type AppLanguage, type I18nKey } from "@helbaron/shared";
+import { Button, IconButton } from "@helbaron/ui";
 import type { WorkspaceAssetFile, WorkspaceAssetIndex } from "../lib/workspace-assets";
 import type { WorkspaceAssetCleanupError } from "../hooks/useWorkspaceAssetCleanup";
 

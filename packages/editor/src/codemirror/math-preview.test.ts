@@ -40,11 +40,11 @@ vi.mock("../math-render.ts", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../math-render.ts")>();
   return {
     ...actual,
-    renderMarkraMathToString(
-      ...args: Parameters<typeof actual.renderMarkraMathToString>
+    renderHelbaronMathToString(
+      ...args: Parameters<typeof actual.renderHelbaronMathToString>
     ) {
       mathRenderCalls.push(args[0]);
-      return actual.renderMarkraMathToString(...args);
+      return actual.renderHelbaronMathToString(...args);
     },
   };
 });
@@ -121,7 +121,7 @@ describe("mathPreviewPlugin", () => {
       from: mathFrom,
       to: mathTo,
     });
-    expect(view.dom.querySelector(".cm-markra-math-hidden-line")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-math-hidden-line")).toBeNull();
   });
 
   it("does not rebuild every math decoration when the viewport scrolls", async () => {
@@ -181,7 +181,7 @@ describe("mathPreviewPlugin", () => {
     const view = createView(doc);
     const closingFenceFrom = doc.lastIndexOf("```");
 
-    expect(view.dom.querySelector(".markra-math-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render")).toBeNull();
     view.dispatch({
       changes: [
         { from: 0, to: "```\n".length },
@@ -189,7 +189,7 @@ describe("mathPreviewPlugin", () => {
       ],
     });
 
-    expect(view.dom.querySelector(".markra-math-render")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render")).not.toBeNull();
   });
 
   it("renders dollar and Hugo math with KaTeX without changing Markdown", () => {
@@ -206,8 +206,8 @@ describe("mathPreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
 
-    expect(view.dom.querySelectorAll(".markra-math-render-inline .katex")).toHaveLength(1);
-    expect(view.dom.querySelectorAll(".markra-math-render-display .katex")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".helbaron-math-render-inline .katex")).toHaveLength(1);
+    expect(view.dom.querySelectorAll(".helbaron-math-render-display .katex")).toHaveLength(2);
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -215,7 +215,7 @@ describe("mathPreviewPlugin", () => {
     const doc = "Use \\$literal, $100, `$code$`, and unfinished $value.";
     const view = createView(doc);
 
-    expect(view.dom.querySelector(".markra-math-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render")).toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -223,13 +223,13 @@ describe("mathPreviewPlugin", () => {
     const doc = "Before $x + y$ after\n\nEdit";
     const mathFrom = doc.indexOf("$x");
     const view = createView(doc);
-    const widget = view.dom.querySelector<HTMLElement>(".markra-math-render-inline");
+    const widget = view.dom.querySelector<HTMLElement>(".helbaron-math-render-inline");
 
     expect(widget).not.toBeNull();
     widget?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
     expect(view.state.selection.main.head).toBeGreaterThan(mathFrom);
     expect(view.state.selection.main.head).toBeLessThan(mathFrom + "$x + y$".length);
-    expect(view.dom.querySelector(".markra-math-render-inline")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-inline")).toBeNull();
     expect(view.dom.textContent).toContain("$x + y$");
   });
 
@@ -243,7 +243,7 @@ describe("mathPreviewPlugin", () => {
       selection: EditorSelection.cursor(0),
     });
 
-    expect(view.dom.querySelector(".markra-math-render-inline")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-inline")).toBeNull();
     expect(view.dom.textContent).toContain(doc);
   });
 
@@ -257,7 +257,7 @@ describe("mathPreviewPlugin", () => {
       selection: EditorSelection.cursor(doc.indexOf(" tail")),
     });
 
-    expect(view.dom.querySelector(".markra-math-render-inline")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-inline")).not.toBeNull();
   });
 
   it("keeps math source visible while dragging from inside it", () => {
@@ -268,7 +268,7 @@ describe("mathPreviewPlugin", () => {
     view.dispatch({ selection: EditorSelection.cursor(anchor) });
     view.dispatch({ selection: EditorSelection.range(anchor, anchor + 4) });
 
-    expect(view.dom.querySelector(".markra-math-render-inline")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-inline")).toBeNull();
     expect(view.dom.textContent).toContain("$x + y$");
   });
 
@@ -278,7 +278,7 @@ describe("mathPreviewPlugin", () => {
 
     view.dispatch({ selection: EditorSelection.range(0, doc.length) });
 
-    expect(view.dom.querySelector(".markra-math-render-inline")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-inline")).not.toBeNull();
     expect(view.dom.textContent).not.toContain("$x + y$");
   });
 
@@ -294,9 +294,9 @@ describe("mathPreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
 
-    expect(view.dom.querySelector(".markra-math-macro-fold")).not.toBeNull();
-    expect(view.dom.querySelector(".markra-math-render-display")).toBeNull();
-    expect(view.dom.querySelector(".markra-math-render-inline .mathbb")?.textContent).toContain("R");
+    expect(view.dom.querySelector(".helbaron-math-macro-fold")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-display")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render-inline .mathbb")?.textContent).toContain("R");
     expect(view.state.doc.toString()).toBe(doc);
   });
 });

@@ -1,4 +1,4 @@
-import type { ThemeDirectory } from "@markra/app/runtime";
+import type { ThemeDirectory } from "@helbaron/app/runtime";
 import { open } from "@tauri-apps/plugin-dialog";
 import { invokeNative } from "./invoke";
 

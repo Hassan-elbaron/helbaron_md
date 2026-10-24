@@ -1,6 +1,6 @@
 ---
 version: alpha
-name: Markra
+name: Helbaron
 description: Local-first WYSIWYG Markdown desktop editor with quiet writing surfaces, native AI review flows, and a restrained ink-black interaction system.
 colors:
   primary: "#1A1C1E"
@@ -192,11 +192,11 @@ components:
     backgroundColor: "{colors.overlay-ink}"
 ---
 
-# Markra Design System
+# Helbaron Design System
 
 ## Overview
 
-Markra should feel like a native writing instrument: calm, fast, local, and precise. The interface gives most of its attention to the Markdown document, while file navigation, AI controls, settings, and export tools stay quiet until needed.
+Helbaron should feel like a native writing instrument: calm, fast, local, and precise. The interface gives most of its attention to the Markdown document, while file navigation, AI controls, settings, and export tools stay quiet until needed.
 
 The default visual language is light, neutral, and editorial. It avoids decorative branding, heavy panels, and marketing-style composition. The primary ink-black is reserved for interaction, focus, active states, and AI/editor affordances; it should not flood the workspace.
 
@@ -223,7 +223,7 @@ Do not introduce extra brand colors for primary flows. Semantic colors may appea
 
 ## Typography
 
-Markra bundles Noto Sans SC Variable for application chrome and the default editor theme. This gives macOS, Windows, Linux, and the web app the same typographic voice while retaining a generic sans-serif fallback if the bundled font cannot load.
+Helbaron bundles Noto Sans SC Variable for application chrome and the default editor theme. This gives macOS, Windows, Linux, and the web app the same typographic voice while retaining a generic sans-serif fallback if the bundled font cannot load.
 
 Editor typography is larger and calmer than UI typography. Body copy defaults to 16px with a 1.65 line-height for comfortable long-form writing. Headings use strong weight, normal tracking, and clear scale jumps: H1 at 44px, H2 at 31px, and H3 at 24px.
 
@@ -245,7 +245,7 @@ Mobile and narrow responsive states should simplify side surfaces before shrinki
 
 ## Elevation & Depth
 
-Markra uses tonal layering, fine borders, and selective shadows instead of heavy elevation. The main document surface should feel flat and stable. Popovers, AI command panels, modals, drag ghosts, and table controls may use shadows to clarify temporary floating state.
+Helbaron uses tonal layering, fine borders, and selective shadows instead of heavy elevation. The main document surface should feel flat and stable. Popovers, AI command panels, modals, drag ghosts, and table controls may use shadows to clarify temporary floating state.
 
 Shadows should be soft and functional. They signal that a surface is transient or layered above the editor; they should not make every panel feel like a card. Persistent workspace regions rely on background contrast and borders.
 

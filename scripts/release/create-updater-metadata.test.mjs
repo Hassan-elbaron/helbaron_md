@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-updater-metadata-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-updater-metadata-"));
 }
 
 function writeBundle(rootDir, bundleName, signature = "signature") {
@@ -33,8 +33,8 @@ function runMetadataScript(env) {
 
 test("create-updater-metadata prefers the Windows setup updater bundle", () => {
   const rootDir = makeTempDir();
-  const [, msiSignature] = writeBundle(rootDir, "Markra_0.0.8_windows_x64_en-US.msi");
-  const [setupBundle, setupSignature] = writeBundle(rootDir, "Markra_0.0.8_windows_x64_setup.exe");
+  const [, msiSignature] = writeBundle(rootDir, "Helbaron_0.0.8_windows_x64_en-US.msi");
+  const [setupBundle, setupSignature] = writeBundle(rootDir, "Helbaron_0.0.8_windows_x64_setup.exe");
   const outputPath = path.join(rootDir, "release-metadata.json");
 
   const result = runMetadataScript({
@@ -53,9 +53,9 @@ test("create-updater-metadata prefers the Windows setup updater bundle", () => {
 
 test("create-updater-metadata selects the signed Windows portable bundle", () => {
   const rootDir = makeTempDir();
-  const [, msiSignature] = writeBundle(rootDir, "Markra_0.0.8_windows_x64_en-US.msi");
-  const [, setupSignature] = writeBundle(rootDir, "Markra_0.0.8_windows_x64_setup.exe");
-  const [bundlePath, signaturePath] = writeBundle(rootDir, "Markra_0.0.8_windows_x64_portable.zip");
+  const [, msiSignature] = writeBundle(rootDir, "Helbaron_0.0.8_windows_x64_en-US.msi");
+  const [, setupSignature] = writeBundle(rootDir, "Helbaron_0.0.8_windows_x64_setup.exe");
+  const [bundlePath, signaturePath] = writeBundle(rootDir, "Helbaron_0.0.8_windows_x64_portable.zip");
   const outputPath = path.join(rootDir, "release-metadata.windows-portable-x86_64.json");
 
   const result = runMetadataScript({
@@ -74,7 +74,7 @@ test("create-updater-metadata selects the signed Windows portable bundle", () =>
 
 test("create-updater-metadata selects AppImage bundles for Linux updater metadata", () => {
   const rootDir = makeTempDir();
-  const [bundlePath, signaturePath] = writeBundle(rootDir, "Markra_0.0.8_linux_x64.AppImage");
+  const [bundlePath, signaturePath] = writeBundle(rootDir, "Helbaron_0.0.8_linux_x64.AppImage");
   const outputPath = path.join(rootDir, "release-metadata.json");
 
   const result = runMetadataScript({
@@ -93,7 +93,7 @@ test("create-updater-metadata selects AppImage bundles for Linux updater metadat
 
 test("create-updater-metadata selects renamed macOS updater tarballs", () => {
   const rootDir = makeTempDir();
-  const [bundlePath, signaturePath] = writeBundle(rootDir, "Markra_0.0.8_macos_arm64_updater.app.tar.gz");
+  const [bundlePath, signaturePath] = writeBundle(rootDir, "Helbaron_0.0.8_macos_arm64_updater.app.tar.gz");
   const outputPath = path.join(rootDir, "release-metadata.json");
 
   const result = runMetadataScript({

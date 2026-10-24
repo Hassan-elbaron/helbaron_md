@@ -1,4 +1,4 @@
-import { isRecord } from "@markra/shared";
+import { isRecord } from "@helbaron/shared";
 
 import type { AiProviderConfig } from "./types";
 

@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const gtkHookRelativePath = path.join("apprun-hooks", "linuxdeploy-plugin-gtk.sh");
-const hostGtkInputMethodPolicyMarker = "MARKRA_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES";
-const fcitxXimFallbackMarker = "MARKRA_FCITX_XIM_FALLBACK";
+const hostGtkInputMethodPolicyMarker = "HELBARON_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES";
+const fcitxXimFallbackMarker = "HELBARON_FCITX_XIM_FALLBACK";
 const archGtkModulePath = "/usr/lib/gtk-3.0";
 const archGtkInputMethodCache = "/usr/lib/gtk-3.0/3.0.0/immodules.cache";
 

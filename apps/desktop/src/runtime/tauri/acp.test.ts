@@ -67,7 +67,7 @@ describe("native ACP runtime", () => {
 
     const stopListening = await listenNativeAcpAgentMessages(handler);
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://acp-agent-message", expect.any(Function));
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://acp-agent-message", expect.any(Function));
     const eventHandler = mockedListen.mock.calls[0]?.[1];
     eventHandler?.({
       payload: {

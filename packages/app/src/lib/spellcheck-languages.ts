@@ -1,4 +1,4 @@
-import type { AppLanguage } from "@markra/shared";
+import type { AppLanguage } from "@helbaron/shared";
 
 export type SpellcheckLanguage = Extract<AppLanguage, "de" | "en" | "es" | "fr" | "it" | "pt-BR" | "ru">;
 

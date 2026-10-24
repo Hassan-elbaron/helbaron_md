@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { isKeyboardShortcutModKey } from "@markra/shared";
+import { isKeyboardShortcutModKey } from "@helbaron/shared";
 import {
   defaultUiZoomPercent,
   normalizeUiZoomPercent,

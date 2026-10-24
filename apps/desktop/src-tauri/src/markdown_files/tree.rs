@@ -17,7 +17,7 @@ use super::path::{
 use super::types::{MarkdownFolderEntryKind, MarkdownFolderFile};
 use tauri::Emitter;
 
-const MARKDOWN_TREE_LOAD_EVENT: &str = "markra://markdown-tree-load";
+const MARKDOWN_TREE_LOAD_EVENT: &str = "helbaron://markdown-tree-load";
 const MARKDOWN_TREE_INITIAL_LOAD_BATCH_SIZE: usize = 128;
 const MARKDOWN_TREE_LOAD_BATCH_SIZE: usize = 1024;
 
@@ -832,7 +832,7 @@ mod tests {
     #[test]
     fn lists_markdown_files_below_the_current_file_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-test-{}",
+            "helbaron-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -922,7 +922,7 @@ mod tests {
     #[test]
     fn lists_markdown_files_below_the_selected_folder() {
         let root = std::env::temp_dir().join(format!(
-            "markra-folder-tree-test-{}",
+            "helbaron-folder-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -962,7 +962,7 @@ mod tests {
     #[test]
     fn filters_managed_attachments_without_hiding_folders() {
         let root = std::env::temp_dir().join(format!(
-            "markra-managed-attachment-tree-test-{}",
+            "helbaron-managed-attachment-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1009,7 +1009,7 @@ mod tests {
     #[test]
     fn skips_tool_metadata_directories_when_listing_markdown_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tool-metadata-tree-test-{}",
+            "helbaron-tool-metadata-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1017,7 +1017,7 @@ mod tests {
         ));
         let obsidian_plugin = root.join(".obsidian").join("plugins").join("mock-plugin");
         let codex_sessions = root.join(".codex").join("sessions");
-        let sync_metadata = root.join(".markra-sync").join("objects");
+        let sync_metadata = root.join(".helbaron-sync").join("objects");
 
         fs::create_dir_all(&obsidian_plugin).expect("obsidian plugin folder should be created");
         fs::create_dir_all(&codex_sessions).expect("codex sessions folder should be created");
@@ -1054,7 +1054,7 @@ mod tests {
     #[test]
     fn skips_build_artifact_directories_when_listing_markdown_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-build-artifact-tree-test-{}",
+            "helbaron-build-artifact-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1104,9 +1104,9 @@ mod tests {
     }
 
     #[test]
-    fn uses_root_markraignore_when_listing_files() {
+    fn uses_root_helbaronignore_when_listing_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-ignore-tree-test-{}",
+            "helbaron-ignore-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1120,7 +1120,7 @@ mod tests {
         fs::create_dir_all(&generated).expect("generated folder should be created");
         fs::create_dir_all(&git).expect("git folder should be created");
         fs::write(
-            root.join(".markraignore"),
+            root.join(".helbaronignore"),
             "generated/\n*.tmp\n!drafts/\n!drafts/restored.md\n!keep.md\n!.git/\n",
         )
         .expect("ignore rules should be created");
@@ -1156,7 +1156,7 @@ mod tests {
     #[test]
     fn reference_scan_includes_user_ignored_markdown_but_skips_builtin_directories() {
         let root = std::env::temp_dir().join(format!(
-            "markra-reference-tree-test-{}",
+            "helbaron-reference-tree-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1166,7 +1166,7 @@ mod tests {
         let git = root.join(".git");
         fs::create_dir_all(&drafts).expect("draft folder should be created");
         fs::create_dir_all(&git).expect("git folder should be created");
-        fs::write(root.join(".markraignore"), "drafts/\n").expect("ignore rules should be created");
+        fs::write(root.join(".helbaronignore"), "drafts/\n").expect("ignore rules should be created");
         fs::write(root.join("index.md"), "# Index").expect("markdown file should be created");
         fs::write(drafts.join("hidden.md"), "![Kept](../assets/kept.png)")
             .expect("ignored markdown should be created");
@@ -1191,7 +1191,7 @@ mod tests {
     #[test]
     fn rejects_deleted_markdown_folder_roots_instead_of_using_the_parent_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-deleted-folder-root-test-{}",
+            "helbaron-deleted-folder-root-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1230,7 +1230,7 @@ mod tests {
     #[test]
     fn allows_asset_scope_when_listing_markdown_folder_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-asset-scope-test-{}",
+            "helbaron-tree-asset-scope-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1260,7 +1260,7 @@ mod tests {
     #[test]
     fn creates_renames_and_deletes_markdown_tree_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-write-test-{}",
+            "helbaron-tree-write-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1357,7 +1357,7 @@ mod tests {
     #[test]
     fn renames_markdown_tree_folders_inside_the_root() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-folder-rename-test-{}",
+            "helbaron-tree-folder-rename-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1394,7 +1394,7 @@ mod tests {
     #[test]
     fn moves_markdown_tree_files_and_folders_inside_the_root() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-move-test-{}",
+            "helbaron-tree-move-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1478,7 +1478,7 @@ mod tests {
     #[test]
     fn rejects_invalid_markdown_tree_moves() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-move-boundary-test-{}",
+            "helbaron-tree-move-boundary-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1530,7 +1530,7 @@ mod tests {
     #[test]
     fn rejects_markdown_tree_writes_outside_the_root() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-write-boundary-test-{}",
+            "helbaron-tree-write-boundary-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1575,7 +1575,7 @@ mod tests {
     #[test]
     fn creates_markdown_tree_folders_inside_the_root() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-folder-write-test-{}",
+            "helbaron-tree-folder-write-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1631,7 +1631,7 @@ mod tests {
     #[test]
     fn deletes_markdown_tree_folders_inside_the_root() {
         let root = std::env::temp_dir().join(format!(
-            "markra-tree-folder-delete-test-{}",
+            "helbaron-tree-folder-delete-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

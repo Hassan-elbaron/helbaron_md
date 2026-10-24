@@ -1,1 +1,1 @@
-export const appVersion = __MARKRA_APP_VERSION__;
+export const appVersion = __HELBARON_APP_VERSION__;

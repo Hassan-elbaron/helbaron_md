@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { FileText, PanelRight, Search, X } from "lucide-react";
-import { t, type AppLanguage, type I18nKey } from "@markra/shared";
+import { t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import type { NativeMarkdownFolderFile } from "../lib/tauri";
 import { quickOpenFiles, type QuickOpenMatchRange, type QuickOpenResult } from "../lib/quick-open";
 
@@ -184,7 +184,7 @@ export function QuickOpenPanel({
                 >
                   <FileText aria-hidden="true" className="text-(--text-secondary)" size={15} />
                   <button
-                    className="min-w-0 cursor-pointer border-0 bg-transparent p-0 text-left outline-none"
+                    className="min-w-0 cursor-pointer border-0 bg-transparent p-0 text-start outline-none"
                     type="button"
                     onClick={() => openResult(result, false)}
                   >

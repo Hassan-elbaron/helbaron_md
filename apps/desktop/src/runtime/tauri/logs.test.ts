@@ -1,5 +1,5 @@
 import { debug, error, info, warn } from "@tauri-apps/plugin-log";
-import type { AppLogEvent } from "@markra/app/runtime";
+import type { AppLogEvent } from "@helbaron/app/runtime";
 import { invokeNative } from "./invoke";
 import { isNativeLoggingAvailable, openNativeLogFolder, writeNativeLog } from "./logs";
 

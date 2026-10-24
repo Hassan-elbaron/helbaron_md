@@ -299,6 +299,17 @@ describe("app settings", () => {
     store.get.mockResolvedValue("pirate");
 
     await expect(getStoredLanguage()).resolves.toBe("en");
+  });
+
+  it("falls back to the language the entry page declares", async () => {
+    store.get.mockResolvedValue(undefined);
+    document.documentElement.setAttribute("lang", "ar");
+
+    try {
+      await expect(getStoredLanguage()).resolves.toBe("ar");
+    } finally {
+      document.documentElement.removeAttribute("lang");
+    }
 
     expect(store.get).toHaveBeenCalledWith("language");
   });
@@ -464,7 +475,7 @@ describe("app settings", () => {
 
     expect(exported).toMatchObject({
       exportedAt: "2030-01-02T03:04:05.000Z",
-      format: "markra-settings",
+      format: "helbaron-settings",
       version: 1,
       settings: {
         appearanceMode: "dark",
@@ -492,7 +503,7 @@ describe("app settings", () => {
 
   it("imports portable app settings after validating the file contents", async () => {
     const importedSettingsFile = {
-      format: "markra-settings",
+      format: "helbaron-settings",
       version: 1,
       exportedAt: "2030-01-02T03:04:05.000Z",
       settings: {
@@ -545,7 +556,7 @@ describe("app settings", () => {
   });
 
   it("rejects invalid settings imports without writing to the settings store", async () => {
-    await expect(importStoredAppSettings("{not json")).rejects.toThrow("Invalid Markra settings file.");
+    await expect(importStoredAppSettings("{not json")).rejects.toThrow("Invalid Helbaron settings file.");
 
     expect(mockedLoadStore).not.toHaveBeenCalled();
     expect(store.set).not.toHaveBeenCalled();

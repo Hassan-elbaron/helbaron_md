@@ -14,17 +14,17 @@ import {
   type EditorView as CodeMirrorView,
 } from "@codemirror/view";
 import {
-  createMarkraMathMacros,
-  isMarkraMathMacroDefinitionSource,
-  renderMarkraMathToString,
-  type MarkraMathMacros,
+  createHelbaronMathMacros,
+  isHelbaronMathMacroDefinitionSource,
+  renderHelbaronMathToString,
+  type HelbaronMathMacros,
 } from "../math-render.ts";
 import {
-  findMarkraMathRanges,
-  type MarkraMathRange,
-  type MarkraSourceRange,
+  findHelbaronMathRanges,
+  type HelbaronMathRange,
+  type HelbaronSourceRange,
 } from "../math-syntax.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import { selectionRevealsRange } from "./policy.ts";
 import {
   syntaxTreeChanged,
@@ -32,12 +32,12 @@ import {
 } from "./changes.ts";
 import { codeMirrorVimModeChangedEffect } from "./vim.ts";
 
-export type CodeMirrorMathRange = MarkraMathRange;
+export type CodeMirrorMathRange = HelbaronMathRange;
 
 const codeNodeNames = new Set(["CodeBlock", "FencedCode", "InlineCode"]);
 
 function codeRanges(state: EditorState) {
-  const ranges: MarkraSourceRange[] = [];
+  const ranges: HelbaronSourceRange[] = [];
   syntaxTree(state).iterate({
     enter(node) {
       if (codeNodeNames.has(node.name)) ranges.push({ from: node.from, to: node.to });
@@ -48,7 +48,7 @@ function codeRanges(state: EditorState) {
 
 export function findCodeMirrorMathRanges(state: EditorState) {
   const source = state.doc.toString();
-  return findMarkraMathRanges(source, codeRanges(state));
+  return findHelbaronMathRanges(source, codeRanges(state));
 }
 
 function activateMath(view: CodeMirrorView, range: CodeMirrorMathRange) {
@@ -131,7 +131,7 @@ class MacroFoldWidget extends WidgetType {
 
   toDOM(view: CodeMirrorView) {
     const button = view.dom.ownerDocument.createElement("button");
-    button.className = "markra-math-macro-fold";
+    button.className = "helbaron-math-macro-fold";
     button.type = "button";
     button.textContent = String.raw`\newcommand …`;
     button.addEventListener("mousedown", (event) => {
@@ -158,9 +158,9 @@ function addMathReplacement(
 
 function renderMath(
   range: CodeMirrorMathRange,
-  macros: MarkraMathMacros,
+  macros: HelbaronMathMacros,
 ) {
-  return renderMarkraMathToString(range.tex, range.kind, macros);
+  return renderHelbaronMathToString(range.tex, range.kind, macros);
 }
 
 interface MathRenderEntry {
@@ -182,11 +182,11 @@ interface MathDecorationState {
 }
 
 function buildMathRenderEntries(state: EditorState) {
-  const macros = createMarkraMathMacros();
+  const macros = createHelbaronMathMacros();
   return findCodeMirrorMathRanges(state).map((range): MathRenderEntry => ({
     html: renderMath(range, macros),
     macroDefinitionOnly:
-      range.kind === "display" && isMarkraMathMacroDefinitionSource(range.tex),
+      range.kind === "display" && isHelbaronMathMacroDefinitionSource(range.tex),
     range,
   }));
 }
@@ -226,7 +226,7 @@ function buildMathDecorations(
             widget: new MathWidget(
               range,
               html,
-              "markra-math-render markra-math-render-display markra-math-render-active-preview",
+              "helbaron-math-render helbaron-math-render-display helbaron-math-render-active-preview",
             ),
           }).range(range.to),
         );
@@ -240,7 +240,7 @@ function buildMathDecorations(
       new MathWidget(
         range,
         html,
-        `markra-math-render markra-math-render-${range.kind}`,
+        `helbaron-math-render helbaron-math-render-${range.kind}`,
       ),
     );
   }
@@ -278,7 +278,7 @@ function revealedMathRangesKey(
 }
 
 const mathTheme = EditorView.baseTheme({
-  ".markra-math-render": {
+  ".helbaron-math-render": {
     appearance: "none",
     background: "transparent",
     border: "0",
@@ -286,16 +286,16 @@ const mathTheme = EditorView.baseTheme({
     font: "inherit",
     padding: "0",
   },
-  ".markra-math-render-display": {
+  ".helbaron-math-render-display": {
     display: "block",
     overflowX: "auto",
     // Block-widget measurements exclude margins. Keep all spacing inside the
     // measured box so coordinate lookups for subsequent source lines stay aligned.
     margin: "0",
-    padding: "calc(0.4em + var(--markra-math-block-spacing, 0px)) 0",
+    padding: "calc(0.4em + var(--helbaron-math-block-spacing, 0px)) 0",
     textAlign: "center",
   },
-  ".markra-math-render-active-preview": {
+  ".helbaron-math-render-active-preview": {
     paddingTop: "0.8em",
   },
 });
@@ -415,8 +415,8 @@ function createMathPreviewExtension() {
 }
 
 export function mathPreviewPlugin() {
-  return defineMarkraPlugin({
-    id: "markra.math-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.math-preview",
     extension: [
       ...createMathPreviewExtension(),
       mathTheme,

@@ -1,4 +1,4 @@
-import { createLucideIcon, popoverPosition } from "@markra/shared";
+import { createLucideIcon, popoverPosition } from "@helbaron/shared";
 import { Minus, Plus, Trash2 } from "lucide";
 
 export type TableAlignment = "left" | "center" | "right" | null;
@@ -41,11 +41,11 @@ function createTableAlignIcon(
   alignment: Exclude<TableAlignment, null>,
 ) {
   const icon = document.createElement("span");
-  icon.className = `markra-table-align-icon markra-table-align-icon-${alignment}`;
+  icon.className = `helbaron-table-align-icon helbaron-table-align-icon-${alignment}`;
   icon.ariaHidden = "true";
   for (let index = 0; index < 3; index += 1) {
     const line = document.createElement("span");
-    line.className = "markra-table-align-icon-line";
+    line.className = "helbaron-table-align-icon-line";
     icon.append(line);
   }
   return icon;
@@ -53,11 +53,11 @@ function createTableAlignIcon(
 
 function createTableSizeIcon(document: Document) {
   const icon = document.createElement("span");
-  icon.className = "markra-table-size-icon";
+  icon.className = "helbaron-table-size-icon";
   icon.ariaHidden = "true";
   for (let index = 0; index < 4; index += 1) {
     const square = document.createElement("span");
-    square.className = "markra-table-size-icon-square";
+    square.className = "helbaron-table-size-icon-square";
     icon.append(square);
   }
   return icon;
@@ -65,18 +65,18 @@ function createTableSizeIcon(document: Document) {
 
 function createTableWidthIcon(document: Document) {
   const icon = document.createElement("span");
-  icon.className = "markra-table-width-icon";
+  icon.className = "helbaron-table-width-icon";
   icon.ariaHidden = "true";
   for (const className of [
-    "markra-table-width-edge",
-    "markra-table-width-arrow",
-    "markra-table-width-letter",
-    "markra-table-width-arrow",
-    "markra-table-width-edge",
+    "helbaron-table-width-edge",
+    "helbaron-table-width-arrow",
+    "helbaron-table-width-letter",
+    "helbaron-table-width-arrow",
+    "helbaron-table-width-edge",
   ]) {
     const part = document.createElement("span");
     part.className = className;
-    if (className === "markra-table-width-letter") part.textContent = "A";
+    if (className === "helbaron-table-width-letter") part.textContent = "A";
     icon.append(part);
   }
   return icon;
@@ -101,7 +101,7 @@ export function createTableControl(
 ) {
   const button = document.createElement("button");
   button.type = "button";
-  button.className = `markra-table-control ${className}`;
+  button.className = `helbaron-table-control ${className}`;
   button.ariaLabel = label;
   button.title = label;
   button.addEventListener("mousedown", (event) => {
@@ -166,10 +166,10 @@ function createSizePicker(document: Document, options: TableControlOptions) {
       if (options.readOnly()) return;
       anchor = button;
       popover = document.createElement("div");
-      popover.className = "markra-table-size-popover";
+      popover.className = "helbaron-table-size-popover";
       popover.setAttribute("role", "dialog"); popover.ariaLabel = options.labels.adjustTable;
-      const grid = document.createElement("div"); grid.className = "markra-table-size-grid";
-      const footer = document.createElement("div"); footer.className = "markra-table-size-footer";
+      const grid = document.createElement("div"); grid.className = "helbaron-table-size-grid";
+      const footer = document.createElement("div"); footer.className = "helbaron-table-size-footer";
       const columnsInput = document.createElement("input");
       const rowsInput = document.createElement("input");
       const shape = options.shape();
@@ -177,15 +177,15 @@ function createSizePicker(document: Document, options: TableControlOptions) {
         [columnsInput, 8, shape.columns, options.labels.tableColumns],
         [rowsInput, 10, shape.rows, options.labels.tableRows],
       ] as const) {
-        input.className = "markra-table-size-input"; input.type = "number";
+        input.className = "helbaron-table-size-input"; input.type = "number";
         input.min = "1"; input.max = String(maximum); input.value = String(Math.min(maximum, Math.max(1, value)));
         input.ariaLabel = label;
       }
       const update = (columns: number, rows: number) => {
         columnsInput.value = String(columns); rowsInput.value = String(rows);
-        for (const cell of grid.querySelectorAll<HTMLButtonElement>(".markra-table-size-cell")) {
+        for (const cell of grid.querySelectorAll<HTMLButtonElement>(".helbaron-table-size-cell")) {
           const active = Number(cell.dataset.columns) <= columns && Number(cell.dataset.rows) <= rows;
-          cell.ariaPressed = String(active); cell.classList.toggle("markra-table-size-cell-active", active);
+          cell.ariaPressed = String(active); cell.classList.toggle("helbaron-table-size-cell-active", active);
         }
       };
       const apply = (columns: number, rows: number) => {
@@ -194,7 +194,7 @@ function createSizePicker(document: Document, options: TableControlOptions) {
       for (let row = 1; row <= 10; row += 1) {
         for (let column = 1; column <= 8; column += 1) {
           const cell = document.createElement("button"); cell.type = "button";
-          cell.className = "markra-table-size-cell";
+          cell.className = "helbaron-table-size-cell";
           cell.ariaLabel = formatTableSizeLabel(options.labels, column, row);
           cell.dataset.columns = String(column); cell.dataset.rows = String(row);
           cell.addEventListener("mouseenter", () => update(column, row));
@@ -212,7 +212,7 @@ function createSizePicker(document: Document, options: TableControlOptions) {
         } else if (event.key === "Escape") { event.preventDefault(); close(); options.focusEditor(); }
       };
       columnsInput.addEventListener("keydown", keydown); rowsInput.addEventListener("keydown", keydown);
-      const separator = document.createElement("span"); separator.className = "markra-table-size-separator"; separator.textContent = "x";
+      const separator = document.createElement("span"); separator.className = "helbaron-table-size-separator"; separator.textContent = "x";
       footer.append(columnsInput, separator, rowsInput); popover.append(grid, footer); document.body.append(popover);
       update(Number(columnsInput.value), Number(rowsInput.value));
       const position = popoverPosition(button.getBoundingClientRect(), {
@@ -228,36 +228,36 @@ function createSizePicker(document: Document, options: TableControlOptions) {
 export function createTableControls(wrapper: HTMLElement, table: HTMLTableElement, options: TableControlOptions) {
   const document = wrapper.ownerDocument;
   const picker = createSizePicker(document, options);
-  const toolbar = document.createElement("span"); toolbar.className = "markra-table-align-controls";
-  const sizeControls = document.createElement("span"); sizeControls.className = "markra-table-size-controls";
-  const size = createTableControl(document, "markra-table-size-button", options.labels.adjustTable, () => picker.open(size), createTableSizeIcon(document));
+  const toolbar = document.createElement("span"); toolbar.className = "helbaron-table-align-controls";
+  const sizeControls = document.createElement("span"); sizeControls.className = "helbaron-table-size-controls";
+  const size = createTableControl(document, "helbaron-table-size-button", options.labels.adjustTable, () => picker.open(size), createTableSizeIcon(document));
   size.ariaExpanded = "false"; sizeControls.append(size);
   const alignments = (["left", "center", "right"] as const).map(alignment => {
     const label = alignment === "left" ? options.labels.alignLeft : alignment === "center" ? options.labels.alignCenter : options.labels.alignRight;
-    const button = createTableControl(document, `markra-table-align-button markra-table-align-${alignment}`, label, () => options.align(alignment), createTableAlignIcon(document, alignment));
+    const button = createTableControl(document, `helbaron-table-align-button helbaron-table-align-${alignment}`, label, () => options.align(alignment), createTableAlignIcon(document, alignment));
     button.dataset.alignment = alignment;
     return button;
   });
   const toggleWidth = () => {
     options.setWidthMode(options.widthMode() === "auto" ? "even" : "auto"); update();
   };
-  const width = createTableControl(document, "markra-table-width-button", options.labels.columnWidthMode, toggleWidth, createTableWidthIcon(document));
+  const width = createTableControl(document, "helbaron-table-width-button", options.labels.columnWidthMode, toggleWidth, createTableWidthIcon(document));
   width.addEventListener("keydown", event => {
     if (event.key !== "Enter" && event.key !== " ") return;
     event.preventDefault(); event.stopPropagation(); if (!width.disabled) toggleWidth();
   });
   const extraButtons = (options.extras ?? []).map(extra => {
-    const button = createTableControl(document, "markra-table-extra-control", extra.label, extra.run, extra.icon);
+    const button = createTableControl(document, "helbaron-table-extra-control", extra.label, extra.run, extra.icon);
     button.dataset.action = extra.action;
     return button;
   });
-  const remove = createTableControl(document, "markra-table-delete-table", options.labels.deleteTable, options.deleteTable, createLucideIcon(document, Trash2, "markra-table-control-icon"));
+  const remove = createTableControl(document, "helbaron-table-delete-table", options.labels.deleteTable, options.deleteTable, createLucideIcon(document, Trash2, "helbaron-table-control-icon"));
   toolbar.append(sizeControls, ...alignments, width, ...extraButtons, remove);
-  const column = createTableControl(document, "markra-table-add-column", options.labels.addColumnRight, options.addColumn, createLucideIcon(document, Plus, "markra-table-control-icon"));
-  const row = createTableControl(document, "markra-table-add-row", options.labels.addRowBelow, options.addRow, createLucideIcon(document, Plus, "markra-table-control-icon"));
+  const column = createTableControl(document, "helbaron-table-add-column", options.labels.addColumnRight, options.addColumn, createLucideIcon(document, Plus, "helbaron-table-control-icon"));
+  const row = createTableControl(document, "helbaron-table-add-row", options.labels.addRowBelow, options.addRow, createLucideIcon(document, Plus, "helbaron-table-control-icon"));
   let hoveredColumn = 0, hoveredRow = 0;
-  const deleteColumn = createTableControl(document, "markra-table-delete-control markra-table-delete-column", options.labels.deleteColumn, () => options.deleteColumn(hoveredColumn), createLucideIcon(document, Minus, "markra-table-control-icon"));
-  const deleteRow = createTableControl(document, "markra-table-delete-control markra-table-delete-row", options.labels.deleteRow, () => options.deleteRow(hoveredRow), createLucideIcon(document, Minus, "markra-table-control-icon"));
+  const deleteColumn = createTableControl(document, "helbaron-table-delete-control helbaron-table-delete-column", options.labels.deleteColumn, () => options.deleteColumn(hoveredColumn), createLucideIcon(document, Minus, "helbaron-table-control-icon"));
+  const deleteRow = createTableControl(document, "helbaron-table-delete-control helbaron-table-delete-row", options.labels.deleteRow, () => options.deleteRow(hoveredRow), createLucideIcon(document, Minus, "helbaron-table-control-icon"));
   deleteColumn.hidden = true; deleteRow.hidden = true;
   wrapper.prepend(toolbar); wrapper.append(column, row, deleteColumn, deleteRow);
   const hover = (event: MouseEvent) => {
@@ -275,7 +275,7 @@ export function createTableControls(wrapper: HTMLElement, table: HTMLTableElemen
       hoveredRow = position.row;
       const rect = cell.parentElement!.getBoundingClientRect();
       deleteColumn.hidden = true; deleteRow.hidden = false;
-      const visibleRight = wrapper.querySelector(".markra-table-scroll")?.getBoundingClientRect().right ?? rect.right;
+      const visibleRight = wrapper.querySelector(".helbaron-table-scroll")?.getBoundingClientRect().right ?? rect.right;
       deleteRow.style.left = `${Math.min(rect.right, visibleRight) - bounds.left}px`;
       deleteRow.style.top = `${rect.top - bounds.top + rect.height / 2}px`;
     }

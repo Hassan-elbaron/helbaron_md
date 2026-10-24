@@ -29,7 +29,7 @@ function renderedLines(view: EditorView) {
 }
 
 function editableEmptyLines(view: EditorView) {
-  return view.dom.querySelectorAll(".cm-markra-empty-line");
+  return view.dom.querySelectorAll(".cm-helbaron-empty-line");
 }
 
 afterEach(() => {

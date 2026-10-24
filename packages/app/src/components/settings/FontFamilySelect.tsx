@@ -139,11 +139,11 @@ export function FontFamilySelect({
     <div className="relative inline-flex min-w-56 items-center">
       <Search
         aria-hidden="true"
-        className="pointer-events-none absolute left-2.5 z-10 text-(--text-secondary)"
+        className="pointer-events-none absolute start-2.5 z-10 text-(--text-secondary)"
         size={13}
       />
       <input
-        className="h-8 w-56 rounded-md border border-(--border-default) bg-(--bg-primary) py-0 pr-3 pl-8 text-[12px] leading-5 font-[560] text-(--text-heading) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
+        className="h-8 w-56 rounded-md border border-(--border-default) bg-(--bg-primary) py-0 pe-3 ps-8 text-[12px] leading-5 font-[560] text-(--text-heading) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
         type="text"
         role="combobox"
         aria-activedescendant={open && activeOption ? `${listboxId}-${activeIndex}` : undefined}
@@ -173,14 +173,14 @@ export function FontFamilySelect({
       />
       {open ? (
         <div
-          className="absolute top-full right-0 left-0 z-40 mt-1 max-h-56 overflow-y-auto rounded-md border border-(--border-default) bg-(--bg-primary) py-1 shadow-[0_12px_34px_rgba(0,0,0,0.14)]"
+          className="absolute top-full end-0 start-0 z-40 mt-1 max-h-56 overflow-y-auto rounded-md border border-(--border-default) bg-(--bg-primary) py-1 shadow-[0_12px_34px_rgba(0,0,0,0.14)]"
           id={listboxId}
           role="listbox"
         >
           {visibleOptions.map((option, index) => (
             <button
               key={option.family ?? "default"}
-              className="flex h-8 w-full cursor-pointer items-center border-0 bg-transparent px-3 text-left text-[12px] leading-5 font-[560] text-(--text-heading) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus:bg-(--bg-hover) focus:outline-none aria-selected:bg-(--bg-active)"
+              className="flex h-8 w-full cursor-pointer items-center border-0 bg-transparent px-3 text-start text-[12px] leading-5 font-[560] text-(--text-heading) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus:bg-(--bg-hover) focus:outline-none aria-selected:bg-(--bg-active)"
               id={`${listboxId}-${index}`}
               role="option"
               aria-selected={option.family === value.family}

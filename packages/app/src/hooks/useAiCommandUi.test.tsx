@@ -1,11 +1,11 @@
 import { act, renderHook } from "@testing-library/react";
-import { runInlineAiAgent } from "@markra/ai";
+import { runInlineAiAgent } from "@helbaron/ai";
 import { runAcpInlineAiAgent } from "../lib/acp-agent";
 import { useAiCommandUi } from "./useAiCommandUi";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 
-vi.mock("@markra/ai", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@markra/ai")>();
+vi.mock("@helbaron/ai", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@helbaron/ai")>();
 
   return {
     ...actual,

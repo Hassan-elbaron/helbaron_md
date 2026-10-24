@@ -1,25 +1,25 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const outputPath = process.env.OUTPUT_PATH || "release-assets/Markra-macOS-Open-Anyway.command";
+const outputPath = process.env.OUTPUT_PATH || "release-assets/Helbaron-macOS-Open-Anyway.command";
 
 const script = `#!/bin/bash
 set -euo pipefail
 
-APP_PATH="/Applications/Markra.app"
+APP_PATH="/Applications/Helbaron.app"
 
-echo "Markra macOS open helper"
+echo "Helbaron macOS open helper"
 echo
 echo "This helper only removes the macOS quarantine flag from:"
 echo "  $APP_PATH"
 echo
-echo "Use it only if macOS says Markra is damaged or cannot be opened after you"
-echo "dragged Markra.app into Applications."
+echo "Use it only if macOS says Helbaron is damaged or cannot be opened after you"
+echo "dragged Helbaron.app into Applications."
 echo
 
 if [[ ! -d "$APP_PATH" ]]; then
-  echo "Markra.app was not found in /Applications."
-  echo "Drag Markra.app into Applications first, then run this helper again."
+  echo "Helbaron.app was not found in /Applications."
+  echo "Drag Helbaron.app into Applications first, then run this helper again."
   echo
   read -r -p "Press Return to close this window..." _
   exit 1
@@ -40,16 +40,16 @@ echo "Removing quarantine flag..."
 
 if ! xattr -dr com.apple.quarantine "$APP_PATH"; then
   echo
-  echo "Could not repair Markra.app automatically."
+  echo "Could not repair Helbaron.app automatically."
   echo "You can try this command manually:"
-  echo "  sudo xattr -dr com.apple.quarantine /Applications/Markra.app"
+  echo "  sudo xattr -dr com.apple.quarantine /Applications/Helbaron.app"
   echo
   read -r -p "Press Return to close this window..." _
   exit 1
 fi
 
 echo
-echo "Done. Try opening Markra from Applications again."
+echo "Done. Try opening Helbaron from Applications again."
 echo
 read -r -p "Press Return to close this window..." _
 `;

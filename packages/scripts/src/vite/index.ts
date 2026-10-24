@@ -7,7 +7,7 @@ import { katexFontsPlugin } from "./katex-fonts.ts";
 import { stripDebugPlugin } from "./strip-debug.ts";
 import type { UserConfig } from "vite";
 
-export type MarkraAppViteConfigOptions = {
+export type HelbaronAppViteConfigOptions = {
   browserNodeStubUrl: string | URL;
   packageJsonUrl: string | URL;
   server?: UserConfig["server"];
@@ -73,6 +73,15 @@ const diagramDependencies = dependencyPattern([
 const syntaxHighlightDependencies = dependencyPattern(["highlight.js", "lowlight"]);
 const toastDependencies = dependencyPattern(["sonner"]);
 const contentExtractionDependencies = dependencyPattern(["@mozilla/readability"]);
+// Word (.docx) import/export loads on first use; keep it out of the startup vendor chunk.
+const wordDocumentDependencies = dependencyPattern([
+  "@joplin/turndown-plugin-gfm",
+  "dingbat-to-unicode",
+  "docx",
+  "lop",
+  "mammoth",
+  "xmlbuilder"
+]);
 const aiSdkDependencies = dependencyPattern([
   "@anthropic-ai",
   "@aws-sdk",
@@ -100,19 +109,20 @@ function vendorChunkName(id: string) {
   if (toastDependencies.test(id)) return "toast-vendor";
   if (contentExtractionDependencies.test(id)) return "content-extraction-vendor";
   if (aiSdkDependencies.test(id)) return "ai-sdk-vendor";
+  if (wordDocumentDependencies.test(id)) return "word-document-vendor";
   if (id.includes("node_modules")) return "vendor";
 
   return null;
 }
 
-export function createMarkraAppViteConfig(options: MarkraAppViteConfigOptions) {
+export function createHelbaronAppViteConfig(options: HelbaronAppViteConfigOptions) {
   const version = readPackageVersion(options.packageJsonUrl);
   const browserNodeStubPath = fileURLToPath(options.browserNodeStubUrl);
 
   return defineConfig(({ mode }) => ({
     define: {
-      __MARKRA_APP_VERSION__: JSON.stringify(version),
-      __MARKRA_DEBUG__: JSON.stringify(mode !== "production")
+      __HELBARON_APP_VERSION__: JSON.stringify(version),
+      __HELBARON_DEBUG__: JSON.stringify(mode !== "production")
     },
     resolve: mode === "test"
       ? undefined

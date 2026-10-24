@@ -1,4 +1,4 @@
-import { type I18nKey } from "@markra/shared";
+import { type I18nKey } from "@helbaron/shared";
 import { type EditorPreferences } from "../../lib/settings/app-settings";
 import {
   resolveViewModeChrome,

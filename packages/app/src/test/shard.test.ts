@@ -30,7 +30,7 @@ describe("runsInTestShard", () => {
   });
 
   it.each(["0/2", "3/2", "1/0", "invalid"])("rejects invalid shard spec %s", (spec) => {
-    expect(() => runsInTestShard("synthetic test", spec)).toThrow(/MARKRA_APP_TEST_SHARD/);
+    expect(() => runsInTestShard("synthetic test", spec)).toThrow(/HELBARON_APP_TEST_SHARD/);
   });
 });
 

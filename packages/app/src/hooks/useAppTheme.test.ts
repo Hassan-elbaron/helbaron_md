@@ -6,7 +6,7 @@ import { useAppTheme } from "./useAppTheme";
 
 afterEach(() => {
   resetAppRuntimeForTests();
-  document.getElementById("markra-custom-theme-style")?.remove();
+  document.getElementById("helbaron-custom-theme-style")?.remove();
   delete document.documentElement.dataset.theme;
 });
 
@@ -22,7 +22,7 @@ it("applies file CSS for each appearance and restores inline CSS when the file i
   await saveStoredThemeFiles({ light: "light.css", dark: "dark.css" });
   const { result } = renderHook(useAppTheme);
   await waitFor(() => expect(result.current.ready).toBe(true));
-  const css = () => document.getElementById("markra-custom-theme-style")?.textContent;
+  const css = () => document.getElementById("helbaron-custom-theme-style")?.textContent;
   expect(css()).toBe("/* light.css */");
   act(() => result.current.selectAppearanceMode("dark"));
   expect(css()).toBe("/* dark.css */");
@@ -50,7 +50,7 @@ it("waits for selected file CSS on first paint and does not truncate large style
   const css = `/* ${"x".repeat(60_000)} */`;
   await act(async () => { resolveCss(css); });
   expect(result.current.ready).toBe(true);
-  expect(document.getElementById("markra-custom-theme-style")?.textContent).toBe(css);
+  expect(document.getElementById("helbaron-custom-theme-style")?.textContent).toBe(css);
 });
 
 it("adapts Typora CSS from settings without changing the saved source", async () => {
@@ -61,11 +61,11 @@ it("adapts Typora CSS from settings without changing the saved source", async ()
   await saveStoredCustomThemeCss({ light: source, dark: '#write { color: #ddeeff; }' });
   const { result } = renderHook(useAppTheme);
   await waitFor(() => expect(result.current.ready).toBe(true));
-  expect(document.getElementById("markra-custom-theme-style")?.textContent).toContain("--editor-h1-color: #aabbcc;");
+  expect(document.getElementById("helbaron-custom-theme-style")?.textContent).toContain("--editor-h1-color: #aabbcc;");
   expect(result.current.lightCustomThemeCss).toBe(source);
   expect(result.current.themeCompatibility.light.kind).toBe("typora");
   act(() => result.current.selectAppearanceMode("dark"));
-  expect(document.getElementById("markra-custom-theme-style")?.textContent).toContain("--editor-text-primary: #ddeeff;");
+  expect(document.getElementById("helbaron-custom-theme-style")?.textContent).toContain("--editor-text-primary: #ddeeff;");
 });
 
 it("adapts refreshed Typora theme files and restores native CSS when their source changes", async () => {
@@ -80,9 +80,9 @@ it("adapts refreshed Typora theme files and restores native CSS when their sourc
   const { result } = renderHook(useAppTheme);
   await waitFor(() => expect(result.current.ready).toBe(true));
   expect(result.current.themeCompatibility.light.kind).toBe("typora");
-  expect(document.getElementById("markra-custom-theme-style")?.textContent).toContain("--editor-text-primary: #112233;");
+  expect(document.getElementById("helbaron-custom-theme-style")?.textContent).toContain("--editor-text-primary: #112233;");
   css = ':root[data-theme="custom"] { --accent: #556677; }';
   await act(() => result.current.themeFiles.refresh());
   expect(result.current.themeCompatibility.light.kind).toBe("native");
-  expect(document.getElementById("markra-custom-theme-style")?.textContent).toBe(css);
+  expect(document.getElementById("helbaron-custom-theme-style")?.textContent).toBe(css);
 });

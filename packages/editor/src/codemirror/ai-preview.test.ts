@@ -1,7 +1,7 @@
 import { EditorSelection, EditorState, type Extension } from "@codemirror/state";
 import { history, undo } from "@codemirror/commands";
 import { EditorView } from "@codemirror/view";
-import type { AiDiffResult } from "@markra/ai";
+import type { AiDiffResult } from "@helbaron/ai";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   applyCodeMirrorAiResult,
@@ -82,8 +82,8 @@ describe("CodeMirror AI preview", () => {
 
     showCodeMirrorAiPreview(view, result, { apply: "Apply", copy: "Copy", copied: "Copied", reject: "Reject" });
 
-    expect(view.dom.querySelector(".markra-ai-preview-delete")?.textContent).toContain("Original");
-    expect(view.dom.querySelector(".markra-ai-preview-insert")?.textContent).toContain("Improved");
+    expect(view.dom.querySelector(".helbaron-ai-preview-delete")?.textContent).toContain("Original");
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")?.textContent).toContain("Improved");
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([result]);
     expect(view.state.doc.toString()).toBe(doc);
   });
@@ -98,9 +98,9 @@ describe("CodeMirror AI preview", () => {
     showCodeMirrorAiPreview(view, streamed);
 
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([streamed]);
-    expect(view.dom.querySelectorAll(".markra-ai-preview-insert")).toHaveLength(1);
+    expect(view.dom.querySelectorAll(".helbaron-ai-preview-insert")).toHaveLength(1);
     expect(
-      view.dom.querySelector(".markra-ai-preview-insert")?.textContent,
+      view.dom.querySelector(".helbaron-ai-preview-insert")?.textContent,
     ).toBe("Improved");
   });
 
@@ -132,7 +132,7 @@ describe("CodeMirror AI preview", () => {
     });
 
     expect(
-      view.dom.querySelector(".markra-ai-preview-scope")?.textContent,
+      view.dom.querySelector(".helbaron-ai-preview-scope")?.textContent,
     ).toBe("Replace selection - table: Synthetic costs | 8 chars | 7-15");
   });
 
@@ -144,7 +144,7 @@ describe("CodeMirror AI preview", () => {
     window.addEventListener(AI_EDITOR_PREVIEW_ACTION_EVENT, onAction);
     showCodeMirrorAiPreview(view, result);
     const apply = view.dom.querySelector<HTMLButtonElement>(
-      ".markra-ai-preview-apply",
+      ".helbaron-ai-preview-apply",
     );
 
     apply?.dispatchEvent(new PointerEvent("pointerdown", {
@@ -156,7 +156,7 @@ describe("CodeMirror AI preview", () => {
     expect(onAction).toHaveBeenCalledOnce();
     expect(apply?.disabled).toBe(true);
     expect(apply?.getAttribute("aria-busy")).toBe("true");
-    expect(apply?.querySelector(".markra-ai-preview-spinner")).not.toBeNull();
+    expect(apply?.querySelector(".helbaron-ai-preview-spinner")).not.toBeNull();
     window.removeEventListener(AI_EDITOR_PREVIEW_ACTION_EVENT, onAction);
   });
 
@@ -195,11 +195,11 @@ describe("CodeMirror AI preview", () => {
     showCodeMirrorAiPreview(view, result);
 
     const preview = view.dom.querySelector<HTMLElement>(
-      ".markra-ai-preview-widget",
+      ".helbaron-ai-preview-widget",
     );
     expect(preview).not.toBeNull();
-    expect(preview?.closest(".cm-markra-table-hidden-line")).toBeNull();
-    expect(preview?.classList.contains("markra-ai-preview-widget-block")).toBe(true);
+    expect(preview?.closest(".cm-helbaron-table-hidden-line")).toBeNull();
+    expect(preview?.classList.contains("helbaron-ai-preview-widget-block")).toBe(true);
     expect(preview?.textContent).toContain("| Field | New |");
   });
 
@@ -209,7 +209,7 @@ describe("CodeMirror AI preview", () => {
     const view = createView(doc);
     showCodeMirrorAiPreview(view, result, undefined, { previewId: "preview-1" });
     const preview = view.dom.querySelector<HTMLElement>(
-      ".markra-ai-preview-widget",
+      ".helbaron-ai-preview-widget",
     );
     const scrollIntoView = vi.fn();
     if (preview) preview.scrollIntoView = scrollIntoView;
@@ -233,7 +233,7 @@ describe("CodeMirror AI preview", () => {
     window.addEventListener(AI_EDITOR_PREVIEW_ACTION_EVENT, onAction);
 
     showCodeMirrorAiPreview(view, result, undefined, { previewId: "synthetic-preview" });
-    view.dom.querySelector<HTMLButtonElement>(".markra-ai-preview-apply")?.click();
+    view.dom.querySelector<HTMLButtonElement>(".helbaron-ai-preview-apply")?.click();
 
     expect(onAction).toHaveBeenCalledOnce();
     expect((onAction.mock.calls[0]?.[0] as CustomEvent).detail).toMatchObject({
@@ -259,7 +259,7 @@ describe("CodeMirror AI preview", () => {
       reject: "Reject",
     }, { previewId: "synthetic-preview" });
     const append = view.dom.querySelector<HTMLButtonElement>(
-      ".markra-ai-preview-append",
+      ".helbaron-ai-preview-append",
     );
     append?.click();
 
@@ -286,8 +286,8 @@ describe("CodeMirror AI preview", () => {
 
     showCodeMirrorAiPreview(view, result);
 
-    expect(view.dom.querySelector(".markra-ai-preview-append")).toBeNull();
-    expect(view.dom.querySelector(".markra-ai-preview-apply")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-preview-append")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-preview-apply")).not.toBeNull();
   });
 
   it("appends an AI result after the selection's Markdown block", () => {
@@ -471,7 +471,7 @@ describe("CodeMirror AI preview", () => {
         to: "One Much better Two Summary".length,
       }),
     ]);
-    expect(view.dom.querySelectorAll(".markra-ai-preview-insert")).toHaveLength(1);
+    expect(view.dom.querySelectorAll(".helbaron-ai-preview-insert")).toHaveLength(1);
   });
 
   it("drops a pending preview that conflicts with the applied replacement", () => {
@@ -491,7 +491,7 @@ describe("CodeMirror AI preview", () => {
     expect(applyCodeMirrorAiResult(view, first, { previewId: "first" })).toBe(true);
 
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([]);
-    expect(view.dom.querySelector(".markra-ai-preview-insert")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")).toBeNull();
   });
 
   it("rebases the original text when the user edits a pending target", () => {
@@ -529,14 +529,14 @@ describe("CodeMirror AI preview", () => {
       to: doc.indexOf("Original") + "Original".length,
     });
 
-    expect(view.dom.querySelector(".markra-ai-selection-hold")?.textContent).toContain("Original");
+    expect(view.dom.querySelector(".helbaron-ai-selection-hold")?.textContent).toContain("Original");
     view.dispatch({ changes: { from: 0, insert: "Draft " } });
-    expect(view.dom.querySelector(".markra-ai-selection-hold")?.textContent).toContain("Original");
+    expect(view.dom.querySelector(".helbaron-ai-selection-hold")?.textContent).toContain("Original");
 
     clearCodeMirrorAiPreview(view);
     clearCodeMirrorAiSelectionHold(view);
-    expect(view.dom.querySelector(".markra-ai-preview-insert")).toBeNull();
-    expect(view.dom.querySelector(".markra-ai-selection-hold")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-selection-hold")).toBeNull();
   });
 
   it("does not dispatch while clearing an already empty selection hold", () => {
@@ -576,8 +576,8 @@ describe("CodeMirror AI preview", () => {
 
     expect(view.state.doc.toString()).toBe(doc);
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([result]);
-    expect(view.dom.querySelector(".markra-ai-preview-delete")?.textContent).toContain("Original");
-    expect(view.dom.querySelector(".markra-ai-preview-insert")?.textContent).toContain("A much better phrase");
+    expect(view.dom.querySelector(".helbaron-ai-preview-delete")?.textContent).toContain("Original");
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")?.textContent).toContain("A much better phrase");
     expect(onRestore).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: expect.objectContaining({ previewId: "replacement", result }),
@@ -605,8 +605,8 @@ describe("CodeMirror AI preview", () => {
 
     expect(view.state.doc.toString()).toBe(doc);
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([result]);
-    expect(view.dom.querySelector(".markra-ai-preview-delete")?.textContent).toContain("Original");
-    expect(view.dom.querySelector(".markra-ai-preview-insert")?.textContent).toContain("Improved");
+    expect(view.dom.querySelector(".helbaron-ai-preview-delete")?.textContent).toContain("Original");
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")?.textContent).toContain("Improved");
     expect(onRestore).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: expect.objectContaining({ previewId: "append", result }),
@@ -626,7 +626,7 @@ describe("CodeMirror AI preview", () => {
     expect(undo(view)).toBe(true);
 
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([result]);
-    expect(view.dom.querySelector(".markra-ai-preview-insert")?.textContent).toContain("Improved");
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")?.textContent).toContain("Improved");
   });
 
   it("does not restore an insert preview merely because a later edit occurs", () => {
@@ -645,6 +645,6 @@ describe("CodeMirror AI preview", () => {
     view.dispatch({ changes: { from: 0, insert: "Draft " } });
 
     expect(listCodeMirrorAiPreviewResults(view)).toEqual([]);
-    expect(view.dom.querySelector(".markra-ai-preview-insert")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-preview-insert")).toBeNull();
   });
 });

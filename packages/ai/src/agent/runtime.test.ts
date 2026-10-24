@@ -1,6 +1,6 @@
 import { runInlineAiAgent } from "./runtime";
 import { messagesFromPiContext } from "./runtime/messages";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import type { ThinkingContent } from "@earendil-works/pi-ai";
 import type { ChatMessage } from "./chat/types";
 

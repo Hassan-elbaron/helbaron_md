@@ -11,7 +11,7 @@ import {
   type KeyboardShortcutBindings,
   type KeyboardShortcutMap,
   type ParsedKeyboardShortcut,
-} from "@markra/shared";
+} from "@helbaron/shared";
 
 export const markdownShortcutActions = keyboardShortcutActions;
 export const defaultMarkdownShortcuts = defaultKeyboardShortcuts;

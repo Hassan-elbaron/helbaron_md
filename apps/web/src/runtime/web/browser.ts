@@ -35,7 +35,7 @@ export function createBrowserDownload(documentOverride?: Document) {
 }
 
 function htmlFallbackName(name: string) {
-  return name.replace(/\.pdf$/iu, ".html") || "markra-export.html";
+  return name.replace(/\.pdf$/iu, ".html") || "helbaron-export.html";
 }
 
 const defaultBrowserPrintMargin = "18mm";
@@ -57,7 +57,7 @@ function extractBrowserPrintMargin(contents: string) {
 function createBrowserPrintStyles(contents: string) {
   const margin = extractBrowserPrintMargin(contents);
 
-  return `<style data-markra-browser-print>
+  return `<style data-helbaron-browser-print>
 @media print {
   @page { margin: 0 !important; }
 

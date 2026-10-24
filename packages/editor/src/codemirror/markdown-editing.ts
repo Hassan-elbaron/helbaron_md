@@ -8,7 +8,7 @@ import {
   type Transaction,
 } from "@codemirror/state";
 import { EditorView, keymap, type ViewUpdate } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
 const indentation = "  ";
 const listMarkerPattern = /^((?:[\t ]*>[\t ]*)*)([\t ]*)(?:[-+*]|\d+[.)])[\t ]+/u;
@@ -304,8 +304,8 @@ function insertContextualHardBreak(view: EditorView) {
 }
 
 export function markdownEditingPlugin() {
-  return defineMarkraPlugin({
-    id: "markra.markdown-editing",
+  return defineHelbaronPlugin({
+    id: "helbaron.markdown-editing",
     extension: [
       EditorView.mouseSelectionStyle.of(selectTripleClickedLine),
       EditorState.transactionFilter.of(keepJoinedLineCaretsAfterText),

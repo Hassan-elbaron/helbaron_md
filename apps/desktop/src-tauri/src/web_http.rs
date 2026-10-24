@@ -392,10 +392,10 @@ mod tests {
 
     #[test]
     fn accepts_public_http_urls() {
-        let url = validated_web_resource_url("https://example.com/search?q=markra", false)
+        let url = validated_web_resource_url("https://example.com/search?q=helbaron", false)
             .expect("public HTTPS URL should be accepted");
 
-        assert_eq!(url.as_str(), "https://example.com/search?q=markra");
+        assert_eq!(url.as_str(), "https://example.com/search?q=helbaron");
     }
 
     #[test]
@@ -427,10 +427,10 @@ mod tests {
 
     #[test]
     fn allows_localhost_for_configured_search_endpoints() {
-        let url = validated_web_resource_url("http://localhost:8888/search?q=markra", true)
+        let url = validated_web_resource_url("http://localhost:8888/search?q=helbaron", true)
             .expect("localhost should be allowed when explicitly requested");
 
-        assert_eq!(url.as_str(), "http://localhost:8888/search?q=markra");
+        assert_eq!(url.as_str(), "http://localhost:8888/search?q=helbaron");
     }
 
     #[test]
@@ -485,11 +485,11 @@ mod tests {
     fn parses_custom_headers() {
         let mut headers = HashMap::new();
         headers.insert("accept".to_string(), "text/html".to_string());
-        headers.insert("user-agent".to_string(), "Markra".to_string());
+        headers.insert("user-agent".to_string(), "Helbaron".to_string());
 
         let parsed = parse_headers(&headers).expect("headers should parse");
 
         assert_eq!(parsed.get("accept").unwrap(), "text/html");
-        assert_eq!(parsed.get("user-agent").unwrap(), "Markra");
+        assert_eq!(parsed.get("user-agent").unwrap(), "Helbaron");
     }
 }

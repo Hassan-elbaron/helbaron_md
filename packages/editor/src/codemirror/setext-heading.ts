@@ -58,7 +58,7 @@ function wrapSetextHeadings(inner: PartialParse): PartialParse {
   };
 }
 
-export const markraSetextHeading: MarkdownConfig = {
+export const helbaronSetextHeading: MarkdownConfig = {
   // Keep Lezer's native Setext parser and block precedence intact. Rewriting
   // only the completed top-level tree avoids turning deindented rules into
   // nested headings while treating single-character underlines as uncommitted.

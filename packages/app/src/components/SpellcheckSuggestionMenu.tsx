@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from "react";
-import type { SpellcheckMatch } from "@markra/editor";
-import { t, type AppLanguage } from "@markra/shared";
+import type { SpellcheckMatch } from "@helbaron/editor";
+import { t, type AppLanguage } from "@helbaron/shared";
 
 export type SpellcheckSuggestionMenuState = {
   left: number;
@@ -89,7 +89,7 @@ export function SpellcheckSuggestionMenu({
     >
       {suggestions.map((suggestion, index) => (
         <button
-          className="block w-full rounded-sm px-2 py-1 text-left text-(--text-primary) hover:bg-(--bg-hover) focus:bg-(--bg-hover) focus:outline-none"
+          className="block w-full rounded-sm px-2 py-1 text-start text-(--text-primary) hover:bg-(--bg-hover) focus:bg-(--bg-hover) focus:outline-none"
           key={suggestion}
           ref={(node) => {
             itemRefs.current[index] = node;
@@ -104,7 +104,7 @@ export function SpellcheckSuggestionMenu({
         </button>
       ))}
       <button
-        className="mt-1 block w-full border-t border-(--border-default) px-2 py-1.5 text-left text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus:bg-(--bg-hover) focus:text-(--text-heading) focus:outline-none"
+        className="mt-1 block w-full border-t border-(--border-default) px-2 py-1.5 text-start text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus:bg-(--bg-hover) focus:text-(--text-heading) focus:outline-none"
         ref={(node) => {
           itemRefs.current[suggestions.length] = node;
         }}

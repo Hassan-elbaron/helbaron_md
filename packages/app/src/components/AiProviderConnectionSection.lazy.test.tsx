@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { AiProviderConnectionSection } from "./AiProviderConnectionSection";
-import type { AiProviderConfig } from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+import type { AiProviderConfig } from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 
 const jsonEditorModuleState = vi.hoisted(() => ({
   loadCount: 0

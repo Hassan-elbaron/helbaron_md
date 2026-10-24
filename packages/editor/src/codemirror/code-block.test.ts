@@ -63,17 +63,17 @@ afterEach(() => {
 describe("codeBlockPreviewPlugin", () => {
   it("renders a language header and code body while preserving Markdown", () => {
     const view = createView();
-    const header = view.dom.querySelector<HTMLElement>(".cm-markra-code-header");
+    const header = view.dom.querySelector<HTMLElement>(".cm-helbaron-code-header");
 
     expect(header?.textContent).toBe("ts");
     const headerFontFamily = header && getComputedStyle(header).fontFamily;
     expect(headerFontFamily).toContain("var(--font-ui");
     expect(headerFontFamily).toContain("Noto Sans SC Variable");
     expect(
-      view.dom.querySelectorAll(".cm-markra-code-content-line"),
+      view.dom.querySelectorAll(".cm-helbaron-code-content-line"),
     ).toHaveLength(2);
     expect(
-      view.dom.querySelector(".cm-markra-code-closing-line"),
+      view.dom.querySelector(".cm-helbaron-code-closing-line"),
     ).not.toBeNull();
     expect(renderedLines(view)).toContain("const answer = 42;");
     expect(view.state.doc.toString()).toBe(codeDocument);
@@ -86,7 +86,7 @@ describe("codeBlockPreviewPlugin", () => {
       selection: { anchor: codeDocument.indexOf("answer =") + 2 },
     });
 
-    expect(view.dom.querySelector(".cm-markra-code-header")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-code-header")?.textContent).toBe(
       "ts",
     );
     expect(renderedLines(view)).not.toContain("```ts");
@@ -94,15 +94,15 @@ describe("codeBlockPreviewPlugin", () => {
     expect(renderedLines(view)).toContain("const answer = 42;");
     expect(
       view.dom
-        .querySelector(".cm-markra-code-closing-line")
+        .querySelector(".cm-helbaron-code-closing-line")
         ?.getAttribute("data-code-block-active"),
     ).toBe("true");
     expect(
       view.dom
-        .querySelector(".cm-markra-code-header-line")
+        .querySelector(".cm-helbaron-code-header-line")
         ?.getAttribute("data-code-block-active"),
     ).toBeNull();
-    expect(view.dom.querySelector(".markra-code-language-select")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-code-language-select")).not.toBeNull();
   });
 
   it("marks only the hovered code block for progressive control reveal", () => {
@@ -120,12 +120,12 @@ describe("codeBlockPreviewPlugin", () => {
     const view = createView(source);
     const headers = [
       ...view.dom.querySelectorAll<HTMLElement>(
-        ".cm-markra-code-header-line",
+        ".cm-helbaron-code-header-line",
       ),
     ];
     const secondCodeLine = [
       ...view.dom.querySelectorAll<HTMLElement>(
-        ".cm-markra-code-content-line",
+        ".cm-helbaron-code-content-line",
       ),
     ].find((line) => line.textContent?.includes("second_value"));
     const paragraphLine = [...view.dom.querySelectorAll<HTMLElement>(".cm-line")]
@@ -157,7 +157,7 @@ describe("codeBlockPreviewPlugin", () => {
     ].join("\n");
     const view = createView(source);
     const topGaps = [
-      ...view.dom.querySelectorAll<HTMLElement>(".cm-markra-code-top-gap"),
+      ...view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-code-top-gap"),
     ];
 
     expect(topGaps).toHaveLength(2);
@@ -188,10 +188,10 @@ describe("codeBlockPreviewPlugin", () => {
       "  ```",
     ].join("\n");
     const view = createView(source);
-    const headerLine = view.dom.querySelector(".cm-markra-code-header-line");
-    const language = view.dom.querySelector(".markra-code-language-select");
+    const headerLine = view.dom.querySelector(".cm-helbaron-code-header-line");
+    const language = view.dom.querySelector(".helbaron-code-language-select");
 
-    expect(language?.closest(".cm-markra-code-header-line")).toBe(headerLine);
+    expect(language?.closest(".cm-helbaron-code-header-line")).toBe(headerLine);
     expect(headerLine?.textContent).not.toContain("  ");
     expect(view.state.doc.toString()).toBe(source);
   });
@@ -202,14 +202,14 @@ describe("codeBlockPreviewPlugin", () => {
     view.dispatch({ selection: { anchor: source.length } });
 
     expect(renderedLines(view)).toContain(source);
-    expect(view.dom.querySelector(".cm-markra-code-header")).toBeNull();
-    expect(view.dom.querySelector(".markra-code-language-select")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-code-header")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-code-language-select")).toBeNull();
   });
 
   it("moves a click on the folded closing line to an editable line after the fence", () => {
     const view = createView("```ts\nconst answer = 42;\n```");
     const closingLine = view.dom.querySelector<HTMLElement>(
-      ".cm-markra-code-closing-line",
+      ".cm-helbaron-code-closing-line",
     );
 
     expect(closingLine).not.toBeNull();
@@ -404,7 +404,7 @@ describe("codeBlockPreviewPlugin", () => {
       codeBlockPreviewPlugin({ plainTextLabel: "Text" }),
     );
 
-    expect(view.dom.querySelector(".cm-markra-code-header")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-code-header")?.textContent).toBe(
       "Text",
     );
   });
@@ -416,19 +416,19 @@ describe("codeBlockPreviewPlugin", () => {
       false,
     );
 
-    expect(view.dom.querySelector(".cm-markra-code-header")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-code-header")?.textContent).toBe(
       "ts",
     );
     expect(renderedLines(view)).toContain("const value = 42;");
     expect(
-      view.dom.querySelector(".cm-markra-code-closing-line"),
+      view.dom.querySelector(".cm-helbaron-code-closing-line"),
     ).toBeNull();
   });
 
   it("changes the fenced language from the inline selector without touching code", () => {
     const view = createView();
     const language = view.dom.querySelector<HTMLSelectElement>(
-      ".markra-code-language-select",
+      ".helbaron-code-language-select",
     );
 
     expect(language?.value).toBe("ts");
@@ -441,7 +441,7 @@ describe("codeBlockPreviewPlugin", () => {
     expect(view.state.doc.toString()).toBe(
       codeDocument.replace("```ts", "```json"),
     );
-    expect(view.dom.querySelector(".cm-markra-code-header")?.textContent).toContain(
+    expect(view.dom.querySelector(".cm-helbaron-code-header")?.textContent).toContain(
       "json",
     );
   });
@@ -449,7 +449,7 @@ describe("codeBlockPreviewPlugin", () => {
   it("keeps uncommon fenced languages available in the inline selector", () => {
     const view = createView("```synthetic-lang\nvalue\n```\n\nEdit");
     const language = view.dom.querySelector<HTMLSelectElement>(
-      ".markra-code-language-select",
+      ".helbaron-code-language-select",
     );
 
     expect(language?.value).toBe("synthetic-lang");
@@ -466,40 +466,40 @@ describe("codeBlockPreviewPlugin", () => {
     });
     const view = createView();
     const copy = view.dom.querySelector<HTMLButtonElement>(
-      ".markra-code-copy-button",
+      ".helbaron-code-copy-button",
     );
     const language = view.dom.querySelector<HTMLSelectElement>(
-      ".markra-code-language-select",
+      ".helbaron-code-language-select",
     );
 
     expect(
-      [...view.dom.querySelectorAll(".cm-markra-code-content-line")].map(
+      [...view.dom.querySelectorAll(".cm-helbaron-code-content-line")].map(
         (line) => line.getAttribute("data-code-line-number"),
       ),
     ).toEqual(["1", "2"]);
     expect(
-      [...view.dom.querySelectorAll(".cm-markra-code-content-line")].map(
+      [...view.dom.querySelectorAll(".cm-helbaron-code-content-line")].map(
         (line) => line.getAttribute("data-code-line-numbers"),
       ),
     ).toEqual(["true", "true"]);
     expect(
       view.dom
-        .querySelector(".cm-markra-code-top-gap")
+        .querySelector(".cm-helbaron-code-top-gap")
         ?.getAttribute("data-code-line-numbers"),
     ).toBe("true");
     expect(
       view.dom
-        .querySelector(".cm-markra-code-closing-line")
+        .querySelector(".cm-helbaron-code-closing-line")
         ?.getAttribute("data-code-line-numbers"),
     ).toBe("true");
     expect(copy?.textContent).toBe("");
-    expect(copy?.querySelector(".markra-code-copy-icon")).not.toBeNull();
-    expect(copy?.querySelector(".markra-code-copy-check-icon")).not.toBeNull();
-    expect(language?.closest(".markra-code-language-control")).not.toBeNull();
-    expect(copy?.closest(".cm-markra-code-header-line")).not.toBeNull();
-    expect(language?.closest(".cm-markra-code-header-actions")).not.toBeNull();
-    expect(language?.closest(".cm-markra-code-header-line")).not.toBeNull();
-    expect(language?.closest(".cm-markra-code-closing-line")).toBeNull();
+    expect(copy?.querySelector(".helbaron-code-copy-icon")).not.toBeNull();
+    expect(copy?.querySelector(".helbaron-code-copy-check-icon")).not.toBeNull();
+    expect(language?.closest(".helbaron-code-language-control")).not.toBeNull();
+    expect(copy?.closest(".cm-helbaron-code-header-line")).not.toBeNull();
+    expect(language?.closest(".cm-helbaron-code-header-actions")).not.toBeNull();
+    expect(language?.closest(".cm-helbaron-code-header-line")).not.toBeNull();
+    expect(language?.closest(".cm-helbaron-code-closing-line")).toBeNull();
     copy?.click();
 
     expect(writeText).toHaveBeenCalledWith(
@@ -519,7 +519,7 @@ describe("codeBlockPreviewPlugin", () => {
     );
 
     const contentLines = [
-      ...view.dom.querySelectorAll(".cm-markra-code-content-line"),
+      ...view.dom.querySelectorAll(".cm-helbaron-code-content-line"),
     ];
 
     expect(contentLines.map(
@@ -530,12 +530,12 @@ describe("codeBlockPreviewPlugin", () => {
     )).toEqual(["false", "false"]);
     expect(
       view.dom
-        .querySelector(".cm-markra-code-top-gap")
+        .querySelector(".cm-helbaron-code-top-gap")
         ?.getAttribute("data-code-line-numbers"),
     ).toBe("false");
     expect(
       view.dom
-        .querySelector(".cm-markra-code-closing-line")
+        .querySelector(".cm-helbaron-code-closing-line")
         ?.getAttribute("data-code-line-numbers"),
     ).toBe("false");
   });
@@ -551,12 +551,12 @@ describe("codeBlockPreviewPlugin", () => {
     );
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render svg")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-render svg")).not.toBeNull();
     });
     const preview = view.dom.querySelector<HTMLElement>(
-      ".markra-mermaid-render",
+      ".helbaron-mermaid-render",
     );
-    const wrapper = preview?.closest<HTMLElement>(".markra-code-block");
+    const wrapper = preview?.closest<HTMLElement>(".helbaron-code-block");
     expect(getComputedStyle(wrapper!).display).toBe("inline-block");
     expect(getComputedStyle(wrapper!).marginTop).toBe("0px");
     expect(getComputedStyle(wrapper!).marginBottom).toBe("0px");
@@ -569,9 +569,9 @@ describe("codeBlockPreviewPlugin", () => {
         source: "flowchart TD\n  A --> B",
       }),
     );
-    view.dom.querySelector<HTMLElement>(".markra-mermaid-render")?.click();
+    view.dom.querySelector<HTMLElement>(".helbaron-mermaid-render")?.click();
 
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBeNull();
     expect(renderedLines(view)).toContain("```mermaid");
     expect(view.state.doc.toString()).toBe(source);
   });
@@ -584,20 +584,20 @@ describe("codeBlockPreviewPlugin", () => {
     }));
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render")?.textContent)
+      expect(view.dom.querySelector(".helbaron-mermaid-render")?.textContent)
         .toBe(`Unable to render Mermaid diagram\n\n${diagnostic}`);
     });
-    const preview = view.dom.querySelector<HTMLElement>(".markra-mermaid-render")!;
-    expect(preview.classList.contains("markra-mermaid-render-invalid")).toBe(true);
+    const preview = view.dom.querySelector<HTMLElement>(".helbaron-mermaid-render")!;
+    expect(preview.classList.contains("helbaron-mermaid-render-invalid")).toBe(true);
     expect(preview.getAttribute("aria-busy")).toBe("false");
     expect(preview.querySelector("img")).toBeNull();
-    expect(view.dom.querySelector(".markra-mermaid-zoom-button")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-zoom-button")).toBeNull();
     expect(view.state.doc.toString()).toBe(source);
 
     if (activation === "click") preview.click();
     else preview.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Enter" }));
 
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBeNull();
     expect(renderedLines(view)).toContain("  A->>B");
     expect(view.state.doc.toString()).toBe(source);
   });
@@ -610,9 +610,9 @@ describe("codeBlockPreviewPlugin", () => {
     const view = createView(source, codeBlockPreviewPlugin({ renderMermaid }));
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render-invalid")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-render-invalid")).not.toBeNull();
     });
-    view.dom.querySelector<HTMLElement>(".markra-mermaid-render")!.click();
+    view.dom.querySelector<HTMLElement>(".helbaron-mermaid-render")!.click();
     expect(view.state.doc.toString()).toBe(source);
 
     const message = ": synthetic message";
@@ -626,8 +626,8 @@ describe("codeBlockPreviewPlugin", () => {
     await vi.waitFor(() => {
       expect(view.dom.querySelector('svg[aria-label="Corrected diagram"]')).not.toBeNull();
     });
-    expect(view.dom.querySelector(".markra-mermaid-render-invalid")).toBeNull();
-    expect(view.dom.querySelector(".markra-mermaid-render[data-error]")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render-invalid")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render[data-error]")).toBeNull();
     expect(renderMermaid).toHaveBeenLastCalledWith(expect.objectContaining({
       source: `sequenceDiagram\n  A->>B${message}`,
     }));
@@ -643,28 +643,28 @@ describe("codeBlockPreviewPlugin", () => {
     const view = createView(source, codeBlockPreviewPlugin({ renderMermaid }));
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-zoom-button")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-zoom-button")).not.toBeNull();
     });
-    view.dom.querySelector<HTMLButtonElement>(".markra-mermaid-zoom-button")!.click();
-    expect(document.querySelector(".markra-media-viewer-dialog")).not.toBeNull();
+    view.dom.querySelector<HTMLButtonElement>(".helbaron-mermaid-zoom-button")!.click();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).not.toBeNull();
 
     document.documentElement.setAttribute("data-theme", "dark");
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render")?.textContent)
+      expect(view.dom.querySelector(".helbaron-mermaid-render")?.textContent)
         .toContain("Synthetic render failure");
     });
-    expect(view.dom.querySelector(".markra-mermaid-zoom-button")).toBeNull();
-    expect(document.querySelector(".markra-media-viewer-dialog")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-zoom-button")).toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).toBeNull();
 
     document.documentElement.setAttribute("data-theme", "light");
     await vi.waitFor(() => {
       expect(view.dom.querySelector('svg[aria-label="Recovered diagram"]')).not.toBeNull();
     });
-    const preview = view.dom.querySelector<HTMLElement>(".markra-mermaid-render")!;
+    const preview = view.dom.querySelector<HTMLElement>(".helbaron-mermaid-render")!;
     expect(preview.hasAttribute("data-error")).toBe(false);
-    expect(preview.classList.contains("markra-mermaid-render-invalid")).toBe(false);
+    expect(preview.classList.contains("helbaron-mermaid-render-invalid")).toBe(false);
     expect(preview.getAttribute("aria-busy")).toBe("false");
-    expect(view.dom.querySelector(".markra-mermaid-zoom-button")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-zoom-button")).not.toBeNull();
     expect(view.state.doc.toString()).toBe(source);
   });
 
@@ -702,15 +702,15 @@ describe("codeBlockPreviewPlugin", () => {
     );
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render svg")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-render svg")).not.toBeNull();
     });
 
     expect(
       view.dom.querySelector(
-        '.markra-mermaid-render foreignObject[width="0"][height="0"]',
+        '.helbaron-mermaid-render foreignObject[width="0"][height="0"]',
       ),
     ).toBeNull();
-    expect(view.dom.querySelector(".markra-mermaid-render")?.textContent)
+    expect(view.dom.querySelector(".helbaron-mermaid-render")?.textContent)
       .toContain("Visible");
   });
 
@@ -725,9 +725,9 @@ describe("codeBlockPreviewPlugin", () => {
     );
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render svg")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-render svg")).not.toBeNull();
     });
-    const preview = view.dom.querySelector(".markra-mermaid-render");
+    const preview = view.dom.querySelector(".helbaron-mermaid-render");
     expect(renderMermaid).toHaveBeenCalledOnce();
 
     view.dispatch({
@@ -738,7 +738,7 @@ describe("codeBlockPreviewPlugin", () => {
 
     await Promise.resolve();
     expect(renderMermaid).toHaveBeenCalledOnce();
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBe(preview);
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBe(preview);
   });
 
   it("keeps an unchanged Mermaid preview mounted when editing before it", async () => {
@@ -752,9 +752,9 @@ describe("codeBlockPreviewPlugin", () => {
     );
 
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render svg")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-render svg")).not.toBeNull();
     });
-    const preview = view.dom.querySelector(".markra-mermaid-render");
+    const preview = view.dom.querySelector(".helbaron-mermaid-render");
     expect(renderMermaid).toHaveBeenCalledOnce();
 
     const inserted = "Expanded synthetic prefix. ";
@@ -766,10 +766,10 @@ describe("codeBlockPreviewPlugin", () => {
 
     await Promise.resolve();
     expect(renderMermaid).toHaveBeenCalledOnce();
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBe(preview);
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBe(preview);
 
-    view.dom.querySelector<HTMLElement>(".markra-mermaid-render")?.click();
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBeNull();
+    view.dom.querySelector<HTMLElement>(".helbaron-mermaid-render")?.click();
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBeNull();
   });
 
   it("returns active Mermaid source to preview mode with Escape", async () => {
@@ -781,14 +781,14 @@ describe("codeBlockPreviewPlugin", () => {
       }),
     );
     view.dispatch({ selection: { anchor: source.indexOf("A --> B") } });
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBeNull();
 
     expect(runScopeHandlers(view, new KeyboardEvent("keydown", {
       bubbles: true,
       key: "Escape",
     }), "editor")).toBe(true);
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-render svg")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-render svg")).not.toBeNull();
     });
     expect(view.state.doc.toString()).toBe(source);
   });
@@ -800,12 +800,12 @@ describe("codeBlockPreviewPlugin", () => {
     const head = source.indexOf("B");
 
     view.dispatch({ selection: { anchor } });
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBeNull();
 
     view.dispatch({ selection: { anchor, head } });
 
     expect(view.state.selection.main.empty).toBe(false);
-    expect(view.dom.querySelector(".markra-mermaid-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-mermaid-render")).toBeNull();
     expect(renderedLines(view)).toContain("flowchart TD");
     expect(renderedLines(view)).toContain("  A --> B");
   });
@@ -819,18 +819,18 @@ describe("codeBlockPreviewPlugin", () => {
       }),
     );
     await vi.waitFor(() => {
-      expect(view.dom.querySelector(".markra-mermaid-zoom-button")).not.toBeNull();
+      expect(view.dom.querySelector(".helbaron-mermaid-zoom-button")).not.toBeNull();
     });
 
     const zoomButton = view.dom.querySelector<HTMLButtonElement>(
-      ".markra-mermaid-zoom-button",
+      ".helbaron-mermaid-zoom-button",
     );
-    const preview = view.dom.querySelector<HTMLElement>(".markra-mermaid-render");
+    const preview = view.dom.querySelector<HTMLElement>(".helbaron-mermaid-render");
     expect(
-      zoomButton?.closest<HTMLElement>(".markra-code-block")?.dataset.mermaidMode,
+      zoomButton?.closest<HTMLElement>(".helbaron-code-block")?.dataset.mermaidMode,
     ).toBe("preview");
     expect(zoomButton?.parentElement).not.toBe(preview);
-    const zoomIcon = zoomButton?.querySelector(".markra-mermaid-zoom-icon");
+    const zoomIcon = zoomButton?.querySelector(".helbaron-mermaid-zoom-icon");
     const iconPaths = (icon: Element | null | undefined) => (
       Array.from(icon?.querySelectorAll("path") ?? [])
         .map((path) => path.getAttribute("d"))
@@ -846,23 +846,23 @@ describe("codeBlockPreviewPlugin", () => {
 
     zoomButton?.click();
     const dialog = document.querySelector<HTMLElement>(
-      ".markra-media-viewer-dialog",
+      ".helbaron-media-viewer-dialog",
     );
     expect(dialog?.getAttribute("role")).toBe("dialog");
     expect(dialog?.querySelector("svg")).not.toBeNull();
     for (const className of [
-      ".markra-media-viewer-zoom-out-button",
-      ".markra-media-viewer-zoom-in-button",
-      ".markra-media-viewer-reset-button",
-      ".markra-media-viewer-fullscreen-button",
-      ".markra-media-viewer-close-button",
+      ".helbaron-media-viewer-zoom-out-button",
+      ".helbaron-media-viewer-zoom-in-button",
+      ".helbaron-media-viewer-reset-button",
+      ".helbaron-media-viewer-fullscreen-button",
+      ".helbaron-media-viewer-close-button",
     ]) {
       const button = dialog?.querySelector<HTMLButtonElement>(className);
       expect(button?.querySelector("svg")).not.toBeNull();
       expect(button?.textContent).toBe("");
     }
     const fullscreenIcon = dialog?.querySelector(
-      ".markra-media-viewer-fullscreen-icon",
+      ".helbaron-media-viewer-fullscreen-icon",
     );
     expect(iconPaths(fullscreenIcon)).toEqual([
       "M8 3H5a2 2 0 0 0-2 2v3",
@@ -870,16 +870,16 @@ describe("codeBlockPreviewPlugin", () => {
       "M3 16v3a2 2 0 0 0 2 2h3",
       "M16 21h3a2 2 0 0 0 2-2v-3",
     ]);
-    dialog?.querySelector<HTMLButtonElement>(".markra-media-viewer-zoom-in-button")?.click();
+    dialog?.querySelector<HTMLButtonElement>(".helbaron-media-viewer-zoom-in-button")?.click();
     expect(
-      dialog?.querySelector<HTMLElement>(".markra-media-viewer-canvas")?.style.transform,
+      dialog?.querySelector<HTMLElement>(".helbaron-media-viewer-canvas")?.style.transform,
     ).toContain("scale(1.25)");
 
     const content = dialog?.querySelector<HTMLElement>(
-      ".markra-media-viewer-content",
+      ".helbaron-media-viewer-content",
     );
     const canvas = dialog?.querySelector<HTMLElement>(
-      ".markra-media-viewer-canvas",
+      ".helbaron-media-viewer-canvas",
     );
     content?.dispatchEvent(new PointerEvent("pointerdown", {
       bubbles: true,
@@ -903,17 +903,17 @@ describe("codeBlockPreviewPlugin", () => {
     }));
     expect(content?.dataset.dragging).toBeUndefined();
 
-    dialog?.querySelector<HTMLButtonElement>(".markra-media-viewer-reset-button")?.click();
+    dialog?.querySelector<HTMLButtonElement>(".helbaron-media-viewer-reset-button")?.click();
     expect(canvas?.style.transform).toBe("translate(0px, 0px) scale(1)");
 
     const fullscreen = dialog?.querySelector<HTMLButtonElement>(
-      ".markra-media-viewer-fullscreen-button",
+      ".helbaron-media-viewer-fullscreen-button",
     );
     fullscreen?.click();
     expect(dialog?.dataset.fullscreen).toBe("true");
     expect(fullscreen?.ariaPressed).toBe("true");
     expect(fullscreen?.ariaLabel).toBe("Exit full screen");
-    expect(iconPaths(dialog?.querySelector(".markra-media-viewer-fullscreen-icon"))).toEqual([
+    expect(iconPaths(dialog?.querySelector(".helbaron-media-viewer-fullscreen-icon"))).toEqual([
       "M8 3v3a2 2 0 0 1-2 2H3",
       "M21 8h-3a2 2 0 0 1-2-2V3",
       "M3 16h3a2 2 0 0 1 2 2v3",
@@ -927,12 +927,12 @@ describe("codeBlockPreviewPlugin", () => {
 
     fullscreen?.click();
     document.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }));
-    expect(document.querySelector(".markra-media-viewer-dialog")).toBe(dialog);
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).toBe(dialog);
     expect(dialog?.dataset.fullscreen).toBeUndefined();
     expect(fullscreen?.ariaPressed).toBe("false");
     expect(fullscreen?.ariaLabel).toBe("Enter full screen");
 
     document.dispatchEvent(new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }));
-    expect(document.querySelector(".markra-media-viewer-dialog")).toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).toBeNull();
   });
 });

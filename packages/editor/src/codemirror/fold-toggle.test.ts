@@ -33,12 +33,12 @@ describe("foldTogglePlugin", () => {
     [
       "heading",
       "# Synthetic heading\n\nBody",
-      ".markra-heading-toggle-button",
+      ".helbaron-heading-toggle-button",
     ],
     [
       "list",
       "- Parent item\n  - Nested item\n\nBody",
-      ".markra-list-toggle-button",
+      ".helbaron-list-toggle-button",
     ],
   ])(
     "keeps the %s toggle outside the source-side selection boundary",
@@ -62,19 +62,19 @@ describe("foldTogglePlugin", () => {
     const doc = "# One\n\nAlpha\n\n## Child\n\nBeta\n\n# Two\n\nGamma";
     const view = createView(doc);
     const collapse = view.dom.querySelector<HTMLButtonElement>(
-      '.markra-heading-toggle-button[aria-label="Collapse section"]',
+      '.helbaron-heading-toggle-button[aria-label="Collapse section"]',
     );
 
     collapse?.click();
 
     expect(foldedRanges(view.state).size).toBe(1);
     expect(view.dom.querySelector(
-      '.markra-heading-toggle-button[aria-label="Expand section"]',
+      '.helbaron-heading-toggle-button[aria-label="Expand section"]',
     )).not.toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
 
     view.dom.querySelector<HTMLButtonElement>(
-      '.markra-heading-toggle-button[aria-label="Expand section"]',
+      '.helbaron-heading-toggle-button[aria-label="Expand section"]',
     )?.click();
     expect(foldedRanges(view.state).size).toBe(0);
   });
@@ -83,14 +83,14 @@ describe("foldTogglePlugin", () => {
     const doc = "- Parent\n  - Child one\n  - Child two\n- After";
     const view = createView(doc);
     const collapse = view.dom.querySelector<HTMLButtonElement>(
-      '.markra-list-toggle-button[aria-label="Collapse list item"]',
+      '.helbaron-list-toggle-button[aria-label="Collapse list item"]',
     );
 
     collapse?.click();
 
     expect(foldedRanges(view.state).size).toBe(1);
     expect(view.dom.querySelector(
-      '.markra-list-toggle-button[aria-label="Expand list item"]',
+      '.helbaron-list-toggle-button[aria-label="Expand list item"]',
     )).not.toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });

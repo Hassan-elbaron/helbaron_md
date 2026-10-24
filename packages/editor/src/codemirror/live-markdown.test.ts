@@ -9,7 +9,7 @@ import {
 } from "@codemirror/state";
 import { drawSelection, EditorView } from "@codemirror/view";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { liveMarkdown, markraLanguage } from "./index.ts";
+import { liveMarkdown, helbaronLanguage } from "./index.ts";
 
 const syntaxTreeIterations = vi.hoisted(
   (): Array<{ from: number | undefined; to: number | undefined }> => [],
@@ -89,15 +89,15 @@ function renderedLines(view: EditorView) {
 
 function orderedListMarkers(view: EditorView) {
   return Array.from(
-    view.dom.querySelectorAll('.cm-markra-list-item[data-list-kind="ordered"]'),
+    view.dom.querySelectorAll('.cm-helbaron-list-item[data-list-kind="ordered"]'),
     (line) => line.getAttribute("data-list-marker"),
   );
 }
 
 function paragraphEndStates(view: EditorView) {
   return Array.from(
-    view.dom.querySelectorAll(".cm-markra-paragraph"),
-    (line) => line.classList.contains("cm-markra-paragraph-end"),
+    view.dom.querySelectorAll(".cm-helbaron-paragraph"),
+    (line) => line.classList.contains("cm-helbaron-paragraph-end"),
   );
 }
 
@@ -134,7 +134,7 @@ describe("liveMarkdown", () => {
       "Document(Paragraph(HeaderMark))",
     );
     expect(renderedLines(view)).toEqual(["Synthetic title", "-"]);
-    expect(view.dom.querySelector(".cm-markra-h2")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-h2")).toBeNull();
 
     view.dispatch({ selection: { anchor: 0 } });
     expect(renderedLines(view)).toEqual(["Synthetic title", "-"]);
@@ -148,7 +148,7 @@ describe("liveMarkdown", () => {
     expect(syntaxTree(view.state).toString()).toBe(
       "Document(SetextHeading2(HeaderMark))",
     );
-    expect(view.dom.querySelector(".cm-markra-h2")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-h2")?.textContent).toBe(
       "Synthetic title",
     );
 
@@ -165,7 +165,7 @@ describe("liveMarkdown", () => {
       "Document(Paragraph(HeaderMark))",
     );
     expect(renderedLines(view)).toEqual(["Synthetic title", "-"]);
-    expect(view.dom.querySelector(".cm-markra-h2")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-h2")).toBeNull();
   });
 
   it.each([
@@ -197,7 +197,7 @@ describe("liveMarkdown", () => {
       "a two-character equals underline",
       "Synthetic title\n==",
       "Document(SetextHeading1(HeaderMark))",
-      "cm-markra-h1",
+      "cm-helbaron-h1",
     ],
   ])("disambiguates %s", (
     _label,
@@ -211,7 +211,7 @@ describe("liveMarkdown", () => {
     if (expectedHeadingClass) {
       expect(view.dom.querySelector(`.${expectedHeadingClass}`)).not.toBeNull();
     } else {
-      expect(view.dom.querySelector(".cm-markra-h1, .cm-markra-h2")).toBeNull();
+      expect(view.dom.querySelector(".cm-helbaron-h1, .cm-helbaron-h2")).toBeNull();
     }
   });
 
@@ -235,9 +235,9 @@ describe("liveMarkdown", () => {
     const view = createView({ doc: `${title}\n-`, anchor: 0 });
 
     expect(syntaxTree(view.state).toString()).not.toContain("SetextHeading");
-    expect(view.dom.querySelectorAll(".cm-markra-strong")).toHaveLength(80);
+    expect(view.dom.querySelectorAll(".cm-helbaron-strong")).toHaveLength(80);
     expect(renderedLines(view).at(-1)).toBe("-");
-    expect(view.dom.querySelector(".cm-markra-h1, .cm-markra-h2")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-h1, .cm-helbaron-h2")).toBeNull();
   });
 
   it.each([
@@ -298,7 +298,7 @@ describe("liveMarkdown", () => {
   ) => {
     const view = createView({ doc, anchor });
     const syntaxCharacters = Array.from(
-      view.dom.querySelectorAll(".cm-markra-syntax-character"),
+      view.dom.querySelectorAll(".cm-helbaron-syntax-character"),
       (element) => element.textContent ?? "",
     ).join("");
 
@@ -467,8 +467,8 @@ describe("liveMarkdown", () => {
     const view = createView({ doc });
     const expectLiteral = (current: EditorView) => {
       expect(renderedLines(current)[0]).toBe(`Before ${rendered} after`);
-      expect(current.dom.querySelector(".cm-markra-link")).toBeNull();
-      expect(current.dom.querySelector(".cm-markra-link-icon")).toBeNull();
+      expect(current.dom.querySelector(".cm-helbaron-link")).toBeNull();
+      expect(current.dom.querySelector(".cm-helbaron-link-icon")).toBeNull();
       expect(current.state.doc.toString()).toBe(doc);
     };
 
@@ -482,16 +482,16 @@ describe("liveMarkdown", () => {
   });
 
   it.each([
-    ["[**synthetic**]", "[synthetic]", ".cm-markra-strong"],
-    ["`[label]`", "[label]", ".cm-markra-inline-code"],
+    ["[**synthetic**]", "[synthetic]", ".cm-helbaron-strong"],
+    ["`[label]`", "[label]", ".cm-helbaron-inline-code"],
   ])("preserves inline formatting around literal brackets: %s", (markdown, rendered, selector) => {
     const doc = `Before ${markdown} after\n\nEdit`;
     const view = createView({ doc });
 
     expect(renderedLines(view)[0]).toBe(`Before ${rendered} after`);
     expect(view.dom.querySelector(selector)).not.toBeNull();
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-link-icon")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-icon")).toBeNull();
 
     view.dispatch({ selection: { anchor: doc.indexOf("[") + 3 } });
 
@@ -509,14 +509,14 @@ describe("liveMarkdown", () => {
     view.dispatch({ changes: { from: doc.length, insert: definition } });
 
     expect(renderedLines(view)[0]).toBe("Read guide and [guide][missing].");
-    expect(view.dom.querySelector(".cm-markra-link")?.getAttribute("href"))
+    expect(view.dom.querySelector(".cm-helbaron-link")?.getAttribute("href"))
       .toBe("https://example.test/reference");
 
     view.dispatch({ changes: { from: doc.length, to: view.state.doc.length } });
 
     expect(renderedLines(view)[0]).toBe("Read [guide] and [guide][missing].");
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-link-icon")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-icon")).toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -525,22 +525,22 @@ describe("liveMarkdown", () => {
     const view = createView({ doc, anchor: 2 });
 
     expect(renderedLines(view)[0]).toBe("Before label after");
-    expect(view.dom.querySelector(".cm-markra-link-icon")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-icon")).not.toBeNull();
 
     view.dispatch({ selection: { anchor: doc.indexOf("label") + 2 } });
 
     expect(renderedLines(view)[0]).toBe(doc);
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
     expect(
-      view.dom.querySelector(".cm-markra-link-source-label")?.textContent,
+      view.dom.querySelector(".cm-helbaron-link-source-label")?.textContent,
     ).toBe("label");
     expect(
       Array.from(
-        view.dom.querySelectorAll<HTMLElement>(".cm-markra-link-source"),
+        view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-link-source"),
         (element) => element.textContent,
       ).join(""),
     ).toBe("[](https://example.test)");
-    expect(view.dom.querySelector(".cm-markra-link-icon")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-icon")).toBeNull();
   });
 
   it("keeps complete link source visible while dragging from its label", () => {
@@ -553,7 +553,7 @@ describe("liveMarkdown", () => {
     });
 
     expect(renderedLines(view)[0]).toBe(doc);
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
   });
 
   it("keeps a completed link in source mode until Enter moves the caret away", () => {
@@ -575,7 +575,7 @@ describe("liveMarkdown", () => {
     });
 
     expect(renderedLines(view)[0]).toBe("label");
-    expect(view.dom.querySelector(".cm-markra-link-icon")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-icon")).not.toBeNull();
   });
 
   it("renders an existing link when the initial caret is at its end", () => {
@@ -583,7 +583,7 @@ describe("liveMarkdown", () => {
     const view = createView({ doc, anchor: doc.length });
 
     expect(renderedLines(view)[0]).toBe("label");
-    expect(view.dom.querySelector(".cm-markra-link")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).not.toBeNull();
   });
 
   it("does not preview an incomplete image label as a shortcut link", () => {
@@ -595,8 +595,8 @@ describe("liveMarkdown", () => {
     });
 
     expect(renderedLines(view)).toEqual(["![a]"]);
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-link-icon")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link-icon")).toBeNull();
   });
 
   it("keeps an unfinished image destination fully visible while typing", () => {
@@ -604,7 +604,7 @@ describe("liveMarkdown", () => {
     const view = createView({ doc, anchor: doc.length });
 
     expect(renderedLines(view)).toEqual([doc]);
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
   });
 
   it.each([
@@ -625,7 +625,7 @@ describe("liveMarkdown", () => {
     expect(renderedLines(view)[0]).toBe("Read guide.");
     expect(renderedLines(view)[2]).toBe(`[${label}]: https://example.test`);
     expect(
-      view.dom.querySelector(".cm-markra-link")?.getAttribute("href"),
+      view.dom.querySelector(".cm-helbaron-link")?.getAttribute("href"),
     ).toBe("https://example.test");
 
     view.dispatch({ selection: { anchor: doc.indexOf("guide") + 2 } });
@@ -635,7 +635,7 @@ describe("liveMarkdown", () => {
 
     const reopened = createView({ doc: view.state.doc.toString(), focus: false });
     expect(renderedLines(reopened)[0]).toBe("Read guide.");
-    expect(reopened.dom.querySelector(".cm-markra-link")?.getAttribute("href"))
+    expect(reopened.dom.querySelector(".cm-helbaron-link")?.getAttribute("href"))
       .toBe("https://example.test");
   });
 
@@ -644,7 +644,7 @@ describe("liveMarkdown", () => {
     const view = createView({ doc });
 
     expect(renderedLines(view)[0]).toBe("Read guide.");
-    expect(view.dom.querySelector(".cm-markra-link")?.hasAttribute("href"))
+    expect(view.dom.querySelector(".cm-helbaron-link")?.hasAttribute("href"))
       .toBe(false);
     expect(view.state.doc.toString()).toBe(doc);
   });
@@ -654,20 +654,20 @@ describe("liveMarkdown", () => {
     const view = createView({ doc });
 
     expect(renderedLines(view)[0]).toBe("Read reference");
-    expect(view.dom.querySelector(".cm-markra-link")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-link")?.textContent).toBe(
       "reference",
     );
-    expect(view.dom.querySelector(".cm-markra-link")?.tagName).toBe("A");
+    expect(view.dom.querySelector(".cm-helbaron-link")?.tagName).toBe("A");
     expect(
-      view.dom.querySelector(".cm-markra-link")?.getAttribute("href"),
+      view.dom.querySelector(".cm-helbaron-link")?.getAttribute("href"),
     ).toBe("https://example.test");
-    expect(view.dom.querySelector(".cm-markra-blockquote")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-blockquote")).not.toBeNull();
   });
 
   it("does not create a navigable anchor for an unsafe link target", () => {
     const doc = "Read [unsafe](javascript:noop)\n\nEdit";
     const view = createView({ doc });
-    const rendered = view.dom.querySelector(".cm-markra-link");
+    const rendered = view.dom.querySelector(".cm-helbaron-link");
 
     expect(rendered?.textContent).toBe("unsafe");
     expect(rendered?.tagName).not.toBe("A");
@@ -686,7 +686,7 @@ describe("liveMarkdown", () => {
         }),
       ],
     });
-    const rendered = view.dom.querySelector(".cm-markra-link");
+    const rendered = view.dom.querySelector(".cm-helbaron-link");
 
     expect(rendered?.textContent).toBe("doc");
     expect(rendered?.tagName).toBe("A");
@@ -699,7 +699,7 @@ describe("liveMarkdown", () => {
       doc,
       extensions: [liveMarkdown({ resolveLinkTarget: () => null })],
     });
-    const rendered = view.dom.querySelector(".cm-markra-link");
+    const rendered = view.dom.querySelector(".cm-helbaron-link");
 
     expect(rendered?.textContent).toBe("site");
     expect(rendered?.tagName).not.toBe("A");
@@ -712,15 +712,15 @@ describe("liveMarkdown", () => {
 
     expect(renderedLines(view)[0]).toBe("Keep old new");
     expect(
-      view.dom.querySelector(".cm-markra-strikethrough")?.textContent,
+      view.dom.querySelector(".cm-helbaron-strikethrough")?.textContent,
     ).toBe("old");
   });
 
-  it("keeps Markra highlight syntax rendered while its text is selected", () => {
+  it("keeps Helbaron highlight syntax rendered while its text is selected", () => {
     const doc = "Active\n\nBefore ==marked== after";
     const view = createView({ doc, anchor: 0 });
 
-    expect(view.dom.querySelector(".cm-markra-highlight")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-highlight")?.textContent).toBe(
       "marked",
     );
     expect(view.dom.textContent).not.toContain("==marked==");
@@ -728,7 +728,7 @@ describe("liveMarkdown", () => {
     const from = doc.indexOf("marked");
     view.dispatch({ selection: EditorSelection.range(from, from + 6) });
     expect(view.dom.textContent).not.toContain("==marked==");
-    expect(view.dom.querySelector(".cm-markra-highlight")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-highlight")?.textContent).toBe(
       "marked",
     );
   });
@@ -745,14 +745,14 @@ describe("liveMarkdown", () => {
     view.dispatch({ selection: EditorSelection.range(0, doc.length) });
 
     expect(renderedLines(view)).toEqual(before);
-    expect(view.dom.querySelectorAll(".cm-markra-empty-line")).toHaveLength(1);
+    expect(view.dom.querySelectorAll(".cm-helbaron-empty-line")).toHaveLength(1);
     expect(paragraphEndStates(view)).toEqual([true, false]);
   });
 
   it("keeps all empty lines stable across recreation", () => {
     const doc = "Before\n\n\nAfter";
     const emptyLineCount = (view: EditorView) =>
-      view.dom.querySelectorAll(".cm-markra-empty-line").length;
+      view.dom.querySelectorAll(".cm-helbaron-empty-line").length;
     const firstView = createView({ doc, anchor: 0 });
 
     expect(emptyLineCount(firstView)).toBe(2);
@@ -776,14 +776,14 @@ describe("liveMarkdown", () => {
 
     expect(view.state.doc.toString()).toBe(doc);
     expect(view.state.selection.main.head).toBe("Before\n".length);
-    expect(view.dom.querySelectorAll(".cm-markra-empty-line")).toHaveLength(1);
+    expect(view.dom.querySelectorAll(".cm-helbaron-empty-line")).toHaveLength(1);
     expect(paragraphEndStates(view)).toEqual([true, false]);
   });
 
   it("adds paragraph spacing without resizing authored blank lines", () => {
     const view = createView({ doc: "First\nSecond\n\n\nAfter" });
 
-    expect(view.dom.querySelectorAll(".cm-markra-empty-line")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-empty-line")).toHaveLength(2);
     expect(paragraphEndStates(view)).toEqual([false, true, false]);
   });
 
@@ -857,7 +857,7 @@ describe("liveMarkdown", () => {
     });
 
     expect(syntaxTreeIterations).toHaveLength(0);
-    expect(view.dom.querySelector(".cm-markra-h1")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-h1")?.textContent).toBe(
       "Synthetic heading",
     );
     expect(renderedLines(view).at(-1)).toBe("Edit here字");
@@ -1002,7 +1002,7 @@ describe("liveMarkdown", () => {
       new CompositionEvent("compositionstart", { bubbles: true }),
     );
 
-    expect(view.dom.dataset.markraComposing).toBe("true");
+    expect(view.dom.dataset.helbaronComposing).toBe("true");
     expect(getComputedStyle(selectionBackground).backgroundColor).toBe(
       "rgba(0, 0, 0, 0)",
     );
@@ -1011,7 +1011,7 @@ describe("liveMarkdown", () => {
       new CompositionEvent("compositionend", { bubbles: true }),
     );
 
-    expect(view.dom.dataset.markraComposing).toBeUndefined();
+    expect(view.dom.dataset.helbaronComposing).toBeUndefined();
     expect(getComputedStyle(selectionBackground).backgroundColor).not.toBe(
       "rgba(0, 0, 0, 0)",
     );
@@ -1021,7 +1021,7 @@ describe("liveMarkdown", () => {
     const doc = "- [ ] Ship mock release\n\nEdit";
     const view = createView({ doc });
     const checkbox = view.dom.querySelector<HTMLInputElement>(
-      ".cm-markra-task-checkbox",
+      ".cm-helbaron-task-checkbox",
     );
 
     expect(checkbox).not.toBeNull();
@@ -1032,7 +1032,7 @@ describe("liveMarkdown", () => {
 
     expect(view.state.doc.toString()).toBe("- [x] Ship mock release\n\nEdit");
     expect(
-      view.dom.querySelector<HTMLInputElement>(".cm-markra-task-checkbox")
+      view.dom.querySelector<HTMLInputElement>(".cm-helbaron-task-checkbox")
       ?.checked,
     ).toBe(true);
   });
@@ -1040,7 +1040,7 @@ describe("liveMarkdown", () => {
   it("renders task markers as checkboxes when the task text is empty", () => {
     const view = createView({ doc: "- [ ]\n- [x]" });
     const checkboxes = Array.from(
-      view.dom.querySelectorAll<HTMLInputElement>(".cm-markra-task-checkbox"),
+      view.dom.querySelectorAll<HTMLInputElement>(".cm-helbaron-task-checkbox"),
     );
 
     expect(checkboxes).toHaveLength(2);
@@ -1060,7 +1060,7 @@ describe("liveMarkdown", () => {
     });
 
     expect(
-      view.dom.querySelector(".cm-markra-task-checkbox"),
+      view.dom.querySelector(".cm-helbaron-task-checkbox"),
     ).toBeNull();
     expect(renderedLines(view)[0]).toBe("- [ ] Keep the marker visible");
 
@@ -1069,7 +1069,7 @@ describe("liveMarkdown", () => {
       extensions: [liveMarkdown({ taskCheckboxes: false })],
     });
     expect(
-      emptyView.dom.querySelector(".cm-markra-task-checkbox"),
+      emptyView.dom.querySelector(".cm-helbaron-task-checkbox"),
     ).toBeNull();
     expect(renderedLines(emptyView)[0]).toBe("- [x]");
   });
@@ -1077,17 +1077,17 @@ describe("liveMarkdown", () => {
   it("adds semantic classes without changing the Markdown document", () => {
     const view = createView();
 
-    expect(view.dom.querySelector(".cm-markra-h1")).not.toBeNull();
-    expect(view.dom.querySelector(".cm-markra-h1")?.getAttribute("role")).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-h1")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-h1")?.getAttribute("role")).toBe(
       "heading",
     );
     expect(
-      view.dom.querySelector(".cm-markra-h1")?.getAttribute("aria-level"),
+      view.dom.querySelector(".cm-helbaron-h1")?.getAttribute("aria-level"),
     ).toBe("1");
     expect(
-      view.dom.querySelector(".cm-markra-h1")?.getAttribute("aria-label"),
+      view.dom.querySelector(".cm-helbaron-h1")?.getAttribute("aria-label"),
     ).toBe("Project notes");
-    expect(view.dom.querySelector(".cm-markra-strong")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-strong")?.textContent).toBe(
       "notes",
     );
     expect(view.state.doc.toString()).toBe(source);
@@ -1108,12 +1108,12 @@ describe("liveMarkdown", () => {
     const view = createView({ doc, anchor: doc.length });
     const lines = [...view.dom.querySelectorAll<HTMLElement>(".cm-line")];
 
-    expect(lines[1]?.classList.contains("cm-markra-empty-line")).toBe(true);
-    expect(lines[2]?.classList.contains("cm-markra-paragraph")).toBe(true);
-    expect(lines[4]?.classList.contains("cm-markra-list-item")).toBe(true);
+    expect(lines[1]?.classList.contains("cm-helbaron-empty-line")).toBe(true);
+    expect(lines[2]?.classList.contains("cm-helbaron-paragraph")).toBe(true);
+    expect(lines[4]?.classList.contains("cm-helbaron-list-item")).toBe(true);
     expect(lines[4]?.getAttribute("data-list-kind")).toBe("bullet");
     expect(lines[4]?.getAttribute("data-list-marker")).toBe("•");
-    expect(lines[4]?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(lines[4]?.getAttribute("data-helbaron-list-source")).toBe("hidden");
     expect(lines[4]?.textContent).toBe("Bullet item");
     expect(lines[5]?.getAttribute("data-list-kind")).toBe("task");
     expect(lines[5]?.textContent).toBe("Task item");
@@ -1128,9 +1128,9 @@ describe("liveMarkdown", () => {
     const view = createView({ doc, anchor: doc.indexOf("First") });
     const lines = [...view.dom.querySelectorAll<HTMLElement>(".cm-line")];
 
-    expect(lines[0]?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(lines[0]?.getAttribute("data-helbaron-list-source")).toBe("hidden");
     expect(lines[0]?.textContent).toBe("First item");
-    expect(lines[1]?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(lines[1]?.getAttribute("data-helbaron-list-source")).toBe("hidden");
     expect(lines[1]?.textContent).toBe("Second item");
   });
 
@@ -1166,7 +1166,7 @@ describe("liveMarkdown", () => {
     view.dispatch({ selection: { anchor: remaining.length } });
     expect(orderedListMarkers(view)).toEqual(["1.", "2."]);
 
-    view.dispatch({ effects: preview.reconfigure(markraLanguage) });
+    view.dispatch({ effects: preview.reconfigure(helbaronLanguage) });
     expect(renderedLines(view)).toEqual(remaining.split("\n"));
     view.dispatch({ effects: preview.reconfigure(liveMarkdown()) });
     expect(orderedListMarkers(view)).toEqual(["1.", "2."]);
@@ -1266,12 +1266,12 @@ describe("liveMarkdown", () => {
       selection: EditorSelection.range(0, doc.length),
     });
     const listLines = () => [
-      ...view.dom.querySelectorAll<HTMLElement>(".cm-markra-list-item"),
+      ...view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-list-item"),
     ];
 
     expect(
       listLines().map((line) =>
-        line.getAttribute("data-markra-list-marker-selected")
+        line.getAttribute("data-helbaron-list-marker-selected")
       ),
     ).toEqual(["true", "true"]);
 
@@ -1281,7 +1281,7 @@ describe("liveMarkdown", () => {
 
     expect(
       listLines().map((line) =>
-        line.getAttribute("data-markra-list-marker-selected")
+        line.getAttribute("data-helbaron-list-marker-selected")
       ),
     ).toEqual([null, "true"]);
 
@@ -1289,7 +1289,7 @@ describe("liveMarkdown", () => {
 
     expect(
       listLines().map((line) =>
-        line.getAttribute("data-markra-list-marker-selected")
+        line.getAttribute("data-helbaron-list-marker-selected")
       ),
     ).toEqual([null, null]);
   });
@@ -1307,7 +1307,7 @@ describe("liveMarkdown", () => {
     ].join("\n");
     const view = createView({ doc, anchor: doc.length });
     const lines = [
-      ...view.dom.querySelectorAll<HTMLElement>(".cm-markra-list-item"),
+      ...view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-list-item"),
     ];
 
     expect(lines.map((line) => line.getAttribute("data-list-depth"))).toEqual([
@@ -1342,7 +1342,7 @@ describe("liveMarkdown", () => {
     const view = createView({ doc, anchor: doc.length });
     const lines = [...view.dom.querySelectorAll<HTMLElement>(".cm-line")];
 
-    expect(lines[2]?.classList.contains("cm-markra-empty-line")).toBe(false);
-    expect(lines[5]?.classList.contains("cm-markra-empty-line")).toBe(true);
+    expect(lines[2]?.classList.contains("cm-helbaron-empty-line")).toBe(false);
+    expect(lines[5]?.classList.contains("cm-helbaron-empty-line")).toBe(true);
   });
 });

@@ -1,15 +1,15 @@
 import {
-  defineMarkraPlugin,
-  getMarkraDocumentLinksState,
-  getMarkraSlashMenuState,
-  runMarkraCommand,
+  defineHelbaronPlugin,
+  getHelbaronDocumentLinksState,
+  getHelbaronSlashMenuState,
+  runHelbaronCommand,
   showCodeMirrorAiPreview,
   showCodeMirrorAiSelectionHold,
-} from "@markra/editor/codemirror";
+} from "@helbaron/editor/codemirror";
 import { EditorSelection, Transaction } from "@codemirror/state";
 import { EditorView, runScopeHandlers } from "@codemirror/view";
-import { markraEditorReactBridge } from "@markra/editor-react";
-import { defaultMarkdownShortcuts } from "@markra/editor";
+import { helbaronEditorReactBridge } from "@helbaron/editor-react";
+import { defaultMarkdownShortcuts } from "@helbaron/editor";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -35,9 +35,9 @@ describe("CodeMirrorPaperSurface", () => {
     const view = onEditorReady.mock.calls[0]?.[0];
 
     expect(view).toBeInstanceOf(EditorView);
-    expect(view.plugin(markraEditorReactBridge)).not.toBeNull();
+    expect(view.plugin(helbaronEditorReactBridge)).not.toBeNull();
     expect(container.querySelector(".cm-editor")).not.toBeNull();
-    expect(container.querySelector(".cm-markra-strong")?.textContent).toBe(
+    expect(container.querySelector(".cm-helbaron-strong")?.textContent).toBe(
       "strong",
     );
     expect(view.state.doc.toString()).toBe(
@@ -69,7 +69,7 @@ describe("CodeMirrorPaperSurface", () => {
     );
 
     expect(
-      container.querySelector<HTMLElement>(".cm-markra-paragraph-spacer")
+      container.querySelector<HTMLElement>(".cm-helbaron-paragraph-spacer")
         ?.style.height,
     ).toBe("14px");
 
@@ -84,7 +84,7 @@ describe("CodeMirrorPaperSurface", () => {
 
     await waitFor(() => {
       expect(
-        container.querySelector<HTMLElement>(".cm-markra-paragraph-spacer")
+        container.querySelector<HTMLElement>(".cm-helbaron-paragraph-spacer")
           ?.style.height,
       ).toBe("6px");
     });
@@ -123,7 +123,7 @@ describe("CodeMirrorPaperSurface", () => {
     expect(handled).toBe(false);
     await waitFor(() => expect(view.state.doc.toString()).toBe(code));
     expect(readClipboardText).toHaveBeenCalledTimes(1);
-    expect(view.dom.querySelector(".markra-math-render")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-math-render")).toBeNull();
     expect(view.contentDOM.textContent).toContain("const mockValue = items.at(0);");
   });
 
@@ -254,7 +254,7 @@ describe("CodeMirrorPaperSurface", () => {
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
 
     expect(
-      view.dom.querySelector(".cm-markra-code-content-line"),
+      view.dom.querySelector(".cm-helbaron-code-content-line"),
     ).not.toHaveAttribute("data-code-line-number");
 
     rerender(
@@ -268,7 +268,7 @@ describe("CodeMirrorPaperSurface", () => {
 
     expect(onEditorReady).toHaveBeenCalledTimes(1);
     expect(
-      view.dom.querySelector(".cm-markra-code-content-line"),
+      view.dom.querySelector(".cm-helbaron-code-content-line"),
     ).toHaveAttribute("data-code-line-number", "1");
   });
 
@@ -365,7 +365,7 @@ describe("CodeMirrorPaperSurface", () => {
       expect(view.dom.querySelector(".cm-vim-panel")).toHaveTextContent(
         "--NORMAL--",
       );
-      expect(view.dom.querySelector(".markra-vim-hint")).toHaveTextContent(
+      expect(view.dom.querySelector(".helbaron-vim-hint")).toHaveTextContent(
         "i/a 输入 · # 搜索上一处",
       );
     });
@@ -375,7 +375,7 @@ describe("CodeMirrorPaperSurface", () => {
       expect(view.dom.querySelector(".cm-vim-panel")).toHaveTextContent(
         "--INSERT--",
       );
-      expect(view.dom.querySelector(".markra-vim-hint")).toHaveTextContent(
+      expect(view.dom.querySelector(".helbaron-vim-hint")).toHaveTextContent(
         "Esc 返回普通模式",
       );
     });
@@ -392,7 +392,7 @@ describe("CodeMirrorPaperSurface", () => {
       expect(view.dom.querySelector(".cm-vim-panel")).toHaveTextContent(
         "--VISUAL--",
       );
-      expect(view.dom.querySelector(".markra-vim-hint")).toHaveTextContent(
+      expect(view.dom.querySelector(".helbaron-vim-hint")).toHaveTextContent(
         "y 复制 · d 删除",
       );
     });
@@ -431,7 +431,7 @@ describe("CodeMirrorPaperSurface", () => {
     expect(view.state.selection.main.head).toBe(
       content.lastIndexOf("Synthetic"),
     );
-    expect(view.dom.querySelector(".markra-vim-feedback")).toHaveTextContent(
+    expect(view.dom.querySelector(".helbaron-vim-feedback")).toHaveTextContent(
       "已跳到上一处“Synthetic” · 按 i 编辑",
     );
   });
@@ -469,7 +469,7 @@ describe("CodeMirrorPaperSurface", () => {
     expect(view.state.selection.main.head).toBe(
       content.lastIndexOf("Synthetic"),
     );
-    expect(view.dom.querySelector(".markra-vim-feedback")).toHaveTextContent(
+    expect(view.dom.querySelector(".helbaron-vim-feedback")).toHaveTextContent(
       "已跳到上一处“Synthetic” · 按 i 编辑",
     );
   });
@@ -505,7 +505,7 @@ describe("CodeMirrorPaperSurface", () => {
     });
 
     expect(view.state.selection.main.head).toBe(content.indexOf("Synthetic"));
-    expect(view.dom.querySelector(".markra-vim-feedback")).toHaveTextContent(
+    expect(view.dom.querySelector(".helbaron-vim-feedback")).toHaveTextContent(
       "未找到上一处“Synthetic” · 按 i 编辑",
     );
     expect(view.dom.querySelector(".cm-vim-panel")).not.toHaveTextContent(
@@ -567,7 +567,7 @@ describe("CodeMirrorPaperSurface", () => {
       expect(view.dom.querySelector(".cm-vim-panel")).toHaveTextContent(
         "--NORMAL--",
       );
-      expect(container.querySelector(".markra-math-render-inline")).toBeNull();
+      expect(container.querySelector(".helbaron-math-render-inline")).toBeNull();
       expect(view.contentDOM).toHaveTextContent("$x^2$");
     });
 
@@ -584,7 +584,7 @@ describe("CodeMirrorPaperSurface", () => {
     await waitFor(() => {
       expect(view.dom.querySelector(".cm-vim-panel")).toBeNull();
       expect(
-        container.querySelector(".markra-math-render-inline"),
+        container.querySelector(".helbaron-math-render-inline"),
       ).not.toBeNull();
     });
   });
@@ -613,7 +613,7 @@ describe("CodeMirrorPaperSurface", () => {
     expect(view.state.doc.toString()).toBe("After");
   });
 
-  it("adapts Markra workspace files into plugin-driven document links", () => {
+  it("adapts Helbaron workspace files into plugin-driven document links", () => {
     const onEditorReady = vi.fn();
     render(
       <CodeMirrorPaperSurface
@@ -638,7 +638,7 @@ describe("CodeMirrorPaperSurface", () => {
         selection: EditorSelection.cursor(view.state.doc.length),
       });
     });
-    const completion = getMarkraDocumentLinksState(view);
+    const completion = getHelbaronDocumentLinksState(view);
 
     expect(completion.items.map((item) => item.label)).toEqual(["Plugins"]);
     act(() => completion.items[0]?.run());
@@ -663,12 +663,12 @@ describe("CodeMirrorPaperSurface", () => {
       view.dispatch({ selection: EditorSelection.cursor(1) });
     });
 
-    expect(getMarkraSlashMenuState(view)).toMatchObject({
+    expect(getHelbaronSlashMenuState(view)).toMatchObject({
       open: true,
       query: "",
     });
     expect(
-      getMarkraSlashMenuState(view).actions.map((action) => action.command),
+      getHelbaronSlashMenuState(view).actions.map((action) => action.command),
     ).toEqual(
       expect.arrayContaining([
         "block.callout",
@@ -700,7 +700,7 @@ describe("CodeMirrorPaperSurface", () => {
         });
       });
 
-      expect(runMarkraCommand(view, "insert.today")).toBe(true);
+      expect(runHelbaronCommand(view, "insert.today")).toBe(true);
       expect(view.state.doc.toString()).toBe("Published: 2031-05-06");
       expect(view.state.selection.main.head).toBe(view.state.doc.length);
     } finally {
@@ -710,7 +710,7 @@ describe("CodeMirrorPaperSurface", () => {
 
   it("accepts host plugins and renders their toolbar actions", () => {
     const onEditorReady = vi.fn();
-    const plugin = defineMarkraPlugin({
+    const plugin = defineHelbaronPlugin({
       id: "synthetic.host-plugin",
       commands: [
         {
@@ -746,7 +746,7 @@ describe("CodeMirrorPaperSurface", () => {
 
   it("keeps a host plugin context menu open while its action is pressed", () => {
     const onEditorReady = vi.fn();
-    const plugin = defineMarkraPlugin({
+    const plugin = defineHelbaronPlugin({
       id: "synthetic.context-plugin",
       commands: [
         {
@@ -798,10 +798,10 @@ describe("CodeMirrorPaperSurface", () => {
     );
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
     const addButtons = container.querySelectorAll<HTMLButtonElement>(
-      ".markra-block-add-button",
+      ".helbaron-block-add-button",
     );
     const dragHandles = container.querySelectorAll<HTMLButtonElement>(
-      ".markra-block-drag-handle",
+      ".helbaron-block-drag-handle",
     );
 
     expect(addButtons).toHaveLength(2);
@@ -813,7 +813,7 @@ describe("CodeMirrorPaperSurface", () => {
       top: 20,
     });
     fireEvent.click(addButtons[0]!);
-    expect(getMarkraSlashMenuState(view)).toMatchObject({
+    expect(getHelbaronSlashMenuState(view)).toMatchObject({
       open: true,
       source: "virtual",
     });
@@ -844,12 +844,12 @@ describe("CodeMirrorPaperSurface", () => {
       });
     });
 
-    const line = container.querySelector<HTMLElement>(".cm-markra-h2");
+    const line = container.querySelector<HTMLElement>(".cm-helbaron-h2");
     const toolbar = line?.querySelector<HTMLElement>(
-      ":scope > .cm-markra-block-toolbar",
+      ":scope > .cm-helbaron-block-toolbar",
     );
     const levelControl = line?.querySelector<HTMLElement>(
-      ":scope > .markra-heading-level-control",
+      ":scope > .helbaron-heading-level-control",
     );
 
     expect(toolbar).not.toBeNull();
@@ -860,7 +860,7 @@ describe("CodeMirrorPaperSurface", () => {
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
-  it("enables Markra extended Markdown previews without rewriting source", () => {
+  it("enables Helbaron extended Markdown previews without rewriting source", () => {
     const onEditorReady = vi.fn();
     const doc = [
       "---",
@@ -888,11 +888,11 @@ describe("CodeMirrorPaperSurface", () => {
     );
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
 
-    expect(container.querySelector(".markra-callout-header")).not.toBeNull();
-    expect(container.querySelector(".cm-markra-frontmatter")).not.toBeNull();
-    expect(container.querySelector(".markra-math-render-inline .katex")).not.toBeNull();
-    expect(container.querySelector(".cm-markra-footnote-reference")).not.toBeNull();
-    expect(container.querySelector(".cm-markra-inline-html")?.tagName).toBe("KBD");
+    expect(container.querySelector(".helbaron-callout-header")).not.toBeNull();
+    expect(container.querySelector(".cm-helbaron-frontmatter")).not.toBeNull();
+    expect(container.querySelector(".helbaron-math-render-inline .katex")).not.toBeNull();
+    expect(container.querySelector(".cm-helbaron-footnote-reference")).not.toBeNull();
+    expect(container.querySelector(".cm-helbaron-inline-html")?.tagName).toBe("KBD");
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -912,8 +912,8 @@ describe("CodeMirrorPaperSurface", () => {
       />,
     );
 
-    expect(container.querySelector(".markra-callout-header")).toBeNull();
-    expect(container.querySelector(".markra-html-node img")?.getAttribute("src")).toBe(
+    expect(container.querySelector(".helbaron-callout-header")).toBeNull();
+    expect(container.querySelector(".helbaron-html-node img")?.getAttribute("src")).toBe(
       "https://assets.example.test/mock.png",
     );
     expect(resolveImageSrc).toHaveBeenCalledWith("./mock.png");
@@ -940,7 +940,7 @@ describe("CodeMirrorPaperSurface", () => {
     );
 
     expect(
-      container.querySelector(".cm-markra-table img")?.getAttribute("src"),
+      container.querySelector(".cm-helbaron-table img")?.getAttribute("src"),
     ).toBe("https://assets.example.test/mock.png");
     expect(resolveImageSrc).toHaveBeenCalledWith("./mock.png");
   });
@@ -958,7 +958,7 @@ describe("CodeMirrorPaperSurface", () => {
       />,
     );
 
-    expect(container.querySelector(".cm-markra-table")?.getAttribute("data-width-mode")).toBe("even");
+    expect(container.querySelector(".cm-helbaron-table")?.getAttribute("data-width-mode")).toBe("even");
     rerender(
       <CodeMirrorPaperSurface
         autoFocus={false}
@@ -968,7 +968,7 @@ describe("CodeMirrorPaperSurface", () => {
         tableColumnWidthMode="auto"
       />,
     );
-    expect(container.querySelector(".cm-markra-table")?.getAttribute("data-width-mode")).toBe("auto");
+    expect(container.querySelector(".cm-helbaron-table")?.getAttribute("data-width-mode")).toBe("auto");
   });
 
   it("reports text selections and the active outline index", () => {
@@ -1131,7 +1131,7 @@ describe("CodeMirrorPaperSurface", () => {
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
     const inputLine = view.dom.querySelector<HTMLElement>(".cm-line");
     const image = container.querySelector<HTMLImageElement>(
-      ".cm-markra-image",
+      ".cm-helbaron-image",
     );
     if (!inputLine || !image) {
       throw new Error("Expected the input line and rendered image");
@@ -1163,7 +1163,7 @@ describe("CodeMirrorPaperSurface", () => {
           `Compose${composedText}`,
         );
       });
-      expect(container.querySelector(".cm-markra-image")).toBe(image);
+      expect(container.querySelector(".cm-helbaron-image")).toBe(image);
       expect(image.isConnected).toBe(true);
       await act(async () => {
         view.contentDOM.dispatchEvent(new CompositionEvent(
@@ -1172,14 +1172,14 @@ describe("CodeMirrorPaperSurface", () => {
         ));
       });
       await waitFor(() => expect(view.composing).toBe(false));
-      expect(container.querySelector(".cm-markra-image")).toBe(image);
+      expect(container.querySelector(".cm-helbaron-image")).toBe(image);
       expect(image.isConnected).toBe(true);
     }
 
     await waitFor(() => {
       expect(view.state.doc.toString()).toContain("Compose中文");
     });
-    expect(container.querySelector(".cm-markra-image")).toBe(image);
+    expect(container.querySelector(".cm-helbaron-image")).toBe(image);
   });
 
   it("keeps AI selection context out of editable fenced code", () => {
@@ -1237,12 +1237,12 @@ describe("CodeMirrorPaperSurface", () => {
       });
     });
 
-    expect(container.querySelector(".markra-ai-selection-hold")?.textContent).toContain("Original");
-    expect(container.querySelector(".markra-ai-preview-insert")?.textContent).toContain("Improved");
+    expect(container.querySelector(".helbaron-ai-selection-hold")?.textContent).toContain("Original");
+    expect(container.querySelector(".helbaron-ai-preview-insert")?.textContent).toContain("Improved");
     expect(view.state.doc.toString()).toBe(doc);
   });
 
-  it("routes pasted image files through Markra's existing save callback", async () => {
+  it("routes pasted image files through Helbaron's existing save callback", async () => {
     const onEditorReady = vi.fn();
     const onSaveClipboardImage = vi.fn().mockResolvedValue({
       alt: "Synthetic image",
@@ -1281,7 +1281,7 @@ describe("CodeMirrorPaperSurface", () => {
     });
   });
 
-  it("routes local attachments and external URLs through Markra host callbacks", () => {
+  it("routes local attachments and external URLs through Helbaron host callbacks", () => {
     const onEditorReady = vi.fn();
     const openExternalUrl = vi.fn();
     const openLocalAttachment = vi.fn();
@@ -1306,7 +1306,7 @@ describe("CodeMirrorPaperSurface", () => {
       view.dispatch({
         selection: EditorSelection.cursor(doc.indexOf("Attachment")),
       });
-      expect(runMarkraCommand(view, "link.open")).toBe(true);
+      expect(runHelbaronCommand(view, "link.open")).toBe(true);
     });
     expect(openLocalAttachment).toHaveBeenCalledWith("assets/synthetic.pdf");
     expect(openExternalUrl).not.toHaveBeenCalled();
@@ -1315,7 +1315,7 @@ describe("CodeMirrorPaperSurface", () => {
       view.dispatch({
         selection: EditorSelection.cursor(doc.indexOf("Website")),
       });
-      expect(runMarkraCommand(view, "link.open")).toBe(true);
+      expect(runHelbaronCommand(view, "link.open")).toBe(true);
     });
     expect(openExternalUrl).toHaveBeenCalledWith("https://example.test/docs");
 
@@ -1323,7 +1323,7 @@ describe("CodeMirrorPaperSurface", () => {
       view.dispatch({
         selection: EditorSelection.cursor(doc.indexOf("Unsafe")),
       });
-      expect(runMarkraCommand(view, "link.open")).toBe(false);
+      expect(runHelbaronCommand(view, "link.open")).toBe(false);
     });
     expect(openExternalUrl).toHaveBeenCalledTimes(1);
   });
@@ -1347,7 +1347,7 @@ describe("CodeMirrorPaperSurface", () => {
     );
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
     const link = view.dom.querySelector<HTMLAnchorElement>(
-      ".cm-markra-table tbody a",
+      ".cm-helbaron-table tbody a",
     );
 
     expect(link).not.toBeNull();
@@ -1386,7 +1386,7 @@ describe("CodeMirrorPaperSurface", () => {
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
 
     await waitFor(() => {
-      expect(view.dom.querySelector(".cm-markra-spellcheck-error")).not.toBeNull();
+      expect(view.dom.querySelector(".cm-helbaron-spellcheck-error")).not.toBeNull();
     });
     act(() => {
       view.dispatch({ selection: EditorSelection.cursor(4) });
@@ -1407,7 +1407,7 @@ describe("CodeMirrorPaperSurface", () => {
     expect(screen.queryByRole("menu", { name: "Spelling suggestions" })).toBeNull();
   });
 
-  it("adds a CodeMirror spellcheck word to Markra's ignored-word preferences", async () => {
+  it("adds a CodeMirror spellcheck word to Helbaron's ignored-word preferences", async () => {
     const onAddSpellcheckIgnoredWord = vi.fn();
     const onEditorReady = vi.fn();
     render(
@@ -1428,7 +1428,7 @@ describe("CodeMirrorPaperSurface", () => {
     const view = onEditorReady.mock.calls[0]?.[0] as EditorView;
 
     await waitFor(() => {
-      expect(view.dom.querySelector(".cm-markra-spellcheck-error")).not.toBeNull();
+      expect(view.dom.querySelector(".cm-helbaron-spellcheck-error")).not.toBeNull();
     });
     act(() => {
       view.dispatch({ selection: EditorSelection.cursor(2) });
@@ -1441,6 +1441,6 @@ describe("CodeMirrorPaperSurface", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: 'Add "mispell" to whitelist' }));
 
     expect(onAddSpellcheckIgnoredWord).toHaveBeenCalledWith("mispell");
-    expect(view.dom.querySelector(".cm-markra-spellcheck-error")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-spellcheck-error")).toBeNull();
   });
 });

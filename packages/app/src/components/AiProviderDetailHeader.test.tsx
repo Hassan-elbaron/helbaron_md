@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { AiProviderDetailHeader } from "./AiProviderDetailHeader";
-import type { AiProviderConfig } from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+import type { AiProviderConfig } from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 
 function translate(key: I18nKey) {
   const labels: Partial<Record<string, string>> = {

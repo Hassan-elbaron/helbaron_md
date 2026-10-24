@@ -89,7 +89,7 @@ describe("basic Typora theme compatibility", () => {
       .cm-s-inner .cm-number { color: #cc99ee; }
       a { color: #336699; }
     `);
-    expect(variables(result.css, ".cm-markra-h1")["--editor-heading-font-family"]).toBe('"Mock Title",serif');
+    expect(variables(result.css, ".cm-helbaron-h1")["--editor-heading-font-family"]).toBe('"Mock Title",serif');
     expect(variables(result.css)).toMatchObject({
       "--editor-inline-code-text": "#112233", "--editor-inline-code-bg": "#eeeeee",
       "--editor-code-font-family": '"Mock Code",monospace', "--editor-code-bg": "#121212",

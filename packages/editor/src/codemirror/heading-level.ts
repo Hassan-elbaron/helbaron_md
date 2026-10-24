@@ -10,7 +10,7 @@ import {
 } from "@codemirror/view";
 import type { BlockLabels } from "./blocks.ts";
 import { syntaxTreeChanged } from "./changes.ts";
-import { runMarkraCommand } from "./plugin.ts";
+import { runHelbaronCommand } from "./plugin.ts";
 
 interface ActiveHeading {
   from: number;
@@ -101,12 +101,12 @@ class HeadingLevelWidget extends WidgetType {
     const document = view.dom.ownerDocument;
     const control = document.createElement("span");
     const levelLabel = `H${this.heading.level}`;
-    control.className = "markra-heading-level-control";
+    control.className = "helbaron-heading-level-control";
     control.contentEditable = "false";
 
     const toggle = controlButton(
       document,
-      "markra-heading-level-button",
+      "helbaron-heading-level-button",
       `${this.headingLevelLabel} ${levelLabel}`,
     );
     toggle.dataset.headingLevel = levelLabel;
@@ -125,7 +125,7 @@ class HeadingLevelWidget extends WidgetType {
     if (!this.open) return control;
 
     const list = document.createElement("span");
-    list.className = "markra-heading-level-list";
+    list.className = "helbaron-heading-level-list";
     list.contentEditable = "false";
     list.setAttribute("aria-label", this.headingLevelLabel);
     list.setAttribute("role", "listbox");
@@ -145,7 +145,7 @@ class HeadingLevelWidget extends WidgetType {
     for (const option of options) {
       const button = controlButton(
         document,
-        "markra-heading-level-option",
+        "helbaron-heading-level-option",
         option.label,
       );
       button.dataset.headingLevel = option.level;
@@ -158,7 +158,7 @@ class HeadingLevelWidget extends WidgetType {
         event.preventDefault();
         event.stopPropagation();
         view.dispatch({ effects: setOpenHeading.of(null) });
-        runMarkraCommand(view, option.command, { source: "ui" });
+        runHelbaronCommand(view, option.command, { source: "ui" });
         view.focus();
       });
       list.append(button);
@@ -178,7 +178,7 @@ function headingDecorations(
   if (!heading) return Decoration.none;
   const open = view.state.field(openHeadingField) === heading.from;
   return Decoration.set([
-    Decoration.line({ class: "markra-heading-editing" }).range(heading.from),
+    Decoration.line({ class: "helbaron-heading-editing" }).range(heading.from),
     Decoration.widget({
       side: -1,
       widget: new HeadingLevelWidget(
@@ -208,7 +208,7 @@ class HeadingLevelViewPlugin {
         : event.target instanceof Node
           ? event.target.parentElement
           : null;
-      const control = target?.closest(".markra-heading-level-control");
+      const control = target?.closest(".helbaron-heading-level-control");
       if (control && view.dom.contains(control)) return;
       view.dispatch({ effects: setOpenHeading.of(null) });
     };

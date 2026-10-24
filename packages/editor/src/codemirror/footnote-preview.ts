@@ -9,7 +9,7 @@ import {
   type EditorView as CodeMirrorView,
   type ViewUpdate,
 } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import { cursorInsideRange, selectionChangeAffectsReveal } from "./policy.ts";
 import { syntaxTreeChanged, updateChangesStayAfter } from "./changes.ts";
 
@@ -150,7 +150,7 @@ class FootnoteReferenceWidget extends WidgetType {
     const button = document.createElement("button");
     let preview: HTMLElement | null = null;
 
-    reference.className = "cm-markra-footnote-reference";
+    reference.className = "cm-helbaron-footnote-reference";
     button.type = "button";
     button.textContent = this.reference.label;
     button.setAttribute("aria-label", `Footnote ${this.reference.label}`);
@@ -164,7 +164,7 @@ class FootnoteReferenceWidget extends WidgetType {
       const definition = this.reference.definition;
       if (!definition || preview) return;
       preview = document.createElement("span");
-      preview.className = "markra-footnote-preview";
+      preview.className = "helbaron-footnote-preview";
       preview.textContent = definition.content || `Footnote ${definition.label}`;
       preview.setAttribute("role", "tooltip");
       reference.append(preview);
@@ -224,7 +224,7 @@ class FootnoteDefinitionLabelWidget extends WidgetType {
 
   toDOM(view: CodeMirrorView) {
     const label = view.dom.ownerDocument.createElement("span");
-    label.className = "cm-markra-footnote-definition-label";
+    label.className = "cm-helbaron-footnote-definition-label";
     label.textContent = this.definition.label;
     label.setAttribute("aria-label", `Edit footnote ${this.definition.label} source`);
     label.tabIndex = 0;
@@ -271,7 +271,7 @@ function buildFootnoteDecorations(view: CodeMirrorView): FootnoteDecorationState
     const lastLine = view.state.doc.lineAt(definition.to);
     for (let lineNumber = firstLine.number; lineNumber <= lastLine.number; lineNumber += 1) {
       ranges.push(
-        Decoration.line({ class: "cm-markra-footnote-definition" }).range(
+        Decoration.line({ class: "cm-helbaron-footnote-definition" }).range(
           view.state.doc.line(lineNumber).from,
         ),
       );
@@ -295,14 +295,14 @@ function buildFootnoteDecorations(view: CodeMirrorView): FootnoteDecorationState
 }
 
 const footnoteTheme = EditorView.baseTheme({
-  ".cm-markra-footnote-reference": {
+  ".cm-helbaron-footnote-reference": {
     color: "var(--accent, currentColor)",
     fontSize: "0.75em",
     lineHeight: "1",
     position: "relative",
     verticalAlign: "super",
   },
-  ".cm-markra-footnote-reference > button": {
+  ".cm-helbaron-footnote-reference > button": {
     background: "transparent",
     border: "0",
     color: "inherit",
@@ -310,7 +310,7 @@ const footnoteTheme = EditorView.baseTheme({
     font: "inherit",
     padding: "0 0.12em",
   },
-  ".markra-footnote-preview": {
+  ".helbaron-footnote-preview": {
     background: "var(--editor-paper-bg, Canvas)",
     border: "1px solid var(--editor-border, currentColor)",
     borderRadius: "0.45em",
@@ -326,10 +326,10 @@ const footnoteTheme = EditorView.baseTheme({
     width: "max-content",
     zIndex: "20",
   },
-  ".cm-markra-footnote-definition": {
+  ".cm-helbaron-footnote-definition": {
     color: "var(--text-secondary, currentColor)",
   },
-  ".cm-markra-footnote-definition-label": {
+  ".cm-helbaron-footnote-definition-label": {
     color: "var(--accent, currentColor)",
     cursor: "pointer",
     fontSize: "0.82em",
@@ -339,8 +339,8 @@ const footnoteTheme = EditorView.baseTheme({
 });
 
 export function footnotePreviewPlugin() {
-  return defineMarkraPlugin({
-    id: "markra.footnote-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.footnote-preview",
     extension: [
       ViewPlugin.fromClass(
         class {

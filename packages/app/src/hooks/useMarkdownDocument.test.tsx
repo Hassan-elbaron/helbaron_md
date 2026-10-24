@@ -29,7 +29,7 @@ const markdownHelperMocks = vi.hoisted(() => ({
   getWordCount: vi.fn((): number => 0)
 }));
 
-vi.mock("@markra/markdown", () => markdownHelperMocks);
+vi.mock("@helbaron/markdown", () => markdownHelperMocks);
 
 vi.mock("../lib/settings/app-settings", () => ({
   clearStoredRecentMarkdownFiles: vi.fn(async () => {}),
@@ -2152,7 +2152,7 @@ describe("useMarkdownDocument", () => {
     const openWindows = [
       {
         filePath: "/mock-files/secondary.md",
-        label: "markra-editor-1",
+        label: "helbaron-editor-1",
         openFilePaths: ["/mock-files/secondary.md"]
       }
     ];
@@ -4289,7 +4289,7 @@ describe("useMarkdownDocument", () => {
         },
         {
           filePath: secondPath,
-          label: "markra-editor-1",
+          label: "helbaron-editor-1",
           openFilePaths: [secondPath]
         }
       ]

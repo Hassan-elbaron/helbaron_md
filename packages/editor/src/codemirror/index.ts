@@ -6,16 +6,17 @@ import {
   jsonSyntaxHighlighting,
   markdownSourceSyntaxHighlighting,
   markdownSyntaxHighlighting,
-  markraHighlight,
+  helbaronHighlight,
 } from "./highlight.ts";
 import {
-  markraPlugins,
-  type MarkraPlugin,
+  helbaronPlugins,
+  type HelbaronPlugin,
 } from "./plugin.ts";
 import { livePreview, type LivePreviewConfig } from "./preview.ts";
-import { markraSlashMenu } from "./slash-menu.ts";
-import { markraSetextHeading } from "./setext-heading.ts";
-import { markraTheme } from "./theme.ts";
+import { helbaronSlashMenu } from "./slash-menu.ts";
+import { helbaronSetextHeading } from "./setext-heading.ts";
+import { helbaronTheme } from "./theme.ts";
+import { helbaronTextDirection } from "./bidi.ts";
 
 export type {
   AiEditorPreviewLabels,
@@ -102,16 +103,16 @@ export {
 } from "./controller.ts";
 export type {
   DocumentLinksPluginOptions,
-  MarkraDocumentLinkAction,
-  MarkraDocumentLinkItem,
-  MarkraDocumentLinksContext,
-  MarkraDocumentLinksState,
+  HelbaronDocumentLinkAction,
+  HelbaronDocumentLinkItem,
+  HelbaronDocumentLinksContext,
+  HelbaronDocumentLinksState,
 } from "./document-links.ts";
 export {
-  closeMarkraDocumentLinks,
+  closeHelbaronDocumentLinks,
   documentLinksPlugin,
-  getMarkraDocumentLinksState,
-  runMarkraDocumentLink,
+  getHelbaronDocumentLinksState,
+  runHelbaronDocumentLink,
 } from "./document-links.ts";
 export type {
   FormattingCommandId,
@@ -136,14 +137,14 @@ export {
 } from "./frontmatter-preview.ts";
 export type {
   ImagePreviewPluginOptions,
-  MarkraImageSourceContext,
+  HelbaronImageSourceContext,
 } from "./image.ts";
 export { imagePreviewPlugin, resolveSafeImageSource } from "./image.ts";
 export {
   jsonSyntaxHighlighting,
   markdownSourceSyntaxHighlighting,
   markdownSyntaxHighlighting,
-  markraHighlight,
+  helbaronHighlight,
 } from "./highlight.ts";
 export { horizontalRulePlugin } from "./horizontal-rule.ts";
 export {
@@ -163,9 +164,9 @@ export type { MarkdownShortcutsPluginOptions } from "./markdown-shortcuts.ts";
 export { markdownShortcutsPlugin } from "./markdown-shortcuts.ts";
 export type {
   LinksPluginOptions,
-  MarkraLinkActivation,
-  MarkraLinkOpenContext,
-  MarkraLinkSourceContext,
+  HelbaronLinkActivation,
+  HelbaronLinkOpenContext,
+  HelbaronLinkSourceContext,
 } from "./links.ts";
 export {
   linksPlugin,
@@ -176,45 +177,45 @@ export type { CodeMirrorMathRange } from "./math-preview.ts";
 export { findCodeMirrorMathRanges, mathPreviewPlugin } from "./math-preview.ts";
 export type { RevealContext, RevealPolicy, RevealScope } from "./policy.ts";
 export type {
-  MarkraCommand,
-  MarkraCommandContext,
-  MarkraKeyBinding,
-  MarkraPlugin,
-  MarkraUiAction,
-  MarkraUiContribution,
-  MarkraUiPlacement,
+  HelbaronCommand,
+  HelbaronCommandContext,
+  HelbaronKeyBinding,
+  HelbaronPlugin,
+  HelbaronUiAction,
+  HelbaronUiContribution,
+  HelbaronUiPlacement,
 } from "./plugin.ts";
 export type { LivePreviewConfig } from "./preview.ts";
 export type {
-  MarkraRenderer,
-  MarkraRendererContext,
-  MarkraRendererScope,
-  MarkraSyntaxNode,
+  HelbaronRenderer,
+  HelbaronRendererContext,
+  HelbaronRendererScope,
+  HelbaronSyntaxNode,
 } from "./renderers.ts";
 export { revealActiveLine } from "./policy.ts";
 export type { RawHtmlPreviewPluginOptions } from "./raw-html-preview.ts";
 export { rawHtmlPreviewPlugin } from "./raw-html-preview.ts";
 export {
-  defineMarkraPlugin,
-  listMarkraPlugins,
-  listMarkraUi,
-  markraPlugins,
-  runMarkraCommand,
-  searchMarkraUi,
+  defineHelbaronPlugin,
+  listHelbaronPlugins,
+  listHelbaronUi,
+  helbaronPlugins,
+  runHelbaronCommand,
+  searchHelbaronUi,
 } from "./plugin.ts";
 export type {
-  MarkraSlashMenuSource,
-  MarkraSlashMenuState,
+  HelbaronSlashMenuSource,
+  HelbaronSlashMenuState,
 } from "./slash-menu.ts";
 export {
-  closeMarkraSlashMenu,
-  getMarkraSlashMenuState,
-  markraSlashMenu,
-  openMarkraSlashMenu,
-  runMarkraSlashMenuAction,
+  closeHelbaronSlashMenu,
+  getHelbaronSlashMenuState,
+  helbaronSlashMenu,
+  openHelbaronSlashMenu,
+  runHelbaronSlashMenuAction,
 } from "./slash-menu.ts";
 export { livePreview } from "./preview.ts";
-export { markraRenderer } from "./renderers.ts";
+export { helbaronRenderer } from "./renderers.ts";
 export type { CodeMirrorSearchState } from "./search.ts";
 export {
   codeMirrorSearchPlugin,
@@ -233,7 +234,16 @@ export {
   replaceCodeMirrorSpellcheckMatch,
   updateCodeMirrorSpellcheckOptions,
 } from "./spellcheck.ts";
-export { markraTheme } from "./theme.ts";
+export { helbaronTheme } from "./theme.ts";
+export type { HelbaronTextDirection } from "./bidi.ts";
+export {
+  getDefaultHelbaronTextDirection,
+  isHelbaronTextDirection,
+  helbaronTextDirection,
+  readHelbaronTextDirection,
+  setCodeMirrorTextDirection,
+  setDefaultHelbaronTextDirection,
+} from "./bidi.ts";
 export { convertCodeMirrorClipboardHtml } from "./html-paste.ts";
 export type { TableFragmentMergePluginOptions } from "./table-fragment-merge.ts";
 export { tableFragmentMergePlugin } from "./table-fragment-merge.ts";
@@ -252,12 +262,12 @@ export { reconfigureCodeMirrorVimMode } from "./vim.ts";
 
 export interface LiveMarkdownConfig extends LivePreviewConfig {
   highlight?: boolean;
-  plugins?: readonly MarkraPlugin[];
+  plugins?: readonly HelbaronPlugin[];
   slashMenu?: boolean;
 }
 
-export const markraLanguage = markdown({
-  extensions: [GFM, markraHighlight, markraSetextHeading],
+export const helbaronLanguage = markdown({
+  extensions: [GFM, helbaronHighlight, helbaronSetextHeading],
 });
 
 export function liveMarkdown(config: LiveMarkdownConfig = {}): Extension {
@@ -269,13 +279,14 @@ export function liveMarkdown(config: LiveMarkdownConfig = {}): Extension {
   } = config;
   return [
     highlight
-      ? markraLanguage
-      : markdown({ extensions: [GFM, markraSetextHeading] }),
+      ? helbaronLanguage
+      : markdown({ extensions: [GFM, helbaronSetextHeading] }),
     markdownSyntaxHighlighting,
     codeFolding(),
     livePreview(previewConfig),
-    markraTheme,
-    markraPlugins(plugins),
-    slashMenu ? markraSlashMenu() : [],
+    helbaronTheme,
+    helbaronTextDirection(),
+    helbaronPlugins(plugins),
+    slashMenu ? helbaronSlashMenu() : [],
   ];
 }

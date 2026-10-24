@@ -40,7 +40,7 @@ jobs:
           cache: pnpm
 
       - name: Install release tooling dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts --filter markra-workspace
+        run: pnpm install --frozen-lockfile --ignore-scripts --filter helbaron-workspace
 
       - name: Test release tools
         run: pnpm test:release
@@ -53,64 +53,64 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - label: "@markra/desktop"
-            package: "@markra/desktop"
+          - label: "@helbaron/desktop"
+            package: "@helbaron/desktop"
             args: ""
             shard: ""
-          - label: "@markra/web"
-            package: "@markra/web"
+          - label: "@helbaron/web"
+            package: "@helbaron/web"
             args: ""
             shard: ""
-          - label: "@markra/ai"
-            package: "@markra/ai"
+          - label: "@helbaron/ai"
+            package: "@helbaron/ai"
             args: ""
             shard: ""
-          - label: "@markra/app, workspace 1/2"
-            package: "@markra/app"
+          - label: "@helbaron/app, workspace 1/2"
+            package: "@helbaron/app"
             args: "src/App.test.tsx"
             shard: "1/2"
-          - label: "@markra/app, workspace 2/2"
-            package: "@markra/app"
+          - label: "@helbaron/app, workspace 2/2"
+            package: "@helbaron/app"
             args: "src/App.test.tsx"
             shard: "2/2"
-          - label: "@markra/app, editor 1/2"
-            package: "@markra/app"
+          - label: "@helbaron/app, editor 1/2"
+            package: "@helbaron/app"
             args: "src/components/CodeMirrorPaperSurface.test.tsx"
             shard: "1/2"
-          - label: "@markra/app, editor 2/2"
-            package: "@markra/app"
+          - label: "@helbaron/app, editor 2/2"
+            package: "@helbaron/app"
             args: "src/components/CodeMirrorPaperSurface.test.tsx"
             shard: "2/2"
-          - label: "@markra/app, remaining 1/2"
-            package: "@markra/app"
+          - label: "@helbaron/app, remaining 1/2"
+            package: "@helbaron/app"
             args: "--exclude=src/App.test.tsx --exclude=src/components/CodeMirrorPaperSurface.test.tsx --shard=1/2"
             shard: ""
-          - label: "@markra/app, remaining 2/2"
-            package: "@markra/app"
+          - label: "@helbaron/app, remaining 2/2"
+            package: "@helbaron/app"
             args: "--exclude=src/App.test.tsx --exclude=src/components/CodeMirrorPaperSurface.test.tsx --shard=2/2"
             shard: ""
-          - label: "@markra/editor"
-            package: "@markra/editor"
+          - label: "@helbaron/editor"
+            package: "@helbaron/editor"
             args: ""
             shard: ""
-          - label: "@markra/markdown"
-            package: "@markra/markdown"
+          - label: "@helbaron/markdown"
+            package: "@helbaron/markdown"
             args: ""
             shard: ""
-          - label: "@markra/providers"
-            package: "@markra/providers"
+          - label: "@helbaron/providers"
+            package: "@helbaron/providers"
             args: ""
             shard: ""
-          - label: "@markra/scripts"
-            package: "@markra/scripts"
+          - label: "@helbaron/scripts"
+            package: "@helbaron/scripts"
             args: ""
             shard: ""
-          - label: "@markra/shared"
-            package: "@markra/shared"
+          - label: "@helbaron/shared"
+            package: "@helbaron/shared"
             args: ""
             shard: ""
-          - label: "@markra/ui"
-            package: "@markra/ui"
+          - label: "@helbaron/ui"
+            package: "@helbaron/ui"
             args: ""
             shard: ""
 
@@ -135,7 +135,7 @@ jobs:
 
       - name: Test
         env:
-          MARKRA_APP_TEST_SHARD: ${{ matrix.shard }}
+          HELBARON_APP_TEST_SHARD: ${{ matrix.shard }}
         run: pnpm --filter "${{ matrix.package }}" test ${{ matrix.args }}
 
   frontend-test-typecheck:

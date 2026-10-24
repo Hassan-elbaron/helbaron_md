@@ -6,20 +6,20 @@ import {
   type NativeMenuHandlers
 } from "../lib/tauri";
 import type { RecentMarkdownFile } from "../lib/settings/app-settings";
-import type { AiEditIntent } from "@markra/ai";
+import type { AiEditIntent } from "@helbaron/ai";
 import {
   defaultMarkdownShortcuts,
   markdownShortcutToKeyboardEventInit,
   normalizeMarkdownShortcuts,
   type MarkdownShortcutAction,
   type MarkdownShortcutMap
-} from "@markra/editor";
+} from "@helbaron/editor";
 import {
   aiTranslationLanguageName,
   isKeyboardShortcutModKey,
   matchesKeyboardShortcutEvent,
   type AppLanguage
-} from "@markra/shared";
+} from "@helbaron/shared";
 import { defaultAiQuickActionPrompt } from "../lib/ai-actions";
 import { resolveDesktopPlatform, type DesktopPlatform } from "../lib/platform";
 import {

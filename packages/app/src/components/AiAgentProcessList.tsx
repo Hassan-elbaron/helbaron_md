@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Bot, Check, ChevronDown, CircleAlert, Loader2, Wrench, X } from "lucide-react";
-import type { AiAgentProcessItem } from "@markra/ai";
+import type { AiAgentProcessItem } from "@helbaron/ai";
 import { AiMarkdownMessage } from "./AiMarkdownMessage";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 
 type AiAgentProcessListProps = {
   activities: AiAgentProcessItem[];
@@ -47,7 +47,7 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
       {flowComplete ? (
         <button
           aria-expanded={flowExpanded}
-          className="inline-flex min-w-0 cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-1 py-0.5 text-left text-[11px] leading-4 text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+          className="inline-flex min-w-0 cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-1 py-0.5 text-start text-[11px] leading-4 text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
           type="button"
           onClick={() => setFlowExpanded((expanded) => !expanded)}
         >
@@ -60,7 +60,7 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
           />
           <Check aria-hidden="true" className="shrink-0 text-(--text-tertiary)" size={12} />
           <span className="truncate font-[540]">{processSummaryLabel(visibleActivities.length, translate)}</span>
-          <span className="ml-auto shrink-0 text-[10px] font-[540] text-(--text-tertiary)">
+          <span className="ms-auto shrink-0 text-[10px] font-[540] text-(--text-tertiary)">
             {translate("app.aiAgentProcessStatusCompleted")}
           </span>
         </button>
@@ -68,11 +68,11 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
       {flowExpanded ? (
         <div className="grid gap-3">
           {groupedActivities.map((group) => (
-            <div className="relative pl-4" key={`turn:${group.turn}`}>
+            <div className="relative ps-4" key={`turn:${group.turn}`}>
               {group.items.length > 1 ? (
                 <span
                   aria-hidden="true"
-                  className="absolute top-3 bottom-3 left-1.25 w-px rounded-full bg-[color-mix(in_oklab,var(--border-default)_58%,transparent)]"
+                  className="absolute top-3 bottom-3 start-1.25 w-px rounded-full bg-[color-mix(in_oklab,var(--border-default)_58%,transparent)]"
                 />
               ) : null}
               <div className="grid gap-1.5">
@@ -90,7 +90,7 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
                       >
                         <span
                           aria-hidden="true"
-                          className="absolute top-3.5 -left-3.5 size-2 rounded-full border border-[color-mix(in_oklab,var(--border-default)_74%,transparent)] bg-(--bg-secondary)"
+                          className="absolute top-3.5 -start-3.5 size-2 rounded-full border border-[color-mix(in_oklab,var(--border-default)_74%,transparent)] bg-(--bg-secondary)"
                         />
                         <div className="mb-1 inline-flex items-center gap-1.5 text-[10px] leading-4 font-[560] text-(--text-tertiary)">
                           <Bot aria-hidden="true" size={11} />
@@ -110,7 +110,7 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
                     >
                       <span
                         aria-hidden="true"
-                        className={`absolute top-2 -left-3.5 size-2 rounded-full border bg-(--bg-secondary) ${
+                        className={`absolute top-2 -start-3.5 size-2 rounded-full border bg-(--bg-secondary) ${
                           activity.status === "running"
                             ? "border-(--accent) shadow-[0_0_0_2px_color-mix(in_oklab,var(--accent)_12%,transparent)]"
                             : activity.status === "error"
@@ -120,7 +120,7 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
                       />
                       <button
                         aria-expanded={hasDetails ? showDetails : undefined}
-                        className="inline-flex min-w-0 cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-0 py-0 text-left text-current transition-colors duration-150 ease-out focus-visible:outline-none"
+                        className="inline-flex min-w-0 cursor-pointer items-center gap-2 rounded-md border-0 bg-transparent px-0 py-0 text-start text-current transition-colors duration-150 ease-out focus-visible:outline-none"
                         disabled={!hasDetails}
                         type="button"
                         onClick={
@@ -152,15 +152,15 @@ export function AiAgentProcessList({ activities, translate }: AiAgentProcessList
                           />
                         </span>
                         <span className="truncate">{activity.label}</span>
-                        <span className={`ml-auto shrink-0 text-[10px] font-[540] ${statusTextClassName(activity)}`}>
+                        <span className={`ms-auto shrink-0 text-[10px] font-[540] ${statusTextClassName(activity)}`}>
                           {statusTextForActivity(activity, translate)}
                         </span>
-                        <span className="ml-1 shrink-0">
+                        <span className="ms-1 shrink-0">
                           <StatusIcon aria-hidden="true" className={statusClassName(activity)} size={11} />
                         </span>
                       </button>
                       {showDetails && hasDetails ? (
-                        <div className="pl-5 text-[10px] leading-4 text-(--text-tertiary)">
+                        <div className="ps-5 text-[10px] leading-4 text-(--text-tertiary)">
                           {activity.rawLabel ? (
                             <span className="font-mono text-[9.5px] tracking-[0.01em] text-(--text-tertiary)">
                               {activity.rawLabel}

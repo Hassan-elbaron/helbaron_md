@@ -1,4 +1,4 @@
-import { normalizeAiSettings } from "@markra/providers";
+import { normalizeAiSettings } from "@helbaron/providers";
 import {
   isAppTheme,
   normalizeAppThemePreferences,
@@ -23,24 +23,24 @@ import {
   type SyncSettings,
   type WebSearchSettings
 } from "./app-settings";
-import { isAppLanguage, type AppLanguage } from "@markra/shared";
+import { isAppLanguage, type AppLanguage } from "@helbaron/shared";
 import { getAppRuntime } from "../../runtime";
 import { isAppLogLevel, type AppLogLevel } from "../log-level";
 
-const themeChangedEvent = "markra://theme-changed";
-const customThemeCssChangedEvent = "markra://custom-theme-css-changed";
-const languageChangedEvent = "markra://language-changed";
-const logLevelChangedEvent = "markra://log-level-changed";
-const editorPreferencesChangedEvent = "markra://editor-preferences-changed";
-const exportSettingsChangedEvent = "markra://export-settings-changed";
-const fileIgnoreSettingsChangedEvent = "markra://file-ignore-settings-changed";
-const webSearchSettingsChangedEvent = "markra://web-search-settings-changed";
-const backupSettingsChangedEvent = "markra://backup-settings-changed";
-const syncSettingsChangedEvent = "markra://sync-settings-changed";
-const aiSettingsChangedEvent = "markra://ai-settings-changed";
-const acpAgentSettingsChangedEvent = "markra://acp-agent-settings-changed";
+const themeChangedEvent = "helbaron://theme-changed";
+const customThemeCssChangedEvent = "helbaron://custom-theme-css-changed";
+const languageChangedEvent = "helbaron://language-changed";
+const logLevelChangedEvent = "helbaron://log-level-changed";
+const editorPreferencesChangedEvent = "helbaron://editor-preferences-changed";
+const exportSettingsChangedEvent = "helbaron://export-settings-changed";
+const fileIgnoreSettingsChangedEvent = "helbaron://file-ignore-settings-changed";
+const webSearchSettingsChangedEvent = "helbaron://web-search-settings-changed";
+const backupSettingsChangedEvent = "helbaron://backup-settings-changed";
+const syncSettingsChangedEvent = "helbaron://sync-settings-changed";
+const aiSettingsChangedEvent = "helbaron://ai-settings-changed";
+const acpAgentSettingsChangedEvent = "helbaron://acp-agent-settings-changed";
 const settingsEventsSourceId =
-  globalThis.crypto?.randomUUID?.() ?? `markra-settings-${Math.random().toString(36).slice(2)}`;
+  globalThis.crypto?.randomUUID?.() ?? `helbaron-settings-${Math.random().toString(36).slice(2)}`;
 
 type ThemeChangedPayload = {
   preferences?: AppThemePreferences;

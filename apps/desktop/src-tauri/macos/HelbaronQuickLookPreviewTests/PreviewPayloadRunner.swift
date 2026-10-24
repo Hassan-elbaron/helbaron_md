@@ -4,6 +4,6 @@ import Foundation
 enum PreviewPayloadRunner {
     static func main() throws {
         try PreviewPayloadTests.run()
-        print("Markra Quick Look Swift tests passed")
+        print("Helbaron Quick Look Swift tests passed")
     }
 }

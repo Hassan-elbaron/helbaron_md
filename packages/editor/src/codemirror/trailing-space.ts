@@ -8,7 +8,7 @@ import {
   WidgetType,
   type EditorView as CodeMirrorView,
 } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
 class TrailingSpaceWidget extends WidgetType {
   ignoreEvent() {
@@ -17,7 +17,7 @@ class TrailingSpaceWidget extends WidgetType {
 
   toDOM(view: CodeMirrorView) {
     const space = view.dom.ownerDocument.createElement("span");
-    space.className = "cm-markra-trailing-space";
+    space.className = "cm-helbaron-trailing-space";
     space.setAttribute("aria-hidden", "true");
     space.addEventListener("mousedown", (event) => {
       if (event.button !== 0) return;
@@ -71,7 +71,7 @@ const trailingSpaceField = StateField.define({
 });
 
 const trailingTheme = EditorView.baseTheme({
-  ".cm-markra-trailing-space": {
+  ".cm-helbaron-trailing-space": {
     cursor: "text",
     display: "block",
     minHeight: "6rem",
@@ -80,8 +80,8 @@ const trailingTheme = EditorView.baseTheme({
 });
 
 export function trailingSpacePlugin() {
-  return defineMarkraPlugin({
-    id: "markra.trailing-space",
+  return defineHelbaronPlugin({
+    id: "helbaron.trailing-space",
     extension: [
       trailingSpaceField,
       trailingTheme,

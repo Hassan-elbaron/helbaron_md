@@ -4,7 +4,7 @@ import {
   FakeIndexedDbFactory
 } from "../../test/web-runtime-fakes";
 import { createWebRuntime } from "..";
-import type { NativeMarkdownDroppedTarget } from "@markra/app/runtime";
+import type { NativeMarkdownDroppedTarget } from "@helbaron/app/runtime";
 import type { WebDownloadFile } from "./types";
 
 function createDirectoryUploadFile(relativePath: string, contents: string, type = "text/markdown") {
@@ -99,13 +99,13 @@ describe("web file runtime", () => {
     });
   });
 
-  it("opens and saves Markra settings JSON files through the browser file system API", async () => {
+  it("opens and saves Helbaron settings JSON files through the browser file system API", async () => {
     const settingsHandle = new FakeFileHandle(
-      "markra-settings.json",
-      "{\"format\":\"markra-settings\"}",
+      "helbaron-settings.json",
+      "{\"format\":\"helbaron-settings\"}",
       "application/json"
     );
-    const savedHandle = new FakeFileHandle("markra-settings.json", "", "application/json");
+    const savedHandle = new FakeFileHandle("helbaron-settings.json", "", "application/json");
     let openOptions: unknown;
     let saveOptions: unknown;
     const runtime = createWebRuntime({
@@ -120,18 +120,18 @@ describe("web file runtime", () => {
       }
     });
 
-    await expect(runtime.files.openSettingsFile({ title: "Import Markra settings" })).resolves.toEqual({
-      content: "{\"format\":\"markra-settings\"}",
-      name: "markra-settings.json",
+    await expect(runtime.files.openSettingsFile({ title: "Import Helbaron settings" })).resolves.toEqual({
+      content: "{\"format\":\"helbaron-settings\"}",
+      name: "helbaron-settings.json",
       path: expect.stringMatching(/^web-file:\/\//u)
     });
     await expect(
       runtime.files.saveSettingsFile({
         contents: "{\"version\":1}",
-        suggestedName: "markra-settings.json"
+        suggestedName: "helbaron-settings.json"
       })
     ).resolves.toEqual({
-      name: "markra-settings.json",
+      name: "helbaron-settings.json",
       path: expect.stringMatching(/^web-file:\/\//u)
     });
 
@@ -141,16 +141,16 @@ describe("web file runtime", () => {
         accept: {
           "application/json": [".json"]
         },
-        description: "Markra settings"
+        description: "Helbaron settings"
       }]
     });
     expect(saveOptions).toEqual({
-      suggestedName: "markra-settings.json",
+      suggestedName: "helbaron-settings.json",
       types: [{
         accept: {
           "application/json": [".json"]
         },
-        description: "Markra settings"
+        description: "Helbaron settings"
       }]
     });
     expect(savedHandle.writes).toEqual(["{\"version\":1}"]);
@@ -383,7 +383,7 @@ describe("web file runtime", () => {
     const ignoredDirectoryNames = [
       ".codex",
       ".git",
-      ".markra-sync",
+      ".helbaron-sync",
       ".obsidian",
       "build",
       "dist",
@@ -411,10 +411,10 @@ describe("web file runtime", () => {
     expect(entries.map((entry) => entry.relativePath)).toEqual(["visible.md"]);
   });
 
-  it("uses root markraignore when listing browser directories", async () => {
+  it("uses root helbaronignore when listing browser directories", async () => {
     const directory = new FakeDirectoryHandle("mock-vault", {
-      ".markraignore": new FakeFileHandle(
-        ".markraignore",
+      ".helbaronignore": new FakeFileHandle(
+        ".helbaronignore",
         "generated/\n*.tmp\n*.md\n!keep.md\n"
       ),
       "draft.tmp": new FakeFileHandle("draft.tmp", "temporary"),
@@ -435,10 +435,10 @@ describe("web file runtime", () => {
     expect(entries.map((entry) => entry.relativePath)).toEqual(["keep.md"]);
   });
 
-  it("merges global ignore rules before root markraignore rules", async () => {
+  it("merges global ignore rules before root helbaronignore rules", async () => {
     const directory = new FakeDirectoryHandle("mock-vault", {
-      ".markraignore": new FakeFileHandle(
-        ".markraignore",
+      ".helbaronignore": new FakeFileHandle(
+        ".helbaronignore",
         "!drafts/\n!drafts/restored.md\n!keep.md\n"
       ),
       "drop.md": new FakeFileHandle("drop.md", "# Drop"),
@@ -858,7 +858,7 @@ describe("web file runtime", () => {
 
       if (init?.method === "HEAD") return new Response(null, { status: 404 });
       if (init?.method === "GET") {
-        return new Response('{"format":"markra-settings-backup"}', { status: 200 });
+        return new Response('{"format":"helbaron-settings-backup"}', { status: 200 });
       }
 
       return new Response(null, { status: init?.method === "PUT" ? 201 : 200 });
@@ -876,21 +876,21 @@ describe("web file runtime", () => {
     };
 
     await runtime.files.writeWebDavTextFile({
-      contents: '{"format":"markra-settings-backup"}',
-      remotePath: "markra/settings/markra-settings.json",
+      contents: '{"format":"helbaron-settings-backup"}',
+      remotePath: "helbaron/settings/helbaron-settings.json",
       settings
     });
     await expect(runtime.files.readWebDavTextFile({
-      remotePath: "markra/settings/markra-settings.json",
+      remotePath: "helbaron/settings/helbaron-settings.json",
       settings
-    })).resolves.toBe('{"format":"markra-settings-backup"}');
+    })).resolves.toBe('{"format":"helbaron-settings-backup"}');
 
     expect(requests.map(({ init, url }) => [init?.method, url])).toEqual([
-      ["MKCOL", "https://dav.example.test/base/markra/"],
-      ["MKCOL", "https://dav.example.test/base/markra/settings/"],
-      ["HEAD", "https://dav.example.test/base/markra/settings/markra-settings.json"],
-      ["PUT", "https://dav.example.test/base/markra/settings/markra-settings.json"],
-      ["GET", "https://dav.example.test/base/markra/settings/markra-settings.json"]
+      ["MKCOL", "https://dav.example.test/base/helbaron/"],
+      ["MKCOL", "https://dav.example.test/base/helbaron/settings/"],
+      ["HEAD", "https://dav.example.test/base/helbaron/settings/helbaron-settings.json"],
+      ["PUT", "https://dav.example.test/base/helbaron/settings/helbaron-settings.json"],
+      ["GET", "https://dav.example.test/base/helbaron/settings/helbaron-settings.json"]
     ]);
     expect(requests[3]?.init?.headers).toMatchObject({
       authorization: `Basic ${utf8Base64("模拟用户:模拟密码")}`,

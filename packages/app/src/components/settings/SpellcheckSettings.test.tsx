@@ -219,7 +219,7 @@ describe("SpellcheckSettings", () => {
     const preferences = {
       ...defaultEditorPreferences,
       spellcheckEnabled: true,
-      spellcheckIgnoredWords: ["markraterm", "customterm"]
+      spellcheckIgnoredWords: ["helbaronterm", "customterm"]
     };
 
     render(
@@ -228,13 +228,13 @@ describe("SpellcheckSettings", () => {
 
     expect(screen.getByRole("heading", { name: "Personal whitelist" })).toBeInTheDocument();
     expect(screen.getByText("2 words")).toBeInTheDocument();
-    expect(screen.getByText("markraterm")).toBeInTheDocument();
+    expect(screen.getByText("helbaronterm")).toBeInTheDocument();
     expect(screen.getByText("customterm")).toBeInTheDocument();
     const whitelistWords = screen.getByRole("list", { name: "Personal whitelist words" });
     expect(whitelistWords).toHaveClass("max-h-32", "overflow-y-auto", "flex-wrap");
     expect(within(whitelistWords).getAllByRole("listitem")).toHaveLength(3);
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove markraterm" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove helbaronterm" }));
 
     expect(onUpdatePreferences).toHaveBeenCalledWith({
       ...preferences,
@@ -256,7 +256,7 @@ describe("SpellcheckSettings", () => {
     const preferences = {
       ...defaultEditorPreferences,
       spellcheckEnabled: true,
-      spellcheckIgnoredWords: ["markraterm"]
+      spellcheckIgnoredWords: ["helbaronterm"]
     };
 
     render(
@@ -278,13 +278,13 @@ describe("SpellcheckSettings", () => {
 
     expect(onUpdatePreferences).toHaveBeenCalledWith({
       ...preferences,
-      spellcheckIgnoredWords: ["markraterm", "customterm"]
+      spellcheckIgnoredWords: ["helbaronterm", "customterm"]
     });
     expect(input).toHaveValue("");
 
     onUpdatePreferences.mockClear();
 
-    fireEvent.change(input, { target: { value: "MARKRATERM" } });
+    fireEvent.change(input, { target: { value: "HELBARONTERM" } });
 
     expect(addButton).toBeDisabled();
     expect(onUpdatePreferences).not.toHaveBeenCalled();

@@ -6,8 +6,8 @@ import { unified } from "unified";
 
 const countableWordUnits =
   /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]|(?:(?![\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}])[\p{L}\p{N}_'-])+/gu;
-const markraHighlightPattern = /(?<!=)==[^=\n][^\n]*?==(?!=)/gu;
-const inlineMarkdownParser = unified().use(remarkParse).use(remarkGfm).use(remarkMath).use(markraHighlightRemarkPlugin);
+const helbaronHighlightPattern = /(?<!=)==[^=\n][^\n]*?==(?!=)/gu;
+const inlineMarkdownParser = unified().use(remarkParse).use(remarkGfm).use(remarkMath).use(helbaronHighlightRemarkPlugin);
 
 type MarkdownNode = {
   children?: MarkdownNode[];
@@ -27,12 +27,12 @@ export type MarkdownOutlineItem = {
   titleMarkdown?: string;
 };
 
-function splitMarkraHighlightText(value: string): MarkdownNode[] {
+function splitHelbaronHighlightText(value: string): MarkdownNode[] {
   const nodes: MarkdownNode[] = [];
   let cursor = 0;
 
-  markraHighlightPattern.lastIndex = 0;
-  for (const match of value.matchAll(markraHighlightPattern)) {
+  helbaronHighlightPattern.lastIndex = 0;
+  for (const match of value.matchAll(helbaronHighlightPattern)) {
     const matchIndex = match.index ?? 0;
     const source = match[0];
     const content = source.slice(2, -2);
@@ -41,7 +41,7 @@ function splitMarkraHighlightText(value: string): MarkdownNode[] {
     nodes.push({
       children: [{ type: "text", value: content }],
       data: { hName: "mark" },
-      type: "markraHighlight"
+      type: "helbaronHighlight"
     });
     cursor = matchIndex + source.length;
   }
@@ -51,7 +51,7 @@ function splitMarkraHighlightText(value: string): MarkdownNode[] {
   return nodes;
 }
 
-function transformMarkraHighlight(node: MarkdownNode) {
+function transformHelbaronHighlight(node: MarkdownNode) {
   if (!Array.isArray(node.children)) return;
 
   for (let index = node.children.length - 1; index >= 0; index -= 1) {
@@ -59,20 +59,20 @@ function transformMarkraHighlight(node: MarkdownNode) {
     if (!child) continue;
 
     if (child.type === "text" && typeof child.value === "string" && child.value.includes("==")) {
-      const replacement = splitMarkraHighlightText(child.value);
+      const replacement = splitHelbaronHighlightText(child.value);
       if (replacement.length > 1 || replacement[0]?.type !== "text" || replacement[0].value !== child.value) {
         node.children.splice(index, 1, ...replacement);
       }
       continue;
     }
 
-    transformMarkraHighlight(child);
+    transformHelbaronHighlight(child);
   }
 }
 
-export function markraHighlightRemarkPlugin() {
+export function helbaronHighlightRemarkPlugin() {
   return (tree: MarkdownNode) => {
-    transformMarkraHighlight(tree);
+    transformHelbaronHighlight(tree);
   };
 }
 

@@ -1,5 +1,5 @@
-import { isMarkdownPath, parentPathFromPath, type SearchRange } from "@markra/shared";
-import type { AiDiffResult } from "@markra/ai";
+import { isMarkdownPath, parentPathFromPath, type SearchRange } from "@helbaron/shared";
+import type { AiDiffResult } from "@helbaron/ai";
 import type { MarkdownTabsBarDocumentItem } from "../components/MarkdownTabsBar";
 import type { NativeMarkdownFolderFile } from "../lib/tauri";
 import type { SelectionAnchor } from "../lib/selection-anchor";

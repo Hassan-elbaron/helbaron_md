@@ -1,9 +1,9 @@
 import {
-  useMarkraEditorSelectionAnchor,
-  useMarkraEditorSelectionToolbar,
-  useMarkraEditorUi,
-  useMarkraEditorView,
-} from "@markra/editor-react";
+  useHelbaronEditorSelectionAnchor,
+  useHelbaronEditorSelectionToolbar,
+  useHelbaronEditorUi,
+  useHelbaronEditorView,
+} from "@helbaron/editor-react";
 import {
   useEffect,
   useMemo,
@@ -21,16 +21,16 @@ function preserveEditorSelection(event: ReactMouseEvent<HTMLButtonElement>) {
 }
 
 export function CodeMirrorPluginUi({ pluginIds }: CodeMirrorPluginUiProps) {
-  const view = useMarkraEditorView();
+  const view = useHelbaronEditorView();
   const pluginIdSet = useMemo(() => new Set(pluginIds), [pluginIds]);
-  const toolbar = useMarkraEditorUi("toolbar").filter((action) =>
+  const toolbar = useHelbaronEditorUi("toolbar").filter((action) =>
     pluginIdSet.has(action.plugin));
-  const contextActions = useMarkraEditorUi("context-menu").filter((action) =>
+  const contextActions = useHelbaronEditorUi("context-menu").filter((action) =>
     pluginIdSet.has(action.plugin));
-  const selectionToolbar = useMarkraEditorSelectionToolbar();
+  const selectionToolbar = useHelbaronEditorSelectionToolbar();
   const selectionActions = selectionToolbar.actions.filter((action) =>
     pluginIdSet.has(action.plugin));
-  const selectionAnchor = useMarkraEditorSelectionAnchor(
+  const selectionAnchor = useHelbaronEditorSelectionAnchor(
     selectionActions.length > 0 ? selectionToolbar.from : null,
     selectionActions.length > 0 ? selectionToolbar.to : null,
   );
@@ -51,7 +51,7 @@ export function CodeMirrorPluginUi({ pluginIds }: CodeMirrorPluginUiProps) {
         : event.target instanceof Node
           ? event.target.parentElement
           : null;
-      if (target?.closest(".markra-plugin-context-menu")) return;
+      if (target?.closest(".helbaron-plugin-context-menu")) return;
       setContextPoint(null);
     };
     const closeContextMenuOnEscape = (event: KeyboardEvent) => {
@@ -92,7 +92,7 @@ export function CodeMirrorPluginUi({ pluginIds }: CodeMirrorPluginUiProps) {
   return (
     <>
       {toolbar.length > 0 ? (
-        <div aria-label="Editor plugin toolbar" className="markra-plugin-toolbar" role="toolbar">
+        <div aria-label="Editor plugin toolbar" className="helbaron-plugin-toolbar" role="toolbar">
           {toolbar.map((action) => (
             <button
               aria-pressed={action.active}
@@ -111,7 +111,7 @@ export function CodeMirrorPluginUi({ pluginIds }: CodeMirrorPluginUiProps) {
       {selectionStyle && selectionActions.length > 0 ? (
         <div
           aria-label="Editor plugin selection actions"
-          className="markra-plugin-selection-toolbar"
+          className="helbaron-plugin-selection-toolbar"
           role="toolbar"
           style={selectionStyle}
         >
@@ -133,7 +133,7 @@ export function CodeMirrorPluginUi({ pluginIds }: CodeMirrorPluginUiProps) {
       {contextStyle ? (
         <div
           aria-label="Editor plugin context menu"
-          className="markra-plugin-context-menu"
+          className="helbaron-plugin-context-menu"
           role="menu"
           style={contextStyle}
         >

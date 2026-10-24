@@ -5,15 +5,15 @@
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
   <key>CFBundleDisplayName</key>
-  <string>Markra Quick Look</string>
+  <string>Helbaron Quick Look</string>
   <key>CFBundleExecutable</key>
-  <string>MarkraQuickLookPreview</string>
+  <string>HelbaronQuickLookPreview</string>
   <key>CFBundleIdentifier</key>
-  <string>dev.markra.app.quicklook</string>
+  <string>dev.helbaron.app.quicklook</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundleName</key>
-  <string>MarkraQuickLookPreview</string>
+  <string>HelbaronQuickLookPreview</string>
   <key>CFBundlePackageType</key>
   <string>XPC!</string>
   <key>CFBundleShortVersionString</key>

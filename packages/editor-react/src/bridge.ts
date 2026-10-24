@@ -6,7 +6,7 @@ import {
 
 type StoreListener = () => unknown;
 
-class MarkraEditorReactStore {
+class HelbaronEditorReactStore {
   private readonly listeners = new Set<StoreListener>();
   private revision = 0;
 
@@ -31,15 +31,15 @@ class MarkraEditorReactStore {
   }
 }
 
-export const markraEditorReactBridge = ViewPlugin.fromClass(
-  MarkraEditorReactStore,
+export const helbaronEditorReactBridge = ViewPlugin.fromClass(
+  HelbaronEditorReactStore,
 );
 
-export function getMarkraEditorReactStore(view: EditorView) {
-  const store = view.plugin(markraEditorReactBridge);
+export function getHelbaronEditorReactStore(view: EditorView) {
+  const store = view.plugin(helbaronEditorReactBridge);
   if (!store) {
     throw new Error(
-      "MarkraEditorProvider requires markraEditorReactBridge in the EditorView extensions",
+      "HelbaronEditorProvider requires helbaronEditorReactBridge in the EditorView extensions",
     );
   }
   return store;

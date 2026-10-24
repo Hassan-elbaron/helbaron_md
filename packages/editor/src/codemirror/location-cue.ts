@@ -41,12 +41,12 @@ const locationCueField = StateField.define<LocationCueState>({
       // Alternating animation names restarts the cue when repeated mode switches
       // target the same CodeMirror line before the previous animation finishes.
       const animationClass = sequence % 2 === 0
-        ? "cm-markra-location-cue-even"
-        : "cm-markra-location-cue-odd";
+        ? "cm-helbaron-location-cue-even"
+        : "cm-helbaron-location-cue-odd";
       return {
         decorations: Decoration.set([
           Decoration.line({
-            class: `cm-markra-location-cue ${animationClass}`,
+            class: `cm-helbaron-location-cue ${animationClass}`,
           }).range(line.from),
         ]),
         sequence,
@@ -114,18 +114,18 @@ const locationCueKeyframes = {
 };
 
 const locationCueTheme = EditorView.baseTheme({
-  ".cm-line.cm-markra-location-cue-even": {
+  ".cm-line.cm-helbaron-location-cue-even": {
     animation:
-      `markra-codemirror-location-cue-even ${locationCueDurationMs}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+      `helbaron-codemirror-location-cue-even ${locationCueDurationMs}ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
-  ".cm-line.cm-markra-location-cue-odd": {
+  ".cm-line.cm-helbaron-location-cue-odd": {
     animation:
-      `markra-codemirror-location-cue-odd ${locationCueDurationMs}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+      `helbaron-codemirror-location-cue-odd ${locationCueDurationMs}ms cubic-bezier(0.16, 1, 0.3, 1)`,
   },
-  "@keyframes markra-codemirror-location-cue-even": locationCueKeyframes,
-  "@keyframes markra-codemirror-location-cue-odd": locationCueKeyframes,
+  "@keyframes helbaron-codemirror-location-cue-even": locationCueKeyframes,
+  "@keyframes helbaron-codemirror-location-cue-odd": locationCueKeyframes,
   "@media (prefers-reduced-motion: reduce)": {
-    ".cm-line.cm-markra-location-cue": {
+    ".cm-line.cm-helbaron-location-cue": {
       animationDuration: "1ms",
       boxShadow: locationCueBoxShadow,
     },

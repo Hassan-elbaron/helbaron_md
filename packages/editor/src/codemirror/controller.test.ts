@@ -20,7 +20,7 @@ import {
   replaceCodeMirrorSearchMatch,
   updateCodeMirrorHeadingAnchors,
 } from "./controller.ts";
-import { markraLanguage } from "./index.ts";
+import { helbaronLanguage } from "./index.ts";
 import "./dom.test-support.ts";
 
 const views: EditorView[] = [];
@@ -38,7 +38,7 @@ function createView(
       doc,
       extensions: [
         history(),
-        markraLanguage,
+        helbaronLanguage,
         EditorState.readOnly.of(readOnly),
       ],
       selection,

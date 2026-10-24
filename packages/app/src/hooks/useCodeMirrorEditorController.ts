@@ -16,7 +16,7 @@ import {
   insertCodeMirrorMarkdownTable,
   isCodeMirrorMarkdownEquivalent,
   listCodeMirrorAiPreviewResults,
-  listMarkraUi,
+  listHelbaronUi,
   readCodeMirrorAiSelectionContext,
   readCodeMirrorHeadingAnchors,
   readCodeMirrorSectionAnchors,
@@ -24,7 +24,7 @@ import {
   replaceAllCodeMirrorSearchMatches,
   replaceCodeMirrorMarkdown,
   replaceCodeMirrorSearchMatch,
-  runMarkraCommand,
+  runHelbaronCommand,
   scrollCodeMirrorAiPreviewIntoView,
   scrollCodeMirrorSearchMatchIntoView,
   updateCodeMirrorSearchDecorations,
@@ -35,13 +35,13 @@ import {
   type CodeMirrorMarkdownImageReference,
   type CodeMirrorMarkdownLinkReference,
   type ReplaceCodeMirrorMarkdownOptions,
-} from "@markra/editor/codemirror";
-import type { AiDiffResult, AiSelectionContext } from "@markra/ai";
+} from "@helbaron/editor/codemirror";
+import type { AiDiffResult, AiSelectionContext } from "@helbaron/ai";
 import {
   keyboardShortcutFromKeyboardEvent,
   parseKeyboardShortcut,
   type SearchRange,
-} from "@markra/shared";
+} from "@helbaron/shared";
 import { useCallback, useEffect, useRef } from "react";
 import type {
   SelectionFormattingAction,
@@ -50,13 +50,13 @@ import type {
   SelectionHeadingLevel,
 } from "../lib/selection-formatting";
 import type { SelectionAnchor } from "../lib/selection-anchor";
-import type { MarkdownOutlineItem } from "@markra/markdown";
+import type { MarkdownOutlineItem } from "@helbaron/markdown";
 
 type EditorReadyOptions = {
   autoFocus?: boolean;
 };
 
-const aiSelectionHoldSelector = ".markra-ai-selection-hold";
+const aiSelectionHoldSelector = ".helbaron-ai-selection-hold";
 
 function scrollAiSelectionHold(
   view: EditorView,
@@ -112,8 +112,8 @@ const selectionFormattingCommands: Partial<
 function activeFormattingState(view: EditorView): SelectionFormattingState {
   const actions: SelectionFormattingAction[] = [];
   const contributions = [
-    ...listMarkraUi(view, "selection-toolbar"),
-    ...listMarkraUi(view, "slash-menu"),
+    ...listHelbaronUi(view, "selection-toolbar"),
+    ...listHelbaronUi(view, "slash-menu"),
   ];
 
   for (const contribution of contributions) {
@@ -413,12 +413,23 @@ export function useCodeMirrorEditorController() {
 
   const setSelectionHeadingLevel = useCallback((level: SelectionHeadingLevel) => {
     const view = viewRef.current;
-    return view ? runMarkraCommand(view, `block.heading.${level}`) : false;
+    return view ? runHelbaronCommand(view, `block.heading.${level}`) : false;
   }, []);
+
+  const runEditorCommand = useCallback((commandId: string) => {
+    const view = viewRef.current;
+    if (!view) return false;
+
+    const handled = runHelbaronCommand(view, commandId);
+    if (handled) view.focus();
+    return handled;
+  }, []);
+
+  const getEditorView = useCallback(() => viewRef.current, []);
 
   const toggleSelectionHighlight = useCallback(() => {
     const view = viewRef.current;
-    return view ? runMarkraCommand(view, "format.highlight") : false;
+    return view ? runHelbaronCommand(view, "format.highlight") : false;
   }, []);
 
   const clearSelectionFormatting = useCallback(() => {
@@ -436,7 +447,7 @@ export function useCodeMirrorEditorController() {
       }
 
       const command = selectionFormattingCommands[action];
-      return command ? runMarkraCommand(view, command) : false;
+      return command ? runHelbaronCommand(view, command) : false;
     },
     [],
   );
@@ -576,6 +587,8 @@ export function useCodeMirrorEditorController() {
     replaceMarkdown,
     replaceSearchMatch,
     revealSearchMatch,
+    getEditorView,
+    runEditorCommand,
     runEditorShortcut,
     runSelectionFormattingAction,
     scrollAiSelectionAboveCommand,

@@ -1,10 +1,10 @@
 import type { Model } from "@earendil-works/pi-ai";
 
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 
 export function createPiAgentModel(provider: AiProviderConfig, modelId: string): Model<any> {
   return {
-    api: "markra-native-chat",
+    api: "helbaron-native-chat",
     baseUrl: provider.baseUrl ?? "",
     contextWindow: 0,
     cost: {

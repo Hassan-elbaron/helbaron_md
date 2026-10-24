@@ -39,6 +39,6 @@ test("release workflow builds and publishes an Arch Linux package from the x64 d
   assert.match(workflow, /prepare-arch-package\.mjs/);
   assert.match(workflow, /archlinux:base-devel/);
   assert.match(workflow, /makepkg --noconfirm --nodeps/);
-  assert.match(workflow, /Markra_\$\{version\}_linux_x64\.pkg\.tar\.zst/);
+  assert.match(workflow, /Helbaron_\$\{version\}_linux_x64\.pkg\.tar\.zst/);
   assert.match(workflow, /"\.pkg\.tar\.zst"/);
 });

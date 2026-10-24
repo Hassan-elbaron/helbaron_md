@@ -91,7 +91,7 @@ describe("document export helpers", () => {
   it("removes rendered pure LaTeX macro definition blocks from standalone documents", () => {
     const html = buildMarkdownHtmlDocument({
       bodyHtml: [
-        '<span class="markra-math-render markra-math-render-display">',
+        '<span class="helbaron-math-render helbaron-math-render-display">',
         '<span class="katex"><span class="katex-mathml"><math><semantics>',
         "<mrow></mrow>",
         '<annotation encoding="application/x-tex">\\newcommand{\\RR}{\\mathbb{R}} \\newcommand{\\vect}[1]{\\mathbf{#1}}</annotation>',
@@ -109,9 +109,9 @@ describe("document export helpers", () => {
   it("removes inline LaTeX macro definition markers from standalone documents", () => {
     const html = buildMarkdownHtmlDocument({
       bodyHtml: [
-        '<p><span data-markra-math-macro-definition="" hidden=""></span></p>',
+        '<p><span data-helbaron-math-macro-definition="" hidden=""></span></p>',
         '<p>Text before ',
-        '<span class="markra-math-render markra-math-render-inline">',
+        '<span class="helbaron-math-render helbaron-math-render-inline">',
         '<span class="katex"><span class="katex-mathml"><math><semantics>',
         "<mrow></mrow>",
         '<annotation encoding="application/x-tex">\\newcommand{\\b}{\\mathbb{b}}</annotation>',
@@ -123,7 +123,7 @@ describe("document export helpers", () => {
     });
 
     expect(html).not.toContain(String.raw`\newcommand`);
-    expect(html).not.toContain("data-markra-math-macro-definition");
+    expect(html).not.toContain("data-helbaron-math-macro-definition");
     expect(html).not.toContain("<p></p>");
     expect(html).toContain("<p>Text before  text after.</p>");
   });

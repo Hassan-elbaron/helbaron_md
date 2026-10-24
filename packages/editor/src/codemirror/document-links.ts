@@ -9,9 +9,9 @@ import {
   type Transaction,
 } from "@codemirror/state";
 import { keymap, type EditorView } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
-export interface MarkraDocumentLinkItem {
+export interface HelbaronDocumentLinkItem {
   readonly detail?: string;
   readonly href: string;
   readonly id: string;
@@ -20,19 +20,19 @@ export interface MarkraDocumentLinkItem {
   readonly markdown?: string;
 }
 
-export interface MarkraDocumentLinksContext {
+export interface HelbaronDocumentLinksContext {
   readonly query: string;
   readonly state: EditorState;
   readonly view: EditorView;
 }
 
-export interface MarkraDocumentLinkAction extends MarkraDocumentLinkItem {
+export interface HelbaronDocumentLinkAction extends HelbaronDocumentLinkItem {
   run: () => boolean;
 }
 
-export interface MarkraDocumentLinksState {
+export interface HelbaronDocumentLinksState {
   readonly from: number | null;
-  readonly items: readonly MarkraDocumentLinkAction[];
+  readonly items: readonly HelbaronDocumentLinkAction[];
   readonly open: boolean;
   readonly query: string;
   readonly selectedIndex: number;
@@ -41,8 +41,8 @@ export interface MarkraDocumentLinksState {
 
 export interface DocumentLinksPluginOptions {
   readonly items:
-    | readonly MarkraDocumentLinkItem[]
-    | ((context: MarkraDocumentLinksContext) => readonly MarkraDocumentLinkItem[]);
+    | readonly HelbaronDocumentLinkItem[]
+    | ((context: HelbaronDocumentLinksContext) => readonly HelbaronDocumentLinkItem[]);
 }
 
 interface CompletionRange {
@@ -162,7 +162,7 @@ function documentItems(view: EditorView, active: CompletionRange) {
   const options = view.state.facet(documentLinksOptions);
   if (!options) return [];
 
-  let source: readonly MarkraDocumentLinkItem[];
+  let source: readonly HelbaronDocumentLinkItem[];
   try {
     source =
       typeof options.items === "function"
@@ -199,12 +199,12 @@ function escapedHref(href: string) {
     .replace(/[\\()]/gu, "\\$&");
 }
 
-function markdownFor(item: MarkraDocumentLinkItem) {
+function markdownFor(item: HelbaronDocumentLinkItem) {
   return item.markdown ?? `[${escapedLabel(item.label)}](${escapedHref(item.href)})`;
 }
 
 function moveSelection(view: EditorView, amount: -1 | 1) {
-  const completion = getMarkraDocumentLinksState(view);
+  const completion = getHelbaronDocumentLinksState(view);
   if (!completion.open || completion.items.length === 0) return false;
   const index =
     (completion.selectedIndex + amount + completion.items.length) %
@@ -216,7 +216,7 @@ function moveSelection(view: EditorView, amount: -1 | 1) {
 }
 
 function runSelectedItem(view: EditorView) {
-  return runMarkraDocumentLink(view);
+  return runHelbaronDocumentLink(view);
 }
 
 const documentLinksKeymap = Prec.highest(
@@ -225,13 +225,13 @@ const documentLinksKeymap = Prec.highest(
     { key: "ArrowUp", run: (view) => moveSelection(view, -1) },
     { key: "Enter", run: runSelectedItem },
     { key: "Tab", run: runSelectedItem },
-    { key: "Escape", run: closeMarkraDocumentLinks },
+    { key: "Escape", run: closeHelbaronDocumentLinks },
   ]),
 );
 
 export function documentLinksPlugin(options: DocumentLinksPluginOptions) {
-  return defineMarkraPlugin({
-    id: "markra.document-links",
+  return defineHelbaronPlugin({
+    id: "helbaron.document-links",
     extension: [
       documentLinksOptions.of(options),
       documentLinksField,
@@ -240,9 +240,9 @@ export function documentLinksPlugin(options: DocumentLinksPluginOptions) {
   });
 }
 
-export function getMarkraDocumentLinksState(
+export function getHelbaronDocumentLinksState(
   view: EditorView,
-): MarkraDocumentLinksState {
+): HelbaronDocumentLinksState {
   const state = internalState(view);
   if (!state?.active) {
     return {
@@ -263,7 +263,7 @@ export function getMarkraDocumentLinksState(
   );
   const items = source.map((item) => ({
     ...item,
-    run: () => runMarkraDocumentLink(view, item.id),
+    run: () => runHelbaronDocumentLink(view, item.id),
   }));
 
   return {
@@ -276,14 +276,14 @@ export function getMarkraDocumentLinksState(
   };
 }
 
-export function closeMarkraDocumentLinks(view: EditorView) {
+export function closeHelbaronDocumentLinks(view: EditorView) {
   if (!internalState(view)?.active) return false;
   view.dispatch({ effects: updateDocumentLinks.of({ type: "close" }) });
   return true;
 }
 
-export function runMarkraDocumentLink(view: EditorView, itemId?: string) {
-  const completion = getMarkraDocumentLinksState(view);
+export function runHelbaronDocumentLink(view: EditorView, itemId?: string) {
+  const completion = getHelbaronDocumentLinksState(view);
   if (!completion.open || completion.from === null || completion.to === null) {
     return false;
   }

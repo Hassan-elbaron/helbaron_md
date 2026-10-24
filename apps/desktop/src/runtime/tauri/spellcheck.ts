@@ -4,7 +4,7 @@ import type {
   NativeSpellcheckDictionaryLoadOptions,
   NativeSpellcheckDictionaryManifest,
   NativeSpellcheckDictionaryStatus
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import { networkSettingsForNativeRequest } from "./network";
 
 export async function deleteNativeSpellcheckDictionary(

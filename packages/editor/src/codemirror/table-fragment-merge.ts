@@ -9,9 +9,9 @@ import {
   type EditorView as CodeMirrorView,
   type ViewUpdate,
 } from "@codemirror/view";
-import { parseGfmTableFragment } from "@markra/markdown";
+import { parseGfmTableFragment } from "@helbaron/markdown";
 import { syntaxTreeChanged } from "./changes.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import { readCodeMirrorTableShape } from "./table.ts";
 
 export interface TableFragmentMergePluginOptions {
@@ -137,16 +137,16 @@ class TableFragmentMergeWidget extends WidgetType {
     const icon = document.createElement("span");
     const text = document.createElement("span");
 
-    wrapper.className = "markra-table-fragment-merge";
+    wrapper.className = "helbaron-table-fragment-merge";
     wrapper.dataset.tableFrom = String(this.tableFrom);
     button.type = "button";
-    button.className = "markra-table-fragment-merge-button";
+    button.className = "helbaron-table-fragment-merge-button";
     button.ariaLabel = this.label;
     button.title = this.label;
-    icon.className = "markra-table-fragment-merge-icon";
+    icon.className = "helbaron-table-fragment-merge-icon";
     icon.ariaHidden = "true";
     icon.textContent = "↑";
-    text.className = "markra-table-fragment-merge-label";
+    text.className = "helbaron-table-fragment-merge-label";
     text.textContent = this.label;
     button.append(icon, text);
     wrapper.append(button);
@@ -180,12 +180,12 @@ function mergeDecorations(state: EditorState, label: string): DecorationSet {
 }
 
 const mergeTheme = EditorView.baseTheme({
-  ".markra-table-fragment-merge": {
+  ".helbaron-table-fragment-merge": {
     display: "flex",
     justifyContent: "center",
     padding: "0.2em 0",
   },
-  ".markra-table-fragment-merge-button": {
+  ".helbaron-table-fragment-merge-button": {
     alignItems: "center",
     background: "transparent",
     border: "0",
@@ -219,8 +219,8 @@ export function tableFragmentMergePlugin(
   options: TableFragmentMergePluginOptions = {},
 ) {
   const label = options.label ?? defaultLabel;
-  return defineMarkraPlugin({
-    id: "markra.table-fragment-merge",
+  return defineHelbaronPlugin({
+    id: "helbaron.table-fragment-merge",
     extension: [
       ViewPlugin.define(
         (view) => new TableFragmentMergeViewPlugin(view, label),

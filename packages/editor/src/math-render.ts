@@ -1,16 +1,16 @@
 import { renderToString, type KatexOptions } from "katex";
 
-export type MarkraMathKind = "display" | "inline";
-export type MarkraMathMacros = NonNullable<KatexOptions["macros"]>;
+export type HelbaronMathKind = "display" | "inline";
+export type HelbaronMathMacros = NonNullable<KatexOptions["macros"]>;
 
-export function createMarkraMathMacros(): MarkraMathMacros {
+export function createHelbaronMathMacros(): HelbaronMathMacros {
   return {};
 }
 
-export function renderMarkraMathToString(
+export function renderHelbaronMathToString(
   tex: string,
-  kind: MarkraMathKind,
-  macros = createMarkraMathMacros(),
+  kind: HelbaronMathKind,
+  macros = createHelbaronMathMacros(),
 ) {
   return renderToString(tex, {
     displayMode: kind === "display",
@@ -123,7 +123,7 @@ function readNewcommandDefinition(source: string, index: number) {
   return readRequiredMathMacroReplacement(source, cursor);
 }
 
-export function isMarkraMathMacroDefinitionSource(tex: string) {
+export function isHelbaronMathMacroDefinitionSource(tex: string) {
   let cursor = skipMathWhitespace(tex, 0);
   let foundDefinition = false;
 

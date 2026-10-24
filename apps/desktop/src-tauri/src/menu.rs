@@ -9,7 +9,7 @@ use tauri::{
     AppHandle, Emitter, Manager,
 };
 
-pub(crate) const NATIVE_MENU_COMMAND_EVENT: &str = "markra://menu-command";
+pub(crate) const NATIVE_MENU_COMMAND_EVENT: &str = "helbaron://menu-command";
 
 const NEW_DOCUMENT_COMMAND: &str = "newDocument";
 const OPEN_RECENT_FILE_COMMAND: &str = "openRecentFile";
@@ -22,9 +22,9 @@ const PASTE_PLAIN_TEXT_DEFAULT_ACCELERATOR: &str = "CmdOrCtrl+Shift+V";
 const CHECK_FOR_UPDATES_COMMAND: &str = "checkForUpdates";
 const EDIT_UNDO_COMMAND: &str = "editUndo";
 const EDIT_REDO_COMMAND: &str = "editRedo";
-const MARKRA_GITHUB_URL: &str = "https://github.com/markrahq/markra";
-const OPEN_RECENT_FILE_SUBMENU_ID: &str = "markra:file:open-recent";
-const EMPTY_OPEN_RECENT_FILE_COMMAND: &str = "markra:file:open-recent:empty";
+const HELBARON_GITHUB_URL: &str = "https://github.com/markrahq/markra";
+const OPEN_RECENT_FILE_SUBMENU_ID: &str = "helbaron:file:open-recent";
+const EMPTY_OPEN_RECENT_FILE_COMMAND: &str = "helbaron:file:open-recent:empty";
 
 #[derive(Clone, Debug, Eq, PartialEq, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -207,13 +207,13 @@ fn native_application_menu_profile_submenu_ids(
 ) -> Vec<String> {
     let ids: &[&str] = match profile {
         NativeApplicationMenuProfile::Editor => &[
-            "markra:app",
-            "markra:file",
-            "markra:edit",
-            "markra:format",
-            "markra:view",
+            "helbaron:app",
+            "helbaron:file",
+            "helbaron:edit",
+            "helbaron:format",
+            "helbaron:view",
         ],
-        NativeApplicationMenuProfile::Settings => &["markra:app", "markra:edit"],
+        NativeApplicationMenuProfile::Settings => &["helbaron:app", "helbaron:edit"],
     };
 
     ids.iter().copied().map(String::from).collect()
@@ -315,11 +315,11 @@ fn app_menu_item_without_accelerator<R: tauri::Runtime, M: Manager<R>>(
 
 fn application_about_metadata() -> AboutMetadata<'static> {
     AboutMetadata {
-        name: Some("Markra".into()),
+        name: Some("Helbaron".into()),
         version: Some(env!("CARGO_PKG_VERSION").into()),
-        website: Some(MARKRA_GITHUB_URL.into()),
+        website: Some(HELBARON_GITHUB_URL.into()),
         website_label: Some("GitHub".into()),
-        credits: Some(format!("GitHub: {MARKRA_GITHUB_URL}")),
+        credits: Some(format!("GitHub: {HELBARON_GITHUB_URL}")),
         ..Default::default()
     }
 }
@@ -333,7 +333,7 @@ fn native_about_full_version(metadata: &AboutMetadata<'_>) -> Option<String> {
 }
 
 fn native_about_dialog_title(metadata: &AboutMetadata<'_>) -> String {
-    format!("About {}", metadata.name.as_deref().unwrap_or("Markra"))
+    format!("About {}", metadata.name.as_deref().unwrap_or("Helbaron"))
 }
 
 fn native_about_dialog_message(metadata: &AboutMetadata<'_>) -> String {
@@ -412,7 +412,7 @@ fn show_native_app_about_for_window<R: tauri::Runtime>(
 fn show_native_app_about_for_window<R: tauri::Runtime>(
     window: &tauri::Window<R>,
 ) -> Result<(), String> {
-    // On Linux the self-drawn titlebar's "About Markra" entry is wired to
+    // On Linux the self-drawn titlebar's "About Helbaron" entry is wired to
     // this command instead of a native predefined About item (the native
     // menubar is hidden). Surface the same metadata used by the Windows
     // implementation through tauri-plugin-dialog so the panel renders with
@@ -453,7 +453,7 @@ pub(crate) fn show_native_app_about(window: tauri::Window) -> Result<(), String>
     show_native_app_about_for_window(&window)
 }
 
-fn create_markra_app_submenu<R: tauri::Runtime>(
+fn create_helbaron_app_submenu<R: tauri::Runtime>(
     app: &tauri::AppHandle<R>,
     labels: crate::menu_labels::MenuLabels,
 ) -> tauri::Result<Submenu<R>> {
@@ -466,7 +466,7 @@ fn create_markra_app_submenu<R: tauri::Runtime>(
     let check_updates =
         app_menu_item_without_accelerator(app, CHECK_FOR_UPDATES_COMMAND, labels.check_updates)?;
 
-    SubmenuBuilder::with_id(app, "markra:app", "Markra")
+    SubmenuBuilder::with_id(app, "helbaron:app", "Helbaron")
         .about(Some(application_about_metadata()))
         .separator()
         .items(&[&settings, &check_updates])
@@ -502,7 +502,7 @@ fn create_edit_submenu<R: tauri::Runtime>(
         })
         .transpose()?;
 
-    let builder = SubmenuBuilder::with_id(app, "markra:edit", labels.edit)
+    let builder = SubmenuBuilder::with_id(app, "helbaron:edit", labels.edit)
         .items(&[&undo, &redo])
         .separator()
         .cut_with_text(labels.cut)
@@ -625,7 +625,7 @@ fn create_settings_menu_for_language<R: tauri::Runtime>(
     language: AppLanguage,
 ) -> tauri::Result<Menu<R>> {
     let labels = crate::menu_labels::for_language(language);
-    let app_menu = create_markra_app_submenu(app, labels)?;
+    let app_menu = create_helbaron_app_submenu(app, labels)?;
     let edit_menu = create_edit_submenu(
         app,
         labels,
@@ -805,7 +805,7 @@ fn create_application_menu_for_language<R: tauri::Runtime>(
     let export_docx = app_menu_item_without_accelerator(app, "exportDocx", labels.export_docx)?;
     let export_epub = app_menu_item_without_accelerator(app, "exportEpub", labels.export_epub)?;
     let export_latex = app_menu_item_without_accelerator(app, "exportLatex", labels.export_latex)?;
-    let export_menu = SubmenuBuilder::with_id(app, "markra:file:export", labels.export)
+    let export_menu = SubmenuBuilder::with_id(app, "helbaron:file:export", labels.export)
         .items(&[
             &export_pdf,
             &export_html,
@@ -916,10 +916,10 @@ fn create_application_menu_for_language<R: tauri::Runtime>(
         labels.toggle_file_list,
         &menu_accelerator(accelerators, "toggleMarkdownFiles", "CmdOrCtrl+Shift+M"),
     )?;
-    let toggle_markra_ai = app_menu_item(
+    let toggle_helbaron_ai = app_menu_item(
         app,
         "toggleAiAgent",
-        labels.toggle_markra_ai,
+        labels.toggle_helbaron_ai,
         &menu_accelerator(accelerators, "toggleAiAgent", "CmdOrCtrl+Alt+J"),
     )?;
     let ai_writing_command = app_menu_item(
@@ -949,9 +949,9 @@ fn create_application_menu_for_language<R: tauri::Runtime>(
     let toggle_fullscreen =
         app_menu_item_without_accelerator(app, "toggleFullscreen", labels.fullscreen)?;
 
-    let app_menu = create_markra_app_submenu(app, labels)?;
+    let app_menu = create_helbaron_app_submenu(app, labels)?;
 
-    let file_menu = SubmenuBuilder::with_id(app, "markra:file", labels.file)
+    let file_menu = SubmenuBuilder::with_id(app, "helbaron:file", labels.file)
         .items(&[
             &new,
             &open,
@@ -975,7 +975,7 @@ fn create_application_menu_for_language<R: tauri::Runtime>(
         ),
     )?;
 
-    let format_menu = SubmenuBuilder::with_id(app, "markra:format", labels.format)
+    let format_menu = SubmenuBuilder::with_id(app, "helbaron:format", labels.format)
         .items(&[&bold, &italic, &strikethrough, &inline_code])
         .separator()
         .items(&[&paragraph, &heading_1, &heading_2, &heading_3])
@@ -991,7 +991,7 @@ fn create_application_menu_for_language<R: tauri::Runtime>(
         ])
         .build()?;
 
-    let view_menu_builder = SubmenuBuilder::with_id(app, "markra:view", labels.view);
+    let view_menu_builder = SubmenuBuilder::with_id(app, "helbaron:view", labels.view);
     let view_menu_builder = match fullscreen_menu_kind_for_platform(current_native_menu_platform())
     {
         NativeFullscreenMenuKind::System => {
@@ -1003,7 +1003,7 @@ fn create_application_menu_for_language<R: tauri::Runtime>(
         .separator()
         .items(&[
             &toggle_file_list,
-            &toggle_markra_ai,
+            &toggle_helbaron_ai,
             &ai_writing_command,
             &toggle_all_folds,
             &toggle_read_only_mode,
@@ -1220,7 +1220,7 @@ mod tests {
         assert!(is_frontend_menu_command("toggleAllFolds"));
         assert!(is_frontend_menu_command("toggleReadOnlyMode"));
         assert!(is_frontend_menu_command("toggleSourceMode"));
-        assert!(!is_frontend_menu_command("markra:file"));
+        assert!(!is_frontend_menu_command("helbaron:file"));
         assert!(!is_frontend_menu_command("copy"));
     }
 
@@ -1246,7 +1246,7 @@ mod tests {
     fn about_metadata_includes_version_and_github_link() {
         let metadata = application_about_metadata();
 
-        assert_eq!(metadata.name.as_deref(), Some("Markra"));
+        assert_eq!(metadata.name.as_deref(), Some("Helbaron"));
         assert_eq!(metadata.version.as_deref(), Some(env!("CARGO_PKG_VERSION")));
         assert_eq!(
             metadata.website.as_deref(),
@@ -1263,12 +1263,12 @@ mod tests {
     fn native_about_dialog_uses_application_metadata() {
         let metadata = application_about_metadata();
 
-        assert_eq!(native_about_dialog_title(&metadata), "About Markra");
+        assert_eq!(native_about_dialog_title(&metadata), "About Helbaron");
 
         let message = native_about_dialog_message(&metadata);
-        assert!(message.contains("Name: Markra"));
+        assert!(message.contains("Name: Helbaron"));
         assert!(message.contains(&format!("Version: {}", env!("CARGO_PKG_VERSION"))));
-        assert!(message.contains(&format!("Website: GitHub {MARKRA_GITHUB_URL}")));
+        assert!(message.contains(&format!("Website: GitHub {HELBARON_GITHUB_URL}")));
     }
 
     #[test]
@@ -1296,9 +1296,9 @@ mod tests {
         assert_eq!(state.label(), None);
 
         state.remember("main");
-        state.remember("markra-editor-1");
+        state.remember("helbaron-editor-1");
 
-        assert_eq!(state.label().as_deref(), Some("markra-editor-1"));
+        assert_eq!(state.label().as_deref(), Some("helbaron-editor-1"));
     }
 
     #[test]
@@ -1306,7 +1306,7 @@ mod tests {
         let payload = NativeMenuCommand {
             command: "toggleSourceMode".to_string(),
             recent_file: None,
-            target_window_label: Some("markra-editor-1".to_string()),
+            target_window_label: Some("helbaron-editor-1".to_string()),
         };
 
         let value = serde_json::to_value(payload).expect("payload should serialize");
@@ -1315,7 +1315,7 @@ mod tests {
             value,
             serde_json::json!({
                 "command": "toggleSourceMode",
-                "targetWindowLabel": "markra-editor-1"
+                "targetWindowLabel": "helbaron-editor-1"
             })
         );
     }
@@ -1323,7 +1323,7 @@ mod tests {
     #[test]
     fn focused_settings_window_uses_settings_menu_profile() {
         assert_eq!(
-            native_application_menu_profile_for_window_label("markra-settings"),
+            native_application_menu_profile_for_window_label("helbaron-settings"),
             NativeApplicationMenuProfile::Settings
         );
         assert_eq!(
@@ -1331,7 +1331,7 @@ mod tests {
             NativeApplicationMenuProfile::Editor
         );
         assert_eq!(
-            native_application_menu_profile_for_window_label("markra-editor-1"),
+            native_application_menu_profile_for_window_label("helbaron-editor-1"),
             NativeApplicationMenuProfile::Editor
         );
     }
@@ -1341,10 +1341,10 @@ mod tests {
         let submenu_ids =
             native_application_menu_profile_submenu_ids(NativeApplicationMenuProfile::Settings);
 
-        assert_eq!(submenu_ids, vec!["markra:app", "markra:edit"]);
-        assert!(!submenu_ids.contains(&"markra:file".to_string()));
-        assert!(!submenu_ids.contains(&"markra:format".to_string()));
-        assert!(!submenu_ids.contains(&"markra:view".to_string()));
+        assert_eq!(submenu_ids, vec!["helbaron:app", "helbaron:edit"]);
+        assert!(!submenu_ids.contains(&"helbaron:file".to_string()));
+        assert!(!submenu_ids.contains(&"helbaron:format".to_string()));
+        assert!(!submenu_ids.contains(&"helbaron:view".to_string()));
     }
 
     #[test]
@@ -1436,11 +1436,11 @@ mod tests {
 
         assert!(!state.request_install(NativeApplicationMenuProfile::Editor, reordered.clone()));
         assert_eq!(
-            state.latest_config("com.markra.test").recent_files,
+            state.latest_config("com.helbaron.test").recent_files,
             reordered.recent_files
         );
         assert_eq!(
-            state.current_recent_files("com.markra.test"),
+            state.current_recent_files("com.helbaron.test"),
             reordered.recent_files
         );
 
@@ -1452,7 +1452,7 @@ mod tests {
 
         assert!(!state.request_install(NativeApplicationMenuProfile::Editor, with_new_file.clone()));
         assert_eq!(
-            state.current_recent_files("com.markra.test"),
+            state.current_recent_files("com.helbaron.test"),
             with_new_file.recent_files
         );
     }

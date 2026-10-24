@@ -12,18 +12,18 @@ import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import {
-  createMarkraMathMacros,
+  createHelbaronMathMacros,
   formatMermaidError,
-  isMarkraMathMacroDefinitionSource,
+  isHelbaronMathMacroDefinitionSource,
   isMermaidLanguage,
   mermaidThemeFromElement,
   remarkHugoMath,
-  renderMarkraMathToString,
+  renderHelbaronMathToString,
   renderMermaidToSvg,
   sanitizeRawHtml,
-  type MarkraMathMacros
-} from "@markra/editor";
-import { parseMarkdownCalloutMarker, type ParsedMarkdownCalloutMarker } from "@markra/shared";
+  type HelbaronMathMacros
+} from "@helbaron/editor";
+import { parseMarkdownCalloutMarker, type ParsedMarkdownCalloutMarker } from "@helbaron/shared";
 import type { ExtendedSyntaxPreferences } from "../lib/settings/app-settings";
 
 export type MarkdownPreviewDocumentProps = {
@@ -58,8 +58,8 @@ function replaceHtmlNodes(node: MarkdownAstNode) {
       (node.type === "root" || node.type === "blockquote" || node.type === "listItem")) {
       // Block HTML is a complete fragment; inline tags can be split across Markdown nodes.
       return {
-        type: "markraHtml",
-        data: { hName: "div", hProperties: { "data-markra-raw-html": child.value } }
+        type: "helbaronHtml",
+        data: { hName: "div", hProperties: { "data-helbaron-raw-html": child.value } }
       };
     }
 
@@ -68,7 +68,7 @@ function replaceHtmlNodes(node: MarkdownAstNode) {
   });
 }
 
-function remarkMarkraHtml() {
+function remarkHelbaronHtml() {
   return (tree: MarkdownAstNode) => {
     replaceHtmlNodes(tree);
   };
@@ -78,7 +78,7 @@ function renderRawHtmlBlock(source: string, resolveImageSrc: MarkdownPreviewDocu
   const root = document.createElement("div");
   // Preview and export must use the editor's allowlist before inserting authored HTML.
   root.append(...sanitizeRawHtml(source, document, { resolveImageSrc }));
-  return <div className="markra-html-node" dangerouslySetInnerHTML={{ __html: root.innerHTML }} />;
+  return <div className="helbaron-html-node" dangerouslySetInnerHTML={{ __html: root.innerHTML }} />;
 }
 
 function hasMathClass(className: unknown, kind: "display" | "inline") {
@@ -86,19 +86,19 @@ function hasMathClass(className: unknown, kind: "display" | "inline") {
 }
 
 function isMathMacroDefinitionMarker(child: ReactNode) {
-  return isValidElement<Record<string, unknown>>(child) && child.props["data-markra-math-macro-definition"] === "";
+  return isValidElement<Record<string, unknown>>(child) && child.props["data-helbaron-math-macro-definition"] === "";
 }
 
-function renderMathSource(source: string, kind: "display" | "inline", macros: MarkraMathMacros) {
-  const html = renderMarkraMathToString(source, kind, macros);
-  if (isMarkraMathMacroDefinitionSource(source)) {
-    return <span data-markra-math-macro-definition="" hidden />;
+function renderMathSource(source: string, kind: "display" | "inline", macros: HelbaronMathMacros) {
+  const html = renderHelbaronMathToString(source, kind, macros);
+  if (isHelbaronMathMacroDefinitionSource(source)) {
+    return <span data-helbaron-math-macro-definition="" hidden />;
   }
 
   return (
     <span
       aria-label={kind === "display" ? "Math formula" : "Inline math formula"}
-      className={`markra-math-render markra-math-render-${kind}`}
+      className={`helbaron-math-render helbaron-math-render-${kind}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -126,16 +126,16 @@ async function renderMermaidPreviewBlocks(root: HTMLElement) {
 
   await Promise.all(blocks.map(async ({ pre, source }, index) => {
     const render = root.ownerDocument.createElement("div");
-    render.className = "markra-mermaid-render";
+    render.className = "helbaron-mermaid-render";
     render.setAttribute("aria-label", "Mermaid diagram");
 
     try {
       render.innerHTML = await renderMermaidToSvg(source, {
-        idPrefix: `markra-preview-mermaid-${index}`,
+        idPrefix: `helbaron-preview-mermaid-${index}`,
         theme: mermaidThemeFromElement(root)
       });
     } catch (error) {
-      render.className = "markra-mermaid-render markra-mermaid-render-invalid";
+      render.className = "helbaron-mermaid-render helbaron-mermaid-render-invalid";
       render.dataset.error = error instanceof Error ? error.message : "Unknown Mermaid render error";
       render.textContent = formatMermaidError(error);
     }
@@ -181,9 +181,9 @@ function removeCalloutMarkerFromChildren(children: ReactNode, marker: string) {
 
 function renderCalloutHeader(marker: ParsedMarkdownCalloutMarker) {
   return (
-    <div className="markra-callout-header">
-      <span aria-hidden="true" className="markra-callout-icon" />
-      <span className="markra-callout-title">{marker.label}</span>
+    <div className="helbaron-callout-header">
+      <span aria-hidden="true" className="helbaron-callout-icon" />
+      <span className="helbaron-callout-title">{marker.label}</span>
     </div>
   );
 }
@@ -215,7 +215,7 @@ function renderCalloutBlockquote(props: {
 
   return (
     <blockquote
-      className={`markra-callout markra-callout-${marker.type}`}
+      className={`helbaron-callout helbaron-callout-${marker.type}`}
       data-callout-label={marker.label}
       data-callout-type={marker.type}
     >
@@ -258,12 +258,12 @@ export function MarkdownPreviewDocument({
     };
   }, [githubAlertsEnabled, markdown, onRendered, resolveImageSrc]);
 
-  const mathMacros = createMarkraMathMacros();
+  const mathMacros = createHelbaronMathMacros();
 
   return (
     <article className={previewClassName(className)} ref={articleRef}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkBreaks, remarkMath, remarkHugoMath, remarkMarkraHtml]}
+        remarkPlugins={[remarkGfm, remarkBreaks, remarkMath, remarkHugoMath, remarkHelbaronHtml]}
         components={{
           a: ({ node: _node, ...props }) => <a {...props} rel="noreferrer" target="_blank" />,
           blockquote: ({ node: _node, ...props }) =>
@@ -280,7 +280,7 @@ export function MarkdownPreviewDocument({
             return <code {...props} className={codeClassName}>{children}</code>;
           },
           div: ({ node, ...props }) => {
-            const source = node?.properties["data-markra-raw-html"];
+            const source = node?.properties["data-helbaron-raw-html"];
             return typeof source === "string"
               ? renderRawHtmlBlock(source, resolveImageSrc)
               : <div {...props} />;

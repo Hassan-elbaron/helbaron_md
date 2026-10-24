@@ -17,13 +17,13 @@ const searchInputSizeClassNames: Record<SearchInputSize, string> = {
 };
 
 const searchInputIconClassNames: Record<SearchInputSize, string> = {
-  md: "left-3",
-  sm: "left-2.5"
+  md: "start-3",
+  sm: "start-2.5"
 };
 
 const searchInputPaddingClassNames: Record<SearchInputSize, string> = {
-  md: "pr-3 pl-8",
-  sm: "pr-2 pl-7"
+  md: "pe-3 ps-8",
+  sm: "pe-2 ps-7"
 };
 
 export function SearchInput({

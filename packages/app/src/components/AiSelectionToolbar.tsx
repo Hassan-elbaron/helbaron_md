@@ -7,7 +7,7 @@ import {
   type MouseEvent as ReactMouseEvent
 } from "react";
 import { createPortal } from "react-dom";
-import { Tooltip } from "@markra/ui";
+import { Tooltip } from "@helbaron/ui";
 import {
   Bold,
   Check,
@@ -37,7 +37,7 @@ import {
   WandSparkles,
   type LucideIcon
 } from "lucide-react";
-import { aiTranslationLanguageName, t, type AppLanguage, type I18nKey } from "@markra/shared";
+import { aiTranslationLanguageName, t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import {
   aiQuickActionLabelKeys,
   defaultAiQuickActionPrompt,
@@ -395,7 +395,7 @@ export function AiSelectionToolbar({
 
   return (
     <section
-      className={`ai-selection-toolbar pointer-events-none fixed z-50 -translate-x-1/2 ${toolbarPlacementClass} animate-[markra-ai-float-in_160ms_ease-out_both] motion-reduce:animate-none`}
+      className={`ai-selection-toolbar pointer-events-none fixed z-50 -translate-x-1/2 ${toolbarPlacementClass} animate-[helbaron-ai-float-in_160ms_ease-out_both] motion-reduce:animate-none`}
       onMouseDown={preserveEditorSelection}
       ref={toolbarRef}
       style={style}

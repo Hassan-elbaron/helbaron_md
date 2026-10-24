@@ -86,8 +86,8 @@ describe("tableFragmentMergePlugin", () => {
       "ordinary | prose",
     ].join("\n"));
 
-    expect(wrongWidth.dom.querySelector(".markra-table-fragment-merge")).toBeNull();
-    expect(prose.dom.querySelector(".markra-table-fragment-merge")).toBeNull();
+    expect(wrongWidth.dom.querySelector(".helbaron-table-fragment-merge")).toBeNull();
+    expect(prose.dom.querySelector(".helbaron-table-fragment-merge")).toBeNull();
   });
 
   it("does not expose a mutation control in read-only editors", () => {
@@ -99,6 +99,6 @@ describe("tableFragmentMergePlugin", () => {
       "| Beta | 2 |",
     ].join("\n"), true);
 
-    expect(view.dom.querySelector(".markra-table-fragment-merge")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-table-fragment-merge")).toBeNull();
   });
 });

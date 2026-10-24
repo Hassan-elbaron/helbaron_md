@@ -1,4 +1,4 @@
-import { createDefaultAiSettings } from "@markra/providers";
+import { createDefaultAiSettings } from "@helbaron/providers";
 import {
   defaultAcpAgentSettings,
   defaultAiAgentPreferences,
@@ -132,7 +132,7 @@ describe("settings backup files", () => {
 
     expect(backup).toMatchObject({
       exportedAt: "2030-01-02T03:04:05.000Z",
-      format: "markra-settings-backup",
+      format: "helbaron-settings-backup",
       includesSensitiveSettings: false,
       version: 1
     });
@@ -246,7 +246,7 @@ describe("settings backup files", () => {
 
     const restored = restoreSettingsBackupFile(JSON.stringify({
       exportedAt: "2030-01-02T03:04:05.000Z",
-      format: "markra-settings",
+      format: "helbaron-settings",
       settings: exportedSettings,
       version: 1
     }), localSettings);
@@ -257,12 +257,12 @@ describe("settings backup files", () => {
 
   it("rejects invalid or unsupported backup files", () => {
     expect(() => restoreSettingsBackupFile("{not json", portableSettings()))
-      .toThrow("Invalid Markra settings backup file.");
+      .toThrow("Invalid Helbaron settings backup file.");
     expect(() => restoreSettingsBackupFile(JSON.stringify({
-      format: "markra-settings-backup",
+      format: "helbaron-settings-backup",
       includesSensitiveSettings: false,
       settings: {},
       version: 2
-    }), portableSettings())).toThrow("Invalid Markra settings backup file.");
+    }), portableSettings())).toThrow("Invalid Helbaron settings backup file.");
   });
 });

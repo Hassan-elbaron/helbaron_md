@@ -1,4 +1,4 @@
-import type { AgentWorkspaceFile } from "@markra/ai";
+import type { AgentWorkspaceFile } from "@helbaron/ai";
 import { createWorkspaceChangePlanOperations } from "./workspace-plan-apply";
 
 const rootFile = {

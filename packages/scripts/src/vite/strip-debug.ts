@@ -41,7 +41,7 @@ export function stripDebugPlugin(): Plugin {
   return {
     apply: "build",
     enforce: "pre",
-    name: "markra-strip-debug",
+    name: "helbaron-strip-debug",
     transform(code, id) {
       const strippedCode = stripDebugStatements(code, id);
       if (strippedCode === code) return null;

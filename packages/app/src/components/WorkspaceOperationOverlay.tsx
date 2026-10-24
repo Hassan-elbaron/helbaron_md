@@ -202,25 +202,25 @@ export function WorkspaceOperationOverlay({
       data-ai-workspace-operation-overlay="true"
     >
       <div
-        className="absolute left-0 top-0 rounded-md border border-[color-mix(in_srgb,var(--accent)_42%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] opacity-90 shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent)_18%,transparent),0_10px_32px_color-mix(in_srgb,var(--accent)_12%,transparent)] transition-[transform,width,height,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none"
+        className="absolute start-0 top-0 rounded-md border border-[color-mix(in_srgb,var(--accent)_42%,transparent)] bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] opacity-90 shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent)_18%,transparent),0_10px_32px_color-mix(in_srgb,var(--accent)_12%,transparent)] transition-[transform,width,height,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none"
         data-testid="workspace-operation-target"
         style={targetStyle}
       />
       <div
-        className="absolute left-0 top-0 size-0 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none"
+        className="absolute start-0 top-0 size-0 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none"
         data-ai-workspace-target={position.target}
         data-testid="workspace-operation-cursor"
         style={cursorStyle}
       >
         <MousePointer2
           aria-hidden="true"
-          className="absolute -left-0.5 -top-0.5 text-(--accent) drop-shadow-[0_1px_1px_color-mix(in_srgb,var(--bg-primary)_90%,transparent)]"
+          className="absolute -start-0.5 -top-0.5 text-(--accent) drop-shadow-[0_1px_1px_color-mix(in_srgb,var(--bg-primary)_90%,transparent)]"
           data-ai-workspace-cursor-tip="true"
           data-testid="workspace-operation-cursor-pointer"
           size={16}
         />
         <div
-          className="absolute left-0 top-0 inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--accent)_38%,var(--border-default))] bg-(--bg-primary)/95 px-2 py-1 text-[10px] leading-4 font-[620] text-(--text-heading) shadow-(--ai-command-popover-shadow) backdrop-blur"
+          className="absolute start-0 top-0 inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--accent)_38%,var(--border-default))] bg-(--bg-primary)/95 px-2 py-1 text-[10px] leading-4 font-[620] text-(--text-heading) shadow-(--ai-command-popover-shadow) backdrop-blur"
           data-testid="workspace-operation-cursor-bubble"
           style={{ transform: translate3d(18, 9) }}
         >

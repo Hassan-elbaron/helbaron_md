@@ -64,14 +64,14 @@ export function adaptTyporaTheme(css: string, appearance: "light" | "dark" = "li
     const heading = new Map<string, string>();
     set(heading, "--editor-heading-font-family", cascade.validated(role, "font-family", false));
     set(heading, "--editor-heading-letter-spacing", cascade.validated(role, "letter-spacing", false));
-    scoped.push(rule(`${paperSelector} :is(.cm-markra-${role}, ${role})`, heading));
+    scoped.push(rule(`${paperSelector} :is(.cm-helbaron-${role}, ${role})`, heading));
   }
   for (const role of ["keyword", "string", "number", "title", "type", "meta"] as const) {
     set(paper, `--editor-hl-${role}`, cascade.validated(role, "color", false));
   }
   for (const [role, selector] of [
-    ["code", ":is(.cm-markra-code-content-line, pre code)"],
-    ["inline", ":is(.cm-markra-inline-code, :not(pre) > code)"]
+    ["code", ":is(.cm-helbaron-code-content-line, pre code)"],
+    ["inline", ":is(.cm-helbaron-inline-code, :not(pre) > code)"]
   ] as const) {
     const font = new Map<string, string>();
     set(font, "--editor-code-font-family", cascade.validated(role, "font-family", false));

@@ -1,7 +1,7 @@
 import { invokeNative } from "./invoke";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { confirm, open, save } from "@tauri-apps/plugin-dialog";
-import { debug, fileNameFromPath } from "@markra/shared";
+import { debug, fileNameFromPath } from "@helbaron/shared";
 import { networkSettingsForNativeRequest } from "./network";
 import { listenNativeEvent } from "./events";
 import type {
@@ -17,7 +17,7 @@ import type {
   WriteNativeS3TextFileInput,
   WorkspaceSearchRequest,
   WorkspaceSearchResponse
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 
 const defaultS3Region = "us-east-1";
 
@@ -255,6 +255,22 @@ export type SavedNativeSettingsFile = {
   name: string;
 };
 
+export type NativeWordFile = {
+  bytes: Uint8Array;
+  name: string;
+  path: string;
+};
+
+export type SaveNativeWordFileInput = {
+  bytes: Uint8Array;
+  suggestedName: string;
+};
+
+export type SavedNativeWordFile = {
+  path: string;
+  name: string;
+};
+
 export type SavedNativePandocFile = {
   path: string;
   name: string;
@@ -406,14 +422,21 @@ type OpenedMarkdownPathsPayload = {
   paths?: unknown;
 };
 
-const markdownFileChangedEvent = "markra://file-changed";
-const markdownTreeChangedEvent = "markra://tree-changed";
-const openedMarkdownPathsEvent = "markra://opened-markdown-paths";
+const markdownFileChangedEvent = "helbaron://file-changed";
+const markdownTreeChangedEvent = "helbaron://tree-changed";
+const openedMarkdownPathsEvent = "helbaron://opened-markdown-paths";
 
 const markdownFilters = [
   {
     name: "Markdown",
     extensions: ["md", "markdown", "txt"]
+  }
+];
+
+const wordFilters = [
+  {
+    name: "Word",
+    extensions: ["docx"]
   }
 ];
 
@@ -441,7 +464,7 @@ const pdfFilters = [
 
 const settingsFilters = [
   {
-    name: "Markra settings",
+    name: "Helbaron settings",
     extensions: ["json"]
   }
 ];
@@ -527,13 +550,13 @@ export async function listenNativeOpenedMarkdownPaths(onPaths: (paths: string[])
 }
 
 export async function readNativeMarkdownFile(path: string): Promise<NativeMarkdownFile> {
-  debug(() => ["[markra-history] native read file start", {
+  debug(() => ["[helbaron-history] native read file start", {
     path
   }]);
   const file = await invokeNative<MarkdownFileResponse>("read_markdown_file", {
     path
   });
-  debug(() => ["[markra-history] native read file success", {
+  debug(() => ["[helbaron-history] native read file success", {
     contentsChars: file.contents.length,
     path: file.path,
     sizeBytes: file.sizeBytes
@@ -548,13 +571,13 @@ export async function readNativeMarkdownFile(path: string): Promise<NativeMarkdo
 }
 
 export async function listNativeMarkdownFileHistory(path: string): Promise<NativeMarkdownFileHistoryEntry[]> {
-  debug(() => ["[markra-history] native list history start", {
+  debug(() => ["[helbaron-history] native list history start", {
     path
   }]);
   const entries = await invokeNative<MarkdownFileHistoryEntryResponse[]>("list_markdown_file_history", {
     path
   });
-  debug(() => ["[markra-history] native list history success", {
+  debug(() => ["[helbaron-history] native list history success", {
     entryCount: entries.length,
     firstEntryId: entries[0]?.id ?? null,
     path
@@ -566,7 +589,7 @@ export async function readNativeMarkdownFileHistory(
   path: string,
   id: string
 ): Promise<NativeMarkdownFileHistoryFile> {
-  debug(() => ["[markra-history] native read history start", {
+  debug(() => ["[helbaron-history] native read history start", {
     historyId: id,
     path
   }]);
@@ -574,7 +597,7 @@ export async function readNativeMarkdownFileHistory(
     id,
     path
   });
-  debug(() => ["[markra-history] native read history success", {
+  debug(() => ["[helbaron-history] native read history success", {
     contentsChars: file.contents.length,
     historyId: file.id,
     path
@@ -679,7 +702,7 @@ export async function listNativeMarkdownReferenceFilesForPath(
   return files.map(markdownFolderFileFromResponse);
 }
 
-const markdownFileTreeLoadEvent = "markra://markdown-tree-load";
+const markdownFileTreeLoadEvent = "helbaron://markdown-tree-load";
 let markdownFileTreeLoadRequestIndex = 0;
 
 function nextMarkdownFileTreeLoadRequestId() {
@@ -995,6 +1018,49 @@ export async function openNativeMarkdownFile(labels?: NativeMarkdownPickerLabels
   return readNativeMarkdownFile(selectedPath);
 }
 
+export async function openNativeWordFile(labels?: NativeMarkdownPickerLabels): Promise<NativeWordFile | null> {
+  const selectedPath = await open({
+    multiple: false,
+    fileAccessMode: "scoped",
+    filters: wordFilters,
+    ...pickerTitleOption(labels)
+  });
+
+  if (!selectedPath || Array.isArray(selectedPath)) return null;
+
+  // Rust only reads .docx paths; conversion to Markdown happens in the webview.
+  const bytes = await invokeNative<number[]>("read_word_file", { path: selectedPath });
+
+  return {
+    bytes: new Uint8Array(bytes),
+    name: fileNameFromPath(selectedPath),
+    path: selectedPath
+  };
+}
+
+export async function saveNativeWordFile({
+  bytes,
+  suggestedName
+}: SaveNativeWordFileInput): Promise<SavedNativeWordFile | null> {
+  const targetPath = await save({
+    defaultPath: suggestedName,
+    filters: wordFilters
+  });
+
+  if (!targetPath) return null;
+
+  const path = /\.docx$/iu.test(targetPath) ? targetPath : `${targetPath}.docx`;
+  await invokeNative("write_word_file", {
+    contents: Array.from(bytes),
+    path
+  });
+
+  return {
+    name: fileNameFromPath(path),
+    path
+  };
+}
+
 function normalizeSelectedPaths(paths: string | string[] | null) {
   if (!paths) return [];
 
@@ -1249,7 +1315,7 @@ export async function saveNativeMarkdownFile({
   suggestedName,
   contents
 }: SaveNativeMarkdownFileInput): Promise<SavedNativeMarkdownFile | null> {
-  debug(() => ["[markra-history] native save markdown start", {
+  debug(() => ["[helbaron-history] native save markdown start", {
     contentsChars: contents.length,
     path,
     skipHistorySnapshot: skipHistorySnapshot === true,
@@ -1264,7 +1330,7 @@ export async function saveNativeMarkdownFile({
     }));
 
   if (!targetPath) {
-    debug(() => ["[markra-history] native save markdown canceled", {
+    debug(() => ["[helbaron-history] native save markdown canceled", {
       suggestedName
     }]);
     return null;
@@ -1287,7 +1353,7 @@ export async function saveNativeMarkdownFile({
   }
 
   await invokeNative("write_markdown_file", writeArgs);
-  debug(() => ["[markra-history] native save markdown success", {
+  debug(() => ["[helbaron-history] native save markdown success", {
     skipHistorySnapshot: skipHistorySnapshot === true,
     targetPath
   }]);
@@ -1781,12 +1847,12 @@ export async function watchNativeMarkdownFile(
   onTreeChange?: NativeMarkdownTreeChangeHandler,
   options: WatchNativeMarkdownOptions = {}
 ) {
-  debug(() => ["[markra-history] native watch subscribe", {
+  debug(() => ["[helbaron-history] native watch subscribe", {
     path
   }]);
   const unlistenFile = await listenNativeEvent<MarkdownFileChangedPayload>(markdownFileChangedEvent, (event) => {
     if (event.payload.path !== path) return;
-    debug(() => ["[markra-history] native watch file event", {
+    debug(() => ["[helbaron-history] native watch file event", {
       path: event.payload.path
     }]);
     onChange(event.payload.path);
@@ -1798,7 +1864,7 @@ export async function watchNativeMarkdownFile(
       const rootPath = parentPathFromPath(path);
       unlistenTree = await listenNativeEvent<MarkdownTreeChangedPayload>(markdownTreeChangedEvent, (event) => {
         if (event.payload.rootPath !== rootPath) return;
-        debug(() => ["[markra-history] native watch tree event", {
+        debug(() => ["[helbaron-history] native watch tree event", {
           path: event.payload.path,
           rootPath: event.payload.rootPath
         }]);
@@ -1815,11 +1881,11 @@ export async function watchNativeMarkdownFile(
         : {}),
       path
     });
-    debug(() => ["[markra-history] native watch ready", {
+    debug(() => ["[helbaron-history] native watch ready", {
       path
     }]);
   } catch (error) {
-    debug(() => ["[markra-history] native watch failed", {
+    debug(() => ["[helbaron-history] native watch failed", {
       error: error instanceof Error ? error.message : String(error),
       path
     }]);
@@ -1829,7 +1895,7 @@ export async function watchNativeMarkdownFile(
   }
 
   return () => {
-    debug(() => ["[markra-history] native watch unsubscribe", {
+    debug(() => ["[helbaron-history] native watch unsubscribe", {
       path
     }]);
     unlistenFile();

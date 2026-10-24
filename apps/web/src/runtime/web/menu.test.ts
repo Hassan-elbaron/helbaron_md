@@ -2,7 +2,7 @@ import { FakeIndexedDbFactory } from "../../test/web-runtime-fakes";
 import { createWebRuntime } from "..";
 
 function getMenu() {
-  return document.querySelector("[data-markra-web-context-menu]");
+  return document.querySelector("[data-helbaron-web-context-menu]");
 }
 
 function getMenuItem(label: string) {
@@ -99,22 +99,22 @@ describe("web editor context menu", () => {
       cancelable: true
     }));
 
-    const format = getMenuItemById("markra:web-context:format");
+    const format = getMenuItemById("helbaron:web-context:format");
     expect(format.textContent).toContain("Format");
     expect(format.getAttribute("aria-haspopup")).toBe("menu");
-    expect(getSubmenu("markra:web-context:format").textContent).toContain("Bold");
+    expect(getSubmenu("helbaron:web-context:format").textContent).toContain("Bold");
 
-    const exportMenu = getMenuItemById("markra:web-context:export");
+    const exportMenu = getMenuItemById("helbaron:web-context:export");
     expect(exportMenu.textContent).toContain("Export");
     expect(exportMenu.getAttribute("aria-haspopup")).toBe("menu");
-    expect(getSubmenu("markra:web-context:export").textContent).toContain("Export HTML");
+    expect(getSubmenu("helbaron:web-context:export").textContent).toContain("Export HTML");
 
-    const aiMenu = getMenuItemById("markra:web-context:ai");
+    const aiMenu = getMenuItemById("helbaron:web-context:ai");
     expect(aiMenu.textContent).toContain("AI toolkit");
     expect(aiMenu.getAttribute("aria-haspopup")).toBe("menu");
-    expect(getSubmenu("markra:web-context:ai").textContent).toContain("Polish");
+    expect(getSubmenu("helbaron:web-context:ai").textContent).toContain("Polish");
 
-    getMenuItemById("markra:web-context:bold").click();
+    getMenuItemById("helbaron:web-context:bold").click();
 
     expect(bold).toHaveBeenCalledTimes(1);
     expect(exportHtml).not.toHaveBeenCalled();
@@ -125,7 +125,7 @@ describe("web editor context menu", () => {
       bubbles: true,
       cancelable: true
     }));
-    getMenuItemById("markra:web-context:export-html").click();
+    getMenuItemById("helbaron:web-context:export-html").click();
 
     expect(exportHtml).toHaveBeenCalledTimes(1);
     expect(getMenu()).toBeNull();
@@ -134,7 +134,7 @@ describe("web editor context menu", () => {
       bubbles: true,
       cancelable: true
     }));
-    getMenuItemById("markra:web-context:ai-polish").click();
+    getMenuItemById("helbaron:web-context:ai-polish").click();
 
     expect(aiPolish).toHaveBeenCalledTimes(1);
     expect(getMenu()).toBeNull();
@@ -160,8 +160,8 @@ describe("web editor context menu", () => {
       cancelable: true
     }));
 
-    expect(queryMenuItemById("markra:web-context:format")).not.toBeNull();
-    expect(queryMenuItemById("markra:web-context:export")).toBeNull();
+    expect(queryMenuItemById("helbaron:web-context:format")).not.toBeNull();
+    expect(queryMenuItemById("helbaron:web-context:export")).toBeNull();
 
     cleanup();
   });
@@ -280,11 +280,11 @@ describe("web editor context menu", () => {
     }, "en", file);
 
     expect(getMenu()).not.toBeNull();
-    expect(getMenuItemById("markra:web-file-tree:open-to-side").textContent).toContain("Open to side");
-    expect(getMenuItemById("markra:web-file-tree:rename").textContent).toContain("Rename");
-    expect(getMenuItemById("markra:web-file-tree:delete").textContent).toContain("Delete");
+    expect(getMenuItemById("helbaron:web-file-tree:open-to-side").textContent).toContain("Open to side");
+    expect(getMenuItemById("helbaron:web-file-tree:rename").textContent).toContain("Rename");
+    expect(getMenuItemById("helbaron:web-file-tree:delete").textContent).toContain("Delete");
 
-    getMenuItemById("markra:web-file-tree:rename").click();
+    getMenuItemById("helbaron:web-file-tree:rename").click();
 
     expect(renameFile).toHaveBeenCalledWith(file);
     expect(openFileToSide).not.toHaveBeenCalled();
@@ -308,9 +308,9 @@ describe("web editor context menu", () => {
       openFileToSide
     }, "en", file);
 
-    getMenuItemById("markra:web-file-tree:open-to-side").click();
+    getMenuItemById("helbaron:web-file-tree:open-to-side").click();
 
-    expect(getMenuItemById("markra:web-file-tree:open-to-side").disabled).toBe(true);
+    expect(getMenuItemById("helbaron:web-file-tree:open-to-side").disabled).toBe(true);
     expect(openFileToSide).not.toHaveBeenCalled();
   });
 });

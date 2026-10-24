@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { t } from "@markra/shared";
+import { t } from "@helbaron/shared";
 import { SettingsContent, SettingsSidebar } from "./SettingsShell";
 
 function translate(key: Parameters<typeof t>[1]) {
@@ -37,7 +37,7 @@ describe("SettingsShell", () => {
     const sidebar = screen.getByRole("navigation", { name: "Settings categories" }).closest("aside");
     const navigation = screen.getByRole("navigation", { name: "Settings categories" });
 
-    expect(sidebar).toHaveClass("max-[700px]:border-b", "max-[700px]:border-r-0");
+    expect(sidebar).toHaveClass("max-[700px]:border-b", "max-[700px]:border-e-0");
     expect(navigation).toHaveClass(
       "max-[700px]:flex-row",
       "max-[700px]:overflow-x-auto",
@@ -60,7 +60,7 @@ describe("SettingsShell", () => {
   it("shows the configured app version in the sidebar footer", () => {
     renderSettingsSidebar();
 
-    expect(screen.getByText("Markra v9.9.9")).toBeInTheDocument();
+    expect(screen.getByText("Helbaron v9.9.9")).toBeInTheDocument();
   });
 
   it("styles the active settings category when aria-current is page", () => {
@@ -75,8 +75,8 @@ describe("SettingsShell", () => {
   it("keeps settings shell chrome treatment scoped to Windows", () => {
     const defaultContent = renderSettingsContent();
 
-    expect(defaultContent).not.toHaveClass("rounded-tl-md");
-    expect(defaultContent).not.toHaveClass("border-l");
+    expect(defaultContent).not.toHaveClass("rounded-ss-md");
+    expect(defaultContent).not.toHaveClass("border-s");
 
     const { container } = render(
       <SettingsSidebar
@@ -88,13 +88,13 @@ describe("SettingsShell", () => {
       />
     );
 
-    expect(container.querySelector(".settings-sidebar")).toHaveClass("border-r-0", "bg-(--bg-chrome)");
+    expect(container.querySelector(".settings-sidebar")).toHaveClass("border-e-0", "bg-(--bg-chrome)");
   });
 
   it("rounds the Windows settings content corner", () => {
     const content = renderSettingsContent("windows");
 
-    expect(content).toHaveClass("border-t", "border-l", "rounded-tl-md");
+    expect(content).toHaveClass("border-t", "border-s", "rounded-ss-md");
   });
 
   it("does not mark the Linux settings header as a native drag region", () => {

@@ -643,7 +643,7 @@ mod tests {
     fn builds_path_style_s3_upload_targets_for_generic_endpoints() {
         let targets = s3_image_upload_targets(
             "https://s3.example.com",
-            "markra-images",
+            "helbaron-images",
             "notes",
             "",
             "pasted-image.png",
@@ -652,11 +652,11 @@ mod tests {
 
         assert_eq!(
             targets.upload_url.as_str(),
-            "https://s3.example.com/markra-images/notes/pasted-image.png"
+            "https://s3.example.com/helbaron-images/notes/pasted-image.png"
         );
         assert_eq!(
             targets.public_url,
-            "https://s3.example.com/markra-images/notes/pasted-image.png"
+            "https://s3.example.com/helbaron-images/notes/pasted-image.png"
         );
     }
 
@@ -686,23 +686,23 @@ mod tests {
         let cases = [
             (
                 "https://cos.ap-beijing.myqcloud.com",
-                "markra-1250000000",
-                "https://markra-1250000000.cos.ap-beijing.myqcloud.com/notes/pasted-image.png",
+                "helbaron-1250000000",
+                "https://helbaron-1250000000.cos.ap-beijing.myqcloud.com/notes/pasted-image.png",
             ),
             (
                 "https://obs.cn-north-4.myhuaweicloud.com",
-                "markra-images",
-                "https://markra-images.obs.cn-north-4.myhuaweicloud.com/notes/pasted-image.png",
+                "helbaron-images",
+                "https://helbaron-images.obs.cn-north-4.myhuaweicloud.com/notes/pasted-image.png",
             ),
             (
                 "https://cwobject.com",
-                "markra-images",
-                "https://markra-images.cwobject.com/notes/pasted-image.png",
+                "helbaron-images",
+                "https://helbaron-images.cwobject.com/notes/pasted-image.png",
             ),
             (
                 "https://nyc3.digitaloceanspaces.com",
-                "markra-images",
-                "https://markra-images.nyc3.digitaloceanspaces.com/notes/pasted-image.png",
+                "helbaron-images",
+                "https://helbaron-images.nyc3.digitaloceanspaces.com/notes/pasted-image.png",
             ),
         ];
 

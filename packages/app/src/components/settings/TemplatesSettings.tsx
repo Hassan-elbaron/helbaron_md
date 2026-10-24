@@ -1,6 +1,6 @@
 import { Eye, FileText, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { IconButton } from "@markra/ui";
+import { IconButton } from "@helbaron/ui";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { EditorPreferences } from "../../lib/settings/app-settings";
@@ -177,7 +177,7 @@ export function TemplatesSettings({
         <div className="settings-row py-4">
           <div className="settings-templates-layout grid grid-cols-[200px_minmax(0,1fr)] gap-5 max-[760px]:grid-cols-1">
             <ul
-              className="m-0 flex max-h-105 min-h-18 list-none flex-col gap-0.5 overflow-y-auto border-r border-(--border-default) p-0 pr-3 max-[760px]:max-h-48 max-[760px]:border-r-0 max-[760px]:border-b max-[760px]:pb-3"
+              className="m-0 flex max-h-105 min-h-18 list-none flex-col gap-0.5 overflow-y-auto border-e border-(--border-default) p-0 pe-3 max-[760px]:max-h-48 max-[760px]:border-e-0 max-[760px]:border-b max-[760px]:pb-3"
               role="list"
               aria-label={translate("settings.templates.list")}
             >
@@ -188,7 +188,7 @@ export function TemplatesSettings({
                   <li key={template.id} className="min-w-0">
                     <button
                       className={mergeClassNames(
-                        "flex w-full min-w-0 flex-col rounded-md px-2.5 py-2 text-left transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)",
+                        "flex w-full min-w-0 flex-col rounded-md px-2.5 py-2 text-start transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)",
                         selected
                           ? "bg-(--bg-active) text-(--text-heading)"
                           : "text-(--text-heading) hover:bg-(--bg-hover)"
@@ -210,7 +210,7 @@ export function TemplatesSettings({
                 );
               })}
             </ul>
-            <section className="min-w-0 pl-0.5 max-[760px]:pl-0" role="region" aria-label={translate("settings.templates.editor")}>
+            <section className="min-w-0 ps-0.5 max-[760px]:ps-0" role="region" aria-label={translate("settings.templates.editor")}>
               <div className="grid gap-3.5">
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
                   <div className="min-w-0">

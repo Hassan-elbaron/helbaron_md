@@ -5,21 +5,21 @@ import {
   WidgetType,
   type EditorView as CodeMirrorView,
 } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import {
   createMediaViewerEnlargeIcon,
   openMediaViewer,
   type MediaViewerHandle,
 } from "./media-viewer.ts";
 import {
-  markraRenderer,
-  type MarkraRendererContext,
-  type MarkraSyntaxNode,
+  helbaronRenderer,
+  type HelbaronRendererContext,
+  type HelbaronSyntaxNode,
 } from "./renderers.ts";
 import { moveToEditableLine } from "./blank-lines.ts";
 import { unescapeMarkdown, unquoteMarkdownTitle } from "./syntax.ts";
 
-export interface MarkraImageSourceContext {
+export interface HelbaronImageSourceContext {
   readonly alt: string;
   readonly source: string;
   readonly state: EditorState;
@@ -29,7 +29,7 @@ export interface MarkraImageSourceContext {
 
 export interface ImagePreviewPluginOptions {
   className?: string;
-  resolveSource?: (context: MarkraImageSourceContext) => string | null;
+  resolveSource?: (context: HelbaronImageSourceContext) => string | null;
 }
 
 interface ImageDetails {
@@ -65,7 +65,7 @@ const safeDataImage = /^data:image\/(?:avif|gif|jpeg|png|webp);base64,/iu;
 const scheme = /^([a-z][a-z\d+.-]*):/iu;
 
 const imageTheme = EditorView.baseTheme({
-  ".cm-markra-image": {
+  ".cm-helbaron-image": {
     borderRadius: "0.35em",
     display: "inline-block",
     maxHeight: "32rem",
@@ -77,7 +77,7 @@ const imageTheme = EditorView.baseTheme({
 
 function imageDetails(
   state: EditorState,
-  node: MarkraSyntaxNode,
+  node: HelbaronSyntaxNode,
 ): ImageDetails | null {
   const marks = node.getChildren("LinkMark");
   const url = node.getChild("URL");
@@ -145,7 +145,7 @@ function createImageSourceIcon(ownerDocument: Document) {
   const path = ownerDocument.createElementNS("http://www.w3.org/2000/svg", "path");
 
   svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("class", "markra-image-node-source-icon");
+  svg.setAttribute("class", "helbaron-image-node-source-icon");
   svg.setAttribute("fill", "none");
   svg.setAttribute("height", "18");
   svg.setAttribute("stroke", "currentColor");
@@ -202,7 +202,7 @@ function claimImageElement(root: HTMLElement, widget: ImageWidget) {
   const key = imageWidgetDomKey(widget);
   const composing =
     widget.view.composing ||
-    widget.view.dom.dataset.markraComposing === "true";
+    widget.view.dom.dataset.helbaronComposing === "true";
   let record: ImageWidgetDomRecord | undefined;
   if (composing) {
     record = [...records]
@@ -239,8 +239,8 @@ function hideImageSource(root: HTMLElement, state: ImageWidgetDomState) {
   const sourceVisible = state.sourceRow.isConnected;
   state.selected = false;
   state.sourceRow.remove();
-  root.classList.remove("markra-image-node-selected");
-  root.classList.remove("markra-image-node-source-invalid");
+  root.classList.remove("helbaron-image-node-selected");
+  root.classList.remove("helbaron-image-node-source-invalid");
   if (sourceVisible) {
     root.ownerDocument.removeEventListener(
       "mousedown",
@@ -266,7 +266,7 @@ function showImageSource(
   }
   if (!sourceVisible) root.insertBefore(state.sourceRow, state.frame);
   state.selected = true;
-  root.classList.add("markra-image-node-selected");
+  root.classList.add("helbaron-image-node-selected");
   if (!sourceVisible) {
     root.ownerDocument.addEventListener(
       "mousedown",
@@ -298,11 +298,11 @@ function syncImageSource(root: HTMLElement, state: ImageWidgetDomState) {
     ? resolveImageSource(view, details, state.widget.resolver)
     : null;
   if (!details || !source) {
-    root.classList.add("markra-image-node-source-invalid");
+    root.classList.add("helbaron-image-node-source-invalid");
     return false;
   }
 
-  root.classList.remove("markra-image-node-source-invalid");
+  root.classList.remove("helbaron-image-node-source-invalid");
   state.image.alt = details.alt;
   state.image.src = source;
   if (details.title) state.image.title = details.title;
@@ -358,25 +358,25 @@ class ImageWidget extends WidgetType {
     const viewerButton = view.dom.ownerDocument.createElement("button");
     const imageRecord = claimImageElement(root, this);
     const { image } = imageRecord;
-    root.className = "markra-image-node";
+    root.className = "helbaron-image-node";
     root.contentEditable = "false";
     root.draggable = false;
-    frame.className = "markra-image-frame";
-    sourceRow.className = "markra-image-node-source-row";
+    frame.className = "helbaron-image-frame";
+    sourceRow.className = "helbaron-image-node-source-row";
     sourceRow.contentEditable = "true";
     sourceInput.ariaLabel = "Image markdown source";
-    sourceInput.className = "markra-image-node-source";
+    sourceInput.className = "helbaron-image-node-source";
     sourceInput.contentEditable = "true";
     sourceInput.spellcheck = false;
     sourceInput.type = "text";
     sourceRow.append(createImageSourceIcon(view.dom.ownerDocument), sourceInput);
     viewerButton.type = "button";
-    viewerButton.className = "markra-image-viewer-button";
+    viewerButton.className = "helbaron-image-viewer-button";
     viewerButton.ariaLabel = "Enlarge image";
     viewerButton.title = "Enlarge image";
     viewerButton.append(createMediaViewerEnlargeIcon(
       view.dom.ownerDocument,
-      "markra-image-viewer-icon",
+      "helbaron-image-viewer-icon",
     ));
     image.decoding = "async";
     image.draggable = false;
@@ -574,7 +574,7 @@ class ImageWidget extends WidgetType {
       };
       if (
         view.composing ||
-        view.dom.dataset.markraComposing === "true"
+        view.dom.dataset.helbaronComposing === "true"
       ) {
         // CodeMirror destroys the old content tile before constructing its
         // IME replacement. Keep the decoded image available for that same
@@ -593,7 +593,7 @@ function resolveImageSource(
   details: ImageDetails,
   resolver: ImagePreviewPluginOptions["resolveSource"],
 ) {
-  const sourceContext: MarkraImageSourceContext = {
+  const sourceContext: HelbaronImageSourceContext = {
     ...details,
     state: view.state,
     view,
@@ -610,14 +610,14 @@ function resolveImageSource(
 export function imagePreviewPlugin(options: ImagePreviewPluginOptions = {}) {
   const customClassName = options.className?.trim();
   const className = customClassName
-    ? `cm-markra-image ${customClassName}`
-    : "cm-markra-image";
+    ? `cm-helbaron-image ${customClassName}`
+    : "cm-helbaron-image";
 
-  return defineMarkraPlugin({
-    id: "markra.image-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.image-preview",
     extension: [
-      markraRenderer({
-        id: "markra.image-preview",
+      helbaronRenderer({
+        id: "helbaron.image-preview",
         nodeNames: ["Image"],
         render(context) {
           const startLine = context.state.doc.lineAt(context.node.from).number;
@@ -635,7 +635,7 @@ export function imagePreviewPlugin(options: ImagePreviewPluginOptions = {}) {
           const line = context.state.doc.lineAt(context.node.from);
           if (context.node.from === line.from && context.node.to === line.to) {
             context.add(
-              Decoration.line({ class: "cm-markra-image-line" }).range(
+              Decoration.line({ class: "cm-helbaron-image-line" }).range(
                 line.from,
               ),
             );

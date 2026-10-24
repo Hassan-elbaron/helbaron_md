@@ -63,12 +63,12 @@ function press(
 
 function expectFullHeightEmptyLines(view: EditorView, count: number) {
   const emptyLines = Array.from(
-    view.dom.querySelectorAll(".cm-markra-empty-line"),
+    view.dom.querySelectorAll(".cm-helbaron-empty-line"),
   );
   expect(emptyLines).toHaveLength(count);
   expect(
     emptyLines.every((line) =>
-      !line.hasAttribute("data-markra-empty-source")
+      !line.hasAttribute("data-helbaron-empty-source")
     ),
   ).toBe(true);
 }
@@ -355,7 +355,7 @@ describe("markdownEditingPlugin", () => {
     expect(press(view, "Backspace")).toBe(true);
     expect(view.state.doc.toString()).toBe(`${before}\n${after}`);
     expect(
-      view.dom.querySelector(".cm-markra-empty-line"),
+      view.dom.querySelector(".cm-helbaron-empty-line"),
     ).toBeNull();
   });
 
@@ -398,7 +398,7 @@ describe("markdownEditingPlugin", () => {
     expect(press(view, "Backspace")).toBe(true);
 
     const line = view.dom.querySelector<HTMLElement>(".cm-line");
-    const toolbar = line?.querySelector(":scope > .cm-markra-block-toolbar");
+    const toolbar = line?.querySelector(":scope > .cm-helbaron-block-toolbar");
     const nativeSelection = document.getSelection();
     expect(line).not.toBeNull();
     expect(toolbar).not.toBeNull();

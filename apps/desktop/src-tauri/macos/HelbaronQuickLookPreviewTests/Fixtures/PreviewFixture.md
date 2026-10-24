@@ -15,5 +15,5 @@ Inline math: $x^2 + y^2 = z^2$.
 
 ```mermaid
 flowchart LR
-  A[Finder] --> B[Markra]
+  A[Finder] --> B[Helbaron]
 ```

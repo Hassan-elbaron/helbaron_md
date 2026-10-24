@@ -31,7 +31,7 @@ function createView() {
 }
 
 function cueLines(view: EditorView) {
-  return view.contentDOM.querySelectorAll(".cm-markra-location-cue");
+  return view.contentDOM.querySelectorAll(".cm-helbaron-location-cue");
 }
 
 beforeEach(() => {

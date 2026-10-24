@@ -1,11 +1,11 @@
-import type { AppAiChatAttachmentRuntime } from "@markra/app/runtime";
+import type { AppAiChatAttachmentRuntime } from "@helbaron/app/runtime";
 import { FakeIndexedDbFactory } from "../../test/web-runtime-fakes";
 import { createWebRuntime } from "../index";
 
 describe("web AI chat attachments", () => {
   it("persists attachment bytes and deletes only the selected session", async () => {
     const runtime = createWebRuntime({
-      databaseName: "markra-web-attachment-test",
+      databaseName: "helbaron-web-attachment-test",
       indexedDB: new FakeIndexedDbFactory().indexedDB
     });
 

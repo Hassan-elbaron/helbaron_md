@@ -72,14 +72,14 @@ const micromarkTypes = {
   linePrefix: "linePrefix",
   whitespace: "whitespace"
 } as const;
-const hugoMathFlowType = "markraHugoMathFlow";
-const hugoMathFlowDataType = "markraHugoMathFlowValue";
-const hugoMathFlowFenceType = "markraHugoMathFlowFence";
-const hugoMathFlowSequenceType = "markraHugoMathFlowFenceSequence";
-const hugoMathFlowInsideKey = "markraHugoMathFlowInside";
-const hugoMathTextType = "markraHugoMathText";
-const hugoMathTextDataType = "markraHugoMathTextData";
-const hugoMathTextSequenceType = "markraHugoMathTextSequence";
+const hugoMathFlowType = "helbaronHugoMathFlow";
+const hugoMathFlowDataType = "helbaronHugoMathFlowValue";
+const hugoMathFlowFenceType = "helbaronHugoMathFlowFence";
+const hugoMathFlowSequenceType = "helbaronHugoMathFlowFenceSequence";
+const hugoMathFlowInsideKey = "helbaronHugoMathFlowInside";
+const hugoMathTextType = "helbaronHugoMathText";
+const hugoMathTextDataType = "helbaronHugoMathTextData";
+const hugoMathTextSequenceType = "helbaronHugoMathTextSequence";
 
 function isMicromarkLineEnding(code: MicromarkCode) {
   return (
@@ -97,7 +97,7 @@ function isMicromarkSpace(code: MicromarkCode) {
   );
 }
 
-function markraHugoMathPrevious(code: MicromarkCode) {
+function helbaronHugoMathPrevious(code: MicromarkCode) {
   return code !== micromarkCodes.backslash;
 }
 
@@ -152,7 +152,7 @@ function createMathMarkdownData(kind: HugoMathKind, value: string) {
       };
 }
 
-function markraHugoMathFlow(): MicromarkConstruct {
+function helbaronHugoMathFlow(): MicromarkConstruct {
   return {
     concrete: true,
     name: hugoMathFlowType,
@@ -278,10 +278,10 @@ function tokenizeHugoMathFlowClosingFence(
   }
 }
 
-function markraHugoMathText(): MicromarkConstruct {
+function helbaronHugoMathText(): MicromarkConstruct {
   return {
     name: hugoMathTextType,
-    previous: markraHugoMathPrevious,
+    previous: helbaronHugoMathPrevious,
     tokenize(effects, ok, nok) {
       let closingCode: typeof micromarkCodes.rightParenthesis | typeof micromarkCodes.rightSquareBracket;
       let sequenceToken: MicromarkToken;
@@ -356,18 +356,18 @@ function markraHugoMathText(): MicromarkConstruct {
   };
 }
 
-export function markraHugoMathSyntax() {
+export function helbaronHugoMathSyntax() {
   return {
     flow: {
-      [micromarkCodes.backslash]: markraHugoMathFlow()
+      [micromarkCodes.backslash]: helbaronHugoMathFlow()
     },
     text: {
-      [micromarkCodes.backslash]: markraHugoMathText()
+      [micromarkCodes.backslash]: helbaronHugoMathText()
     }
   };
 }
 
-export function markraHugoMathFromMarkdown() {
+export function helbaronHugoMathFromMarkdown() {
   return {
     enter: {
       [hugoMathFlowType]: function enterHugoMathFlow(this: HugoMathCompileContext, token: unknown) {
@@ -432,6 +432,6 @@ export function remarkHugoMath(this: Processor) {
   const micromarkExtensions = data.micromarkExtensions ?? (data.micromarkExtensions = []);
   const fromMarkdownExtensions = data.fromMarkdownExtensions ?? (data.fromMarkdownExtensions = []);
 
-  micromarkExtensions.push(markraHugoMathSyntax());
-  fromMarkdownExtensions.push(markraHugoMathFromMarkdown());
+  micromarkExtensions.push(helbaronHugoMathSyntax());
+  fromMarkdownExtensions.push(helbaronHugoMathFromMarkdown());
 }

@@ -11,7 +11,7 @@ const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 const releaseWorkflowPath = path.join(repoRoot, ".github", "workflows", "release.yml");
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-release-assets-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-release-assets-"));
 }
 
 function writeFile(filePath, content = "asset") {
@@ -25,8 +25,8 @@ function runNormalizeScript(rootDir, env) {
     encoding: "utf8",
     env: {
       ...process.env,
-      APP_PRODUCT_NAME: "Markra",
-      APP_SLUG: "markra",
+      APP_PRODUCT_NAME: "Helbaron",
+      APP_SLUG: "helbaron",
       DESKTOP_DIR: path.join(rootDir, "apps", "desktop"),
       RELEASE_VERSION: "0.0.8",
       ...env,
@@ -144,8 +144,8 @@ test("normalize-release-artifacts adds macOS platform labels to updater and dmg 
     "release",
     "bundle",
   );
-  const oldUpdater = path.join(bundleRoot, "macos", "markra_0.0.8_x64.app.tar.gz");
-  const oldDmg = path.join(bundleRoot, "dmg", "Markra_0.0.8_x64.dmg");
+  const oldUpdater = path.join(bundleRoot, "macos", "helbaron_0.0.8_x64.app.tar.gz");
+  const oldDmg = path.join(bundleRoot, "dmg", "Helbaron_0.0.8_x64.dmg");
 
   writeFile(oldUpdater);
   writeFile(`${oldUpdater}.sig`, "signature");
@@ -161,9 +161,9 @@ test("normalize-release-artifacts adds macOS platform labels to updater and dmg 
   assert.equal(fs.existsSync(oldUpdater), false);
   assert.equal(fs.existsSync(`${oldUpdater}.sig`), false);
   assert.equal(fs.existsSync(oldDmg), false);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "macos", "Markra_0.0.8_macos_x64_updater.app.tar.gz")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "macos", "Markra_0.0.8_macos_x64_updater.app.tar.gz.sig")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "dmg", "Markra_0.0.8_macos_x64.dmg")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "macos", "Helbaron_0.0.8_macos_x64_updater.app.tar.gz")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "macos", "Helbaron_0.0.8_macos_x64_updater.app.tar.gz.sig")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "dmg", "Helbaron_0.0.8_macos_x64.dmg")), true);
 });
 
 test("normalize-release-artifacts adds Windows platform labels and creates a portable zip", () => {
@@ -178,11 +178,11 @@ test("normalize-release-artifacts adds Windows platform labels and creates a por
     "release",
   );
   const bundleRoot = path.join(releaseRoot, "bundle");
-  const oldSetup = path.join(bundleRoot, "nsis", "Markra_0.0.8_x64-setup.exe");
-  const oldMsi = path.join(bundleRoot, "msi", "Markra_0.0.8_x64_en-US.msi");
-  const portableZip = path.join(bundleRoot, "portable", "Markra_0.0.8_windows_x64_portable.zip");
+  const oldSetup = path.join(bundleRoot, "nsis", "Helbaron_0.0.8_x64-setup.exe");
+  const oldMsi = path.join(bundleRoot, "msi", "Helbaron_0.0.8_x64_en-US.msi");
+  const portableZip = path.join(bundleRoot, "portable", "Helbaron_0.0.8_windows_x64_portable.zip");
 
-  writeFile(path.join(releaseRoot, "markra.exe"), "portable-binary");
+  writeFile(path.join(releaseRoot, "helbaron.exe"), "portable-binary");
   writeFile(path.join(releaseRoot, "support.dll"), "portable-library");
   writeFile(oldSetup);
   writeFile(`${oldSetup}.sig`, "setup-signature");
@@ -200,21 +200,21 @@ test("normalize-release-artifacts adds Windows platform labels and creates a por
   assert.equal(fs.existsSync(`${oldSetup}.sig`), false);
   assert.equal(fs.existsSync(oldMsi), false);
   assert.equal(fs.existsSync(`${oldMsi}.sig`), false);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "nsis", "Markra_0.0.8_windows_x64_setup.exe")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "nsis", "Markra_0.0.8_windows_x64_setup.exe.sig")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "msi", "Markra_0.0.8_windows_x64_en-US.msi")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "msi", "Markra_0.0.8_windows_x64_en-US.msi.sig")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "nsis", "Helbaron_0.0.8_windows_x64_setup.exe")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "nsis", "Helbaron_0.0.8_windows_x64_setup.exe.sig")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "msi", "Helbaron_0.0.8_windows_x64_en-US.msi")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "msi", "Helbaron_0.0.8_windows_x64_en-US.msi.sig")), true);
   assert.equal(fs.existsSync(portableZip), true);
 
   const zipContents = fs.readFileSync(portableZip);
   const zipEntries = readZipEntries(zipContents);
   assert.equal(zipContents.subarray(0, 4).toString("latin1"), "PK\u0003\u0004");
-  assert.match(zipContents.toString("latin1"), /Markra\/Markra\.exe/);
-  assert.match(zipContents.toString("latin1"), /Markra\/support\.dll/);
-  assert.match(zipContents.toString("latin1"), /Markra\/markra-portable\.json/);
-  assert.deepEqual(JSON.parse(zipEntries.get("Markra/markra-portable.json").toString("utf8")), {
-    executable: "Markra.exe",
-    files: ["Markra.exe", "support.dll", "markra-portable.json"],
+  assert.match(zipContents.toString("latin1"), /Helbaron\/Helbaron\.exe/);
+  assert.match(zipContents.toString("latin1"), /Helbaron\/support\.dll/);
+  assert.match(zipContents.toString("latin1"), /Helbaron\/helbaron-portable\.json/);
+  assert.deepEqual(JSON.parse(zipEntries.get("Helbaron/helbaron-portable.json").toString("utf8")), {
+    executable: "Helbaron.exe",
+    files: ["Helbaron.exe", "support.dll", "helbaron-portable.json"],
     formatVersion: 1,
   });
 });
@@ -231,9 +231,9 @@ test("normalize-release-artifacts adds Linux platform labels to package assets",
     "release",
     "bundle",
   );
-  const oldAppImage = path.join(bundleRoot, "appimage", "Markra_0.0.8_amd64.AppImage");
-  const oldDeb = path.join(bundleRoot, "deb", "Markra_0.0.8_amd64.deb");
-  const oldRpm = path.join(bundleRoot, "rpm", "Markra-0.0.8-1.x86_64.rpm");
+  const oldAppImage = path.join(bundleRoot, "appimage", "Helbaron_0.0.8_amd64.AppImage");
+  const oldDeb = path.join(bundleRoot, "deb", "Helbaron_0.0.8_amd64.deb");
+  const oldRpm = path.join(bundleRoot, "rpm", "Helbaron-0.0.8-1.x86_64.rpm");
 
   writeFile(oldAppImage);
   writeFile(`${oldAppImage}.sig`, "appimage-signature");
@@ -249,10 +249,10 @@ test("normalize-release-artifacts adds Linux platform labels to package assets",
   });
 
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "appimage", "Markra_0.0.8_linux_x64.AppImage")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "appimage", "Markra_0.0.8_linux_x64.AppImage.sig")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "deb", "Markra_0.0.8_linux_x64.deb")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "deb", "Markra_0.0.8_linux_x64.deb.sig")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "rpm", "Markra_0.0.8_linux_x64.rpm")), true);
-  assert.equal(fs.existsSync(path.join(bundleRoot, "rpm", "Markra_0.0.8_linux_x64.rpm.sig")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "appimage", "Helbaron_0.0.8_linux_x64.AppImage")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "appimage", "Helbaron_0.0.8_linux_x64.AppImage.sig")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "deb", "Helbaron_0.0.8_linux_x64.deb")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "deb", "Helbaron_0.0.8_linux_x64.deb.sig")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "rpm", "Helbaron_0.0.8_linux_x64.rpm")), true);
+  assert.equal(fs.existsSync(path.join(bundleRoot, "rpm", "Helbaron_0.0.8_linux_x64.rpm.sig")), true);
 });

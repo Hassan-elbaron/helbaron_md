@@ -40,7 +40,7 @@ it("loads both selected files on startup and rereads edits on refresh", async ()
   read.mockResolvedValue("/* edited */");
   await act(() => result.current.refresh());
   expect(result.current.css.light).toBe("/* edited */");
-  expect(emit).toHaveBeenCalledWith("markra://theme-files-changed", {
+  expect(emit).toHaveBeenCalledWith("helbaron://theme-files-changed", {
     directory: null,
     selection: { light: "light.css", dark: "dark.css" }
   });
@@ -132,7 +132,7 @@ it("selects a new folder, clears old file choices and synchronizes the whole sou
   expect(result.current.selection).toEqual({ light: null, dark: null });
   expect(result.current.css).toEqual({ light: null, dark: null });
   expect(await getStoredThemeSettings()).toEqual({ directory: "/mock/new", selection: { light: null, dark: null } });
-  expect(emit).toHaveBeenLastCalledWith("markra://theme-files-changed", { directory: "/mock/new", selection: { light: null, dark: null } });
+  expect(emit).toHaveBeenLastCalledWith("helbaron://theme-files-changed", { directory: "/mock/new", selection: { light: null, dark: null } });
   await act(() => result.current.select("light", "light.css"));
   expect(read).toHaveBeenLastCalledWith("light.css", "/mock/new");
   expect((await getStoredThemeSettings()).directory).toBe("/mock/new");
@@ -252,7 +252,7 @@ it.each(["folder", "file"])("finishes a %s save despite an old cross-window refr
   expect(result.current.directory).toBe(expected.directory);
   expect(result.current.selection).toEqual(expected.selection);
   expect(await getStoredThemeSettings()).toEqual(expected);
-  expect(emit).toHaveBeenLastCalledWith("markra://theme-files-changed", expected);
+  expect(emit).toHaveBeenLastCalledWith("helbaron://theme-files-changed", expected);
   expect(result.current.loading).toBe(false);
 });
 
@@ -292,7 +292,7 @@ it("saves successive folder choices in order while the first save is pending", a
   await act(async () => { finishSave(); await first; await second; });
   expect(result.current.directory).toBe("/mock/second");
   expect((await getStoredThemeSettings()).directory).toBe("/mock/second");
-  expect(emit).toHaveBeenLastCalledWith("markra://theme-files-changed", { directory: "/mock/second", selection: { light: null, dark: null } });
+  expect(emit).toHaveBeenLastCalledWith("helbaron://theme-files-changed", { directory: "/mock/second", selection: { light: null, dark: null } });
 });
 
 it("clears the old catalog when another window chooses an unavailable folder", async () => {

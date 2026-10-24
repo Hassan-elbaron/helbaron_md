@@ -1,7 +1,7 @@
 import { Channel, invoke } from "@tauri-apps/api/core";
 import { check, type DownloadEvent } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
-import { getStoredNetworkSettings, saveStoredWorkspaceState } from "@markra/app/settings";
+import { getStoredNetworkSettings, saveStoredWorkspaceState } from "@helbaron/app/settings";
 import { listNativeEditorWindowRestoreStates } from "./window";
 
 const localUpdaterProxyUrls = [

@@ -1,7 +1,7 @@
 import { showContextMenu } from "./ContextMenu";
 
 function getMenu() {
-  return document.querySelector("[data-markra-context-menu]");
+  return document.querySelector("[data-helbaron-context-menu]");
 }
 
 function getMenuItemById(id: string) {
@@ -37,7 +37,7 @@ describe("ContextMenu", () => {
     showContextMenu(document, {
       entries: [
         {
-          id: "markra:test:open",
+          id: "helbaron:test:open",
           kind: "item",
           label: "Open",
           onSelect: select
@@ -56,7 +56,7 @@ describe("ContextMenu", () => {
     expect((menu as HTMLElement).style.left).toBe("32px");
     expect((menu as HTMLElement).style.top).toBe("48px");
 
-    getMenuItemById("markra:test:open").click();
+    getMenuItemById("helbaron:test:open").click();
 
     expect(select).toHaveBeenCalledTimes(1);
     expect(getMenu()).toBeNull();
@@ -70,7 +70,7 @@ describe("ContextMenu", () => {
       entries: [
         {
           disabled: true,
-          id: "markra:test:disabled",
+          id: "helbaron:test:disabled",
           kind: "item",
           label: "Disabled",
           onSelect: disabledSelect
@@ -78,13 +78,13 @@ describe("ContextMenu", () => {
         {
           entries: [
             {
-              id: "markra:test:child",
+              id: "helbaron:test:child",
               kind: "item",
               label: "Child",
               onSelect: childSelect
             }
           ],
-          id: "markra:test:submenu",
+          id: "helbaron:test:submenu",
           kind: "submenu",
           label: "More"
         }
@@ -95,8 +95,8 @@ describe("ContextMenu", () => {
       }
     });
 
-    const disabledItem = getMenuItemById("markra:test:disabled");
-    const submenuButton = getMenuItemById("markra:test:submenu");
+    const disabledItem = getMenuItemById("helbaron:test:disabled");
+    const submenuButton = getMenuItemById("helbaron:test:submenu");
 
     disabledItem.click();
 
@@ -105,14 +105,14 @@ describe("ContextMenu", () => {
     expect(submenuButton).toHaveAttribute("aria-haspopup", "menu");
     expect(submenuButton.querySelector("svg")).not.toBeNull();
     expect(submenuButton).not.toHaveTextContent(">");
-    const submenu = document.querySelector<HTMLElement>("[data-menu-submenu-id='markra:test:submenu']");
-    const submenuBridge = document.querySelector<HTMLElement>("[data-menu-submenu-bridge-id='markra:test:submenu']");
+    const submenu = document.querySelector<HTMLElement>("[data-menu-submenu-id='helbaron:test:submenu']");
+    const submenuBridge = document.querySelector<HTMLElement>("[data-menu-submenu-bridge-id='helbaron:test:submenu']");
 
     expect(submenu).toHaveAttribute("role", "menu");
     expect(submenu?.style.left).toBe("calc(100% + 8px)");
     expect(submenuBridge?.style.width).toBe("8px");
 
-    getMenuItemById("markra:test:child").click();
+    getMenuItemById("helbaron:test:child").click();
 
     expect(childSelect).toHaveBeenCalledTimes(1);
     expect(getMenu()).toBeNull();
@@ -122,19 +122,19 @@ describe("ContextMenu", () => {
     vi.spyOn(window, "innerHeight", "get").mockReturnValue(300);
     vi.spyOn(window, "innerWidth", "get").mockReturnValue(400);
     vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockImplementation(function (this: HTMLElement) {
-      if (this.hasAttribute("data-markra-context-menu")) return 208;
+      if (this.hasAttribute("data-helbaron-context-menu")) return 208;
 
       return 28;
     });
     vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockImplementation(function (this: HTMLElement) {
-      if (this.hasAttribute("data-markra-context-menu")) return 216;
+      if (this.hasAttribute("data-helbaron-context-menu")) return 216;
 
       return 32;
     });
 
     showContextMenu(document, {
       entries: Array.from({ length: 7 }, (_, index) => ({
-        id: `markra:test:item-${index + 1}`,
+        id: `helbaron:test:item-${index + 1}`,
         kind: "item" as const,
         label: `Item ${index + 1}`,
         onSelect: vi.fn()
@@ -157,12 +157,12 @@ describe("ContextMenu", () => {
     vi.spyOn(window, "innerHeight", "get").mockReturnValue(220);
     vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockImplementation(function (this: HTMLElement) {
       if (this.hasAttribute("data-menu-submenu-id")) return 120;
-      if (this.hasAttribute("data-markra-context-menu")) return 180;
+      if (this.hasAttribute("data-helbaron-context-menu")) return 180;
 
       return 28;
     });
     vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
-      if (this.getAttribute("data-menu-item-id") === "markra:test:submenu") {
+      if (this.getAttribute("data-menu-item-id") === "helbaron:test:submenu") {
         return testRect({
           bottom: 198,
           height: 28,
@@ -188,25 +188,25 @@ describe("ContextMenu", () => {
         {
           entries: [
             {
-              id: "markra:test:child-1",
+              id: "helbaron:test:child-1",
               kind: "item",
               label: "Child 1",
               onSelect: vi.fn()
             },
             {
-              id: "markra:test:child-2",
+              id: "helbaron:test:child-2",
               kind: "item",
               label: "Child 2",
               onSelect: vi.fn()
             },
             {
-              id: "markra:test:child-3",
+              id: "helbaron:test:child-3",
               kind: "item",
               label: "Child 3",
               onSelect: vi.fn()
             }
           ],
-          id: "markra:test:submenu",
+          id: "helbaron:test:submenu",
           kind: "submenu",
           label: "More"
         }
@@ -217,7 +217,7 @@ describe("ContextMenu", () => {
       }
     });
 
-    const submenu = document.querySelector<HTMLElement>("[data-menu-submenu-id='markra:test:submenu']");
+    const submenu = document.querySelector<HTMLElement>("[data-menu-submenu-id='helbaron:test:submenu']");
 
     expect(submenu).not.toBeNull();
     expect(submenu?.style.top).toBe("-78px");

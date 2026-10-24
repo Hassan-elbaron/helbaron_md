@@ -27,7 +27,7 @@ describe("trailingSpacePlugin", () => {
     views.push(view);
 
     const trailingSpace = view.dom.querySelector<HTMLElement>(
-      ".cm-markra-trailing-space",
+      ".cm-helbaron-trailing-space",
     );
     expect(trailingSpace).not.toBeNull();
     expect(trailingSpace?.closest(".cm-line")).toBeNull();

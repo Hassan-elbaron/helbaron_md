@@ -100,7 +100,7 @@ describe("DocumentHistoryDialog", () => {
     const panel = await screen.findByRole("region", { name: "History versions" });
 
     expect(panel).toHaveClass(
-      "animate-[markra-history-panel-in_140ms_cubic-bezier(0.2,0,0,1)_both]",
+      "animate-[helbaron-history-panel-in_140ms_cubic-bezier(0.2,0,0,1)_both]",
       "motion-reduce:animate-none"
     );
     expect(panel).toHaveStyle({ top: "48px" });

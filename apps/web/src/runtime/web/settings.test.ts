@@ -5,7 +5,7 @@ describe("IndexedDB settings runtime", () => {
   it("persists settings stores in IndexedDB", async () => {
     const fakeIndexedDb = new FakeIndexedDbFactory();
     const settings = createIndexedDbSettingsRuntime({
-      databaseName: "markra-web-test",
+      databaseName: "helbaron-web-test",
       indexedDB: fakeIndexedDb.indexedDB
     });
 
@@ -30,7 +30,7 @@ describe("IndexedDB settings runtime", () => {
     });
 
     await expect(savedStore.get("theme")).resolves.toBe("dark");
-    expect(fakeIndexedDb.openedNames).toEqual(["markra-web-test"]);
+    expect(fakeIndexedDb.openedNames).toEqual(["helbaron-web-test"]);
   });
 
   it("supports autosaving settings mutations in IndexedDB", async () => {

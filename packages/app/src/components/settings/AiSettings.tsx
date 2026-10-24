@@ -1,5 +1,5 @@
 import { RotateCcw } from "lucide-react";
-import { aiTranslationLanguageName, type AppLanguage } from "@markra/shared";
+import { aiTranslationLanguageName, type AppLanguage } from "@helbaron/shared";
 import {
   aiQuickActionIds,
   aiQuickActionLabelKeys,

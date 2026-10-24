@@ -37,7 +37,7 @@ import {
   type UniqueIdentifier
 } from "@dnd-kit/core";
 import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable";
-import { Button, IconButton, PopoverSurface } from "@markra/ui";
+import { Button, IconButton, PopoverSurface } from "@helbaron/ui";
 import {
   normalizeTitlebarActions,
   reorderTitlebarActions,
@@ -49,7 +49,7 @@ import { viewModeOptions, type ViewMode } from "../lib/view-mode";
 import { anchoredPopoverStyle } from "../lib/anchored-popover";
 import type { NativeMenuHandlers } from "../lib/tauri/menu";
 import { resolveDesktopPlatform, type DesktopPlatform } from "../lib/platform";
-import { t, type AppLanguage } from "@markra/shared";
+import { t, type AppLanguage } from "@helbaron/shared";
 import { MacWindowControls } from "./MacWindowControls";
 import {
   SortableTitlebarAction,
@@ -178,7 +178,7 @@ export function NativeTitleBar({
   const themeActionLabel = theme === "dark" ? label("app.switchToLightTheme") : label("app.switchToDarkTheme");
   const editorViewMode = splitMode ? "split" : sourceMode ? "source" : "visual";
   const openChoiceMenuAvailable = Boolean(onOpenMarkdownFolder) && (!nativeWindowChrome || platform !== "macos");
-  const openChoiceMenuAlignmentClassName = (platform === "windows" || platform === "linux") ? "right-0" : "left-0";
+  const openChoiceMenuAlignmentClassName = (platform === "windows" || platform === "linux") ? "end-0" : "start-0";
   const titlebarSideSlotWidth = 196;
   const normalizedTitlebarActions = useMemo(
     () => titlebarActions?.length === 0 ? [] : normalizeTitlebarActions(titlebarActions),
@@ -391,7 +391,7 @@ export function NativeTitleBar({
           >
             <div className="px-1.5 py-1">
               <Button
-                className="h-7 w-full justify-start rounded-sm border-transparent bg-transparent px-2 text-left text-[12px] font-[520] text-(--text-heading) hover:bg-(--bg-hover)"
+                className="h-7 w-full justify-start rounded-sm border-transparent bg-transparent px-2 text-start text-[12px] font-[520] text-(--text-heading) hover:bg-(--bg-hover)"
                 size="sm"
                 role="menuitem"
                 variant="ghost"
@@ -413,7 +413,7 @@ export function NativeTitleBar({
                 {label("app.markdownFolderSection")}
               </div>
               <Button
-                className="h-7 w-full justify-start rounded-sm border-transparent bg-transparent px-2 text-left text-[12px] font-[520] text-(--text-heading) hover:bg-(--bg-hover)"
+                className="h-7 w-full justify-start rounded-sm border-transparent bg-transparent px-2 text-start text-[12px] font-[520] text-(--text-heading) hover:bg-(--bg-hover)"
                 size="sm"
                 role="menuitem"
                 variant="ghost"
@@ -505,7 +505,7 @@ export function NativeTitleBar({
                     return (
                       <button
                         key={mode}
-                        className="flex h-8 w-full cursor-pointer items-center justify-between gap-3 rounded-md border-0 bg-transparent px-2.5 text-left text-[12px] leading-5 font-[560] text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
+                        className="flex h-8 w-full cursor-pointer items-center justify-between gap-3 rounded-md border-0 bg-transparent px-2.5 text-start text-[12px] leading-5 font-[560] text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
                         type="button"
                         role="menuitemradio"
                         aria-checked={selected}
@@ -641,7 +641,7 @@ export function NativeTitleBar({
     </div>
   );
 
-  const documentActionsClassName = `document-actions relative z-10 flex h-10 min-w-0 items-center justify-end gap-0.5 overflow-visible pr-3.5 text-(--text-secondary) opacity-40 group-hover/titlebar:opacity-100 focus-within:opacity-100 motion-reduce:transition-none ${
+  const documentActionsClassName = `document-actions relative z-10 flex h-10 min-w-0 items-center justify-end gap-0.5 overflow-visible pe-3.5 text-(--text-secondary) opacity-40 group-hover/titlebar:opacity-100 focus-within:opacity-100 motion-reduce:transition-none ${
     aiAgentResizing
       ? "transition-none"
       : "transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -666,12 +666,12 @@ export function NativeTitleBar({
   const renderTitlebarSidebarSurface = () => nativeWindowChrome ? (
     <span
       aria-hidden="true"
-      className={`native-titlebar-sidebar-surface pointer-events-none absolute top-0 bottom-0 left-0 z-0 bg-(--bg-secondary) ${titlebarSidebarWidthTransitionClassName}`}
+      className={`native-titlebar-sidebar-surface pointer-events-none absolute top-0 bottom-0 start-0 z-0 bg-(--bg-secondary) ${titlebarSidebarWidthTransitionClassName}`}
       style={{ width: titlebarSidebarWidth }}
     >
       <span
         aria-hidden="true"
-        className="native-titlebar-sidebar-divider pointer-events-none absolute top-0 right-0 bottom-0 w-px bg-(--border-default) opacity-100"
+        className="native-titlebar-sidebar-divider pointer-events-none absolute top-0 end-0 bottom-0 w-px bg-(--border-default) opacity-100"
       />
     </span>
   ) : null;
@@ -759,7 +759,7 @@ export function NativeTitleBar({
   const TitleIcon = documentKind === "folder" ? FolderOpen : documentKind === "image" ? ImageIcon : FileText;
   const MarkdownFilesIcon = markdownFilesOpen ? PanelLeft : PanelRight;
   const showMacWindowControls = nativeWindowChrome && platform === "macos";
-  const titlebarLeftPaddingClassName = showMacWindowControls ? "pl-0" : "pl-2";
+  const titlebarLeftPaddingClassName = showMacWindowControls ? "ps-0" : "ps-2";
 
   return (
     <header

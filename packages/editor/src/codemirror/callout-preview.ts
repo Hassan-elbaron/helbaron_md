@@ -18,8 +18,8 @@ import {
   parseMarkdownCalloutMarker,
   type MarkdownCalloutType,
   type ParsedMarkdownCalloutMarker,
-} from "@markra/shared";
-import { defineMarkraPlugin } from "./plugin.ts";
+} from "@helbaron/shared";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import { cursorInsideRange, selectionChangeAffectsReveal } from "./policy.ts";
 
 export interface CalloutPreviewPluginOptions {
@@ -127,12 +127,12 @@ class CalloutHeaderWidget extends WidgetType {
     const title = document.createElement("span");
     const select = document.createElement("select");
 
-    header.className = "markra-callout-header";
-    icon.className = "markra-callout-icon";
+    header.className = "helbaron-callout-header";
+    icon.className = "helbaron-callout-icon";
     icon.setAttribute("aria-hidden", "true");
-    title.className = "markra-callout-title";
+    title.className = "helbaron-callout-title";
     title.textContent = this.callout.marker.label;
-    select.className = "markra-callout-type-select";
+    select.className = "helbaron-callout-type-select";
     select.ariaLabel = "Callout type";
     select.disabled = view.state.readOnly;
 
@@ -178,7 +178,7 @@ class CalloutSpacerWidget extends WidgetType {
 
   toDOM(view: CodeMirrorView) {
     const spacer = view.dom.ownerDocument.createElement("div");
-    spacer.className = `markra-callout-spacer markra-callout-spacer-${this.edge}`;
+    spacer.className = `helbaron-callout-spacer helbaron-callout-spacer-${this.edge}`;
     spacer.setAttribute("aria-hidden", "true");
     return spacer;
   }
@@ -191,9 +191,9 @@ function buildCalloutDecorations(view: CodeMirrorView) {
     const active = selectionTouchesCallout(view, callout);
     for (const [index, lineFrom] of callout.lineFroms.entries()) {
       const positionClasses = [
-        index === 0 ? "markra-callout-first" : "",
-        index === callout.lineFroms.length - 1 ? "markra-callout-last" : "",
-        active ? "markra-callout-active" : "",
+        index === 0 ? "helbaron-callout-first" : "",
+        index === callout.lineFroms.length - 1 ? "helbaron-callout-last" : "",
+        active ? "helbaron-callout-active" : "",
       ].filter(Boolean).join(" ");
       ranges.push(
         Decoration.line({
@@ -201,7 +201,7 @@ function buildCalloutDecorations(view: CodeMirrorView) {
             "data-callout-label": callout.marker.label,
             "data-callout-type": callout.marker.type,
           },
-          class: `cm-markra-callout markra-callout markra-callout-${callout.marker.type} ${positionClasses}`,
+          class: `cm-helbaron-callout helbaron-callout helbaron-callout-${callout.marker.type} ${positionClasses}`,
         }).range(lineFrom),
       );
     }
@@ -253,55 +253,55 @@ const calloutSpacingField = StateField.define<DecorationSet>({
 });
 
 const calloutTheme = EditorView.baseTheme({
-  ".cm-line.cm-markra-callout": {
+  ".cm-line.cm-helbaron-callout": {
     background: "color-mix(in srgb, var(--callout-color, #4f7cac) 6%, transparent)",
     borderLeft: "1px solid color-mix(in srgb, var(--callout-color, #4f7cac) 24%, transparent)",
     borderRight: "1px solid color-mix(in srgb, var(--callout-color, #4f7cac) 24%, transparent)",
     paddingInline: "1em",
   },
-  ".cm-line.markra-callout-first": {
+  ".cm-line.helbaron-callout-first": {
     borderTopLeftRadius: "0.45em",
     borderTopRightRadius: "0.45em",
     borderTop: "1px solid color-mix(in srgb, var(--callout-color, #4f7cac) 24%, transparent)",
     paddingTop: "0.85em",
   },
-  ".cm-line.markra-callout-last": {
+  ".cm-line.helbaron-callout-last": {
     borderBottom: "1px solid color-mix(in srgb, var(--callout-color, #4f7cac) 24%, transparent)",
     borderBottomLeftRadius: "0.45em",
     borderBottomRightRadius: "0.45em",
     paddingBottom: "0.85em",
   },
-  ".markra-callout-spacer": {
+  ".helbaron-callout-spacer": {
     height: "1.25em",
   },
-  ".cm-line.cm-markra-callout.markra-callout-tip": {
+  ".cm-line.cm-helbaron-callout.helbaron-callout-tip": {
     "--callout-color": "#299764",
   },
-  ".cm-line.cm-markra-callout.markra-callout-important": {
+  ".cm-line.cm-helbaron-callout.helbaron-callout-important": {
     "--callout-color": "#8250df",
   },
-  ".cm-line.cm-markra-callout.markra-callout-warning": {
+  ".cm-line.cm-helbaron-callout.helbaron-callout-warning": {
     "--callout-color": "#9a6700",
   },
-  ".cm-line.cm-markra-callout.markra-callout-caution": {
+  ".cm-line.cm-helbaron-callout.helbaron-callout-caution": {
     "--callout-color": "#cf222e",
   },
-  ".cm-line.markra-callout-active": {
+  ".cm-line.helbaron-callout-active": {
     borderColor: "color-mix(in srgb, var(--callout-color, #4f7cac) 38%, transparent)",
   },
-  ".markra-callout-header": {
+  ".helbaron-callout-header": {
     alignItems: "center",
     color: "var(--callout-color, #4f7cac)",
     display: "inline-flex",
     fontWeight: "650",
     gap: "0.4em",
   },
-  ".cm-line.markra-callout-first .markra-callout-type-select": {
+  ".cm-line.helbaron-callout-first .helbaron-callout-type-select": {
     position: "absolute",
     right: "1em",
     top: "0.85em",
   },
-  ".markra-callout-type-select": {
+  ".helbaron-callout-type-select": {
     background: "transparent",
     border: "1px solid transparent",
     borderRadius: "0.35em",
@@ -309,7 +309,7 @@ const calloutTheme = EditorView.baseTheme({
     font: "inherit",
     opacity: "0",
   },
-  ".cm-markra-callout:hover .markra-callout-type-select, .markra-callout-active .markra-callout-type-select, .markra-callout-type-select:focus": {
+  ".cm-helbaron-callout:hover .helbaron-callout-type-select, .helbaron-callout-active .helbaron-callout-type-select, .helbaron-callout-type-select:focus": {
     opacity: "1",
     pointerEvents: "auto",
   },
@@ -319,8 +319,8 @@ export function calloutPreviewPlugin(
   options: CalloutPreviewPluginOptions = {},
 ) {
   const enabled = options.enabled ?? true;
-  return defineMarkraPlugin({
-    id: "markra.callout-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.callout-preview",
     extension: enabled
       ? [
           ViewPlugin.fromClass(

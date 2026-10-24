@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { popoverPosition, type PopoverPositionOptions, type PopoverSize } from "@markra/shared";
+import { popoverPosition, type PopoverPositionOptions, type PopoverSize } from "@helbaron/shared";
 
 type AnchoredPopoverStyleOptions = PopoverPositionOptions & {
   fallbackSize: PopoverSize;

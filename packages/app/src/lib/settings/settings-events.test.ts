@@ -1,4 +1,4 @@
-import { defaultMarkdownShortcuts } from "@markra/editor";
+import { defaultMarkdownShortcuts } from "@helbaron/editor";
 import { defaultAiQuickActionPrompts } from "../ai-actions";
 import { configureAppRuntime, createDefaultAppRuntime, resetAppRuntimeForTests } from "../../runtime";
 import {
@@ -90,8 +90,8 @@ describe("settings events", () => {
     listener?.({ payload: { theme: "dracula" } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://theme-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://theme-changed", { preferences });
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://theme-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://theme-changed", { preferences });
     expect(onThemeChanged).toHaveBeenCalledWith(preferences);
     expect(onThemeChanged).toHaveBeenCalledWith({
       appearanceMode: "light",
@@ -123,8 +123,8 @@ describe("settings events", () => {
     listener?.({ payload: { css: 42 } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://custom-theme-css-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://custom-theme-css-changed", { customThemeCss });
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://custom-theme-css-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://custom-theme-css-changed", { customThemeCss });
     expect(onCustomThemeCssChanged).toHaveBeenCalledWith(customThemeCss);
     expect(onCustomThemeCssChanged).toHaveBeenCalledWith({
       dark: legacyCss,
@@ -148,8 +148,8 @@ describe("settings events", () => {
     listener?.({ payload: { language: "pirate" } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://language-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://language-changed", { language: "fr" });
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://language-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://language-changed", { language: "fr" });
     expect(onLanguageChanged).toHaveBeenCalledWith("fr");
     expect(onLanguageChanged).toHaveBeenCalledTimes(1);
     expect(unlisten).toHaveBeenCalledTimes(1);
@@ -169,8 +169,8 @@ describe("settings events", () => {
     listener?.({ payload: { level: "trace" } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://log-level-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://log-level-changed", { level: "warn" });
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://log-level-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://log-level-changed", { level: "warn" });
     expect(onLogLevelChanged).toHaveBeenCalledWith("error");
     expect(onLogLevelChanged).toHaveBeenCalledTimes(1);
     expect(unlisten).toHaveBeenCalledTimes(1);
@@ -299,8 +299,8 @@ describe("settings events", () => {
     } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://editor-preferences-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://editor-preferences-changed", {
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://editor-preferences-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://editor-preferences-changed", {
       preferences,
       sourceId: expect.any(String)
     });
@@ -364,8 +364,8 @@ describe("settings events", () => {
     listener?.({ payload: { settings } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://export-settings-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://export-settings-changed", {
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://export-settings-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://export-settings-changed", {
       settings
     });
     expect(onSettingsChanged).toHaveBeenCalledWith(settings);
@@ -387,8 +387,8 @@ describe("settings events", () => {
     } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://file-ignore-settings-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://file-ignore-settings-changed", {
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://file-ignore-settings-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://file-ignore-settings-changed", {
       settings: { rules: "generated/\n*.tmp" }
     });
     expect(onSettingsChanged).toHaveBeenCalledWith({ rules: "drafts/\n" });
@@ -414,8 +414,8 @@ describe("settings events", () => {
     listener?.({ payload: { settings } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://backup-settings-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://backup-settings-changed", {
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://backup-settings-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://backup-settings-changed", {
       settings
     });
     expect(onSettingsChanged).toHaveBeenCalledWith(settings);
@@ -441,8 +441,8 @@ describe("settings events", () => {
     listener?.({ payload: { settings } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://acp-agent-settings-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://acp-agent-settings-changed", {
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://acp-agent-settings-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://acp-agent-settings-changed", {
       settings
     });
     expect(onSettingsChanged).toHaveBeenCalledWith(settings);
@@ -470,8 +470,8 @@ describe("settings events", () => {
     listener?.({ payload: { settings } } as Parameters<NonNullable<typeof listener>>[0]);
     cleanup();
 
-    expect(mockedListen).toHaveBeenCalledWith("markra://sync-settings-changed", expect.any(Function));
-    expect(mockedEmit).toHaveBeenCalledWith("markra://sync-settings-changed", {
+    expect(mockedListen).toHaveBeenCalledWith("helbaron://sync-settings-changed", expect.any(Function));
+    expect(mockedEmit).toHaveBeenCalledWith("helbaron://sync-settings-changed", {
       settings
     });
     expect(onSettingsChanged).toHaveBeenCalledWith(settings);

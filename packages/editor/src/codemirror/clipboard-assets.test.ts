@@ -1,6 +1,6 @@
 import { EditorSelection, EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
-import { markdownImageDragMime } from "@markra/shared";
+import { markdownImageDragMime } from "@helbaron/shared";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { markNextPlainTextPaste } from "../plain-text-paste.ts";
 import { codeMirrorClipboardAssetsPlugin } from "./clipboard-assets.ts";
@@ -60,7 +60,7 @@ function paste(
     value: {
       files: fileList(options.files ?? []),
       getData: (type: string) => {
-        if (type === "application/x-markra-plain-text-paste") {
+        if (type === "application/x-helbaron-plain-text-paste") {
           return options.plainTextPaste ? "true" : "";
         }
         if (type === "text/html") return options.html ?? "";
@@ -69,7 +69,7 @@ function paste(
         return "";
       },
       types: options.plainTextPaste
-        ? ["application/x-markra-plain-text-paste", "text/plain"]
+        ? ["application/x-helbaron-plain-text-paste", "text/plain"]
         : [],
     },
   });
@@ -116,14 +116,14 @@ describe("codeMirrorClipboardAssetsPlugin", () => {
 
     expect(event.defaultPrevented).toBe(true);
     await vi.waitFor(() => expect(saveImage).toHaveBeenCalledWith(image));
-    expect(view.dom.querySelector(".markra-image-upload-placeholder")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-upload-placeholder")).not.toBeNull();
     expect(view.state.doc.toString()).toBe("");
 
     pending.resolve({ alt: "Screenshot", src: "assets/pasted-image.png" });
     await vi.waitFor(() => {
       expect(view.state.doc.toString()).toBe("![Screenshot](assets/pasted-image.png)");
     });
-    expect(view.dom.querySelector(".markra-image-upload-placeholder")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-upload-placeholder")).toBeNull();
   });
 
   it("maps a pending image insertion through typing without losing text", async () => {

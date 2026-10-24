@@ -81,7 +81,7 @@ jobs:
           $tag = $env:RELEASE_TAG
           if (-not $tag) {
             # PR validation uses the checked-in bootstrap release, never an unpublished package version.
-            $baseline = Get-ChildItem packaging/winget -Filter Markra.Markra.yaml -Recurse
+            $baseline = Get-ChildItem packaging/winget -Filter Helbaron.Helbaron.yaml -Recurse
             if (@($baseline).Count -ne 1) { throw 'Expected one bootstrap version manifest.' }
             $version = [regex]::Match((Get-Content $baseline.FullName -Raw), '(?m)^PackageVersion: "([^"]+)"$').Groups[1].Value
             $tag = "v$version"
@@ -110,7 +110,7 @@ jobs:
           "tag=$tag" >> $env:GITHUB_OUTPUT
           "url=$($assets[0].browser_download_url)" >> $env:GITHUB_OUTPUT
           "installer=release-assets/$assetName" >> $env:GITHUB_OUTPUT
-          "manifest_dir=generated/winget/manifests/m/Markra/Markra/$version" >> $env:GITHUB_OUTPUT
+          "manifest_dir=generated/winget/manifests/m/Helbaron/Helbaron/$version" >> $env:GITHUB_OUTPUT
 
       - name: Generate WinGet manifests
         env:
@@ -170,7 +170,7 @@ jobs:
       - name: Upload WinGet manifests
         uses: actions/upload-artifact@v4
         with:
-          name: markra-winget-${{ steps.release.outputs.version }}
+          name: helbaron-winget-${{ steps.release.outputs.version }}
           path: generated/winget/
           if-no-files-found: error
 
@@ -199,17 +199,17 @@ jobs:
               throw
             }
           }
-          $packagePath = 'manifests/m/Markra/Markra'
+          $packagePath = 'manifests/m/Helbaron/Helbaron'
           $version = $env:RELEASE_VERSION
           if (Test-PackagePath "$packagePath/$version") {
-            Write-Output "Markra.Markra $version is already in winget-pkgs."
+            Write-Output "Helbaron.Helbaron $version is already in winget-pkgs."
             exit 0
           }
-          $query = [Uri]::EscapeDataString("repo:microsoft/winget-pkgs is:pr is:open in:title Markra.Markra $version")
+          $query = [Uri]::EscapeDataString("repo:microsoft/winget-pkgs is:pr is:open in:title Helbaron.Helbaron $version")
           $prs = Invoke-RestMethod -Uri "https://api.github.com/search/issues?q=$query" -Headers $headers
           $versionPattern = "(?<![\d.])$([regex]::Escape($version))(?![\d.])"
-          if (@($prs.items | Where-Object { $_.title -match '(?<![\w.])Markra\.Markra(?![\w.])' -and $_.title -match $versionPattern }).Count -gt 0) {
-            Write-Output "A WinGet pull request for Markra.Markra $version is already open."
+          if (@($prs.items | Where-Object { $_.title -match '(?<![\w.])Helbaron\.Helbaron(?![\w.])' -and $_.title -match $versionPattern }).Count -gt 0) {
+            Write-Output "A WinGet pull request for Helbaron.Helbaron $version is already open."
             exit 0
           }
 
@@ -219,8 +219,8 @@ jobs:
           }
           if (Test-PackagePath $packagePath) {
             # Preserve metadata and installer settings reviewed in winget-pkgs after the first submission.
-            .\wingetcreate.exe update Markra.Markra --version $version --urls "$env:INSTALLER_URL|x64|user" --release-notes-url "https://github.com/$env:GITHUB_REPOSITORY/releases/tag/$env:RELEASE_TAG" --submit --no-open
+            .\wingetcreate.exe update Helbaron.Helbaron --version $version --urls "$env:INSTALLER_URL|x64|user" --release-notes-url "https://github.com/$env:GITHUB_REPOSITORY/releases/tag/$env:RELEASE_TAG" --submit --no-open
           } else {
-            .\wingetcreate.exe submit $env:MANIFEST_DIR --prtitle "New package: Markra.Markra version $version" --no-open
+            .\wingetcreate.exe submit $env:MANIFEST_DIR --prtitle "New package: Helbaron.Helbaron version $version" --no-open
           }
           if ($LASTEXITCODE -ne 0) { throw "WinGetCreate failed: $LASTEXITCODE" }

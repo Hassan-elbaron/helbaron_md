@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
-import { AI_EDITOR_PREVIEW_ACTION_EVENT, defaultMarkdownShortcuts, type AiEditorPreviewActionDetail } from "@markra/editor";
+import { AI_EDITOR_PREVIEW_ACTION_EVENT, defaultMarkdownShortcuts, type AiEditorPreviewActionDetail } from "@helbaron/editor";
 import App from "../App";
 import {
   confirmNativeMarkdownFileDelete,
@@ -42,6 +42,8 @@ import {
   saveNativeMarkdownBundleFile,
   saveNativeMarkdownFile,
   saveNativePandocFile,
+  saveNativeWordFile,
+  openNativeWordFile,
   saveNativePdfFile,
   searchNativeMarkdownFilesForPath,
   setNativeEditorWindowRestoreState,
@@ -151,8 +153,8 @@ import {
   notifyAppThemeChanged,
   notifyAppWebSearchSettingsChanged
 } from "../lib/settings/settings-events";
-import { fetchAiProviderModels, testAiProviderConnection } from "@markra/providers";
-import { chatCompletion, generateAiAgentSessionTitle } from "@markra/ai";
+import { fetchAiProviderModels, testAiProviderConnection } from "@helbaron/providers";
+import { chatCompletion, generateAiAgentSessionTitle } from "@helbaron/ai";
 import { resolveDesktopOsVersion, resolveDesktopPlatform } from "../lib/platform";
 
 const testAiQuickActionPrompts = vi.hoisted(() => ({
@@ -202,6 +204,8 @@ vi.mock("../lib/tauri", () => ({
   saveNativeMarkdownBundleFile: vi.fn(),
   saveNativeMarkdownFile: vi.fn(),
   saveNativePandocFile: vi.fn(),
+  saveNativeWordFile: vi.fn(),
+  openNativeWordFile: vi.fn(),
   saveNativePdfFile: vi.fn(),
   searchNativeMarkdownFilesForPath: vi.fn(),
   setNativeEditorWindowRestoreState: vi.fn(),
@@ -276,7 +280,7 @@ vi.mock("../lib/settings/app-settings", () => ({
     intervalMinutes: 0,
     lastSyncAt: null,
     provider: "webdav",
-    remotePath: "markra"
+    remotePath: "helbaron"
   },
   defaultStoredFileTreeSort: {
     direction: "ascending",
@@ -878,8 +882,8 @@ vi.mock("../lib/settings/settings-events", () => ({
   notifyAppWebSearchSettingsChanged: vi.fn()
 }));
 
-vi.mock("@markra/ai", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@markra/ai")>();
+vi.mock("@helbaron/ai", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@helbaron/ai")>();
 
   return {
     ...actual,
@@ -888,8 +892,8 @@ vi.mock("@markra/ai", async (importOriginal) => {
   };
 });
 
-vi.mock("@markra/providers", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@markra/providers")>();
+vi.mock("@helbaron/providers", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@helbaron/providers")>();
 
   return {
     ...actual,
@@ -929,6 +933,8 @@ export const mockedSaveNativeHtmlFile = vi.mocked(saveNativeHtmlFile);
 export const mockedSaveNativeMarkdownBundleFile = vi.mocked(saveNativeMarkdownBundleFile);
 export const mockedSaveNativeMarkdownFile = vi.mocked(saveNativeMarkdownFile);
 export const mockedSaveNativePandocFile = vi.mocked(saveNativePandocFile);
+export const mockedSaveNativeWordFile = vi.mocked(saveNativeWordFile);
+export const mockedOpenNativeWordFile = vi.mocked(openNativeWordFile);
 export const mockedSaveNativePdfFile = vi.mocked(saveNativePdfFile);
 export const mockedSearchNativeMarkdownFilesForPath = vi.mocked(searchNativeMarkdownFilesForPath);
 export const mockedSetNativeEditorWindowRestoreState = vi.mocked(setNativeEditorWindowRestoreState);
@@ -1097,7 +1103,7 @@ export function mockOpenMarkdownFile(file: { content: string; name: string; path
 }
 
 export type { NativeMenuHandlers } from "../lib/tauri";
-export { AI_EDITOR_PREVIEW_ACTION_EVENT, AI_EDITOR_PREVIEW_RESTORE_EVENT } from "@markra/editor";
+export { AI_EDITOR_PREVIEW_ACTION_EVENT, AI_EDITOR_PREVIEW_RESTORE_EVENT } from "@helbaron/editor";
 
 export function renderApp() {
   return render(<App />);
@@ -1257,8 +1263,8 @@ export function installAppTestHarness() {
     document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-webkit-scroll-workaround");
     document.documentElement.removeAttribute("data-window");
-    document.getElementById("markra-custom-theme-style")?.remove();
-    document.getElementById("markra-startup-theme-style")?.remove();
+    document.getElementById("helbaron-custom-theme-style")?.remove();
+    document.getElementById("helbaron-startup-theme-style")?.remove();
     document.documentElement.style.removeProperty("background-color");
     document.documentElement.style.removeProperty("color-scheme");
     mockedWatchNativeMarkdownFile.mockResolvedValue(() => {});
@@ -1311,18 +1317,18 @@ export function installAppTestHarness() {
       src: "assets/imported-file.pdf"
     });
     mockedGetNativeShellCommandStatus.mockResolvedValue({
-      commandPath: "/mock-bin/markra",
-      targetPath: "/mock-app/markra",
+      commandPath: "/mock-bin/helbaron",
+      targetPath: "/mock-app/helbaron",
       status: "missing"
     });
     mockedInstallNativeShellCommand.mockResolvedValue({
-      commandPath: "/mock-bin/markra",
-      targetPath: "/mock-app/markra",
+      commandPath: "/mock-bin/helbaron",
+      targetPath: "/mock-app/helbaron",
       status: "installed"
     });
     mockedUninstallNativeShellCommand.mockResolvedValue({
-      commandPath: "/mock-bin/markra",
-      targetPath: "/mock-app/markra",
+      commandPath: "/mock-bin/helbaron",
+      targetPath: "/mock-app/helbaron",
       status: "missing"
     });
     mockedCheckNativeAppUpdate.mockResolvedValue(null);
@@ -1606,7 +1612,7 @@ export function installAppTestHarness() {
       intervalMinutes: 0,
       lastSyncAt: null,
       provider: "webdav",
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
     mockedGetStoredCustomThemeCss.mockResolvedValue({
       dark: ":root[data-theme=\"custom\"] { --bg-primary: #0d1117; }",

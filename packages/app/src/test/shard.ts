@@ -27,12 +27,12 @@ export function runsInTestShard(title: string, shardSpec: string | undefined) {
   if (!shardSpec) return true;
 
   const match = shardSpecPattern.exec(shardSpec);
-  if (!match) throw new Error("MARKRA_APP_TEST_SHARD must use <index>/<count>.");
+  if (!match) throw new Error("HELBARON_APP_TEST_SHARD must use <index>/<count>.");
 
   const shardIndex = Number(match[1]);
   const shardCount = Number(match[2]);
   if (shardIndex > shardCount) {
-    throw new Error("MARKRA_APP_TEST_SHARD index must not exceed count.");
+    throw new Error("HELBARON_APP_TEST_SHARD index must not exceed count.");
   }
 
   return titleHash(title) % shardCount === shardIndex - 1;

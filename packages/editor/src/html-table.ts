@@ -227,7 +227,7 @@ export function resizeHtmlColumns(source: string, document: Document, tableIndex
     groups.at(-1)!.append(col);
   }
   table.element.style.tableLayout = "fixed";
-  table.element.dataset.markraWidthMode = "manual";
+  table.element.dataset.helbaronWidthMode = "manual";
   table.element.style.width = `${widths.reduce((sum, width) => sum + Math.round(width), 0)}px`;
   table.element.style.minWidth = "0px";
   table.element.style.maxWidth = "none";

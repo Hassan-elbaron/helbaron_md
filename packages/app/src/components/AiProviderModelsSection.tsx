@@ -1,6 +1,6 @@
 import { Pencil, Plus } from "lucide-react";
 import { CapabilityPicker, CapabilityPills } from "./AiModelCapabilities";
-import { IconButton } from "@markra/ui";
+import { IconButton } from "@helbaron/ui";
 import {
   AiProviderSwitch,
   AiSettingsActionButton,
@@ -14,8 +14,8 @@ import {
   type AiProviderModelDraft
 } from "../hooks/useAiProviderSettingsPanelState";
 import type { Dispatch, SetStateAction } from "react";
-import type { AiProviderConfig, AiProviderModel, AiProviderSettings } from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+import type { AiProviderConfig, AiProviderModel, AiProviderSettings } from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 
 type Translate = (key: I18nKey) => string;
 

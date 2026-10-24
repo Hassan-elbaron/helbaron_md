@@ -7,10 +7,10 @@ import {
 import type { EditorView } from "@codemirror/view";
 import { insertCodeMirrorMarkdownTable } from "./controller.ts";
 import {
-  defineMarkraPlugin,
-  type MarkraCommand,
-  type MarkraCommandContext,
-  type MarkraUiContribution,
+  defineHelbaronPlugin,
+  type HelbaronCommand,
+  type HelbaronCommandContext,
+  type HelbaronUiContribution,
 } from "./plugin.ts";
 import { headingLevelControlExtension } from "./heading-level.ts";
 
@@ -423,7 +423,7 @@ function calloutTypeFromQuery(query = "") {
 
 function insertCalloutBlock(
   view: EditorView,
-  context?: MarkraCommandContext,
+  context?: HelbaronCommandContext,
 ) {
   if (!isEditable(view) || view.state.selection.ranges.length !== 1) {
     return false;
@@ -445,7 +445,7 @@ function blockCommand(
   spec: BlockSpec,
   labels: BlockLabels,
   keybindings: boolean,
-): MarkraCommand {
+): HelbaronCommand {
   const shared = {
     id: spec.id,
     isEnabled: isEditable,
@@ -546,7 +546,7 @@ function blockCommand(
   }
 }
 
-function blockUi(spec: BlockSpec): MarkraUiContribution {
+function blockUi(spec: BlockSpec): HelbaronUiContribution {
   return {
     command: spec.id,
     group: "block",
@@ -564,8 +564,8 @@ export function blocksPlugin(options: BlocksPluginOptions = {}) {
     (spec) => spec.id !== "block.callout" || (options.callout ?? true),
   );
 
-  return defineMarkraPlugin({
-    id: "markra.blocks",
+  return defineHelbaronPlugin({
+    id: "helbaron.blocks",
     extension: headingLevelControlExtension(
       labels,
       options.headingLevelLabel ?? "Heading level",

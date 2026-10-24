@@ -1,5 +1,5 @@
 import { AlertTriangle, Code2 } from "lucide-react";
-import { t, type AppLanguage } from "@markra/shared";
+import { t, type AppLanguage } from "@helbaron/shared";
 
 type LargeMarkdownNoticeProps = {
   language?: AppLanguage;

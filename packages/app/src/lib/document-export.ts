@@ -1,5 +1,5 @@
 import katexStyles from "katex/dist/katex.css?raw";
-import { isMarkraMathMacroDefinitionSource } from "@markra/editor";
+import { isHelbaronMathMacroDefinitionSource } from "@helbaron/editor";
 import { normalizeSystemFontFamilyName, systemFontFamilyCssValue } from "./editor-font";
 
 export type ExportDocumentFormat = "html" | "pdf" | "docx" | "epub" | "latex" | "markdown";
@@ -147,7 +147,7 @@ body {
   color: #555;
 }
 
-.markdown-export blockquote.markra-callout {
+.markdown-export blockquote.helbaron-callout {
   --callout-color: oklch(52% 0.11 252);
   --callout-bg: color-mix(in srgb, var(--callout-color) 5%, #fbfbfb);
   --callout-border: color-mix(in srgb, var(--callout-color) 22%, #d8d8d8);
@@ -159,23 +159,23 @@ body {
   color: #222;
 }
 
-.markdown-export blockquote.markra-callout-tip {
+.markdown-export blockquote.helbaron-callout-tip {
   --callout-color: oklch(50% 0.11 154);
 }
 
-.markdown-export blockquote.markra-callout-important {
+.markdown-export blockquote.helbaron-callout-important {
   --callout-color: oklch(50% 0.12 292);
 }
 
-.markdown-export blockquote.markra-callout-warning {
+.markdown-export blockquote.helbaron-callout-warning {
   --callout-color: oklch(54% 0.12 72);
 }
 
-.markdown-export blockquote.markra-callout-caution {
+.markdown-export blockquote.helbaron-callout-caution {
   --callout-color: oklch(52% 0.13 28);
 }
 
-.markdown-export .markra-callout-header {
+.markdown-export .helbaron-callout-header {
   display: flex;
   min-height: 1.25em;
   align-items: center;
@@ -187,7 +187,7 @@ body {
   line-height: 1.35;
 }
 
-.markdown-export .markra-callout-icon {
+.markdown-export .helbaron-callout-icon {
   position: relative;
   display: inline-grid;
   width: 1rem;
@@ -199,7 +199,7 @@ body {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 24%, transparent);
 }
 
-.markdown-export .markra-callout-icon::before {
+.markdown-export .helbaron-callout-icon::before {
   display: block;
   width: 0.38rem;
   height: 0.38rem;
@@ -208,56 +208,56 @@ body {
   content: "";
 }
 
-.markdown-export .markra-callout-tip .markra-callout-icon::before {
+.markdown-export .helbaron-callout-tip .helbaron-callout-icon::before {
   width: 0.44rem;
   height: 0.44rem;
   border-radius: 2px;
   transform: rotate(45deg);
 }
 
-.markdown-export .markra-callout-important .markra-callout-icon::before {
+.markdown-export .helbaron-callout-important .helbaron-callout-icon::before {
   width: 0.25rem;
   height: 0.56rem;
   border-radius: 999px;
 }
 
-.markdown-export .markra-callout-warning .markra-callout-icon::before {
+.markdown-export .helbaron-callout-warning .helbaron-callout-icon::before {
   width: 0.62rem;
   height: 0.62rem;
   border-radius: 0;
   clip-path: polygon(50% 4%, 96% 92%, 4% 92%);
 }
 
-.markdown-export .markra-callout-caution .markra-callout-icon::before {
+.markdown-export .helbaron-callout-caution .helbaron-callout-icon::before {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 2px;
 }
 
-.markdown-export blockquote.markra-callout p {
+.markdown-export blockquote.helbaron-callout p {
   margin: 0 0 0.75em;
 }
 
-.markdown-export blockquote.markra-callout p:last-child {
+.markdown-export blockquote.helbaron-callout p:last-child {
   margin-bottom: 0;
 }
 
-.markdown-export .markra-math-render {
+.markdown-export .helbaron-math-render {
   color: #222;
   letter-spacing: 0;
 }
 
-.markdown-export .markra-math-render .katex {
+.markdown-export .helbaron-math-render .katex {
   font-size: 1em;
 }
 
-.markdown-export .markra-math-render-inline {
+.markdown-export .helbaron-math-render-inline {
   display: inline-flex;
   margin: 0 0.08em;
   vertical-align: -0.08em;
 }
 
-.markdown-export .markra-math-render-display {
+.markdown-export .helbaron-math-render-display {
   display: block;
   max-width: 100%;
   margin: 0.85em 0;
@@ -266,27 +266,27 @@ body {
   text-align: center;
 }
 
-.markdown-export .markra-math-render-display .katex-display {
+.markdown-export .helbaron-math-render-display .katex-display {
   margin: 0;
   overflow-x: auto;
   overflow-y: hidden;
 }
 
-.markdown-export .markra-mermaid-render {
+.markdown-export .helbaron-mermaid-render {
   max-width: 100%;
   margin: 1.15em 0;
   overflow-x: auto;
   text-align: center;
 }
 
-.markdown-export .markra-mermaid-render svg {
+.markdown-export .helbaron-mermaid-render svg {
   display: block;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
 
-.markdown-export .markra-mermaid-render-invalid {
+.markdown-export .helbaron-mermaid-render-invalid {
   padding: 0.75em 1em;
   border: 1px solid #d68a80;
   border-radius: 4px;
@@ -320,9 +320,9 @@ body {
   .markdown-export pre,
   .markdown-export table,
   .markdown-export blockquote,
-  .markdown-export blockquote.markra-callout,
-  .markdown-export .markra-math-render-display,
-  .markdown-export .markra-mermaid-render {
+  .markdown-export blockquote.helbaron-callout,
+  .markdown-export .helbaron-math-render-display,
+  .markdown-export .helbaron-mermaid-render {
     break-inside: avoid-page;
     page-break-inside: avoid;
   }
@@ -414,19 +414,19 @@ function removeRenderedMathElement(element: Element) {
 
   if (!parent || (parent.tagName !== "P" && parent.tagName !== "PRE")) return;
   if (parent.textContent?.trim()) return;
-  if (parent.querySelector("img, svg, table, code, .markra-math-render, .markra-mermaid-render")) return;
+  if (parent.querySelector("img, svg, table, code, .helbaron-math-render, .helbaron-mermaid-render")) return;
 
   parent.remove();
 }
 
 function removeRenderedMathMacroDefinitionMarkers(bodyHtml: string) {
-  if (!bodyHtml.includes("data-markra-math-macro-definition")) return bodyHtml;
+  if (!bodyHtml.includes("data-helbaron-math-macro-definition")) return bodyHtml;
   if (typeof document === "undefined") return bodyHtml;
 
   const template = document.createElement("template");
   template.innerHTML = bodyHtml;
 
-  for (const marker of Array.from(template.content.querySelectorAll("[data-markra-math-macro-definition]"))) {
+  for (const marker of Array.from(template.content.querySelectorAll("[data-helbaron-math-macro-definition]"))) {
     removeRenderedMathElement(marker);
   }
 
@@ -435,7 +435,7 @@ function removeRenderedMathMacroDefinitionMarkers(bodyHtml: string) {
 
 function removeRenderedMathMacroDefinitions(bodyHtml: string) {
   if (
-    !bodyHtml.includes("markra-math-render") ||
+    !bodyHtml.includes("helbaron-math-render") ||
     !/\\(?:newcommand|renewcommand|providecommand)/u.test(bodyHtml)
   ) {
     return bodyHtml;
@@ -445,9 +445,9 @@ function removeRenderedMathMacroDefinitions(bodyHtml: string) {
   const template = document.createElement("template");
   template.innerHTML = bodyHtml;
 
-  for (const mathElement of Array.from(template.content.querySelectorAll(".markra-math-render"))) {
+  for (const mathElement of Array.from(template.content.querySelectorAll(".helbaron-math-render"))) {
     const source = renderedMathAnnotationSource(mathElement);
-    if (!isMarkraMathMacroDefinitionSource(source)) continue;
+    if (!isHelbaronMathMacroDefinitionSource(source)) continue;
 
     removeRenderedMathElement(mathElement);
   }

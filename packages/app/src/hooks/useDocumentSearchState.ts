@@ -3,7 +3,7 @@ import {
   findSearchRanges,
   normalizeSearchIndex,
   type SearchRange
-} from "@markra/shared";
+} from "@helbaron/shared";
 
 type DocumentSearchSurface = "source" | "visual";
 

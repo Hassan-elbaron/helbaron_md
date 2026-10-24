@@ -1,4 +1,4 @@
-import { findSearchRanges, type SearchRange } from "@markra/shared";
+import { findSearchRanges, type SearchRange } from "@helbaron/shared";
 import type { NativeMarkdownFolderFile } from "./tauri";
 
 export type WorkspaceSearchFile = Pick<NativeMarkdownFolderFile, "kind" | "name" | "path" | "relativePath">;

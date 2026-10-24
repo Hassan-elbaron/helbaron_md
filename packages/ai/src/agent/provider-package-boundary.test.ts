@@ -1,9 +1,9 @@
-import { createDefaultAiSettings } from "@markra/providers";
+import { createDefaultAiSettings } from "@helbaron/providers";
 
 import { getChatAdapterForProvider } from "./chat-adapters";
 
 describe("provider package boundary", () => {
-  it("builds chat requests from provider settings owned by @markra/providers", () => {
+  it("builds chat requests from provider settings owned by @helbaron/providers", () => {
     const provider = createDefaultAiSettings().providers.find((candidate) => candidate.id === "openai");
     if (!provider) throw new Error("OpenAI provider template is missing.");
     if (!provider.defaultModelId) throw new Error("OpenAI provider default model is missing.");

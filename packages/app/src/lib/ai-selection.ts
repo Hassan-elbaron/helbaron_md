@@ -1,4 +1,4 @@
-import type { AiSelectionContext } from "@markra/ai";
+import type { AiSelectionContext } from "@helbaron/ai";
 
 export function automaticAiSelection(selection: AiSelectionContext | null | undefined) {
   if (selection?.source !== "selection" || !selection.text.trim()) return null;

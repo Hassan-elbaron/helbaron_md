@@ -342,23 +342,23 @@ mod tests {
         let path_style = s3_text_file_url(
             "https://s3.example.test",
             "mock-settings",
-            "markra/settings/markra-settings.json",
+            "helbaron/settings/helbaron-settings.json",
         )
         .expect("path-style S3 URL should be built");
         let virtual_hosted = s3_text_file_url(
             "https://oss-cn-hangzhou.aliyuncs.com",
             "mock-settings",
-            "markra/settings/markra-settings.json",
+            "helbaron/settings/helbaron-settings.json",
         )
         .expect("virtual-hosted S3 URL should be built");
 
         assert_eq!(
             path_style.as_str(),
-            "https://s3.example.test/mock-settings/markra/settings/markra-settings.json"
+            "https://s3.example.test/mock-settings/helbaron/settings/helbaron-settings.json"
         );
         assert_eq!(
             virtual_hosted.as_str(),
-            "https://mock-settings.oss-cn-hangzhou.aliyuncs.com/markra/settings/markra-settings.json"
+            "https://mock-settings.oss-cn-hangzhou.aliyuncs.com/helbaron/settings/helbaron-settings.json"
         );
     }
 
@@ -367,7 +367,7 @@ mod tests {
         let url = s3_text_file_url(
             "https://s3.example.test",
             "mock-settings",
-            "markra/settings/markra-settings.json",
+            "helbaron/settings/helbaron-settings.json",
         )
         .expect("S3 URL should be built");
         let authorization = s3_text_file_authorization_header(

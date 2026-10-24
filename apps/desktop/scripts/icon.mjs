@@ -7,7 +7,7 @@ if (process.platform !== "darwin") process.exit(0);
 
 const desktopRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 // actool's app-icon name must match CFBundleIconName in Info.plist.
-const iconName = "Markra";
+const iconName = "Helbaron";
 const source = join(desktopRoot, "src-tauri", "icons", `${iconName}.icon`);
 const output = join(desktopRoot, "src-tauri", "icons", "generated");
 const catalog = join(output, "Assets.car");

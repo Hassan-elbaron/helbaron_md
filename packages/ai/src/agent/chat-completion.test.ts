@@ -1,5 +1,5 @@
 import { chatCompletion, chatCompletionStream } from "./chat-completion";
-import { createDefaultAiSettings, type AiProviderConfig } from "@markra/providers";
+import { createDefaultAiSettings, type AiProviderConfig } from "@helbaron/providers";
 import { decodeOpenRouterReasoningDetails, decodeProviderMetadata } from "./reasoning-metadata";
 
 function provider(overrides: Partial<AiProviderConfig> = {}): AiProviderConfig {
@@ -1358,7 +1358,7 @@ describe("chatCompletion", () => {
       chatCompletionStream(
         provider({
           apiStyle: "openai-compatible",
-          baseUrl: "https://markra.openai.azure.com",
+          baseUrl: "https://helbaron.openai.azure.com",
           id: "azure-openai",
           name: "Azure OpenAI",
           type: "azure-openai"
@@ -1384,7 +1384,7 @@ describe("chatCompletion", () => {
           "api-key": "secret",
           "user-agent": expect.stringContaining("ai-sdk/azure/")
         }),
-        url: "https://markra.openai.azure.com/openai/deployments/writer-deployment/chat/completions?api-version=2024-10-21"
+        url: "https://helbaron.openai.azure.com/openai/deployments/writer-deployment/chat/completions?api-version=2024-10-21"
       }),
       expect.any(Function)
     );

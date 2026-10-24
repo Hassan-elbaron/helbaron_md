@@ -1,5 +1,5 @@
-import { createAsyncCspellTrieSpellchecker, type Spellchecker } from "@markra/editor";
-import type { AppLanguage } from "@markra/shared";
+import { createAsyncCspellTrieSpellchecker, type Spellchecker } from "@helbaron/editor";
+import type { AppLanguage } from "@helbaron/shared";
 import { decodeTrie } from "cspell-trie-lib";
 import {
   deleteNativeSpellcheckDictionary,
@@ -92,6 +92,8 @@ function spellcheckDictionaryManifestKeyForLanguage(language: AppLanguage): Spel
       return "ptBR";
     case "ru":
       return "ru";
+    // No bundled Arabic dictionary yet; English keeps Latin words in mixed documents checked.
+    case "ar":
     case "en":
     case "ja":
     case "ko":

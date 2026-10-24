@@ -47,7 +47,7 @@ export function MarkdownExportDocument({
     <section
       aria-hidden="true"
       className="markdown-export-document"
-      data-markra-export-document={snapshot.kind}
+      data-helbaron-export-document={snapshot.kind}
     >
       <MarkdownPreviewDocument
         className="markdown-export-paper"

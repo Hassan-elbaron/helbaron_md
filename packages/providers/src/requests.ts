@@ -5,7 +5,7 @@ import {
   providerRequiresApiKey,
   readAiProviderCustomHeaders
 } from "./providers";
-import { isRecord, joinApiUrl } from "@markra/shared";
+import { isRecord, joinApiUrl } from "@helbaron/shared";
 
 type NativeAiHttpRequest = {
   headers: Record<string, string>;
@@ -212,7 +212,7 @@ function readModelName(apiStyle: AiProviderApiStyle | AiProviderRequestStyle, re
   return id;
 }
 
-// Converts provider-specific model metadata into Markra's internal capability flags.
+// Converts provider-specific model metadata into Helbaron's internal capability flags.
 function inferModelCapabilities(apiStyle: AiProviderApiStyle | AiProviderRequestStyle, record: Record<string, unknown>, id: string): AiModelCapability[] {
   if (apiStyle === "google") return inferGoogleCapabilities(record, id);
   if (apiStyle === "openrouter") return inferOpenRouterCapabilities(record, id);
@@ -299,7 +299,7 @@ function inferCapabilitiesFromId(id: string): AiModelCapability[] {
   return normalizeAiModelCapabilities(capabilities, []);
 }
 
-// Identifies model-list entries that are not useful for Markra chat/image workflows.
+// Identifies model-list entries that are not useful for Helbaron chat/image workflows.
 function isUnsupportedModelCapability(value: string) {
   return (
     value.includes("audio") ||

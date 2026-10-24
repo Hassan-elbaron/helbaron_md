@@ -4,7 +4,7 @@ import { linter, lintGutter } from "@codemirror/lint";
 import { EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { basicSetup } from "codemirror";
-import { jsonSyntaxHighlighting } from "@markra/editor/codemirror";
+import { jsonSyntaxHighlighting } from "@helbaron/editor/codemirror";
 
 export function JsonCodeEditor({
   label,
@@ -77,13 +77,13 @@ export function JsonCodeEditor({
         ".cm-line": {
           padding: "0"
         },
-        ".cm-markra-json-literal": {
+        ".cm-helbaron-json-literal": {
           color: "color-mix(in srgb, var(--link-color) 55%, var(--text-heading)) !important"
         },
-        ".cm-markra-json-property": {
+        ".cm-helbaron-json-property": {
           color: "var(--text-heading) !important"
         },
-        ".cm-markra-json-string": {
+        ".cm-helbaron-json-string": {
           color: "var(--text-primary) !important"
         },
         ".cm-scroller": {

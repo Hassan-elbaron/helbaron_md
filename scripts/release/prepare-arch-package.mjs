@@ -42,7 +42,7 @@ const packageDir = requireEnv("ARCH_PACKAGE_DIR");
 const releaseVersion = requireEnv("RELEASE_VERSION").replace(/^v/u, "");
 // PKGBUILD versions cannot contain hyphens, while semver prerelease tags can.
 const packageVersion = releaseVersion.replace(/-/gu, "_");
-const debName = `Markra_${releaseVersion}_linux_x64.deb`;
+const debName = `Helbaron_${releaseVersion}_linux_x64.deb`;
 const matchingDebs = walkFiles(releaseAssetsRoot).filter((filePath) => path.basename(filePath) === debName);
 
 if (matchingDebs.length !== 1) {
@@ -50,7 +50,7 @@ if (matchingDebs.length !== 1) {
 }
 
 const debPath = matchingDebs[0];
-const pkgbuild = `pkgname=markra
+const pkgbuild = `pkgname=helbaron
 pkgver=${packageVersion}
 pkgrel=1
 pkgdesc='AI-native Markdown editor'
@@ -58,7 +58,7 @@ arch=('x86_64')
 url='https://github.com/markrahq/markra'
 license=('AGPL-3.0-only')
 depends=('gtk3' 'libayatana-appindicator' 'webkit2gtk-4.1')
-conflicts=('markra-bin')
+conflicts=('helbaron-bin')
 options=('!strip' '!debug')
 source=('${debName}')
 noextract=('${debName}')

@@ -2,7 +2,7 @@ import {
   sanitizeDiagnosticDetails,
   sanitizeDiagnosticText,
   type DiagnosticDetailValue
-} from "@markra/shared";
+} from "@helbaron/shared";
 import {
   appLogLevelAllows,
   defaultAppLogLevel,

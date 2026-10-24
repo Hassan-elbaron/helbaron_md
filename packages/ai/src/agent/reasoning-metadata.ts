@@ -1,6 +1,6 @@
 import type { ProviderMetadata } from "ai";
 
-import { isRecord } from "@markra/shared";
+import { isRecord } from "@helbaron/shared";
 
 type ReasoningMetadataEnvelope =
   | {

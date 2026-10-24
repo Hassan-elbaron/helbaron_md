@@ -4,7 +4,7 @@ import {
   type ChangeSpec,
 } from "@codemirror/state";
 import type { EditorView } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
 export type InsertionCommandId = "insert.today";
 
@@ -67,8 +67,8 @@ export function insertionsPlugin(options: InsertionsPluginOptions = {}) {
   const labels = { ...defaultInsertionLabels, ...options.labels };
   const now = options.now ?? (() => new Date());
 
-  return defineMarkraPlugin({
-    id: "markra.insertions",
+  return defineHelbaronPlugin({
+    id: "helbaron.insertions",
     commands: [
       {
         id: "insert.today",

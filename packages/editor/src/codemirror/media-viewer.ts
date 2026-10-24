@@ -138,51 +138,51 @@ export function openMediaViewer({
     return button;
   };
   const zoomOut = makeButton(
-    "markra-media-viewer-control-button markra-media-viewer-zoom-out-button",
+    "helbaron-media-viewer-control-button helbaron-media-viewer-zoom-out-button",
     labels.zoomOut,
-    "markra-media-viewer-zoom-out-icon",
+    "helbaron-media-viewer-zoom-out-icon",
     "zoom-out",
   );
   const zoomIn = makeButton(
-    "markra-media-viewer-control-button markra-media-viewer-zoom-in-button",
+    "helbaron-media-viewer-control-button helbaron-media-viewer-zoom-in-button",
     labels.zoomIn,
-    "markra-media-viewer-zoom-in-icon",
+    "helbaron-media-viewer-zoom-in-icon",
     "zoom-in",
   );
   const reset = makeButton(
-    "markra-media-viewer-control-button markra-media-viewer-reset-button",
+    "helbaron-media-viewer-control-button helbaron-media-viewer-reset-button",
     labels.reset,
-    "markra-media-viewer-reset-icon",
+    "helbaron-media-viewer-reset-icon",
     "reset",
   );
   const fullscreen = makeButton(
-    "markra-media-viewer-control-button markra-media-viewer-fullscreen-button",
+    "helbaron-media-viewer-control-button helbaron-media-viewer-fullscreen-button",
     labels.enterFullscreen,
-    "markra-media-viewer-fullscreen-icon",
+    "helbaron-media-viewer-fullscreen-icon",
     "fullscreen",
   );
   const closeButton = makeButton(
-    "markra-media-viewer-close-button",
+    "helbaron-media-viewer-close-button",
     labels.close,
-    "markra-media-viewer-close-icon",
+    "helbaron-media-viewer-close-icon",
     "close",
   );
 
-  dialog.className = "markra-media-viewer-dialog";
+  dialog.className = "helbaron-media-viewer-dialog";
   dialog.setAttribute("role", "dialog");
   dialog.setAttribute("aria-modal", "true");
   dialog.ariaLabel = labels.dialog;
-  panel.className = "markra-media-viewer-panel";
-  toolbar.className = "markra-media-viewer-toolbar";
-  zoomValue.className = "markra-media-viewer-zoom-value";
+  panel.className = "helbaron-media-viewer-panel";
+  toolbar.className = "helbaron-media-viewer-toolbar";
+  zoomValue.className = "helbaron-media-viewer-zoom-value";
   zoomValue.setAttribute("aria-live", "polite");
-  content.className = "markra-media-viewer-content";
+  content.className = "helbaron-media-viewer-content";
   content.tabIndex = 0;
   content.ariaLabel = labels.viewport;
-  canvas.className = "markra-media-viewer-canvas";
-  clonedMedia.classList.add("markra-media-viewer-media");
+  canvas.className = "helbaron-media-viewer-canvas";
+  clonedMedia.classList.add("helbaron-media-viewer-media");
   if (clonedMedia.tagName.toLowerCase() === "img") {
-    clonedMedia.classList.add("markra-media-viewer-image");
+    clonedMedia.classList.add("helbaron-media-viewer-image");
   }
   canvas.append(clonedMedia);
 
@@ -219,7 +219,7 @@ export function openMediaViewer({
     fullscreen.replaceChildren(
       createMediaViewerIcon(
         document,
-        "markra-media-viewer-fullscreen-icon",
+        "helbaron-media-viewer-fullscreen-icon",
         isFullscreen ? "exit-fullscreen" : "fullscreen",
       ),
     );

@@ -1,5 +1,5 @@
-import { buildInlineAiIntentInstruction, type AiEditIntent } from "@markra/ai";
-import type { I18nKey } from "@markra/shared";
+import { buildInlineAiIntentInstruction, type AiEditIntent } from "@helbaron/ai";
+import type { I18nKey } from "@helbaron/shared";
 
 export type AiQuickActionId = Exclude<AiEditIntent, "custom">;
 export type AiQuickActionPrompts = Record<AiQuickActionId, string>;

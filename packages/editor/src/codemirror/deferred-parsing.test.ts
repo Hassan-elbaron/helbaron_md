@@ -10,12 +10,12 @@ import {
   footnotePreviewPlugin,
   getCodeMirrorSpellcheckState,
   liveMarkdown,
-  markraLanguage,
+  helbaronLanguage,
   mathPreviewPlugin,
   rawHtmlPreviewPlugin,
   readCodeMirrorBlockRanges,
   tableFragmentMergePlugin,
-  type MarkraPlugin,
+  type HelbaronPlugin,
 } from "./index.ts";
 import "./dom.test-support.ts";
 
@@ -25,7 +25,7 @@ const prefix = Array.from(
   (_, index) => `Synthetic paragraph ${index}.`,
 ).join("\n\n");
 
-function createView(doc: string, plugin: MarkraPlugin, anchor = doc.length) {
+function createView(doc: string, plugin: HelbaronPlugin, anchor = doc.length) {
   const parent = document.createElement("div");
   document.body.append(parent);
   const view = new EditorView({
@@ -160,7 +160,7 @@ describe("deferred Markdown parsing", () => {
       state: EditorState.create({
         doc: source,
         extensions: [
-          markraLanguage,
+          helbaronLanguage,
           codeMirrorSpellcheckPlugin({
             enabled: true,
             spellchecker: {

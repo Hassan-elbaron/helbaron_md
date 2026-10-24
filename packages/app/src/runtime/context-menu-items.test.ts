@@ -4,7 +4,7 @@ import { history, undo } from "@codemirror/commands";
 import {
   codeMirrorClipboardAssetsPlugin,
   liveMarkdown
-} from "@markra/editor/codemirror";
+} from "@helbaron/editor/codemirror";
 import {
   createEditorContextMenuEntries,
   createEditorContextMenuEntriesFromOptions,
@@ -50,7 +50,7 @@ function clipboardPasteItem(target: Element, text: string) {
       {},
       target
     ),
-    "markra:context:paste"
+    "helbaron:context:paste"
   );
 }
 
@@ -66,7 +66,7 @@ function clipboardContentPasteItem(
       {},
       target
     ),
-    "markra:context:paste"
+    "helbaron:context:paste"
   );
 }
 
@@ -83,7 +83,7 @@ function plainTextPasteItem(
       {},
       target
     ),
-    "markra:context:paste-plain-text"
+    "helbaron:context:paste-plain-text"
   );
 }
 
@@ -240,11 +240,11 @@ describe("editor context menu entries", () => {
     const entries = createEditorContextMenuEntries({ importLocalFiles, importLocalImages }, "en");
     const imageItem = menuItemById(
       entries,
-      "markra:context:import-local-images"
+      "helbaron:context:import-local-images"
     );
     const fileItem = menuItemById(
       entries,
-      "markra:context:import-local-files"
+      "helbaron:context:import-local-files"
     );
 
     expect(imageItem.label).toBe("Import Local Images...");
@@ -271,7 +271,7 @@ describe("editor context menu entries", () => {
       }
     });
 
-    const paste = menuItemById(createEditorContextMenuEntries({}, "en"), "markra:context:paste");
+    const paste = menuItemById(createEditorContextMenuEntries({}, "en"), "helbaron:context:paste");
 
     await Promise.resolve(paste.onSelect?.());
 
@@ -298,7 +298,7 @@ describe("editor context menu entries", () => {
       }
     });
 
-    const paste = menuItemById(createEditorContextMenuEntries({}, "en"), "markra:context:paste");
+    const paste = menuItemById(createEditorContextMenuEntries({}, "en"), "helbaron:context:paste");
 
     await Promise.resolve(paste.onSelect?.());
 
@@ -326,7 +326,7 @@ describe("editor context menu entries", () => {
       createEditorContextMenuEntries({}, "en", {
         readClipboardText
       }),
-      "markra:context:paste"
+      "helbaron:context:paste"
     );
 
     await Promise.resolve(paste.onSelect?.());
@@ -358,7 +358,7 @@ describe("editor context menu entries", () => {
         insertClipboardText,
         readClipboardText
       }),
-      "markra:context:paste"
+      "helbaron:context:paste"
     );
 
     await Promise.resolve(paste.onSelect?.());
@@ -388,7 +388,7 @@ describe("editor context menu entries", () => {
       createEditorContextMenuEntries({}, "en", {
         readClipboardText
       }),
-      "markra:context:paste"
+      "helbaron:context:paste"
     );
 
     await Promise.resolve(paste.onSelect?.());
@@ -411,7 +411,7 @@ describe("markdown file tree context menu entries", () => {
 
     const item = menuItemById(
       createMarkdownFileTreeContextMenuEntries({ openContainingFolder }, "zh-CN", file),
-      "markra:file-tree:open-containing-folder"
+      "helbaron:file-tree:open-containing-folder"
     );
 
     expect(item.label).toBe("打开所在文件夹");
@@ -426,7 +426,7 @@ describe("markdown file tree context menu entries", () => {
 
     const item = menuItemById(
       createMarkdownFileTreeContextMenuEntries({ openContainingFolder }, "zh-CN"),
-      "markra:file-tree:open-containing-folder"
+      "helbaron:file-tree:open-containing-folder"
     );
 
     expect(item.label).toBe("打开所在文件夹");
@@ -457,10 +457,10 @@ describe("markdown file tree context menu entries", () => {
       file
     );
 
-    expect(menuItemById(entries, "markra:file-tree:open-to-side").disabled).toBe(true);
-    expect(menuItemById(entries, "markra:file-tree:delete").disabled).toBe(false);
-    expect(menuItemById(entries, "markra:file-tree:save-as-template").disabled).toBe(true);
-    expect(menuItemById(entries, "markra:file-tree:open-containing-folder").disabled).toBe(true);
-    expect(menuItemById(entries, "markra:file-tree:rename").disabled).toBe(true);
+    expect(menuItemById(entries, "helbaron:file-tree:open-to-side").disabled).toBe(true);
+    expect(menuItemById(entries, "helbaron:file-tree:delete").disabled).toBe(false);
+    expect(menuItemById(entries, "helbaron:file-tree:save-as-template").disabled).toBe(true);
+    expect(menuItemById(entries, "helbaron:file-tree:open-containing-folder").disabled).toBe(true);
+    expect(menuItemById(entries, "helbaron:file-tree:rename").disabled).toBe(true);
   });
 });

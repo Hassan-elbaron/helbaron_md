@@ -1,6 +1,6 @@
 import { cancelAgentProcesses, type AiAgentProcessItem, type AiAgentProcessKind, type AiAgentProcessStatus } from "./process-trace";
 import type { AiDiffTarget } from "./inline";
-import { clampNumber, isRecord } from "@markra/shared";
+import { clampNumber, isRecord } from "@helbaron/shared";
 
 export type AiAgentSessionAttachment = {
   height: number;

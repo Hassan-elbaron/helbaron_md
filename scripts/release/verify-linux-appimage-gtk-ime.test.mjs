@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-appimage-ime-policy-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-appimage-ime-policy-"));
 }
 
 function writeFile(filePath, content = "") {
@@ -32,10 +32,10 @@ test("verify-linux-appimage-gtk-ime accepts a hook that uses host GTK input meth
   const appDir = makeTempDir();
   writeGtkHook(appDir, `#! /usr/bin/env bash
 export GTK_PATH="$APPDIR//usr/lib/x86_64-linux-gnu/gtk-3.0:/usr/lib64/gtk-3.0:/usr/lib/x86_64-linux-gnu/gtk-3.0:/usr/lib/gtk-3.0"
-MARKRA_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES=(
+HELBARON_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES=(
   "/usr/lib/gtk-3.0/3.0.0/immodules.cache"
 )
-for gtk_im_module_file in "\${MARKRA_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES[@]}"; do
+for gtk_im_module_file in "\${HELBARON_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES[@]}"; do
   if [ -r "$gtk_im_module_file" ]; then
     export GTK_IM_MODULE_FILE="$gtk_im_module_file"
     break
@@ -44,7 +44,7 @@ done
 if [ "\${XMODIFIERS:-}" = "@im=fcitx" ]; then
   case "\${GTK_IM_MODULE:-}" in
     ""|"fcitx"|"fcitx5")
-      export MARKRA_FCITX_XIM_FALLBACK=1
+      export HELBARON_FCITX_XIM_FALLBACK=1
       export GTK_IM_MODULE=xim
       ;;
   esac
@@ -73,7 +73,7 @@ export GTK_IM_MODULE_FILE="$APPDIR//usr/lib/x86_64-linux-gnu/gtk-3.0/3.0.0/immod
 test("verify-linux-appimage-gtk-ime rejects hooks without the Arch GTK module path", () => {
   const appDir = makeTempDir();
   writeGtkHook(appDir, `#! /usr/bin/env bash
-MARKRA_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES=(
+HELBARON_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES=(
   "/usr/lib/gtk-3.0/3.0.0/immodules.cache"
 )
 `);
@@ -88,7 +88,7 @@ test("verify-linux-appimage-gtk-ime rejects hooks without the Fcitx XIM fallback
   const appDir = makeTempDir();
   writeGtkHook(appDir, `#! /usr/bin/env bash
 export GTK_PATH="$APPDIR//usr/lib/x86_64-linux-gnu/gtk-3.0:/usr/lib64/gtk-3.0:/usr/lib/x86_64-linux-gnu/gtk-3.0:/usr/lib/gtk-3.0"
-MARKRA_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES=(
+HELBARON_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES=(
   "/usr/lib/gtk-3.0/3.0.0/immodules.cache"
 )
 `);

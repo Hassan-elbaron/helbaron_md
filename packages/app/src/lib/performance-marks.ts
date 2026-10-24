@@ -1,4 +1,4 @@
-import { debug } from "@markra/shared";
+import { debug } from "@helbaron/shared";
 
 let performanceMeasureId = 0;
 
@@ -10,7 +10,7 @@ function getPerformanceTarget() {
 
 export function markAppPerformance(name: string, detail: PerformanceMeasureDetail = {}) {
   const performanceTarget = getPerformanceTarget();
-  const markName = `markra:${name}`;
+  const markName = `helbaron:${name}`;
 
   try {
     performanceTarget?.mark(markName);
@@ -18,7 +18,7 @@ export function markAppPerformance(name: string, detail: PerformanceMeasureDetai
     return;
   }
 
-  debug(() => ["[markra-performance] mark", {
+  debug(() => ["[helbaron-performance] mark", {
     ...detail,
     name
   }]);
@@ -28,9 +28,9 @@ export function startAppPerformanceMeasure(name: string, detail: PerformanceMeas
   const performanceTarget = getPerformanceTarget();
   performanceMeasureId += 1;
   const id = performanceMeasureId;
-  const startMark = `markra:${name}:start:${id}`;
-  const endMark = `markra:${name}:end:${id}`;
-  const measureName = `markra:${name}`;
+  const startMark = `helbaron:${name}:start:${id}`;
+  const endMark = `helbaron:${name}:end:${id}`;
+  const measureName = `helbaron:${name}`;
   const startedAt = performanceTarget?.now?.() ?? Date.now();
 
   try {
@@ -49,7 +49,7 @@ export function startAppPerformanceMeasure(name: string, detail: PerformanceMeas
       // Performance marks are diagnostic only.
     }
 
-    debug(() => ["[markra-performance] measure", {
+    debug(() => ["[helbaron-performance] measure", {
       ...detail,
       durationMs: Math.max(0, endedAt - startedAt),
       name

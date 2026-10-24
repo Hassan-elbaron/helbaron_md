@@ -8,7 +8,7 @@ import {
   codeMirrorSearchPlugin,
   formattingPlugin,
   liveMarkdown,
-} from "@markra/editor/codemirror";
+} from "@helbaron/editor/codemirror";
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useCodeMirrorEditorController } from "./useCodeMirrorEditorController";
@@ -94,7 +94,7 @@ describe("useCodeMirrorEditorController", () => {
     expect(result.current.getSelectionFormattingState().actions).toEqual([]);
   });
 
-  it("runs selection toolbar formatting actions as direct Markra commands", () => {
+  it("runs selection toolbar formatting actions as direct Helbaron commands", () => {
     const doc = "Before text after";
     const from = doc.indexOf("text");
     const view = createView(
@@ -259,7 +259,7 @@ describe("useCodeMirrorEditorController", () => {
       { from: 11, to: 16 },
     ]);
     act(() => result.current.showSearchMatches(matches, 1));
-    expect(view.dom.querySelectorAll(".cm-markra-search-match")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-search-match")).toHaveLength(2);
 
     act(() => {
       expect(result.current.replaceAllSearchMatches(matches, "A")).toBe(true);
@@ -292,7 +292,7 @@ describe("useCodeMirrorEditorController", () => {
         previewId: "synthetic-preview",
       });
     });
-    expect(view.dom.querySelector(".markra-ai-selection-hold")?.textContent).toContain("Original");
+    expect(view.dom.querySelector(".helbaron-ai-selection-hold")?.textContent).toContain("Original");
     expect(result.current.listAiPreviews()).toEqual([preview]);
 
     act(() => {
@@ -309,6 +309,6 @@ describe("useCodeMirrorEditorController", () => {
 
     expect(view.state.doc.toString()).toBe("Before Improved After");
     expect(result.current.listAiPreviews()).toEqual([]);
-    expect(view.dom.querySelector(".markra-ai-selection-hold")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-ai-selection-hold")).toBeNull();
   });
 });

@@ -13,7 +13,7 @@ describe("editor stylesheet", () => {
 
     expect(styles).toContain('@import "@fontsource-variable/noto-sans/wght.css";');
     expect(styles).toContain('@import "@fontsource-variable/noto-sans-sc/wght.css";');
-    expect(styles).toContain('--font-ui: "Noto Sans Variable", "Noto Sans SC Variable"');
+    expect(styles).toContain('--font-ui: "Noto Sans Variable", "Noto Sans Arabic Variable", "Noto Sans SC Variable"');
     expect(styles).toContain("font-family: var(--font-ui);");
     expect(styles).toContain("--editor-font-family: var(--font-ui);");
   });
@@ -41,20 +41,20 @@ describe("editor stylesheet", () => {
     expect(surfaceRule).toContain("font-family: var(--editor-font-family);");
   });
 
-  it("maps Markra document typography onto CodeMirror without styling its widget buffers as content images", () => {
+  it("maps Helbaron document typography onto CodeMirror without styling its widget buffers as content images", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
     expect(styles).toContain(".markdown-paper img:not(.cm-widgetBuffer)");
     expect(styles).toContain(".markdown-paper .cm-widgetBuffer");
     expect(styles).toContain("margin: 0 !important");
-    expect(styles).toContain(".markdown-paper .cm-line.cm-markra-h1");
+    expect(styles).toContain(".markdown-paper .cm-line.cm-helbaron-h1");
     expect(styles).toContain("font-size: 44px");
-    expect(styles).toContain(".markdown-paper .cm-line.cm-markra-h2");
+    expect(styles).toContain(".markdown-paper .cm-line.cm-helbaron-h2");
     expect(styles).toContain("font-size: 31px");
-    expect(styles).toContain(".markdown-paper .cm-line.cm-markra-h3");
+    expect(styles).toContain(".markdown-paper .cm-line.cm-helbaron-h3");
     expect(styles).toContain("font-size: 24px");
-    expect(styles).toContain(".markdown-paper .cm-line.cm-markra-list-item");
-    expect(styles).toContain('[data-markra-list-source="hidden"]::before');
+    expect(styles).toContain(".markdown-paper .cm-line.cm-helbaron-list-item");
+    expect(styles).toContain('[data-helbaron-list-source="hidden"]::before');
     expect(styles).toContain('content: "" !important');
     expect(styles).toContain("opacity: 0 !important");
   });
@@ -101,7 +101,7 @@ describe("editor stylesheet", () => {
 
     for (let level = 1; level <= 6; level += 1) {
       const ruleStart = styles.indexOf(
-        `.markdown-paper .cm-line.cm-markra-h${level} {`,
+        `.markdown-paper .cm-line.cm-helbaron-h${level} {`,
       );
       const ruleEnd = styles.indexOf("\n  }", ruleStart);
       const rule = styles.slice(ruleStart, ruleEnd);
@@ -128,17 +128,17 @@ describe("editor stylesheet", () => {
   it("keeps code block selections between the background and foreground", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const codeLineStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-content-line {",
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line {",
     );
     const codeLineEnd = styles.indexOf("\n  }", codeLineStart);
     const codeLineRule = styles.slice(codeLineStart, codeLineEnd);
     const backdropStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-content-line::after {",
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line::after {",
     );
     const backdropEnd = styles.indexOf("\n  }", backdropStart);
     const backdropRule = styles.slice(backdropStart, backdropEnd);
     const lineNumberStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-content-line[data-code-line-number]::before {",
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line[data-code-line-number]::before {",
     );
     const lineNumberEnd = styles.indexOf("\n  }", lineNumberStart);
     const lineNumberRule = styles.slice(lineNumberStart, lineNumberEnd);
@@ -172,28 +172,28 @@ describe("editor stylesheet", () => {
       return styles.slice(start, end);
     };
     const contentLineRule = ruleFor(
-      ".markdown-paper .cm-line.cm-markra-code-content-line {",
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line {",
     );
     const numberedContentLineRule = ruleFor(
-      '.markdown-paper .cm-line.cm-markra-code-content-line[data-code-line-numbers="true"] {',
+      '.markdown-paper .cm-line.cm-helbaron-code-content-line[data-code-line-numbers="true"] {',
     );
     const contentBackdropRule = ruleFor(
-      ".markdown-paper .cm-line.cm-markra-code-content-line::after {",
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line::after {",
     );
     const numberedContentBackdropRule = ruleFor(
-      '.markdown-paper .cm-line.cm-markra-code-content-line[data-code-line-numbers="true"]::after {',
+      '.markdown-paper .cm-line.cm-helbaron-code-content-line[data-code-line-numbers="true"]::after {',
     );
     const topGapRule = ruleFor(
-      ".markdown-paper .cm-markra-code-top-gap {",
+      ".markdown-paper .cm-helbaron-code-top-gap {",
     );
     const numberedTopGapRule = ruleFor(
-      '.markdown-paper .cm-markra-code-top-gap[data-code-line-numbers="true"] {',
+      '.markdown-paper .cm-helbaron-code-top-gap[data-code-line-numbers="true"] {',
     );
     const closingLineRule = ruleFor(
-      ".markdown-paper .cm-line.cm-markra-code-closing-line {",
+      ".markdown-paper .cm-line.cm-helbaron-code-closing-line {",
     );
     const numberedClosingLineRule = ruleFor(
-      '.markdown-paper .cm-line.cm-markra-code-closing-line[data-code-line-numbers="true"] {',
+      '.markdown-paper .cm-line.cm-helbaron-code-closing-line[data-code-line-numbers="true"] {',
     );
 
     expect(contentLineRule).toContain(
@@ -227,10 +227,10 @@ describe("editor stylesheet", () => {
       "    .cm-line.cm-activeLine {";
     const codeHighlightSelector =
       '.markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused\n' +
-      "    .cm-line.cm-activeLine.cm-markra-code-content-line::after {";
+      "    .cm-line.cm-activeLine.cm-helbaron-code-content-line::after {";
     const calloutHighlightSelector =
       '.markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused\n' +
-      "    .cm-line.cm-activeLine.cm-markra-callout {";
+      "    .cm-line.cm-activeLine.cm-helbaron-callout {";
     const activeLineStart = styles.indexOf(activeLineSelector);
     const activeLineEnd = styles.indexOf("\n  }", activeLineStart);
     const codeHighlightStart = styles.indexOf(codeHighlightSelector);
@@ -270,53 +270,53 @@ describe("editor stylesheet", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
     expect(styles).toContain(
-      ".cm-line.cm-markra-h1.cm-activeLine {\n" +
+      ".cm-line.cm-helbaron-h1.cm-activeLine {\n" +
       "    --typewriter-active-line-offset: -8px;",
     );
     expect(styles).toContain(
-      ".cm-line.cm-markra-h2.cm-activeLine {\n" +
+      ".cm-line.cm-helbaron-h2.cm-activeLine {\n" +
       "    --typewriter-active-line-offset: 8px;",
     );
     expect(styles).toContain(
-      ".cm-line.cm-markra-list-item.cm-activeLine {\n" +
+      ".cm-line.cm-helbaron-list-item.cm-activeLine {\n" +
       "    --typewriter-active-line-offset: 4px;",
     );
     expect(styles).toContain(
-      ".cm-line.cm-activeLine.markra-callout-last {\n" +
+      ".cm-line.cm-activeLine.helbaron-callout-last {\n" +
       "    --typewriter-active-line-offset: -7px;",
     );
     expect(styles).toContain(
-      ".cm-line.cm-activeLine.markra-callout-first.markra-callout-last {\n" +
+      ".cm-line.cm-activeLine.helbaron-callout-first.helbaron-callout-last {\n" +
       "    --typewriter-active-line-offset: 0px;",
     );
     expect(styles).not.toContain(
-      ".cm-line.cm-markra-code-header-line +\n" +
-      "    .cm-line.cm-activeLine.cm-markra-code-content-line {",
+      ".cm-line.cm-helbaron-code-header-line +\n" +
+      "    .cm-line.cm-activeLine.cm-helbaron-code-content-line {",
     );
     expect(styles).not.toContain(
-      ".cm-line.cm-activeLine.cm-markra-code-content-line:has(+ .cm-markra-code-closing-line) {",
+      ".cm-line.cm-activeLine.cm-helbaron-code-content-line:has(+ .cm-helbaron-code-closing-line) {",
     );
   });
 
   it("progressively reveals themed code block controls without inserting a blank header line", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const headerLineStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-header-line {",
+      ".markdown-paper .cm-line.cm-helbaron-code-header-line {",
     );
     const headerLineEnd = styles.indexOf("\n  }", headerLineStart);
     const headerLineRule = styles.slice(headerLineStart, headerLineEnd);
     const headerWrapStart = styles.indexOf(
-      ".markdown-paper .cm-markra-code-header-wrap {",
+      ".markdown-paper .cm-helbaron-code-header-wrap {",
     );
     const headerWrapEnd = styles.indexOf("\n  }", headerWrapStart);
     const headerWrapRule = styles.slice(headerWrapStart, headerWrapEnd);
     const topGapStart = styles.indexOf(
-      ".markdown-paper .cm-markra-code-top-gap {",
+      ".markdown-paper .cm-helbaron-code-top-gap {",
     );
     const topGapEnd = styles.indexOf("\n  }", topGapStart);
     const topGapRule = styles.slice(topGapStart, topGapEnd);
     const headerActionsStart = styles.indexOf(
-      ".markdown-paper .cm-markra-code-header-actions {",
+      ".markdown-paper .cm-helbaron-code-header-actions {",
     );
     const headerActionsEnd = styles.indexOf("\n  }", headerActionsStart);
     const headerActionsRule = styles.slice(
@@ -324,19 +324,19 @@ describe("editor stylesheet", () => {
       headerActionsEnd,
     );
     const hoveredHeaderSelector =
-      '.markdown-paper .cm-line.cm-markra-code-header-line[data-code-block-hovered="true"]\n' +
-      "    .cm-markra-code-header-actions,";
+      '.markdown-paper .cm-line.cm-helbaron-code-header-line[data-code-block-hovered="true"]\n' +
+      "    .cm-helbaron-code-header-actions,";
     const activeHeaderSelector =
-      '.markdown-paper .cm-line.cm-markra-code-header-line[data-code-block-active="true"]';
+      '.markdown-paper .cm-line.cm-helbaron-code-header-line[data-code-block-active="true"]';
     const focusedHeaderSelector =
-      ".markdown-paper .cm-markra-code-header-actions:focus-within {";
+      ".markdown-paper .cm-helbaron-code-header-actions:focus-within {";
     const closingLineStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-closing-line {",
+      ".markdown-paper .cm-line.cm-helbaron-code-closing-line {",
     );
     const closingLineEnd = styles.indexOf("\n  }", closingLineStart);
     const closingLineRule = styles.slice(closingLineStart, closingLineEnd);
     const languageControlStart = styles.indexOf(
-      ".markdown-paper .cm-markra-code-header-actions .markra-code-language-control {",
+      ".markdown-paper .cm-helbaron-code-header-actions .helbaron-code-language-control {",
     );
     const languageControlEnd = styles.indexOf("\n  }", languageControlStart);
     const languageControlRule = styles.slice(
@@ -344,7 +344,7 @@ describe("editor stylesheet", () => {
       languageControlEnd,
     );
     const languageSelectStart = styles.indexOf(
-      ".markdown-paper .cm-markra-code-header-actions .markra-code-language-select {",
+      ".markdown-paper .cm-helbaron-code-header-actions .helbaron-code-language-select {",
     );
     const languageSelectEnd = styles.indexOf("\n  }", languageSelectStart);
     const languageSelectRule = styles.slice(
@@ -352,7 +352,7 @@ describe("editor stylesheet", () => {
       languageSelectEnd,
     );
     const languageSelectFocusStart = styles.indexOf(
-      ".markdown-paper .markra-code-language-select:focus {",
+      ".markdown-paper .helbaron-code-language-select:focus {",
     );
     const languageSelectFocusEnd = styles.indexOf(
       "\n  }",
@@ -363,13 +363,13 @@ describe("editor stylesheet", () => {
       languageSelectFocusEnd,
     );
     const copyButtonStart = styles.indexOf(
-      ".markdown-paper .cm-markra-code-header-actions .markra-code-copy-button {",
+      ".markdown-paper .cm-helbaron-code-header-actions .helbaron-code-copy-button {",
     );
     const copyButtonEnd = styles.indexOf("\n  }", copyButtonStart);
     const copyButtonRule = styles.slice(copyButtonStart, copyButtonEnd);
     const firstContentLineStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-header-line +\n" +
-      "    .cm-line.cm-markra-code-content-line {",
+      ".markdown-paper .cm-line.cm-helbaron-code-header-line +\n" +
+      "    .cm-line.cm-helbaron-code-content-line {",
     );
     const firstContentLineEnd = styles.indexOf(
       "\n  }",
@@ -380,18 +380,18 @@ describe("editor stylesheet", () => {
       firstContentLineEnd,
     );
     const firstContentBackdropStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-header-line +\n" +
-      "    .cm-line.cm-markra-code-content-line::after {",
+      ".markdown-paper .cm-line.cm-helbaron-code-header-line +\n" +
+      "    .cm-line.cm-helbaron-code-content-line::after {",
     );
     const lastContentBackdropStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-code-content-line:has(+ .cm-markra-code-closing-line)::after {",
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line:has(+ .cm-helbaron-code-closing-line)::after {",
     );
 
     expect(headerLineStart).toBeGreaterThanOrEqual(0);
     expect(headerLineRule).toContain("height: 0 !important");
     expect(headerLineRule).toContain("min-height: 0 !important");
     expect(headerLineRule).toContain(
-      "--markra-block-toolbar-block-offset: 12px;",
+      "--helbaron-block-toolbar-block-offset: 12px;",
     );
     expect(headerLineRule).toContain("margin-block: 0 !important");
     expect(headerLineRule).not.toContain("margin-block-start: 8px");
@@ -455,18 +455,18 @@ describe("editor stylesheet", () => {
       "--editor-code-control-bg: color-mix(in srgb, var(--editor-code-bg)",
     );
     expect(styles).not.toContain(
-      ".markdown-paper .cm-line.cm-markra-code-content-line:has(+ .cm-markra-code-closing-line) {\n" +
+      ".markdown-paper .cm-line.cm-helbaron-code-content-line:has(+ .cm-helbaron-code-closing-line) {\n" +
       "    padding-block-end:",
     );
     expect(styles).not.toContain(
-      ".markdown-paper .cm-line.cm-markra-code-closing-line .markra-code-language-control {",
+      ".markdown-paper .cm-line.cm-helbaron-code-closing-line .helbaron-code-language-control {",
     );
   });
 
   it("keeps hidden Markdown empty lines available for pointer hit testing", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const emptyLineBreakRule = [
-      '.markdown-paper .cm-line.cm-markra-empty-line[data-markra-empty-source="hidden"] > br {',
+      '.markdown-paper .cm-line.cm-helbaron-empty-line[data-helbaron-empty-source="hidden"] > br {',
       "    display: none;",
       "  }",
     ].join("\n");
@@ -478,20 +478,20 @@ describe("editor stylesheet", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
     expect(styles).not.toContain(
-      ".markdown-paper .cm-line.cm-markra-empty-line {",
+      ".markdown-paper .cm-line.cm-helbaron-empty-line {",
     );
     expect(styles).not.toContain(
-      ".markdown-paper .cm-line.cm-markra-paragraph-end {",
+      ".markdown-paper .cm-line.cm-helbaron-paragraph-end {",
     );
     expect(styles).not.toContain(
       "padding-block-end: var(--editor-paragraph-spacing) !important;",
     );
-    expect(styles).not.toContain("cm-markra-paragraph-separator");
+    expect(styles).not.toContain("cm-helbaron-paragraph-separator");
     expect(styles).not.toContain(
-      '.cm-markra-empty-line[data-markra-empty-source="hidden"] {',
+      '.cm-helbaron-empty-line[data-helbaron-empty-source="hidden"] {',
     );
     expect(styles).not.toContain(
-      ".cm-line.cm-markra-empty-line + .cm-line.cm-markra-blockquote",
+      ".cm-line.cm-helbaron-empty-line + .cm-line.cm-helbaron-blockquote",
     );
     expect(styles).not.toContain("margin-block-start: 10px;");
   });
@@ -500,41 +500,41 @@ describe("editor stylesheet", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
     expect(styles).toContain(
-      '.cm-line.cm-markra-list-item[data-list-depth="0"] +',
+      '.cm-line.cm-helbaron-list-item[data-list-depth="0"] +',
     );
     expect(styles).toContain(
-      '.cm-line.cm-markra-list-item[data-list-depth="1"]',
+      '.cm-line.cm-helbaron-list-item[data-list-depth="1"]',
     );
     expect(styles).toContain("padding-block-start: 4px !important");
     expect(styles).toContain("padding-block-start: 8px !important");
     expect(styles).toContain("padding-block-start: 12px !important");
     expect(styles).not.toContain("padding-block-start: 24px !important");
-    expect(styles).toContain(".markdown-paper .cm-line.cm-markra-code-content-line");
+    expect(styles).toContain(".markdown-paper .cm-line.cm-helbaron-code-content-line");
     expect(styles).toContain("font-size: 14.4px !important");
-    expect(styles).toContain(".markdown-paper .cm-markra-code-header-actions");
+    expect(styles).toContain(".markdown-paper .cm-helbaron-code-header-actions");
     expect(styles).toContain("opacity: 0 !important");
-    expect(styles).toContain(".markdown-paper .cm-markra-table-wrap");
+    expect(styles).toContain(".markdown-paper .cm-helbaron-table-wrap");
     expect(styles).toContain("padding: 28px 36px 12px 0 !important");
     expect(styles).toContain(
-      ".markdown-paper .cm-line:has(> .cm-markra-table-wrap)",
+      ".markdown-paper .cm-line:has(> .cm-helbaron-table-wrap)",
     );
     expect(styles).toContain("margin: 0 !important");
     expect(styles).toContain(
-      '.markdown-paper .cm-markra-table-wrap[data-table-from] .cm-markra-table[data-width-mode="auto"]',
+      '.markdown-paper .cm-helbaron-table-wrap[data-table-from] .cm-helbaron-table[data-width-mode="auto"]',
     );
     expect(styles).toContain(
-      '.markdown-paper .cm-markra-table-wrap[data-table-from] .cm-markra-table[data-width-mode="even"]',
+      '.markdown-paper .cm-helbaron-table-wrap[data-table-from] .cm-helbaron-table[data-width-mode="even"]',
     );
     expect(styles).toContain(
-      '.markdown-paper[data-editor-theme="github"] .cm-markra-table-wrap',
+      '.markdown-paper[data-editor-theme="github"] .cm-helbaron-table-wrap',
     );
     expect(styles).toContain(
-      '.markdown-paper[data-editor-theme="github-dark"] .cm-markra-table th',
+      '.markdown-paper[data-editor-theme="github-dark"] .cm-helbaron-table th',
     );
-    expect(styles).toContain(".markdown-paper .cm-markra-table th");
+    expect(styles).toContain(".markdown-paper .cm-helbaron-table th");
     expect(styles).toContain("padding: 8px 12px !important");
     expect(styles).toContain(
-      ".markdown-paper .cm-line:has(> .cm-markra-horizontal-rule)",
+      ".markdown-paper .cm-line:has(> .cm-helbaron-horizontal-rule)",
     );
     expect(styles).toContain("margin: 16px 0 12px !important");
   });
@@ -575,8 +575,8 @@ describe("editor stylesheet", () => {
 
     expect(styles).toContain(".markdown-paper .cm-vim-panel");
     expect(styles).toContain(".markdown-source-paper .cm-vim-panel");
-    expect(styles).toContain(".markra-vim-hint");
-    expect(styles).toContain(".markra-vim-feedback");
+    expect(styles).toContain(".helbaron-vim-hint");
+    expect(styles).toContain(".helbaron-vim-feedback");
     expect(styles).toContain("background: var(--editor-bg-secondary)");
     expect(styles).toContain("color: var(--accent)");
   });
@@ -584,17 +584,17 @@ describe("editor stylesheet", () => {
   it("reveals inline CodeMirror block controls when their block is hovered", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const blockLineRuleStart = styles.indexOf(
-      ".markdown-paper .cm-line[data-markra-block-from] {",
+      ".markdown-paper .cm-line[data-helbaron-block-from] {",
     );
     const blockLineRuleEnd = styles.indexOf("\n  }", blockLineRuleStart);
     const blockLineRule = styles.slice(blockLineRuleStart, blockLineRuleEnd);
     const toolbarRuleStart = styles.indexOf(
-      ".markdown-paper .cm-markra-block-toolbar {",
+      ".markdown-paper .cm-helbaron-block-toolbar {",
     );
     const toolbarRuleEnd = styles.indexOf("\n  }", toolbarRuleStart);
     const toolbarRule = styles.slice(toolbarRuleStart, toolbarRuleEnd);
     const revealRuleStart = styles.indexOf(
-      ".markdown-paper .cm-line:hover > .cm-markra-block-toolbar",
+      ".markdown-paper .cm-line:hover > .cm-helbaron-block-toolbar",
     );
     const revealRuleEnd = styles.indexOf("\n  }", revealRuleStart);
     const revealRule = styles.slice(revealRuleStart, revealRuleEnd);
@@ -604,17 +604,17 @@ describe("editor stylesheet", () => {
     expect(toolbarRuleStart).toBeGreaterThanOrEqual(0);
     expect(toolbarRule).toContain("position: absolute !important");
     expect(toolbarRule).toContain(
-      "inset-inline-start: var(--markra-block-toolbar-inline-start, -54px)",
+      "inset-inline-start: var(--helbaron-block-toolbar-inline-start, -54px)",
     );
     expect(toolbarRule).toContain(
-      "top: calc(0.5lh + var(--markra-block-toolbar-block-offset, 0px))",
+      "top: calc(0.5lh + var(--helbaron-block-toolbar-block-offset, 0px))",
     );
     expect(toolbarRule).toContain("margin: 0 !important");
     expect(toolbarRule).toContain("transform: translateY(-50%)");
     expect(toolbarRule).toContain("opacity: 0 !important");
     expect(toolbarRule).toContain("pointer-events: auto");
     expect(styles).toContain(
-      ".markdown-paper .cm-markra-block-toolbar::after",
+      ".markdown-paper .cm-helbaron-block-toolbar::after",
     );
     expect(styles).toContain("inset-inline-end: -12px");
     expect(styles).toContain("width: 12px");
@@ -626,19 +626,19 @@ describe("editor stylesheet", () => {
   it("keeps foldable list controls in separate gutter slots", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const listItemRuleStart = styles.indexOf(
-      ".markdown-paper .markra-list-toggle-item {",
+      ".markdown-paper .helbaron-list-toggle-item {",
     );
     const listItemRuleEnd = styles.indexOf("\n  }", listItemRuleStart);
     const listItemRule = styles.slice(listItemRuleStart, listItemRuleEnd);
     const listButtonRuleStart = styles.indexOf(
-      ".markdown-paper .markra-list-toggle-button {",
+      ".markdown-paper .helbaron-list-toggle-button {",
     );
     const listButtonRuleEnd = styles.indexOf("\n  }", listButtonRuleStart);
     const listButtonRule = styles.slice(listButtonRuleStart, listButtonRuleEnd);
 
     expect(listItemRuleStart).toBeGreaterThanOrEqual(0);
     expect(listItemRule).toContain(
-      "--markra-block-toolbar-inline-start: -94px",
+      "--helbaron-block-toolbar-inline-start: -94px",
     );
     expect(listButtonRuleStart).toBeGreaterThanOrEqual(0);
     expect(listButtonRule).toContain("inset-inline-start: -36px");
@@ -648,7 +648,7 @@ describe("editor stylesheet", () => {
   it("keeps terminal heading tools centered and in separate horizontal slots", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const terminalHeadingToolbarRuleStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-h1 > .cm-markra-block-toolbar,",
+      ".markdown-paper .cm-line.cm-helbaron-h1 > .cm-helbaron-block-toolbar,",
     );
     const terminalHeadingToolbarRuleEnd = styles.indexOf(
       "\n  }",
@@ -661,47 +661,47 @@ describe("editor stylesheet", () => {
 
     expect(terminalHeadingToolbarRuleStart).toBeGreaterThanOrEqual(0);
     expect(terminalHeadingToolbarRule).toContain(
-      ".markdown-paper .cm-line.cm-markra-h6 > .cm-markra-block-toolbar",
+      ".markdown-paper .cm-line.cm-helbaron-h6 > .cm-helbaron-block-toolbar",
     );
     expect(terminalHeadingToolbarRule).toContain(
-      "top: calc(50% + var(--markra-heading-control-center-offset));",
+      "top: calc(50% + var(--helbaron-heading-control-center-offset));",
     );
     expect(terminalHeadingToolbarRule).toContain(
-      "inset-inline-start: var(--markra-heading-toolbar-inline-start);",
+      "inset-inline-start: var(--helbaron-heading-toolbar-inline-start);",
     );
     expect(styles).toContain(
-      "--markra-heading-toolbar-inline-start: -78px;",
+      "--helbaron-heading-toolbar-inline-start: -78px;",
     );
     expect(styles).toContain(
-      ".markdown-paper .cm-line.cm-markra-h6 > .cm-markra-block-toolbar::after {",
+      ".markdown-paper .cm-line.cm-helbaron-h6 > .cm-helbaron-block-toolbar::after {",
     );
     expect(styles).toContain(
-      ".markdown-paper .cm-line.cm-markra-h1 {\n" +
-      "    --markra-heading-control-center-offset: 0px;",
+      ".markdown-paper .cm-line.cm-helbaron-h1 {\n" +
+      "    --helbaron-heading-control-center-offset: 0px;",
     );
     expect(styles).toContain(
-      ".markdown-paper .cm-line.cm-markra-h2 {\n" +
-      "    --markra-heading-control-center-offset: 0px;",
+      ".markdown-paper .cm-line.cm-helbaron-h2 {\n" +
+      "    --helbaron-heading-control-center-offset: 0px;",
     );
     expect(styles).toContain(
-      ".markdown-paper .cm-line.cm-markra-h3 {\n" +
-      "    --markra-heading-control-center-offset: 0px;",
+      ".markdown-paper .cm-line.cm-helbaron-h3 {\n" +
+      "    --helbaron-heading-control-center-offset: 0px;",
     );
     expect(styles).toContain(
-      ".markdown-paper .cm-line.cm-markra-h4 {\n" +
-      "    --markra-heading-control-center-offset: 0px;",
+      ".markdown-paper .cm-line.cm-helbaron-h4 {\n" +
+      "    --helbaron-heading-control-center-offset: 0px;",
     );
-    expect(styles).toContain("--markra-heading-control-center-offset: 0px;");
+    expect(styles).toContain("--helbaron-heading-control-center-offset: 0px;");
     expect(styles).not.toContain(
-      ".cm-line.cm-markra-h3.markra-heading-toggle-heading {\n" +
-      "    --markra-heading-control-center-offset:",
+      ".cm-line.cm-helbaron-h3.helbaron-heading-toggle-heading {\n" +
+      "    --helbaron-heading-control-center-offset:",
     );
   });
 
   it("reserves a third heading-control slot when folding is available", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const foldableHeadingRuleStart = styles.indexOf(
-      ".markdown-paper .cm-line.markra-heading-toggle-heading {",
+      ".markdown-paper .cm-line.helbaron-heading-toggle-heading {",
     );
     const foldableHeadingRuleEnd = styles.indexOf(
       "\n  }",
@@ -714,7 +714,7 @@ describe("editor stylesheet", () => {
 
     expect(foldableHeadingRuleStart).toBeGreaterThanOrEqual(0);
     expect(foldableHeadingRule).toContain(
-      "--markra-heading-toolbar-inline-start: -104px",
+      "--helbaron-heading-toolbar-inline-start: -104px",
     );
     expect(foldableHeadingRule).not.toContain("top:");
   });
@@ -731,19 +731,19 @@ describe("editor stylesheet", () => {
   it("includes readable Markdown table styles", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const autoTableRuleStart = styles.indexOf(
-      ".markdown-paper .markra-table-controls-wrapper[data-width-mode=\"auto\"] .markra-table-scroll > table"
+      ".markdown-paper .helbaron-table-controls-wrapper[data-width-mode=\"auto\"] .helbaron-table-scroll > table"
     );
     const autoTableRuleEnd = styles.indexOf(
-      ".markdown-paper .markra-table-controls-wrapper[data-width-mode=\"auto\"][data-table-alignment=\"center\"]",
+      ".markdown-paper .helbaron-table-controls-wrapper[data-width-mode=\"auto\"][data-table-alignment=\"center\"]",
       autoTableRuleStart
     );
     const autoTableRule = styles.slice(autoTableRuleStart, autoTableRuleEnd);
 
     expect(styles).toContain(".markdown-paper table");
     expect(styles).toContain("table-layout: fixed");
-    expect(styles).toContain(".markdown-paper .markra-table-scroll");
+    expect(styles).toContain(".markdown-paper .helbaron-table-scroll");
     expect(styles).toContain("@apply overflow-x-auto");
-    expect(styles).toContain(".markdown-paper .markra-table-controls-wrapper[data-width-mode=\"auto\"] .markra-table-scroll > table");
+    expect(styles).toContain(".markdown-paper .helbaron-table-controls-wrapper[data-width-mode=\"auto\"] .helbaron-table-scroll > table");
     expect(styles).toContain("table-layout: auto");
     expect(styles).toContain("width: 100%");
     expect(styles).toContain("max-width: 100%");
@@ -755,7 +755,7 @@ describe("editor stylesheet", () => {
     expect(autoTableRuleStart).toBeGreaterThanOrEqual(0);
     expect(autoTableRuleEnd).toBeGreaterThan(autoTableRuleStart);
     expect(autoTableRule).not.toContain("width: max-content");
-    expect(styles).not.toContain("markra-table-short-column");
+    expect(styles).not.toContain("helbaron-table-short-column");
     expect(styles).toContain(".markdown-paper th");
     expect(styles).toContain(".markdown-paper td");
     expect(styles).toContain("background: var(--editor-bg-secondary)");
@@ -847,7 +847,7 @@ describe("editor stylesheet", () => {
   it("adds GitHub heading dividers and sizes in GitHub editor themes", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const githubHeadingStart = styles.indexOf('.markdown-paper[data-editor-theme="github"] h1,');
-    const githubHeadingEnd = styles.indexOf(".markdown-paper .markra-heading-editing", githubHeadingStart);
+    const githubHeadingEnd = styles.indexOf(".markdown-paper .helbaron-heading-editing", githubHeadingStart);
     const githubHeadingStyles = styles.slice(githubHeadingStart, githubHeadingEnd);
 
     expect(githubHeadingStart).toBeGreaterThanOrEqual(0);
@@ -863,21 +863,21 @@ describe("editor stylesheet", () => {
 
   it("positions collapsible list controls", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const buttonStart = styles.indexOf(".markdown-paper .markra-list-toggle-button {");
-    const buttonEnd = styles.indexOf(".markdown-paper .markra-list-toggle-item:hover");
+    const buttonStart = styles.indexOf(".markdown-paper .helbaron-list-toggle-button {");
+    const buttonEnd = styles.indexOf(".markdown-paper .helbaron-list-toggle-item:hover");
     const buttonStyles = styles.slice(buttonStart, buttonEnd);
 
-    expect(styles).toContain(".markdown-paper .markra-list-toggle-item");
+    expect(styles).toContain(".markdown-paper .helbaron-list-toggle-item");
     expect(buttonStyles).toContain("inset-inline-start: -36px");
     expect(buttonStyles).toContain("top: calc((1lh - 1rem) / 2);");
-    expect(styles).toContain(".markdown-paper .markra-list-toggle-item:hover > .markra-list-toggle-button");
-    expect(styles).toContain(".markdown-paper .markra-list-collapsed-content");
+    expect(styles).toContain(".markdown-paper .helbaron-list-toggle-item:hover > .helbaron-list-toggle-button");
+    expect(styles).toContain(".markdown-paper .helbaron-list-collapsed-content");
   });
 
   it("centers task list checkboxes against the current text line", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const checkboxStart = styles.indexOf(".markdown-paper .markra-task-list-checkbox {");
-    const checkboxEnd = styles.indexOf(".markdown-paper .markra-task-list-checkbox:disabled", checkboxStart);
+    const checkboxStart = styles.indexOf(".markdown-paper .helbaron-task-list-checkbox {");
+    const checkboxEnd = styles.indexOf(".markdown-paper .helbaron-task-list-checkbox:disabled", checkboxStart);
     const checkboxStyles = styles.slice(checkboxStart, checkboxEnd);
 
     expect(checkboxStart).toBeGreaterThanOrEqual(0);
@@ -898,14 +898,14 @@ describe("editor stylesheet", () => {
 
   it("keeps the active heading-level control out of the editable text layout", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const labelStart = styles.indexOf(".markdown-paper .markra-heading-level-control {");
-    const labelEnd = styles.indexOf(".markdown-paper .markra-heading-toggle-heading");
+    const labelStart = styles.indexOf(".markdown-paper .helbaron-heading-level-control {");
+    const labelEnd = styles.indexOf(".markdown-paper .helbaron-heading-toggle-heading");
     const labelStyles = styles.slice(labelStart, labelEnd);
     const foldButtonStart = styles.indexOf(
-      ".markdown-paper .markra-heading-toggle-button {",
+      ".markdown-paper .helbaron-heading-toggle-button {",
     );
     const foldButtonEnd = styles.indexOf(
-      ".markdown-paper .markra-heading-toggle-heading:hover",
+      ".markdown-paper .helbaron-heading-toggle-heading:hover",
       foldButtonStart,
     );
     const foldButtonStyles = styles.slice(foldButtonStart, foldButtonEnd);
@@ -914,51 +914,52 @@ describe("editor stylesheet", () => {
     expect(labelEnd).toBeGreaterThan(labelStart);
     expect(labelStyles).toContain("position: absolute");
     expect(labelStyles).toContain("display: inline-grid");
-    expect(labelStyles).toContain("left: -28px");
+    // Logical offset so the control sits before the heading in RTL lines too.
+    expect(labelStyles).toContain("inset-inline-start: -28px");
     expect(labelStyles).toContain("margin: 0");
     expect(labelStyles).toContain(
-      "top: calc(50% + var(--markra-heading-control-center-offset))",
+      "top: calc(50% + var(--helbaron-heading-control-center-offset))",
     );
     expect(labelStyles).toContain("transform: translateY(-50%)");
-    expect(labelStyles).toContain(".markdown-paper .markra-heading-level-list");
+    expect(labelStyles).toContain(".markdown-paper .helbaron-heading-level-list");
     expect(labelStyles).toContain("[role=\"option\"]");
-    expect(labelStyles).toContain(".markdown-paper .markra-heading-level-button::before");
+    expect(labelStyles).toContain(".markdown-paper .helbaron-heading-level-button::before");
     expect(labelStyles).toContain("color: color-mix");
-    expect(foldButtonStyles).toContain("left: -54px");
+    expect(foldButtonStyles).toContain("inset-inline-start: -54px");
   });
 
   it("keeps table add controls hidden until table hover or focus", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const tableLineStart = styles.indexOf(
-      ".markdown-paper .cm-line:has(> .cm-markra-table-wrap) {",
+      ".markdown-paper .cm-line:has(> .cm-helbaron-table-wrap) {",
     );
     const tableLineEnd = styles.indexOf("\n  }", tableLineStart);
     const tableLineStyles = styles.slice(tableLineStart, tableLineEnd);
     const tableAlignStart = styles.indexOf(
-      ".markdown-paper .markra-table-align-controls {",
+      ".markdown-paper .helbaron-table-align-controls {",
     );
     const tableAlignEnd = styles.indexOf("\n  }", tableAlignStart);
     const tableAlignStyles = styles.slice(tableAlignStart, tableAlignEnd);
     const githubTableStart = styles.indexOf(
-      '.markdown-paper[data-editor-theme="github"] .cm-markra-table-wrap,',
+      '.markdown-paper[data-editor-theme="github"] .cm-helbaron-table-wrap,',
     );
     const githubTableEnd = styles.indexOf("\n  }", githubTableStart);
     const githubTableStyles = styles.slice(githubTableStart, githubTableEnd);
-    const tableControlStart = styles.indexOf(".markdown-paper .markra-table-control {");
-    const tableControlEnd = styles.indexOf(".markdown-paper .markra-table-add-column");
+    const tableControlStart = styles.indexOf(".markdown-paper .helbaron-table-control {");
+    const tableControlEnd = styles.indexOf(".markdown-paper .helbaron-table-add-column");
     const tableControlStyles = styles.slice(tableControlStart, tableControlEnd);
 
-    expect(styles).toContain(".markdown-paper .markra-table-controls-wrapper");
-    expect(styles).toContain("@apply relative overflow-visible pt-7 pr-9 pb-9");
-    expect(styles).toContain(".markdown-paper .markra-table-control");
+    expect(styles).toContain(".markdown-paper .helbaron-table-controls-wrapper");
+    expect(styles).toContain("@apply relative overflow-visible pt-7 pe-9 pb-9");
+    expect(styles).toContain(".markdown-paper .helbaron-table-control");
     expect(styles).toContain("opacity: 0");
-    expect(styles).toContain(".markdown-paper .markra-table-controls-wrapper:hover .markra-table-control");
-    expect(styles).toContain(".markdown-paper .markra-table-controls-wrapper:focus-within .markra-table-control");
-    expect(styles).toContain(".markdown-paper .markra-table-add-column");
-    expect(styles).toContain(".markdown-paper .markra-table-add-row");
-    expect(styles).toContain(".markdown-paper .markra-table-align-controls");
+    expect(styles).toContain(".markdown-paper .helbaron-table-controls-wrapper:hover .helbaron-table-control");
+    expect(styles).toContain(".markdown-paper .helbaron-table-controls-wrapper:focus-within .helbaron-table-control");
+    expect(styles).toContain(".markdown-paper .helbaron-table-add-column");
+    expect(styles).toContain(".markdown-paper .helbaron-table-add-row");
+    expect(styles).toContain(".markdown-paper .helbaron-table-align-controls");
     expect(tableLineStyles).toContain(
-      "--markra-block-toolbar-block-offset: 12px",
+      "--helbaron-block-toolbar-block-offset: 12px",
     );
     expect(tableAlignStyles).toContain("top: 0 !important");
     expect(tableAlignStyles).toContain("height: 24px");
@@ -969,27 +970,27 @@ describe("editor stylesheet", () => {
     expect(githubTableStyles).toContain(
       "margin: 0 0 16px !important",
     );
-    expect(styles).toContain(".markdown-paper .markra-table-size-controls");
-    expect(styles).toContain(".markdown-paper .markra-table-size-button[aria-expanded=\"true\"]");
-    expect(styles).toContain(".markdown-paper .markra-table-width-button");
-    expect(styles).toContain(".markdown-paper .markra-table-width-icon");
-    expect(styles).toContain(".markdown-paper .markra-table-controls-wrapper[data-width-mode=\"auto\"]");
+    expect(styles).toContain(".markdown-paper .helbaron-table-size-controls");
+    expect(styles).toContain(".markdown-paper .helbaron-table-size-button[aria-expanded=\"true\"]");
+    expect(styles).toContain(".markdown-paper .helbaron-table-width-button");
+    expect(styles).toContain(".markdown-paper .helbaron-table-width-icon");
+    expect(styles).toContain(".markdown-paper .helbaron-table-controls-wrapper[data-width-mode=\"auto\"]");
     expect(styles).toContain("width: 100%");
     expect(styles).toContain("max-width: 100%");
     expect(styles).toContain("table-layout: auto");
-    expect(styles).toContain(".markdown-paper .markra-table-width-button[aria-pressed=\"true\"]");
-    expect(styles).toContain(".markra-table-size-popover");
-    expect(styles).toContain(".markra-table-size-grid");
+    expect(styles).toContain(".markdown-paper .helbaron-table-width-button[aria-pressed=\"true\"]");
+    expect(styles).toContain(".helbaron-table-size-popover");
+    expect(styles).toContain(".helbaron-table-size-grid");
     expect(styles).toContain("grid-template-columns: repeat(8, 0.875rem)");
-    expect(styles).toContain(".markra-table-size-cell-active");
-    expect(styles).toContain(".markra-table-size-input");
-    expect(styles).toContain(".markdown-paper .markra-table-align-button[aria-pressed=\"true\"]");
-    expect(styles).toContain(".markdown-paper .markra-table-align-icon-left");
-    expect(styles).toContain(".markdown-paper .markra-table-align-icon-center");
-    expect(styles).toContain(".markdown-paper .markra-table-align-icon-right");
-    expect(styles).toContain(".markdown-paper .markra-table-delete-control");
-    expect(styles).toContain(".markdown-paper .markra-table-delete-column");
-    expect(styles).toContain(".markdown-paper .markra-table-delete-row");
+    expect(styles).toContain(".helbaron-table-size-cell-active");
+    expect(styles).toContain(".helbaron-table-size-input");
+    expect(styles).toContain(".markdown-paper .helbaron-table-align-button[aria-pressed=\"true\"]");
+    expect(styles).toContain(".markdown-paper .helbaron-table-align-icon-left");
+    expect(styles).toContain(".markdown-paper .helbaron-table-align-icon-center");
+    expect(styles).toContain(".markdown-paper .helbaron-table-align-icon-right");
+    expect(styles).toContain(".markdown-paper .helbaron-table-delete-control");
+    expect(styles).toContain(".markdown-paper .helbaron-table-delete-column");
+    expect(styles).toContain(".markdown-paper .helbaron-table-delete-row");
     expect(tableControlStyles).not.toContain("container-type");
     expect(tableControlStyles).not.toContain("inline-table");
     expect(tableControlStyles).toContain("--accent");
@@ -998,9 +999,9 @@ describe("editor stylesheet", () => {
   it("draws finalized image selection with the editor default selected-node color", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const imageSelectionStart = styles.indexOf(
-      ".markdown-paper .markra-image-node.markra-image-node-selected"
+      ".markdown-paper .helbaron-image-node.helbaron-image-node-selected"
     );
-    const imageSelectionEnd = styles.indexOf(".markdown-paper .markra-image-node-source-row");
+    const imageSelectionEnd = styles.indexOf(".markdown-paper .helbaron-image-node-source-row");
     const imageSelectionStyles = styles.slice(imageSelectionStart, imageSelectionEnd);
 
     expect(imageSelectionStart).toBeGreaterThanOrEqual(0);
@@ -1015,10 +1016,10 @@ describe("editor stylesheet", () => {
   it("keeps image Markdown source compact instead of inheriting heading typography", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const imageSourceStart = styles.indexOf(
-      ".markdown-paper .markra-image-node-source {",
+      ".markdown-paper .helbaron-image-node-source {",
     );
     const imageSourceEnd = styles.indexOf(
-      ".markdown-paper .markra-image-node-source:focus",
+      ".markdown-paper .helbaron-image-node-source:focus",
       imageSourceStart,
     );
     const imageSourceStyles = styles.slice(imageSourceStart, imageSourceEnd);
@@ -1034,11 +1035,11 @@ describe("editor stylesheet", () => {
 
   it("lets rendered raw HTML collapse source newlines like browser HTML", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const rawHtmlStart = styles.indexOf(".markdown-paper .markra-html-node {");
-    const rawHtmlEnd = styles.indexOf(".markdown-paper .markra-html-node img", rawHtmlStart);
+    const rawHtmlStart = styles.indexOf(".markdown-paper .helbaron-html-node {");
+    const rawHtmlEnd = styles.indexOf(".markdown-paper .helbaron-html-node img", rawHtmlStart);
     const rawHtmlStyles = styles.slice(rawHtmlStart, rawHtmlEnd);
-    const rawHtmlPreStart = styles.indexOf(".markdown-paper .markra-html-node pre", rawHtmlEnd);
-    const rawHtmlPreEnd = styles.indexOf(".markdown-paper .markra-html-node-source", rawHtmlPreStart);
+    const rawHtmlPreStart = styles.indexOf(".markdown-paper .helbaron-html-node pre", rawHtmlEnd);
+    const rawHtmlPreEnd = styles.indexOf(".markdown-paper .helbaron-html-node-source", rawHtmlPreStart);
     const rawHtmlPreStyles = styles.slice(rawHtmlPreStart, rawHtmlPreEnd);
 
     expect(rawHtmlStart).toBeGreaterThanOrEqual(0);
@@ -1051,11 +1052,11 @@ describe("editor stylesheet", () => {
 
   it("gives horizontal rules a forgiving hit target without heavy selected-node feedback", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const renderedRuleStart = styles.indexOf(".markdown-paper .cm-markra-horizontal-rule {");
-    const renderedRuleEnd = styles.indexOf(".markdown-paper .cm-markra-task-checkbox", renderedRuleStart);
+    const renderedRuleStart = styles.indexOf(".markdown-paper .cm-helbaron-horizontal-rule {");
+    const renderedRuleEnd = styles.indexOf(".markdown-paper .cm-helbaron-task-checkbox", renderedRuleStart);
     const renderedRuleStyles = styles.slice(renderedRuleStart, renderedRuleEnd);
     const renderedLineStart = styles.indexOf(
-      ".markdown-paper .cm-line:has(> .cm-markra-horizontal-rule) {",
+      ".markdown-paper .cm-line:has(> .cm-helbaron-horizontal-rule) {",
     );
     const renderedLineEnd = styles.indexOf("\n  }", renderedLineStart);
     const renderedLineStyles = styles.slice(renderedLineStart, renderedLineEnd);
@@ -1067,7 +1068,7 @@ describe("editor stylesheet", () => {
     expect(renderedRuleEnd).toBeGreaterThan(renderedRuleStart);
     expect(renderedRuleStyles).toContain("border-top: 0 !important");
     expect(renderedLineStyles).toContain(
-      "--markra-block-toolbar-block-offset: 22px;",
+      "--helbaron-block-toolbar-block-offset: 22px;",
     );
     expect(ruleStart).toBeGreaterThanOrEqual(0);
     expect(ruleEnd).toBeGreaterThan(ruleStart);
@@ -1083,7 +1084,7 @@ describe("editor stylesheet", () => {
   it("extends range-selection feedback to hidden visual list markers", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const selectedMarkerStart = styles.indexOf(
-      '.markdown-paper .cm-line.cm-markra-list-item[data-markra-list-marker-selected="true"]::before {',
+      '.markdown-paper .cm-line.cm-helbaron-list-item[data-helbaron-list-marker-selected="true"]::before {',
     );
     const selectedMarkerEnd = styles.indexOf("\n  }", selectedMarkerStart);
     const selectedMarkerRule = styles.slice(
@@ -1106,22 +1107,22 @@ describe("editor stylesheet", () => {
     expect(searchChromeStart).toBeGreaterThanOrEqual(0);
     expect(searchChromeEnd).toBeGreaterThan(searchChromeStart);
     expect(searchChromeStyles).toContain("caret-color: transparent");
-    expect(searchChromeStyles).toContain(".markra-image-node.markra-image-node-selected");
-    expect(searchChromeStyles).toContain(".markra-image-node-source-row");
+    expect(searchChromeStyles).toContain(".helbaron-image-node.helbaron-image-node-selected");
+    expect(searchChromeStyles).toContain(".helbaron-image-node-source-row");
   });
 
   it("lets AI insert previews inherit the current Markdown block typography", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
-    expect(styles).toContain(".markdown-paper .markra-ai-preview-insert");
+    expect(styles).toContain(".markdown-paper .helbaron-ai-preview-insert");
     expect(styles).toContain("font-size: inherit");
     expect(styles).toContain("font-weight: inherit");
   });
 
   it("keeps AI selection holds from drawing connected borders across wrapped lines", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const selectionHoldStart = styles.indexOf(".markdown-paper .markra-ai-selection-hold {");
-    const selectionHoldEnd = styles.indexOf(".markdown-paper .markra-ai-preview-widget");
+    const selectionHoldStart = styles.indexOf(".markdown-paper .helbaron-ai-selection-hold {");
+    const selectionHoldEnd = styles.indexOf(".markdown-paper .helbaron-ai-preview-widget");
     const selectionHoldStyles = styles.slice(selectionHoldStart, selectionHoldEnd);
 
     expect(selectionHoldStyles).toContain("box-decoration-break: clone");
@@ -1137,10 +1138,10 @@ describe("editor stylesheet", () => {
     expect(styles).toContain("font-synthesis: style");
 
     const codeMirrorEmphasisStart = styles.indexOf(
-      ".markdown-paper .cm-markra-emphasis {",
+      ".markdown-paper .cm-helbaron-emphasis {",
     );
     const codeMirrorEmphasisEnd = styles.indexOf(
-      ".markdown-paper .cm-markra-inline-code {",
+      ".markdown-paper .cm-helbaron-inline-code {",
     );
     const codeMirrorEmphasisStyles = styles.slice(
       codeMirrorEmphasisStart,
@@ -1156,25 +1157,25 @@ describe("editor stylesheet", () => {
   it("preserves the original link preview and source-editing affordances", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const sourceLabelStart = styles.indexOf(
-      ".markdown-paper .cm-markra-link-source-label {",
+      ".markdown-paper .cm-helbaron-link-source-label {",
     );
     const sourceStart = styles.indexOf(
-      ".markdown-paper .cm-markra-link-source,\n",
+      ".markdown-paper .cm-helbaron-link-source,\n",
     );
     const sourceLabelEnd = styles.indexOf(
-      ".markdown-paper .cm-markra-link-icon {",
+      ".markdown-paper .cm-helbaron-link-icon {",
     );
     const sourceLabelStyles = styles.slice(sourceLabelStart, sourceLabelEnd);
     const iconStyles = styles.slice(
       sourceLabelEnd,
-      styles.indexOf(".markra-document-link-menu", sourceLabelEnd),
+      styles.indexOf(".helbaron-document-link-menu", sourceLabelEnd),
     );
 
     expect(sourceLabelStart).toBeGreaterThanOrEqual(0);
     expect(sourceStart).toBeGreaterThanOrEqual(0);
     expect(sourceLabelEnd).toBeGreaterThan(sourceLabelStart);
     expect(styles).toContain(
-      ".markdown-paper .cm-markra-link-source,\n  .markdown-paper .cm-markra-link-source * {",
+      ".markdown-paper .cm-helbaron-link-source,\n  .markdown-paper .cm-helbaron-link-source * {",
     );
     expect(styles.slice(sourceStart, sourceLabelStart)).toContain(
       "color: var(--editor-markdown-syntax-color)",
@@ -1205,7 +1206,7 @@ describe("editor stylesheet", () => {
       darkSyntaxEnd,
     );
     const visualSyntaxRuleStart = styles.indexOf(
-      ".markdown-paper .cm-markra-syntax-character {",
+      ".markdown-paper .cm-helbaron-syntax-character {",
     );
     const visualSyntaxRuleEnd = styles.indexOf(
       "\n  }",
@@ -1216,7 +1217,7 @@ describe("editor stylesheet", () => {
       visualSyntaxRuleEnd,
     );
     const sourceSyntaxRuleStart = styles.indexOf(
-      ".markdown-source-paper .cm-markra-syntax-character {",
+      ".markdown-source-paper .cm-helbaron-syntax-character {",
     );
     const sourceSyntaxRuleEnd = styles.indexOf(
       "\n  }",
@@ -1258,7 +1259,7 @@ describe("editor stylesheet", () => {
       "color: var(--source-markdown-syntax-color) !important",
     );
     expect(styles).toContain(
-      ".markdown-paper .markra-md-delimiter {\n    @apply text-(--editor-markdown-syntax-color);",
+      ".markdown-paper .helbaron-md-delimiter {\n    @apply text-(--editor-markdown-syntax-color);",
     );
   });
 
@@ -1302,15 +1303,15 @@ describe("editor stylesheet", () => {
   it("removes CodeMirror's inline baseline around standalone image editors", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
     const imageLineStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-image-line {",
+      ".markdown-paper .cm-line.cm-helbaron-image-line {",
     );
     const imageNodeStart = styles.indexOf(
-      ".markdown-paper .markra-image-node {",
+      ".markdown-paper .helbaron-image-node {",
       imageLineStart,
     );
     const imageLineStyles = styles.slice(imageLineStart, imageNodeStart);
     const standaloneNodeStart = styles.indexOf(
-      ".markdown-paper .cm-line.cm-markra-image-line > .markra-image-node {",
+      ".markdown-paper .cm-line.cm-helbaron-image-line > .helbaron-image-node {",
       imageLineStart,
     );
     const standaloneNodeStyles = styles.slice(
@@ -1318,12 +1319,12 @@ describe("editor stylesheet", () => {
       imageNodeStart,
     );
     const imageNodeImageStart = styles.indexOf(
-      ".markdown-paper .markra-image-frame > img {",
+      ".markdown-paper .helbaron-image-frame > img {",
       imageNodeStart,
     );
     const imageNodeImageStyles = styles.slice(
       imageNodeImageStart,
-      styles.indexOf(".markdown-paper .markra-image-upload-placeholder", imageNodeImageStart),
+      styles.indexOf(".markdown-paper .helbaron-image-upload-placeholder", imageNodeImageStart),
     );
 
     expect(imageLineStart).toBeGreaterThanOrEqual(0);
@@ -1339,8 +1340,8 @@ describe("editor stylesheet", () => {
 
   it("keeps hidden markdown delimiters available as zero-width caret anchors", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const delimiterStart = styles.indexOf(".markdown-paper .markra-md-hidden-delimiter {");
-    const delimiterEnd = styles.indexOf(".markdown-paper .markra-math-source-hidden-display.markra-md-hidden-delimiter {");
+    const delimiterStart = styles.indexOf(".markdown-paper .helbaron-md-hidden-delimiter {");
+    const delimiterEnd = styles.indexOf(".markdown-paper .helbaron-math-source-hidden-display.helbaron-md-hidden-delimiter {");
     const delimiterStyles = styles.slice(delimiterStart, delimiterEnd);
 
     expect(delimiterStart).toBeGreaterThanOrEqual(0);
@@ -1354,8 +1355,8 @@ describe("editor stylesheet", () => {
 
   it("keeps hidden display math source available for the native caret", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const sourceStart = styles.indexOf(".markdown-paper .markra-math-source-hidden-display.markra-md-hidden-delimiter {");
-    const sourceEnd = styles.indexOf(".markdown-paper .markra-live-mark-strong");
+    const sourceStart = styles.indexOf(".markdown-paper .helbaron-math-source-hidden-display.helbaron-md-hidden-delimiter {");
+    const sourceEnd = styles.indexOf(".markdown-paper .helbaron-live-mark-strong");
     const sourceStyles = styles.slice(sourceStart, sourceEnd);
 
     expect(sourceStyles).toContain("display: inline-block");
@@ -1367,11 +1368,11 @@ describe("editor stylesheet", () => {
 
   it("styles active display math as editable source with a preview", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const activeSourceStart = styles.indexOf(".markdown-paper .markra-math-source-active {");
-    const activeSourceEnd = styles.indexOf(".markdown-paper .markra-math-token-delimiter");
+    const activeSourceStart = styles.indexOf(".markdown-paper .helbaron-math-source-active {");
+    const activeSourceEnd = styles.indexOf(".markdown-paper .helbaron-math-token-delimiter");
     const activeSourceStyles = styles.slice(activeSourceStart, activeSourceEnd);
-    const activeBreakStart = styles.indexOf('.markdown-paper .markra-math-source-active[data-type="hardbreak"] {');
-    const activeBreakEnd = styles.indexOf(".markdown-paper .markra-math-token-delimiter");
+    const activeBreakStart = styles.indexOf('.markdown-paper .helbaron-math-source-active[data-type="hardbreak"] {');
+    const activeBreakEnd = styles.indexOf(".markdown-paper .helbaron-math-token-delimiter");
     const activeBreakStyles = styles.slice(activeBreakStart, activeBreakEnd);
 
     expect(activeSourceStart).toBeGreaterThanOrEqual(0);
@@ -1384,18 +1385,18 @@ describe("editor stylesheet", () => {
     expect(activeBreakStyles).toContain("line-height: inherit");
     expect(activeBreakStyles).not.toContain('content: "\\A"');
     expect(activeBreakStyles).not.toContain("display: block");
-    expect(styles).toContain(".markdown-paper .markra-math-render-active-preview");
+    expect(styles).toContain(".markdown-paper .helbaron-math-render-active-preview");
     expect(styles).toContain("margin-top");
   });
 
   it("keeps AI diff action controls visually quiet until interaction", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
-    expect(styles).toContain(".markdown-paper .markra-ai-preview-actions-quiet");
+    expect(styles).toContain(".markdown-paper .helbaron-ai-preview-actions-quiet");
     expect(styles).toContain("opacity: 0.58");
     expect(styles).not.toContain("opacity-0");
-    expect(styles).toContain(".markdown-paper .markra-ai-preview-widget:hover .markra-ai-preview-actions-quiet");
-    expect(styles).toContain(".markdown-paper .markra-ai-preview-widget:focus-within .markra-ai-preview-actions-quiet");
+    expect(styles).toContain(".markdown-paper .helbaron-ai-preview-widget:hover .helbaron-ai-preview-actions-quiet");
+    expect(styles).toContain(".markdown-paper .helbaron-ai-preview-widget:focus-within .helbaron-ai-preview-actions-quiet");
   });
 
   it("keeps AI preview action controls above nearby Markdown content", () => {
@@ -1408,17 +1409,17 @@ describe("editor stylesheet", () => {
 
   it("reveals the code block language selector below the block without taking layout space", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const codeBlockStart = styles.indexOf(".markdown-paper .markra-code-block {");
-    const codeBlockEnd = styles.indexOf(".markdown-paper .markra-code-language-control");
+    const codeBlockStart = styles.indexOf(".markdown-paper .helbaron-code-block {");
+    const codeBlockEnd = styles.indexOf(".markdown-paper .helbaron-code-language-control");
     const codeBlockStyles = styles.slice(codeBlockStart, codeBlockEnd);
-    const languageControlStart = styles.indexOf(".markdown-paper .markra-code-language-control {");
-    const languageControlEnd = styles.indexOf(".markdown-paper .markra-code-language-select");
+    const languageControlStart = styles.indexOf(".markdown-paper .helbaron-code-language-control {");
+    const languageControlEnd = styles.indexOf(".markdown-paper .helbaron-code-language-select");
     const languageControlStyles = styles.slice(languageControlStart, languageControlEnd);
-    const languageRevealStart = styles.indexOf(".markdown-paper .markra-code-block:hover .markra-code-language-control");
-    const languageRevealEnd = styles.indexOf(".markdown-paper .markra-code-language-select");
+    const languageRevealStart = styles.indexOf(".markdown-paper .helbaron-code-block:hover .helbaron-code-language-control");
+    const languageRevealEnd = styles.indexOf(".markdown-paper .helbaron-code-language-select");
     const languageRevealStyles = styles.slice(languageRevealStart, languageRevealEnd);
-    const languageSelectStart = styles.indexOf(".markdown-paper .markra-code-language-select {");
-    const languageSelectEnd = styles.indexOf(".markdown-paper .markra-code-language-select:focus");
+    const languageSelectStart = styles.indexOf(".markdown-paper .helbaron-code-language-select {");
+    const languageSelectEnd = styles.indexOf(".markdown-paper .helbaron-code-language-select:focus");
     const languageSelectStyles = styles.slice(languageSelectStart, languageSelectEnd);
 
     expect(codeBlockStyles).toContain("overflow-visible");
@@ -1438,8 +1439,8 @@ describe("editor stylesheet", () => {
 
   it("wraps code block lines by default", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const codeStart = styles.indexOf(".markdown-paper .markra-code-block code {");
-    const codeEnd = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .markra-code-block pre");
+    const codeStart = styles.indexOf(".markdown-paper .helbaron-code-block code {");
+    const codeEnd = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .helbaron-code-block pre");
     const codeStyles = styles.slice(codeStart, codeEnd);
 
     expect(codeStyles).toContain("white-space: pre-wrap");
@@ -1448,10 +1449,10 @@ describe("editor stylesheet", () => {
 
   it("allows code block wrapping to be disabled", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const preStart = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .markra-code-block pre");
-    const preEnd = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .markra-code-block code");
+    const preStart = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .helbaron-code-block pre");
+    const preEnd = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .helbaron-code-block code");
     const preStyles = styles.slice(preStart, preEnd);
-    const codeStart = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .markra-code-block code");
+    const codeStart = styles.indexOf(".markdown-paper[data-code-block-wrap=\"false\"] .helbaron-code-block code");
     const codeEnd = styles.indexOf(".markdown-paper .hljs-keyword");
     const codeStyles = styles.slice(codeStart, codeEnd);
 
@@ -1466,27 +1467,27 @@ describe("editor stylesheet", () => {
 
   it("folds Mermaid code source while showing the rendered preview", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
-    const mermaidFoldStart = styles.indexOf(".markdown-paper .markra-code-block[data-mermaid-mode=\"preview\"]");
-    const mermaidFoldEnd = styles.indexOf(".markdown-paper .markra-mermaid-render {");
+    const mermaidFoldStart = styles.indexOf(".markdown-paper .helbaron-code-block[data-mermaid-mode=\"preview\"]");
+    const mermaidFoldEnd = styles.indexOf(".markdown-paper .helbaron-mermaid-render {");
     const mermaidFoldStyles = styles.slice(mermaidFoldStart, mermaidFoldEnd);
     const mermaidZoomRevealStart = styles.indexOf(
-      ".markdown-paper .markra-code-block[data-mermaid-mode=\"preview\"]:hover .markra-mermaid-zoom-button"
+      ".markdown-paper .helbaron-code-block[data-mermaid-mode=\"preview\"]:hover .helbaron-mermaid-zoom-button"
     );
-    const mermaidZoomRevealEnd = styles.indexOf(".markdown-paper .markra-mermaid-zoom-button:hover");
+    const mermaidZoomRevealEnd = styles.indexOf(".markdown-paper .helbaron-mermaid-zoom-button:hover");
     const mermaidZoomRevealStyles = styles.slice(mermaidZoomRevealStart, mermaidZoomRevealEnd);
-    const mermaidZoomButtonStart = styles.indexOf(".markdown-paper .markra-mermaid-zoom-button {");
+    const mermaidZoomButtonStart = styles.indexOf(".markdown-paper .helbaron-mermaid-zoom-button {");
     const mermaidZoomButtonEnd =
       styles.indexOf("\n  }\n", mermaidZoomButtonStart) + "\n  }\n".length;
     const mermaidZoomButtonStyles = styles.slice(mermaidZoomButtonStart, mermaidZoomButtonEnd);
-    const mermaidZoomHoverStart = styles.indexOf(".markdown-paper .markra-mermaid-zoom-button:hover");
+    const mermaidZoomHoverStart = styles.indexOf(".markdown-paper .helbaron-mermaid-zoom-button:hover");
     const mermaidZoomHoverEnd = styles.indexOf("\n  }\n", mermaidZoomHoverStart) + "\n  }\n".length;
     const mermaidZoomHoverStyles = styles.slice(mermaidZoomHoverStart, mermaidZoomHoverEnd);
-    const mermaidZoomCloseHoverStart = styles.indexOf(".markra-media-viewer-close-button:hover");
+    const mermaidZoomCloseHoverStart = styles.indexOf(".helbaron-media-viewer-close-button:hover");
     const mermaidZoomCloseHoverEnd =
       styles.indexOf("\n  }\n", mermaidZoomCloseHoverStart) + "\n  }\n".length;
     const mermaidZoomCloseHoverStyles = styles.slice(mermaidZoomCloseHoverStart, mermaidZoomCloseHoverEnd);
 
-    expect(mermaidFoldStyles).toContain(".markra-code-line-numbers");
+    expect(mermaidFoldStyles).toContain(".helbaron-code-line-numbers");
     expect(mermaidFoldStyles).toContain("pre");
     expect(mermaidFoldStyles).toContain("display: none");
     expect(mermaidFoldStyles).toContain("background: transparent");
@@ -1494,13 +1495,13 @@ describe("editor stylesheet", () => {
     expect(mermaidFoldStyles).toContain("contain: layout paint style");
     expect(mermaidFoldStyles).toContain("will-change: transform");
     expect(mermaidFoldStyles).toContain("transform: translateZ(0)");
-    expect(mermaidFoldStyles).toContain(".markra-code-language-control");
+    expect(mermaidFoldStyles).toContain(".helbaron-code-language-control");
     expect(styles).toContain(
-      ".markdown-paper .cm-markra-code-top-gap:has(+ .cm-line .markra-code-block[data-mermaid-mode=\"preview\"]) {\n" +
+      ".markdown-paper .cm-helbaron-code-top-gap:has(+ .cm-line .helbaron-code-block[data-mermaid-mode=\"preview\"]) {\n" +
       "    display: none;",
     );
-    expect(styles).toContain(".markdown-paper .markra-mermaid-preview-button");
-    expect(styles).toContain(".markdown-paper .markra-mermaid-zoom-button");
+    expect(styles).toContain(".markdown-paper .helbaron-mermaid-preview-button");
+    expect(styles).toContain(".markdown-paper .helbaron-mermaid-zoom-button");
     expect(mermaidZoomButtonStyles).toContain("top-4");
     expect(mermaidZoomRevealStyles).not.toContain(":focus-within");
     expect(mermaidZoomRevealStyles).toContain("opacity: 1");
@@ -1509,16 +1510,16 @@ describe("editor stylesheet", () => {
     expect(mermaidZoomHoverStyles).not.toContain("box-shadow");
     expect(mermaidZoomCloseHoverStyles).not.toContain(":focus-visible");
     expect(mermaidZoomCloseHoverStyles).not.toContain("box-shadow");
-    expect(styles).toContain(".markra-media-viewer-dialog");
-    expect(styles).toContain(".markra-media-viewer-dialog[data-fullscreen=\"true\"]");
-    expect(styles).toContain(".markra-media-viewer-toolbar");
-    expect(styles).toContain(".markra-media-viewer-control-button");
-    expect(styles).toContain(".markra-media-viewer-content[data-dragging=\"true\"]");
-    expect(styles).toContain(".markra-media-viewer-canvas");
+    expect(styles).toContain(".helbaron-media-viewer-dialog");
+    expect(styles).toContain(".helbaron-media-viewer-dialog[data-fullscreen=\"true\"]");
+    expect(styles).toContain(".helbaron-media-viewer-toolbar");
+    expect(styles).toContain(".helbaron-media-viewer-control-button");
+    expect(styles).toContain(".helbaron-media-viewer-content[data-dragging=\"true\"]");
+    expect(styles).toContain(".helbaron-media-viewer-canvas");
     expect(styles).toContain(
-      ".markdown-paper .markra-code-block[data-mermaid-mode=\"preview\"] .markra-mermaid-render"
+      ".markdown-paper .helbaron-code-block[data-mermaid-mode=\"preview\"] .helbaron-mermaid-render"
     );
-    expect(styles).toContain(".markdown-paper .markra-code-block[data-mermaid-mode=\"source\"] .markra-code-copy-button");
+    expect(styles).toContain(".markdown-paper .helbaron-code-block[data-mermaid-mode=\"source\"] .helbaron-code-copy-button");
   });
 
   it("uses a richer palette for inline code and syntax highlights", () => {
@@ -1527,10 +1528,10 @@ describe("editor stylesheet", () => {
     const inlineCodeEnd = styles.indexOf(".markdown-paper pre {");
     const inlineCodeStyles = styles.slice(inlineCodeStart, inlineCodeEnd);
     const preCodeStart = styles.indexOf(".markdown-paper pre code {");
-    const preCodeEnd = styles.indexOf(".markdown-paper .markra-code-block");
+    const preCodeEnd = styles.indexOf(".markdown-paper .helbaron-code-block");
     const preCodeStyles = styles.slice(preCodeStart, preCodeEnd);
-    const activeInlineCodeStart = styles.indexOf(".markdown-paper code .markra-live-mark-inlineCode {");
-    const activeInlineCodeEnd = styles.indexOf(".markdown-paper .markra-ai-preview-delete");
+    const activeInlineCodeStart = styles.indexOf(".markdown-paper code .helbaron-live-mark-inlineCode {");
+    const activeInlineCodeEnd = styles.indexOf(".markdown-paper .helbaron-ai-preview-delete");
     const activeInlineCodeStyles = styles.slice(activeInlineCodeStart, activeInlineCodeEnd);
     const commentStart = styles.indexOf(
       ".markdown-paper .hljs-comment,",
@@ -1595,11 +1596,11 @@ describe("editor stylesheet", () => {
     expect(styles).toContain("[data-theme=\"solarized-light\"]");
     expect(styles).toContain("[data-theme=\"solarized-dark\"]");
     expect(styles).toContain("[data-theme=\"catppuccin-mocha\"]");
-    expect(styles).toContain(".markdown-paper .markra-code-copy-button");
-    expect(styles).toContain(".markdown-paper .markra-code-block:hover .markra-code-copy-button");
-    expect(styles).toContain(".markdown-paper .markra-code-block:focus-within .markra-code-copy-button");
-    expect(styles).toContain(".markdown-paper .markra-code-copy-button[data-copied=\"true\"] .markra-code-copy-icon");
-    expect(styles).toContain(".markdown-paper .markra-code-copy-button[data-copied=\"true\"] .markra-code-copy-check-icon");
+    expect(styles).toContain(".markdown-paper .helbaron-code-copy-button");
+    expect(styles).toContain(".markdown-paper .helbaron-code-block:hover .helbaron-code-copy-button");
+    expect(styles).toContain(".markdown-paper .helbaron-code-block:focus-within .helbaron-code-copy-button");
+    expect(styles).toContain(".markdown-paper .helbaron-code-copy-button[data-copied=\"true\"] .helbaron-code-copy-icon");
+    expect(styles).toContain(".markdown-paper .helbaron-code-copy-button[data-copied=\"true\"] .helbaron-code-copy-check-icon");
   });
 
   it("keeps the GitHub theme aligned with Primer light Markdown colors", () => {
@@ -1636,7 +1637,7 @@ describe("editor stylesheet", () => {
     const tableEnd = styles.indexOf(".markdown-paper[data-editor-theme=\"github\"] th,", tableStart);
     const tableStyles = styles.slice(tableStart, tableEnd);
     const cellStart = tableEnd;
-    const cellEnd = styles.indexOf(".markdown-paper .markra-table-controls-wrapper[data-width-mode=\"auto\"]", cellStart);
+    const cellEnd = styles.indexOf(".markdown-paper .helbaron-table-controls-wrapper[data-width-mode=\"auto\"]", cellStart);
     const cellStyles = styles.slice(cellStart, cellEnd);
     const headerStart = styles.indexOf(".markdown-paper[data-editor-theme=\"github\"] th,", cellEnd);
     const headerEnd = styles.indexOf(".markdown-paper td {", headerStart);
@@ -1690,7 +1691,7 @@ describe("editor stylesheet", () => {
   it("includes the inline AI loading shimmer used by compact quick actions", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
-    expect(styles).toContain("@keyframes markra-ai-inline-shimmer");
+    expect(styles).toContain("@keyframes helbaron-ai-inline-shimmer");
     expect(styles).toContain(".ai-command-inline-loading-text");
     expect(styles).toContain(".ai-command-inline-loading-text::after");
   });
@@ -1698,7 +1699,7 @@ describe("editor stylesheet", () => {
   it("includes the document history panel entrance animation", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
-    expect(styles).toContain("@keyframes markra-history-panel-in");
+    expect(styles).toContain("@keyframes helbaron-history-panel-in");
     expect(styles).toContain("translateY(-4px)");
   });
 
@@ -1706,7 +1707,7 @@ describe("editor stylesheet", () => {
     const styles = readFileSync(`${process.cwd()}/src/styles.css`, "utf8");
 
     expect(styles).toContain(".ai-agent-composer-running::before");
-    expect(styles).toContain("animation: markra-ai-agent-border-run");
+    expect(styles).toContain("animation: helbaron-ai-agent-border-run");
     expect(styles).toContain("mask-composite: exclude");
   });
 
@@ -1718,11 +1719,11 @@ describe("editor stylesheet", () => {
     expect(styles).toContain("--editor-link-color: var(--link-color);");
     expect(styles).toContain("color: var(--link-color);");
     expect(styles).toContain(".markdown-paper a[href]::after");
-    expect(styles).toContain(".markdown-paper .markra-live-link-label::after");
+    expect(styles).toContain(".markdown-paper .helbaron-live-link-label::after");
     expect(styles).toContain("content: none !important");
-    expect(styles).toContain(".markdown-paper .markra-live-link-icon::before");
+    expect(styles).toContain(".markdown-paper .helbaron-live-link-icon::before");
     expect(styles).toContain("content: \"↗\"");
-    expect(styles).toContain(".markdown-paper .markra-live-link-icon + .markra-live-link-icon");
+    expect(styles).toContain(".markdown-paper .helbaron-live-link-icon + .helbaron-live-link-icon");
     expect(styles).toContain("-webkit-user-drag: none");
     expect(styles).toContain("user-select: text");
     expect(styles).toContain("cursor: var(--editor-text-cursor)");

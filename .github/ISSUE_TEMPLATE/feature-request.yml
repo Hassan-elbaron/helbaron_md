@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an improvement or new capability for Markra.
+description: Suggest an improvement or new capability for Helbaron.
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
@@ -14,7 +14,7 @@ body:
       options:
         - label: I have searched existing issues and discussions for a similar request.
           required: true
-        - label: This request is about Markra itself, not a provider-specific support question.
+        - label: This request is about Helbaron itself, not a provider-specific support question.
           required: true
   - type: textarea
     id: problem
@@ -29,7 +29,7 @@ body:
     attributes:
       label: Proposed solution
       description: Describe the behavior or experience you would like.
-      placeholder: "Markra could..."
+      placeholder: "Helbaron could..."
     validations:
       required: true
   - type: dropdown

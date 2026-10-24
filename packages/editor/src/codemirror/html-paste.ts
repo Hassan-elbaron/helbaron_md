@@ -211,14 +211,14 @@ function createTurndownService() {
     headingStyle: "atx",
     strongDelimiter: "**",
   });
-  service.addRule("markra-gfm-table", {
+  service.addRule("helbaron-gfm-table", {
     filter: "table",
     replacement(_content, node) {
       const markdown = tableMarkdown(service, node as Element);
       return markdown ? `\n\n${markdown}\n\n` : "";
     },
   });
-  service.addRule("markra-strikethrough", {
+  service.addRule("helbaron-strikethrough", {
     filter: (node) => ["DEL", "S", "STRIKE"].includes(node.nodeName),
     replacement(content) {
       return content ? `~~${content}~~` : "";

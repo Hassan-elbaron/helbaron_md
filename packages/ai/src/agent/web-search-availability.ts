@@ -3,7 +3,7 @@ import {
   providerSupportsNativeWebSearch,
   type AiProviderConfig,
   type AiProviderModel
-} from "@markra/providers";
+} from "@helbaron/providers";
 import { webSearchSettingsAreUsable, type WebSearchSettings } from "./tools/web-search";
 
 type WebSearchModel = Pick<AiProviderModel, "capabilities" | "id">;

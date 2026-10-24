@@ -8,10 +8,10 @@ import {
   type AiProviderConfig,
   type AiProviderModel,
   type AiProviderSettings
-} from "@markra/providers";
+} from "@helbaron/providers";
 import { useAiProviderSettingsPanelState } from "../hooks/useAiProviderSettingsPanelState";
 import { dismissAppToast, showAppToast } from "../lib/app-toast";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 
 type Translate = (key: I18nKey) => string;
 
@@ -160,7 +160,7 @@ export function AiProviderSettingsPanel({
 
             <div className="flex min-h-15 shrink-0 items-center justify-end gap-3 border-t border-(--border-default) bg-(--bg-primary) px-6 py-3">
               {saved ? (
-                <span className="mr-auto inline-flex items-center gap-1.5 text-[12px] leading-5 font-[560] text-(--accent)" role="status">
+                <span className="me-auto inline-flex items-center gap-1.5 text-[12px] leading-5 font-[560] text-(--accent)" role="status">
                   <Check aria-hidden="true" size={13} />
                   {translate("settings.ai.saved")}
                 </span>

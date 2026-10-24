@@ -13,7 +13,7 @@ import {
   sanitizeRawHtml,
   type ResolveRawHtmlSrc,
 } from "../raw-html-sanitize.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import { cursorInsideRange, selectionChangeAffectsReveal } from "./policy.ts";
 import { syntaxTreeChanged, updateChangesStayAfter } from "./changes.ts";
 import { createHtmlTableWidget, type HtmlTableLabels } from "./html-table-widget.ts";
@@ -203,11 +203,11 @@ class RawHtmlWidget extends WidgetType {
 
     if (!this.range.block && nodes.length === 1 && nodes[0] instanceof HTMLElement) {
       root = nodes[0];
-      root.classList.add("cm-markra-inline-html");
+      root.classList.add("cm-helbaron-inline-html");
     } else {
       root = wrapper ?? document.createElement("span");
       root.append(...nodes);
-      root.classList.add(this.range.block ? "markra-html-node" : "cm-markra-inline-html");
+      root.classList.add(this.range.block ? "helbaron-html-node" : "cm-helbaron-inline-html");
     }
 
     root.dataset.type = "html";
@@ -245,7 +245,7 @@ function addBlockReplacement(
     if (line.from >= segmentTo) continue;
     if (segmentTo === line.to) {
       ranges.push(
-        Decoration.line({ class: "cm-markra-html-hidden-line" }).range(line.from),
+        Decoration.line({ class: "cm-helbaron-html-hidden-line" }).range(line.from),
       );
     } else {
       ranges.push(Decoration.replace({}).range(line.from, segmentTo));
@@ -301,17 +301,17 @@ function changedLinesMayContainRawHtml(update: ViewUpdate) {
 }
 
 const rawHtmlTheme = EditorView.baseTheme({
-  ".cm-markra-html-hidden-line": {
+  ".cm-helbaron-html-hidden-line": {
     display: "none",
   },
-  ".markra-html-node": {
+  ".helbaron-html-node": {
     display: "block",
     maxWidth: "100%",
   },
-  ".markra-html-node img": {
+  ".helbaron-html-node img": {
     maxWidth: "100%",
   },
-  ".cm-markra-inline-html": {
+  ".cm-helbaron-inline-html": {
     cursor: "text",
   },
 });
@@ -319,8 +319,8 @@ const rawHtmlTheme = EditorView.baseTheme({
 export function rawHtmlPreviewPlugin(
   options: RawHtmlPreviewPluginOptions = {},
 ) {
-  return defineMarkraPlugin({
-    id: "markra.raw-html-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.raw-html-preview",
     extension: [
       htmlSourceEditing,
       ViewPlugin.fromClass(

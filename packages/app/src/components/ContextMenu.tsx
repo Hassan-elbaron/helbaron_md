@@ -8,7 +8,7 @@ import {
 import { ChevronRight } from "lucide-react";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import { popoverPosition } from "@markra/shared";
+import { popoverPosition } from "@helbaron/shared";
 
 export type ContextMenuEntry = ContextMenuItem | ContextMenuSeparator | ContextMenuSubmenu;
 
@@ -52,9 +52,9 @@ export type ShowContextMenuOptions = {
   position: ContextMenuPosition;
 };
 
-const contextMenuRootAttribute = "data-markra-context-menu-root";
-const contextMenuAttribute = "data-markra-context-menu";
-const legacyWebContextMenuAttribute = "data-markra-web-context-menu";
+const contextMenuRootAttribute = "data-helbaron-context-menu-root";
+const contextMenuAttribute = "data-helbaron-context-menu";
+const legacyWebContextMenuAttribute = "data-helbaron-web-context-menu";
 const defaultContextMenuWidth = 216;
 const defaultContextMenuHeight = 320;
 const contextMenuViewportMargin = 8;
@@ -364,7 +364,7 @@ function ContextMenuButton({ entry, onClose }: ContextMenuButtonProps) {
   return (
     <button
       aria-label={accessibleLabel}
-      className="flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-left font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out enabled:cursor-pointer enabled:hover:bg-(--bg-hover) enabled:hover:text-(--text-heading) enabled:focus-visible:bg-(--bg-hover) enabled:focus-visible:text-(--text-heading) disabled:opacity-45"
+      className="flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-start font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out enabled:cursor-pointer enabled:hover:bg-(--bg-hover) enabled:hover:text-(--text-heading) enabled:focus-visible:bg-(--bg-hover) enabled:focus-visible:text-(--text-heading) disabled:opacity-45"
       data-menu-item-id={entry.id}
       disabled={disabled}
       role="menuitem"
@@ -422,7 +422,7 @@ function ContextSubmenu({ entry, onClose, submenuAlignLeft }: ContextSubmenuProp
     <div className="group/context-menu-submenu relative">
       <button
         ref={buttonRef}
-        className="flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-left font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out enabled:cursor-pointer enabled:hover:bg-(--bg-hover) enabled:hover:text-(--text-heading) enabled:focus-visible:bg-(--bg-hover) enabled:focus-visible:text-(--text-heading) disabled:opacity-45"
+        className="flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-start font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out enabled:cursor-pointer enabled:hover:bg-(--bg-hover) enabled:hover:text-(--text-heading) enabled:focus-visible:bg-(--bg-hover) enabled:focus-visible:text-(--text-heading) disabled:opacity-45"
         aria-haspopup="menu"
         data-menu-item-id={entry.id}
         disabled={disabled}

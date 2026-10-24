@@ -1,5 +1,5 @@
 import type { Tool } from "@earendil-works/pi-ai";
-import { getNativeWebSearchKind, type AiProviderConfig } from "@markra/providers";
+import { getNativeWebSearchKind, type AiProviderConfig } from "@helbaron/providers";
 
 export function buildAnthropicTools(
   config: AiProviderConfig,

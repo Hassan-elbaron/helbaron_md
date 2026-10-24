@@ -1,7 +1,7 @@
 import { invokeNative } from "./invoke";
 import { listenNativeEvent } from "./events";
 
-const acpAgentMessageEvent = "markra://acp-agent-message";
+const acpAgentMessageEvent = "helbaron://acp-agent-message";
 
 export type NativeAcpAgentEnvVariable = {
   name: string;

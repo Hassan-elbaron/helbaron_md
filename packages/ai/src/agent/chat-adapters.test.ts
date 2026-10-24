@@ -4,7 +4,7 @@ import {
   type ChatMessage
 } from "./chat-adapters";
 import { buildInlineAiMessages } from "./inline-prompt";
-import { createDefaultAiSettings, type AiProviderConfig } from "@markra/providers";
+import { createDefaultAiSettings, type AiProviderConfig } from "@helbaron/providers";
 import type { Tool } from "@earendil-works/pi-ai";
 import { encodeOpenRouterReasoningDetails } from "./reasoning-metadata";
 
@@ -135,7 +135,7 @@ describe("AI chat adapters", () => {
     const request = getChatAdapter("openai-compatible").buildRequest(
       provider({
         baseUrl: "https://proxy.example.test/v1",
-        customHeaders: '{"HTTP-Referer":"https://markra.app","X-Title":"Markra"}',
+        customHeaders: '{"HTTP-Referer":"https://markra.app","X-Title":"Helbaron"}',
         type: "openai-compatible"
       } as Partial<AiProviderConfig>),
       "writer-model",
@@ -144,7 +144,7 @@ describe("AI chat adapters", () => {
 
     expect(request.headers).toMatchObject({
       "HTTP-Referer": "https://markra.app",
-      "X-Title": "Markra"
+      "X-Title": "Helbaron"
     });
   });
 
@@ -481,7 +481,7 @@ describe("AI chat adapters", () => {
     );
     const azureRequest = getChatAdapter("azure-openai").buildRequest(
       provider({
-        baseUrl: "https://markra.openai.azure.com",
+        baseUrl: "https://helbaron.openai.azure.com",
         models: [{ capabilities: ["text", "web"], enabled: true, id: "gpt-5.4", name: "GPT-5.4 deployment" }],
         type: "azure-openai"
       }),
@@ -524,7 +524,7 @@ describe("AI chat adapters", () => {
         "api-key": "secret",
         "content-type": "application/json"
       },
-      url: "https://markra.openai.azure.com/openai/v1/responses"
+      url: "https://helbaron.openai.azure.com/openai/v1/responses"
     });
   });
 
@@ -1108,7 +1108,7 @@ describe("AI chat adapters", () => {
     });
     expect(
       getChatAdapter("azure-openai").buildRequest(
-        provider({ baseUrl: "https://markra.openai.azure.com", type: "azure-openai" }),
+        provider({ baseUrl: "https://helbaron.openai.azure.com", type: "azure-openai" }),
         "writer-deployment",
         messages
       )
@@ -1121,7 +1121,7 @@ describe("AI chat adapters", () => {
         "api-key": "secret",
         "content-type": "application/json"
       },
-      url: "https://markra.openai.azure.com/openai/deployments/writer-deployment/chat/completions?api-version=2024-10-21"
+      url: "https://helbaron.openai.azure.com/openai/deployments/writer-deployment/chat/completions?api-version=2024-10-21"
     });
   });
 

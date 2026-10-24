@@ -1,7 +1,7 @@
 import type { AgentEvent } from "@earendil-works/pi-agent-core";
 import type { ThinkingContent, TextContent, ToolCall } from "@earendil-works/pi-ai";
 
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import type { ChatCompletionStreamOptions } from "../chat-completion";
 import type { ChatMessage, ChatResponse } from "../chat/types";
 import type { AiEditIntent, AiTargetScope } from "../inline";

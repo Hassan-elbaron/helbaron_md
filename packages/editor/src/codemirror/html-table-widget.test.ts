@@ -18,7 +18,7 @@ function createView(html = source, readOnly = false, permission = new Compartmen
   views.push(view);
   return view;
 }
-const contents = (view: EditorView) => [...view.dom.querySelectorAll<HTMLElement>(".cm-markra-html-cell-content")];
+const contents = (view: EditorView) => [...view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-html-cell-content")];
 function select(view: EditorView, index: number, shiftKey = false) {
   const cell = contents(view)[index]!;
   cell.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true, shiftKey }));
@@ -186,7 +186,7 @@ describe("HTML table editing widget", () => {
     document.getSelection()?.removeAllRanges(); document.getSelection()?.addRange(range);
     cell.dispatchEvent(new CompositionEvent("compositionstart", { bubbles: true }));
     expect(cell.querySelector("img")?.getAttribute("src")).toBe("asset://./mock.png");
-    cell.querySelector('[data-markra-table-caret-host]')!.textContent = "\u200b测试";
+    cell.querySelector('[data-helbaron-table-caret-host]')!.textContent = "\u200b测试";
     cell.dispatchEvent(new CompositionEvent("compositionend", { bubbles: true }));
     expect(view.state.doc.toString()).toContain('src="./mock.png"');
     expect(view.state.doc.toString()).toContain("测试");
@@ -297,9 +297,9 @@ describe("HTML table editing widget", () => {
     const range = document.createRange(); range.selectNodeContents(cell); range.collapse(false);
     document.getSelection()?.removeAllRanges(); document.getSelection()?.addRange(range);
     cell.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", shiftKey: true, bubbles: true, cancelable: true }));
-    expect(cell.querySelector('[data-markra-caret-break]')).not.toBeNull();
+    expect(cell.querySelector('[data-helbaron-caret-break]')).not.toBeNull();
     expect(view.state.doc.toString()).toContain("<td>B<br></td>");
-    expect(view.state.doc.toString()).not.toContain("data-markra");
+    expect(view.state.doc.toString()).not.toContain("data-helbaron");
   });
 
   it("maps the source range when text is inserted before the table", () => {

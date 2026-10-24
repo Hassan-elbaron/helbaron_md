@@ -4,7 +4,7 @@ use std::sync::Mutex;
 use crate::markdown_files::markdown_open_path_for_path;
 use tauri::{Emitter, Manager, Url};
 
-pub(crate) const OPENED_MARKDOWN_PATHS_EVENT: &str = "markra://opened-markdown-paths";
+pub(crate) const OPENED_MARKDOWN_PATHS_EVENT: &str = "helbaron://opened-markdown-paths";
 
 #[derive(Default)]
 pub(crate) struct OpenedMarkdownPathsState(Mutex<Vec<String>>);
@@ -109,7 +109,7 @@ mod tests {
 
     fn test_root(name: &str) -> std::path::PathBuf {
         std::env::temp_dir().join(format!(
-            "markra-opened-files-{name}-{}",
+            "helbaron-opened-files-{name}-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -127,7 +127,7 @@ mod tests {
 
         let paths = opened_markdown_paths_from_args_with_cwd(
             [
-                "markra".to_string(),
+                "helbaron".to_string(),
                 "--user-data-dir".to_string(),
                 "mock-data".to_string(),
                 "mock.md".to_string(),
@@ -153,7 +153,7 @@ mod tests {
         fs::write(&unsupported_file, "png").expect("unsupported file should be created");
 
         let paths = opened_markdown_paths_from_args([
-            "/Applications/Markra.app/Contents/MacOS/markra".to_string(),
+            "/Applications/Helbaron.app/Contents/MacOS/helbaron".to_string(),
             "--ignored".to_string(),
             markdown_file.to_string_lossy().to_string(),
             unsupported_file.to_string_lossy().to_string(),
@@ -188,7 +188,7 @@ mod tests {
 
         let paths = opened_markdown_paths_from_args_with_cwd(
             [
-                "/Applications/Markra.app/Contents/MacOS/markra".to_string(),
+                "/Applications/Helbaron.app/Contents/MacOS/helbaron".to_string(),
                 ".".to_string(),
                 "notes.md".to_string(),
             ],

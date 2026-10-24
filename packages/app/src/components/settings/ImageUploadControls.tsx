@@ -5,8 +5,8 @@ import {
   Server,
   type LucideIcon
 } from "lucide-react";
-import { SegmentedControl, SegmentedControlItem } from "@markra/ui";
-import type { I18nKey } from "@markra/shared";
+import { SegmentedControl, SegmentedControlItem } from "@helbaron/ui";
+import type { I18nKey } from "@helbaron/shared";
 import type { ImageUploadProvider } from "../../lib/settings/app-settings";
 import type { SettingsTranslate } from "./translate";
 

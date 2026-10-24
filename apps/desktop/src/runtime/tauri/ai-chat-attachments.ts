@@ -1,7 +1,7 @@
 import type {
   ReadAiChatAttachmentInput,
   SaveAiChatAttachmentInput
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import { invokeNative } from "./invoke";
 
 export function saveNativeAiChatAttachment(input: SaveAiChatAttachmentInput) {

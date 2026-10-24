@@ -66,7 +66,7 @@ pub(crate) fn prepare_user_data_dir(path: &Path, cwd: &Path) -> Result<PathBuf, 
     let directory = path.canonicalize().map_err(&storage_error)?;
     // Reject unavailable storage before settings can silently fall back to defaults.
     let probe = directory.join(format!(
-        ".markra-write-check-{}-{}",
+        ".helbaron-write-check-{}-{}",
         std::process::id(),
         SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -148,7 +148,7 @@ pub(crate) fn configure_webview<R: Runtime>(
 ) -> WebviewWindowBuilder<'_, R, tauri::AppHandle<R>> {
     if let Some(directory) = user_data_dir() {
         // WKWebView cannot store its cache at an arbitrary path. Keep it ephemeral
-        // for custom profiles; durable Markra data is stored through native paths.
+        // for custom profiles; durable Helbaron data is stored through native paths.
         #[cfg(target_os = "macos")]
         {
             let _ = directory;
@@ -162,7 +162,7 @@ pub(crate) fn configure_webview<R: Runtime>(
 
 fn check_running_directory(current: Option<&Path>, requested: Option<&Path>) -> Result<(), String> {
     if requested.is_some() && current != requested {
-        return Err("Markra is already running with a different data directory. Quit Markra before starting it with --user-data-dir.".into());
+        return Err("Helbaron is already running with a different data directory. Quit Helbaron before starting it with --user-data-dir.".into());
     }
     Ok(())
 }
@@ -184,8 +184,8 @@ mod tests {
     #[test]
     fn parses_both_directory_flag_forms_and_keeps_document_arguments() {
         for args in [
-            vec!["markra", "--user-data-dir=mock data", "mock.md"],
-            vec!["markra", "--user-data-dir", "mock data", "mock.md"],
+            vec!["helbaron", "--user-data-dir=mock data", "mock.md"],
+            vec!["helbaron", "--user-data-dir", "mock data", "mock.md"],
         ] {
             let launch = parse_launch_args(args.into_iter().map(String::from)).unwrap();
             assert_eq!(
@@ -199,7 +199,7 @@ mod tests {
     #[test]
     fn leaves_the_default_directory_and_ignores_other_flags() {
         let launch =
-            parse_launch_args(["markra", "--ignored", "mock.md"].map(String::from)).unwrap();
+            parse_launch_args(["helbaron", "--ignored", "mock.md"].map(String::from)).unwrap();
         assert!(launch.user_data_dir.is_none());
         assert_eq!(launch.paths, vec!["mock.md"]);
         assert_eq!(
@@ -211,11 +211,11 @@ mod tests {
     #[test]
     fn rejects_missing_empty_and_duplicate_directory_flags() {
         for args in [
-            vec!["markra", "--user-data-dir"],
-            vec!["markra", "--user-data-dir="],
-            vec!["markra", "--user-data-dir", ""],
-            vec!["markra", "--user-data-dir", "--ignored"],
-            vec!["markra", "--user-data-dir=a", "--user-data-dir=b"],
+            vec!["helbaron", "--user-data-dir"],
+            vec!["helbaron", "--user-data-dir="],
+            vec!["helbaron", "--user-data-dir", ""],
+            vec!["helbaron", "--user-data-dir", "--ignored"],
+            vec!["helbaron", "--user-data-dir=a", "--user-data-dir=b"],
         ] {
             assert!(parse_launch_args(args.into_iter().map(String::from)).is_err());
         }
@@ -223,7 +223,7 @@ mod tests {
 
     #[test]
     fn honors_the_end_of_options_marker() {
-        let launch = parse_launch_args(["markra", "--", "--mock.md"].map(String::from)).unwrap();
+        let launch = parse_launch_args(["helbaron", "--", "--mock.md"].map(String::from)).unwrap();
         assert!(launch.user_data_dir.is_none());
         assert_eq!(launch.paths, vec!["--mock.md"]);
     }

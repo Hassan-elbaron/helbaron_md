@@ -1,7 +1,7 @@
 import { EditorState } from "@codemirror/state";
 import { Decoration, EditorView } from "@codemirror/view";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { liveMarkdown, markraRenderer } from "./index.ts";
+import { liveMarkdown, helbaronRenderer } from "./index.ts";
 
 import "./dom.test-support.ts";
 
@@ -28,7 +28,7 @@ afterEach(() => {
   document.body.replaceChildren();
 });
 
-describe("Markra renderers", () => {
+describe("Helbaron renderers", () => {
   it("runs contributed node renderers inside the shared preview pass", () => {
     const render = vi.fn((context) => {
       context.add(
@@ -40,7 +40,7 @@ describe("Markra renderers", () => {
     });
     const view = createView([
       liveMarkdown(),
-      markraRenderer({
+      helbaronRenderer({
         id: "synthetic.strong",
         nodeNames: ["StrongEmphasis"],
         render,
@@ -57,7 +57,7 @@ describe("Markra renderers", () => {
     const render = vi.fn();
     const view = createView([
       liveMarkdown(),
-      markraRenderer({
+      helbaronRenderer({
         id: "synthetic.paragraph",
         nodeNames: ["Paragraph"],
         render,
@@ -78,7 +78,7 @@ describe("Markra renderers", () => {
     const render = vi.fn();
     const view = createView([
       liveMarkdown(),
-      markraRenderer({
+      helbaronRenderer({
         id: "synthetic.strong-update",
         nodeNames: ["StrongEmphasis"],
         render,
@@ -109,22 +109,22 @@ describe("Markra renderers", () => {
     expect(() =>
       createView([
         liveMarkdown(),
-        markraRenderer(renderer),
-        markraRenderer(renderer),
+        helbaronRenderer(renderer),
+        helbaronRenderer(renderer),
       ]),
-    ).toThrow('Duplicate Markra renderer id "synthetic.duplicate"');
+    ).toThrow('Duplicate Helbaron renderer id "synthetic.duplicate"');
   });
 
   it("requires renderers to declare stable identifiers and node names", () => {
     expect(() =>
-      markraRenderer({ id: " ", nodeNames: ["Image"], render: () => true }),
-    ).toThrow("Markra renderer id must not be empty");
+      helbaronRenderer({ id: " ", nodeNames: ["Image"], render: () => true }),
+    ).toThrow("Helbaron renderer id must not be empty");
     expect(() =>
-      markraRenderer({
+      helbaronRenderer({
         id: "synthetic.empty",
         nodeNames: [],
         render: () => true,
       }),
-    ).toThrow('Markra renderer "synthetic.empty" must declare a node name');
+    ).toThrow('Helbaron renderer "synthetic.empty" must declare a node name');
   });
 });

@@ -1,4 +1,4 @@
-import { MarkdownPreviewDocument } from "@markra/app/markdown-preview";
+import { MarkdownPreviewDocument } from "@helbaron/app/markdown-preview";
 import { resolveQuickLookImageSrc, type QuickLookPreviewPayload } from "./payload";
 
 type QuickLookPreviewProps = {
@@ -8,17 +8,17 @@ type QuickLookPreviewProps = {
 export function QuickLookPreview({ payload }: QuickLookPreviewProps) {
   if (!payload) {
     return (
-      <main className="markra-quicklook-state" role="status">
-        <span className="markra-quicklook-spinner" aria-hidden="true" />
+      <main className="helbaron-quicklook-state" role="status">
+        <span className="helbaron-quicklook-spinner" aria-hidden="true" />
         <span>Preparing preview…</span>
       </main>
     );
   }
 
   return (
-    <main className="markra-quicklook-document">
-      <header className="markra-quicklook-header">
-        <span>Markra Quick Look</span>
+    <main className="helbaron-quicklook-document">
+      <header className="helbaron-quicklook-header">
+        <span>Helbaron Quick Look</span>
         <h1>{payload.fileName}</h1>
       </header>
       <MarkdownPreviewDocument

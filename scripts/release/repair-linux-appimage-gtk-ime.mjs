@@ -3,10 +3,10 @@ import path from "node:path";
 
 const gtkHookRelativePath = path.join("apprun-hooks", "linuxdeploy-plugin-gtk.sh");
 const archGtkModulePath = "/usr/lib/gtk-3.0";
-const hostGtkInputMethodPolicyMarker = "MARKRA_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES";
-const fcitxXimFallbackMarker = "MARKRA_FCITX_XIM_FALLBACK";
+const hostGtkInputMethodPolicyMarker = "HELBARON_SYSTEM_GTK_IM_MODULE_FILE_CANDIDATES";
+const fcitxXimFallbackMarker = "HELBARON_FCITX_XIM_FALLBACK";
 
-const hostGtkInputMethodPolicy = `# Markra: keep Linux AppImage input methods compatible with host IBus/Fcitx.
+const hostGtkInputMethodPolicy = `# Helbaron: keep Linux AppImage input methods compatible with host IBus/Fcitx.
 # Tauri's GTK hook is generated on Ubuntu and can point GTK_IM_MODULE_FILE at
 # the AppImage-local immodules.cache, which hides Manjaro/Arch/Fedora host IMEs.
 ${hostGtkInputMethodPolicyMarker}=(
@@ -22,7 +22,7 @@ for gtk_im_module_file in "\${${hostGtkInputMethodPolicyMarker}[@]}"; do
   fi
 done`;
 
-const fcitxXimFallbackPolicy = `# Markra: Fcitx GTK immodules can fail to load from AppImage-bundled GTK.
+const fcitxXimFallbackPolicy = `# Helbaron: Fcitx GTK immodules can fail to load from AppImage-bundled GTK.
 # Use the XIM fallback that works with host Fcitx on Manjaro/GNOME Wayland.
 if [ "\${XMODIFIERS:-}" = "@im=fcitx" ]; then
   case "\${GTK_IM_MODULE:-}" in

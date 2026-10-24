@@ -186,7 +186,7 @@ export function SettingsWindow() {
       ) : null}
       {showMacosWindowChrome ? (
         <MacWindowControls
-          className="fixed top-0 left-0 z-20 h-9.5"
+          className="fixed top-0 start-0 z-20 h-9.5"
           onClose={handleCloseSettings}
         />
       ) : null}
@@ -200,7 +200,7 @@ export function SettingsWindow() {
             className="relative z-20 flex h-10 items-center px-3 text-[12px] leading-none font-[620] text-(--text-heading)"
             data-tauri-drag-region
           >
-            Markra
+            Helbaron
           </div>
           <div
             className="pointer-events-none absolute top-0 left-1/2 z-10 flex h-10 -translate-x-1/2 items-center justify-center px-6 text-[12px] leading-none font-[620] text-(--text-heading)"

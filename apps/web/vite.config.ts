@@ -1,8 +1,8 @@
-import { createMarkraAppViteConfig } from "@markra/scripts/vite";
+import { createHelbaronAppViteConfig } from "@helbaron/scripts/vite";
 import { defineConfig, mergeConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-const appConfig = createMarkraAppViteConfig({
+const appConfig = createHelbaronAppViteConfig({
   browserNodeStubUrl: new URL("../../packages/app/src/lib/browser-node-stub.ts", import.meta.url),
   packageJsonUrl: new URL("./package.json", import.meta.url)
 });
@@ -13,9 +13,11 @@ export default defineConfig((environment) => mergeConfig(appConfig(environment),
     registerType: "prompt",
     manifest: {
       id: "/",
-      name: "Markra",
-      short_name: "Markra",
-      description: "Local-first Markdown editor",
+      name: "Helbaron",
+      short_name: "Helbaron",
+      description: "محرر Markdown عربي يعمل محلياً",
+      lang: "ar",
+      dir: "rtl",
       start_url: "/",
       scope: "/",
       display: "standalone",

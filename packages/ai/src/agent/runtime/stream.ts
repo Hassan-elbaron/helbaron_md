@@ -8,7 +8,7 @@ import {
   type ToolCall
 } from "@earendil-works/pi-ai";
 
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import { createAssistantMessage, messagesFromPiContext, stopReasonFromFinishReason } from "./messages";
 import type { AssistantContentBlock, InlineAiAgentComplete } from "./types";
 

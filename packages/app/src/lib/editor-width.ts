@@ -1,4 +1,4 @@
-import { clampNumber } from "@markra/shared";
+import { clampNumber } from "@helbaron/shared";
 
 export type EditorContentWidth = "narrow" | "default" | "wide";
 

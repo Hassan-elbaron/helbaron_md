@@ -62,7 +62,7 @@ export function WorkspaceLayout({
       <div
         className={`markdown-file-tree-slot min-h-0 overflow-hidden ${
           fileTreeOverlayOpen
-            ? "fixed top-10 bottom-0 left-0 z-30 shadow-[12px_0_32px_color-mix(in_srgb,var(--text-heading)_16%,transparent)]"
+            ? "fixed top-10 bottom-0 start-0 z-30 shadow-[12px_0_32px_color-mix(in_srgb,var(--text-heading)_16%,transparent)]"
             : ""
         }`}
         data-compact-overlay={fileTreeOverlayOpen ? "true" : undefined}

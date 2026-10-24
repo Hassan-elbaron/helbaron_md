@@ -1,5 +1,5 @@
 import { Channel, invoke } from "@tauri-apps/api/core";
-import { getStoredNetworkSettings } from "@markra/app/settings";
+import { getStoredNetworkSettings } from "@helbaron/app/settings";
 import {
   requestNativeAiJson,
   requestNativeChat,
@@ -14,7 +14,7 @@ vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn()
 }));
 
-vi.mock("@markra/app/settings", () => ({
+vi.mock("@helbaron/app/settings", () => ({
   getStoredNetworkSettings: vi.fn()
 }));
 

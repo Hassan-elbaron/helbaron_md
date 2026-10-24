@@ -1,7 +1,7 @@
 import { Compartment, EditorSelection, EditorState } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { markraLanguage } from "./index.ts";
+import { helbaronLanguage } from "./index.ts";
 import {
   codeMirrorSpellcheckPlugin,
   getActiveCodeMirrorSpellcheckMatch,
@@ -24,7 +24,7 @@ function createView(
     parent,
     state: EditorState.create({
       doc,
-      extensions: [markraLanguage, codeMirrorSpellcheckPlugin({ enabled })],
+      extensions: [helbaronLanguage, codeMirrorSpellcheckPlugin({ enabled })],
       selection,
     }),
   });
@@ -50,7 +50,7 @@ describe("CodeMirror spellcheck", () => {
     expect(getCodeMirrorSpellcheckState(view.state).matches).toEqual([
       { from: 4, suggestions: ["the"], to: 7, word: "teh" },
     ]);
-    expect(view.dom.querySelector(".cm-markra-spellcheck-error")?.textContent).toBe(
+    expect(view.dom.querySelector(".cm-helbaron-spellcheck-error")?.textContent).toBe(
       "teh",
     );
   });
@@ -72,7 +72,7 @@ describe("CodeMirror spellcheck", () => {
       state: EditorState.create({
         doc: "Fix teh word",
         extensions: [
-          markraLanguage,
+          helbaronLanguage,
           codeMirrorSpellcheckPlugin({
             enabled: true,
             spellchecker: {
@@ -118,7 +118,7 @@ describe("CodeMirror spellcheck", () => {
 
     updateCodeMirrorSpellcheckOptions(view, { enabled: false });
     expect(getCodeMirrorSpellcheckState(view.state).matches).toEqual([]);
-    expect(view.dom.querySelector(".cm-markra-spellcheck-error")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-spellcheck-error")).toBeNull();
   });
 
   it("starts checking when a compartment reconfigures the plugin from disabled to enabled", () => {
@@ -130,7 +130,7 @@ describe("CodeMirror spellcheck", () => {
       state: EditorState.create({
         doc: "Fix teh word",
         extensions: [
-          markraLanguage,
+          helbaronLanguage,
           compartment.of(codeMirrorSpellcheckPlugin({ enabled: false })),
         ],
       }),

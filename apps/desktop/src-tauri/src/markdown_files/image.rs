@@ -358,7 +358,7 @@ mod tests {
     #[test]
     fn saves_clipboard_images_below_the_current_markdown_file_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-clipboard-image-test-{}",
+            "helbaron-clipboard-image-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -394,7 +394,7 @@ mod tests {
     #[test]
     fn saves_clipboard_images_with_the_requested_file_name() {
         let root = std::env::temp_dir().join(format!(
-            "markra-clipboard-image-name-test-{}",
+            "helbaron-clipboard-image-name-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -435,7 +435,7 @@ mod tests {
     #[test]
     fn reads_markdown_images_below_the_current_markdown_file_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-read-image-test-{}",
+            "helbaron-read-image-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -474,7 +474,7 @@ mod tests {
     #[test]
     fn reads_supported_local_images_for_import() {
         let root = std::env::temp_dir().join(format!(
-            "markra-read-local-image-test-{}",
+            "helbaron-read-local-image-test-{}",
             std::process::id()
         ));
         let _ = fs::remove_dir_all(&root);
@@ -498,14 +498,14 @@ mod tests {
     #[test]
     fn rejects_markdown_images_outside_the_current_markdown_file_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-read-image-boundary-test-{}",
+            "helbaron-read-image-boundary-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
                 .as_nanos()
         ));
         let sibling = std::env::temp_dir().join(format!(
-            "markra-read-image-sibling-test-{}",
+            "helbaron-read-image-sibling-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -537,7 +537,7 @@ mod tests {
     #[test]
     fn rejects_clipboard_image_folders_outside_the_current_markdown_file_directory() {
         let root = std::env::temp_dir().join(format!(
-            "markra-clipboard-image-boundary-test-{}",
+            "helbaron-clipboard-image-boundary-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

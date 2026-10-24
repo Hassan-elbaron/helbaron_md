@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import { AiProviderBadge } from "./AiProviderBadge";
 
 function provider(overrides: Partial<AiProviderConfig> = {}): AiProviderConfig {

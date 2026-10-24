@@ -5,7 +5,7 @@ type LucideIconNode = Parameters<typeof createLucideElement>[0];
 export function createLucideIcon(ownerDocument: Document, iconNode: LucideIconNode, className: string) {
   const icon = createLucideElement(iconNode, {
     "aria-hidden": "true",
-    class: `markra-lucide-icon ${className}`,
+    class: `helbaron-lucide-icon ${className}`,
     focusable: "false"
   });
 

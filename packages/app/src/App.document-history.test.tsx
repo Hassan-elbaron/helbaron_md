@@ -1,4 +1,4 @@
-import { act, fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { EditorView } from "@codemirror/view";
 import {
   installAppTestHarness,
@@ -78,7 +78,7 @@ function replaceMarkdownSource(sourceEditor: HTMLElement, value: string) {
   });
 }
 
-describe("Markra document history restore", () => {
+describe("Helbaron document history restore", () => {
   beforeEach(() => {
     editorControllerSpies.replaceMarkdown.mockReset();
   });
@@ -116,18 +116,19 @@ describe("Markra document history restore", () => {
     expect(await screen.findByRole("region", { name: "History versions" })).toBeInTheDocument();
     expect(screen.queryByRole("dialog", { name: "History versions" })).not.toBeInTheDocument();
 
-    fireEvent.click(await screen.findByRole("option"));
+    // Scope to the history panel: the formatting toolbar also has a style picker.
+    fireEvent.click(await within(await screen.findByRole("region", { name: "History versions" })).findByRole("option"));
     fireEvent.click(await screen.findByRole("button", { name: "Restore version" }));
 
     await waitFor(() => {
       expect(debugSpy.mock.calls.map((call) => call[0])).toEqual(expect.arrayContaining([
-        "[markra-history] preview click",
-        "[markra-history] preview contents resolved",
-        "[markra-history] restore click",
-        "[markra-history] app restore requested",
-        "[markra-history] document restore state updated",
-        "[markra-history] editor replace requested",
-        "[markra-history] save restored document success"
+        "[helbaron-history] preview click",
+        "[helbaron-history] preview contents resolved",
+        "[helbaron-history] restore click",
+        "[helbaron-history] app restore requested",
+        "[helbaron-history] document restore state updated",
+        "[helbaron-history] editor replace requested",
+        "[helbaron-history] save restored document success"
       ]));
     });
 
@@ -195,8 +196,8 @@ describe("Markra document history restore", () => {
     fireEvent.click(screen.getByRole("button", { name: "Open Markdown or Folder" }));
     await expectVisualMarkdownText("Current");
 
-    fireEvent.click(screen.getByRole("button", { name: "Toggle Markra AI" }));
-    expect(await screen.findByRole("complementary", { name: "Markra AI" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Toggle Helbaron AI" }));
+    expect(await screen.findByRole("complementary", { name: "Helbaron AI" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Show history" }));
 
@@ -235,7 +236,8 @@ describe("Markra document history restore", () => {
     fireEvent.click(screen.getByRole("button", { name: "Show history" }));
     expect(await screen.findByRole("region", { name: "History versions" })).toBeInTheDocument();
 
-    fireEvent.click(await screen.findByRole("option"));
+    // Scope to the history panel: the formatting toolbar also has a style picker.
+    fireEvent.click(await within(await screen.findByRole("region", { name: "History versions" })).findByRole("option"));
     fireEvent.click(await screen.findByRole("button", { name: "Restore version" }));
 
     await waitFor(() => {
@@ -274,7 +276,8 @@ describe("Markra document history restore", () => {
     fireEvent.click(screen.getByRole("button", { name: "Show history" }));
     expect(await screen.findByRole("region", { name: "History versions" })).toBeInTheDocument();
 
-    fireEvent.click(await screen.findByRole("option"));
+    // Scope to the history panel: the formatting toolbar also has a style picker.
+    fireEvent.click(await within(await screen.findByRole("region", { name: "History versions" })).findByRole("option"));
     fireEvent.click(await screen.findByRole("button", { name: "Restore version" }));
 
     await waitFor(() => {
@@ -320,7 +323,8 @@ describe("Markra document history restore", () => {
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Show history" }));
-    fireEvent.click(await screen.findByRole("option"));
+    // Scope to the history panel: the formatting toolbar also has a style picker.
+    fireEvent.click(await within(await screen.findByRole("region", { name: "History versions" })).findByRole("option"));
     fireEvent.click(await screen.findByRole("button", { name: "Restore version" }));
 
     await waitFor(() => {

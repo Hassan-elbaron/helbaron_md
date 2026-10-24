@@ -45,7 +45,7 @@ describe("AppErrorBoundary", () => {
       </AppErrorBoundary>
     );
 
-    expect(screen.getByRole("heading", { name: "Markra needs to reload" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Helbaron needs to reload" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Submit issue" }));
 
@@ -56,7 +56,7 @@ describe("AppErrorBoundary", () => {
 
     expect(issueUrl.pathname).toBe("/markrahq/markra/issues/new");
     expect(issueUrl.searchParams.get("title")).toBe("Crash report");
-    expect(issueUrl.searchParams.get("body")).toContain("## Markra Crash Report");
+    expect(issueUrl.searchParams.get("body")).toContain("## Helbaron Crash Report");
     expect(issueUrl.searchParams.get("body")).toContain("- Error message: Render exploded");
     expect(issueUrl.searchParams.get("body")).toContain("- Platform: macos");
   });
@@ -77,7 +77,7 @@ describe("AppErrorBoundary", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Copy diagnostics" }));
 
-    await waitFor(() => expect(writeText).toHaveBeenCalledWith(expect.stringContaining("## Markra Crash Report")));
+    await waitFor(() => expect(writeText).toHaveBeenCalledWith(expect.stringContaining("## Helbaron Crash Report")));
     expect(await screen.findByRole("status")).toHaveTextContent("Diagnostics copied.");
   });
 });

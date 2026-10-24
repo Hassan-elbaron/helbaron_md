@@ -33,8 +33,8 @@ import {
 } from "../lib/settings/settings-events";
 
 const systemDarkThemeQuery = "(prefers-color-scheme: dark)";
-const customThemeStyleElementId = "markra-custom-theme-style";
-const startupThemeStyleElementId = "markra-startup-theme-style";
+const customThemeStyleElementId = "helbaron-custom-theme-style";
+const startupThemeStyleElementId = "helbaron-startup-theme-style";
 const startupAppearanceModeParam = "startupAppearanceMode";
 const startupLightThemeParam = "startupLightTheme";
 const startupDarkThemeParam = "startupDarkTheme";
@@ -61,7 +61,7 @@ function applyCustomThemeCss(css: string) {
   if (!style) {
     style = document.createElement("style");
     style.id = customThemeStyleElementId;
-    style.dataset.markraCustomTheme = "true";
+    style.dataset.helbaronCustomTheme = "true";
     document.head.append(style);
   }
 

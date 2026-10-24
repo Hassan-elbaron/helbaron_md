@@ -1,5 +1,5 @@
-import type { AiProviderConfig } from "@markra/providers";
-import { isRecord } from "@markra/shared";
+import type { AiProviderConfig } from "@helbaron/providers";
+import { isRecord } from "@helbaron/shared";
 import {
   getChatAdapter,
   getChatAdapterForProvider

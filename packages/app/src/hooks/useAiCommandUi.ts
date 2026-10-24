@@ -7,9 +7,9 @@ import {
   type AiDiffResult,
   type AiEditIntent,
   type AiSelectionContext
-} from "@markra/ai";
-import { getProviderCapabilities, type AiProviderConfig } from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+} from "@helbaron/ai";
+import { getProviderCapabilities, type AiProviderConfig } from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 import { requestNativeChat, requestNativeChatStream } from "../lib/tauri";
 import { runAcpInlineAiAgent } from "../lib/acp-agent";
 import type { AcpAgentSettings } from "../lib/settings/app-settings";

@@ -694,7 +694,7 @@ mod tests {
     #[test]
     fn searches_markdown_workspace_files_by_content() {
         let root = std::env::temp_dir().join(format!(
-            "markra-workspace-search-test-{}",
+            "helbaron-workspace-search-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -777,9 +777,9 @@ mod tests {
     }
 
     #[test]
-    fn uses_root_markraignore_when_searching_workspace_files() {
+    fn uses_root_helbaronignore_when_searching_workspace_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-ignore-search-test-{}",
+            "helbaron-ignore-search-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -790,7 +790,7 @@ mod tests {
 
         fs::create_dir_all(&drafts).expect("drafts folder should be created");
         fs::create_dir_all(&generated).expect("generated folder should be created");
-        fs::write(root.join(".markraignore"), "generated/\n!drafts/\n")
+        fs::write(root.join(".helbaronignore"), "generated/\n!drafts/\n")
             .expect("ignore rules should be created");
         fs::write(drafts.join("restored.md"), "shared search marker")
             .expect("restored markdown should be created");
@@ -827,7 +827,7 @@ mod tests {
     #[test]
     fn searches_supported_text_workspace_files() {
         let root = std::env::temp_dir().join(format!(
-            "markra-workspace-search-text-test-{}",
+            "helbaron-workspace-search-text-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -972,7 +972,7 @@ mod tests {
     #[test]
     fn searches_markdown_workspace_files_with_limits_and_case_sensitivity() {
         let root = std::env::temp_dir().join(format!(
-            "markra-workspace-search-limit-test-{}",
+            "helbaron-workspace-search-limit-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1017,7 +1017,7 @@ mod tests {
     #[test]
     fn searches_all_workspace_matches_when_limits_are_omitted() {
         let root = std::env::temp_dir().join(format!(
-            "markra-workspace-search-unlimited-test-{}",
+            "helbaron-workspace-search-unlimited-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1053,7 +1053,7 @@ mod tests {
     #[test]
     fn refreshes_cached_workspace_search_after_disk_change() {
         let root = std::env::temp_dir().join(format!(
-            "markra-workspace-search-cache-test-{}",
+            "helbaron-workspace-search-cache-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1099,7 +1099,7 @@ mod tests {
     #[test]
     fn searches_disk_content_when_current_document_override_is_incomplete() {
         let root = std::env::temp_dir().join(format!(
-            "markra-workspace-search-current-document-test-{}",
+            "helbaron-workspace-search-current-document-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

@@ -14,12 +14,12 @@ body:
       options:
         - label: I have searched existing issues for the same problem.
           required: true
-        - label: I downloaded Markra from the official GitHub Releases page or built it from this repository.
+        - label: I downloaded Helbaron from the official GitHub Releases page or built it from this repository.
           required: true
   - type: input
     id: version
     attributes:
-      label: Markra version or commit
+      label: Helbaron version or commit
       placeholder: "0.1.18 / commit SHA"
     validations:
       required: true

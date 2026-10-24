@@ -1,5 +1,5 @@
 {
-  "name": "markra-workspace",
+  "name": "helbaron-workspace",
   "version": "2.14.0",
   "license": "AGPL-3.0-only",
   "private": true,
@@ -9,13 +9,13 @@
     "changelog": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s",
     "changelog:all": "conventional-changelog -p conventionalcommits -i CHANGELOG.md -s -r 0",
     "release": "node scripts/release/run-release.mjs",
-    "dev": "pnpm --filter @markra/desktop dev",
+    "dev": "pnpm --filter @helbaron/desktop dev",
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
     "test:release": "node --test scripts/release/*.test.mjs",
-    "test:watch": "pnpm --filter @markra/desktop test:watch",
+    "test:watch": "pnpm --filter @helbaron/desktop test:watch",
     "typecheck:test": "pnpm -r --if-present typecheck:test",
-    "tauri": "pnpm --filter @markra/desktop tauri"
+    "tauri": "pnpm --filter @helbaron/desktop tauri"
   },
   "devDependencies": {
     "bumpp": "^11.1.0",

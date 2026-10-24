@@ -1,3 +1,4 @@
+import { horizontalDragSign } from "../lib/layout-direction";
 import {
   useEffect,
   useRef,
@@ -30,11 +31,11 @@ import { AiAgentSessionMenu } from "./AiAgentSessionMenu";
 import { AiMarkdownMessage } from "./AiMarkdownMessage";
 import { AiAgentProcessList } from "./AiAgentProcessList";
 import { useImeInputGuard } from "../hooks/useImeInputGuard";
-import { clampNumber, t, type AppLanguage, type I18nKey } from "@markra/shared";
+import { clampNumber, t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import type { AiModelCapability, AiProviderApiStyle, StoredAiAgentSessionSummary } from "../lib/settings/app-settings";
 import type { AcpAgentPermissionPrompt, AiAgentPanelMessage, WorkspacePlanApplyStatus } from "../hooks/useAiAgentSession";
-import type { AcpPermissionRequestOutcome, WorkspacePlanVisualEvent } from "@markra/ai";
-import { IconButton, RoundIconButton, ToggleButton, Tooltip } from "@markra/ui";
+import type { AcpPermissionRequestOutcome, WorkspacePlanVisualEvent } from "@helbaron/ai";
+import { IconButton, RoundIconButton, ToggleButton, Tooltip } from "@helbaron/ui";
 import type { DraftAiChatAttachment } from "../lib/ai-chat-attachments";
 
 type AiAgentModelOption = AiModelPickerOption & { capabilities: AiModelCapability[] };
@@ -350,6 +351,7 @@ export function AiAgentPanel({
     event.currentTarget.setPointerCapture?.(event.pointerId);
 
     const startX = event.clientX;
+    const dragSign = horizontalDragSign(event.currentTarget);
     const startWidth = resolvedWidth;
     const previousCursor = document.body.style.cursor;
     const previousUserSelect = document.body.style.userSelect;
@@ -359,7 +361,7 @@ export function AiAgentPanel({
     onResizeStart?.();
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
-      resizePanel(clampNumber(startWidth + startX - moveEvent.clientX, resolvedMinWidth, resolvedMaxWidth));
+      resizePanel(clampNumber(startWidth + (startX - moveEvent.clientX) * dragSign, resolvedMinWidth, resolvedMaxWidth));
     };
 
     const cleanup = () => {
@@ -571,7 +573,7 @@ export function AiAgentPanel({
 
   return (
     <aside
-      className={`ai-agent-panel relative z-20 flex h-full min-h-0 w-full flex-col border-l border-(--border-default) bg-(--bg-secondary) text-(--text-primary) transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+      className={`ai-agent-panel relative z-20 flex h-full min-h-0 w-full flex-col border-s border-(--border-default) bg-(--bg-secondary) text-(--text-primary) transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
         open ? "translate-x-0 opacity-100" : "translate-x-3 opacity-0"
       }`}
       role="complementary"
@@ -580,7 +582,7 @@ export function AiAgentPanel({
       style={resolvedWidth === null ? undefined : { maxWidth: resolvedWidth, minWidth: resolvedWidth, width: resolvedWidth }}
     >
       <div
-        className="absolute top-10 bottom-0 left-0 z-30 w-2 cursor-col-resize touch-none outline-none"
+        className="absolute top-10 bottom-0 start-0 z-30 w-2 cursor-col-resize touch-none outline-none"
         role="separator"
         tabIndex={0}
         aria-label={label("app.resizeAiAgent")}
@@ -593,14 +595,14 @@ export function AiAgentPanel({
       />
       <header className="relative z-20 min-h-12 shrink-0 border-b border-(--border-default) px-2 py-1.5">
         <IconButton
-          className="absolute top-1.5 left-2"
+          className="absolute top-1.5 start-2"
           label={label("app.collapseAiAgent")}
           size="icon-md"
           onClick={onClose}
         >
           <Bot aria-hidden="true" size={15} />
         </IconButton>
-        <div className="absolute top-1.5 right-10 z-30">
+        <div className="absolute top-1.5 end-10 z-30">
           <AiAgentSessionMenu
             activeSessionId={activeSessionId}
             language={language}
@@ -648,7 +650,7 @@ export function AiAgentPanel({
           )}
         </div>
         <IconButton
-          className="absolute top-1.5 right-2 z-30"
+          className="absolute top-1.5 end-2 z-30"
           label={label("app.closeAiAgent")}
           size="icon-md"
           onClick={onClose}
@@ -661,7 +663,7 @@ export function AiAgentPanel({
         {context ? (
           <section className="shrink-0 border-b border-(--border-default) bg-(--bg-secondary) px-3 py-2">
             <button
-              className="flex h-7 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-0 bg-transparent px-1 text-left text-[12px] leading-4 font-[620] text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+              className="flex h-7 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border-0 bg-transparent px-1 text-start text-[12px] leading-4 font-[620] text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
               type="button"
               aria-expanded={contextOpen}
               aria-label={label("app.aiAgentContext")}
@@ -723,7 +725,7 @@ export function AiAgentPanel({
 
                   return (
                     <button
-                      className="inline-flex h-9 w-full cursor-pointer items-center gap-2 border-0 border-b border-(--border-default) bg-transparent px-1 text-left text-[13px] leading-5 font-[540] text-(--text-primary) transition-[background-color,color] duration-150 ease-out last:border-b-0 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none disabled:cursor-default disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-(--text-primary)"
+                      className="inline-flex h-9 w-full cursor-pointer items-center gap-2 border-0 border-b border-(--border-default) bg-transparent px-1 text-start text-[13px] leading-5 font-[540] text-(--text-primary) transition-[background-color,color] duration-150 ease-out last:border-b-0 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none disabled:cursor-default disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-(--text-primary)"
                       key={suggestion.label}
                       type="button"
                       disabled={!documentAvailable || submitting}
@@ -746,7 +748,7 @@ export function AiAgentPanel({
                   const editing = editingMessageId === message.id;
 
                   return (
-                    <li className="ml-auto grid min-w-0 max-w-[82%] justify-items-end gap-1" key={message.id}>
+                    <li className="ms-auto grid min-w-0 max-w-[82%] justify-items-end gap-1" key={message.id}>
                       <div
                         className={`min-w-0 rounded-lg bg-(--bg-active) px-3 py-2 text-[13px] leading-5 font-[560] text-(--text-heading) ${
                           editing ? "ring-2 ring-(--accent) ring-offset-1 ring-offset-(--bg-secondary)" : ""
@@ -778,7 +780,7 @@ export function AiAgentPanel({
                 const thinkingCollapsed = collapsedThinkingMessageIds.has(thinkingMessageKey);
 
                 return (
-                  <li className="mr-auto min-w-0 max-w-[86%]" key={message.id}>
+                  <li className="me-auto min-w-0 max-w-[86%]" key={message.id}>
                     <div className="grid gap-2">
                       {message.activities?.length ? <AiAgentProcessList activities={message.activities} translate={label} /> : null}
                       {message.text || thinkingSections.length > 0 || message.isError || showFallbackThinking || !message.activities?.length ? (
@@ -873,11 +875,11 @@ export function AiAgentPanel({
                 onRemove={onRemoveAttachment}
               />
             ) : null}
-            <label className="sr-only" htmlFor="markra-ai-agent-input">
+            <label className="sr-only" htmlFor="helbaron-ai-agent-input">
               {label("app.aiAgentMessage")}
             </label>
             <textarea
-              id="markra-ai-agent-input"
+              id="helbaron-ai-agent-input"
               ref={composerInputRef}
               className="max-h-32 min-h-14 w-full resize-none border-0 bg-transparent p-0 text-[14px] leading-5 text-(--text-primary) outline-none placeholder:text-(--text-secondary)"
               value={draft}
@@ -975,7 +977,7 @@ function DraftAttachmentStrip({ attachments, onRemove, removeLabel }: DraftAttac
             src={attachment.previewUrl}
           />
           <button
-            className="absolute -top-1 -right-1 inline-flex size-5 cursor-pointer items-center justify-center rounded-full border border-(--border-default) bg-(--bg-primary) p-0 text-(--text-secondary) shadow-sm transition-colors duration-150 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
+            className="absolute -top-1 -end-1 inline-flex size-5 cursor-pointer items-center justify-center rounded-full border border-(--border-default) bg-(--bg-primary) p-0 text-(--text-secondary) shadow-sm transition-colors duration-150 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
             type="button"
             aria-label={`${removeLabel}: ${attachment.metadata.name}`}
             onClick={() => onRemove?.(attachment.metadata.id)}

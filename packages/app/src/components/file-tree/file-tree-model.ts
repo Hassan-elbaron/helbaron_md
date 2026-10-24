@@ -482,7 +482,7 @@ export function fileTreeRowIndentStyle(depth: number, mode: FileTreeRowRenderMod
 }
 
 export function fileTreeRowIndentClass(mode: FileTreeRowRenderMode) {
-  return mode === "virtual" ? "" : "pl-8";
+  return mode === "virtual" ? "" : "ps-8";
 }
 
 function parentFolderPathCandidates(path: string) {

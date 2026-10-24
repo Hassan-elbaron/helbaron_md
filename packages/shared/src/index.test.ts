@@ -115,7 +115,7 @@ describe("utilities", () => {
   });
 
   it("redacts diagnostic details without losing useful context", () => {
-    expect(runtimeDiagnosticEvent).toBe("markra:runtime-diagnostic");
+    expect(runtimeDiagnosticEvent).toBe("helbaron:runtime-diagnostic");
     expect(sanitizeDiagnosticText("failed at https://s3.example.test/private /Users/example/private-note.md")).toBe(
       "failed at [redacted] [redacted]"
     );

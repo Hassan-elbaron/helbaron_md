@@ -1,13 +1,13 @@
 import {
-  closeMarkraDocumentLinks,
-  closeMarkraSlashMenu,
-} from "@markra/editor/codemirror";
+  closeHelbaronDocumentLinks,
+  closeHelbaronSlashMenu,
+} from "@helbaron/editor/codemirror";
 import {
-  useMarkraEditorCaretAnchor,
-  useMarkraEditorDocumentLinks,
-  useMarkraEditorSlashMenu,
-  useMarkraEditorView,
-} from "@markra/editor-react";
+  useHelbaronEditorCaretAnchor,
+  useHelbaronEditorDocumentLinks,
+  useHelbaronEditorSlashMenu,
+  useHelbaronEditorView,
+} from "@helbaron/editor-react";
 import {
   useEffect,
   useLayoutEffect,
@@ -113,12 +113,12 @@ export function CodeMirrorEditorFloatingMenus({
   slashMenuEmptyLabel = "No matching commands",
   slashMenuLabel = "Insert block",
 }: CodeMirrorEditorFloatingMenusProps) {
-  const slashMenu = useMarkraEditorSlashMenu();
-  const documentLinks = useMarkraEditorDocumentLinks();
-  const view = useMarkraEditorView();
+  const slashMenu = useHelbaronEditorSlashMenu();
+  const documentLinks = useHelbaronEditorDocumentLinks();
+  const view = useHelbaronEditorView();
   const selectedSlashOptionRef = useRef<HTMLButtonElement | null>(null);
-  const slashAnchor = useMarkraEditorCaretAnchor(slashMenu.to);
-  const documentLinkAnchor = useMarkraEditorCaretAnchor(documentLinks.to);
+  const slashAnchor = useHelbaronEditorCaretAnchor(slashMenu.to);
+  const documentLinkAnchor = useHelbaronEditorCaretAnchor(documentLinks.to);
   const slashPlacement = useFloatingMenuStyle(
     slashAnchor,
     slashMenu.open,
@@ -148,11 +148,11 @@ export function CodeMirrorEditorFloatingMenus({
         : event.target instanceof Node
           ? event.target.parentElement
           : null;
-      if (target?.closest(".markra-slash-menu, .markra-document-link-menu")) {
+      if (target?.closest(".helbaron-slash-menu, .helbaron-document-link-menu")) {
         return;
       }
-      if (slashMenu.open) closeMarkraSlashMenu(view);
-      if (documentLinks.open) closeMarkraDocumentLinks(view);
+      if (slashMenu.open) closeHelbaronSlashMenu(view);
+      if (documentLinks.open) closeHelbaronDocumentLinks(view);
     };
     const document = view.dom.ownerDocument;
     document.addEventListener("pointerdown", dismiss, true);
@@ -164,7 +164,7 @@ export function CodeMirrorEditorFloatingMenus({
       {slashMenu.open && slashPlacement.style ? (
         <div
           aria-label={slashMenuLabel}
-          className="markra-slash-menu"
+          className="helbaron-slash-menu"
           role="menu"
           ref={slashPlacement.ref}
           style={slashPlacement.style}
@@ -173,7 +173,7 @@ export function CodeMirrorEditorFloatingMenus({
             slashMenu.actions.map((action, index) => (
               <button
                 aria-selected={index === slashMenu.selectedIndex}
-                className="markra-slash-menu-option"
+                className="helbaron-slash-menu-option"
                 key={action.command}
                 onClick={() => {
                   action.run();
@@ -191,7 +191,7 @@ export function CodeMirrorEditorFloatingMenus({
               </button>
             ))
           ) : (
-            <div className="markra-slash-menu-empty">{slashMenuEmptyLabel}</div>
+            <div className="helbaron-slash-menu-empty">{slashMenuEmptyLabel}</div>
           )}
         </div>
       ) : null}
@@ -199,7 +199,7 @@ export function CodeMirrorEditorFloatingMenus({
       {documentLinks.open && documentLinkPlacement.style ? (
         <div
           aria-label={documentLinksLabel}
-          className="markra-document-link-menu"
+          className="helbaron-document-link-menu"
           role="listbox"
           ref={documentLinkPlacement.ref}
           style={documentLinkPlacement.style}
@@ -207,7 +207,7 @@ export function CodeMirrorEditorFloatingMenus({
           {documentLinks.items.map((item, index) => (
             <button
               aria-selected={index === documentLinks.selectedIndex}
-              className="markra-document-link-option w-full border-0 bg-transparent"
+              className="helbaron-document-link-option w-full border-0 bg-transparent"
               key={item.id}
               onClick={() => {
                 item.run();
@@ -216,9 +216,9 @@ export function CodeMirrorEditorFloatingMenus({
               role="option"
               type="button"
             >
-              <span className="markra-document-link-title">{item.label}</span>
+              <span className="helbaron-document-link-title">{item.label}</span>
               {item.detail ? (
-                <span className="markra-document-link-path">{item.detail}</span>
+                <span className="helbaron-document-link-path">{item.detail}</span>
               ) : null}
             </button>
           ))}

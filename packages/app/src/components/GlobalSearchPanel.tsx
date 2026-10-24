@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type Key, type KeyboardEvent, type ReactNode } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { CaseSensitive, ChevronDown, ChevronRight, Loader2, Search, X } from "lucide-react";
-import { findSearchRanges, t, type AppLanguage, type I18nKey } from "@markra/shared";
+import { findSearchRanges, t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import {
   isWorkspaceFileNameSearchResult,
   type WorkspaceSearchContentResult,
@@ -380,7 +380,7 @@ export function GlobalSearchPanel({
 
                 return (
                   <div
-                    className="absolute left-0 top-0 w-full border-b border-(--border-default)"
+                    className="absolute start-0 top-0 w-full border-b border-(--border-default)"
                     data-index={virtualGroup.index}
                     key={virtualGroup.key}
                     ref={measureVirtualResultGroup}
@@ -414,7 +414,7 @@ export function GlobalSearchPanel({
                           <span aria-hidden="true" />
                         )}
                         <button
-                          className="min-w-0 cursor-pointer truncate rounded-sm border-0 bg-transparent px-1 py-1 text-left text-[13px] font-[680] text-(--text-heading) outline-none transition-colors duration-150 hover:bg-(--bg-hover) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
+                          className="min-w-0 cursor-pointer truncate rounded-sm border-0 bg-transparent px-1 py-1 text-start text-[13px] font-[680] text-(--text-heading) outline-none transition-colors duration-150 hover:bg-(--bg-hover) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
                           aria-label={searchLabel("app.workspaceSearch.openFile", {
                             path: group.file.relativePath
                           })}
@@ -428,7 +428,7 @@ export function GlobalSearchPanel({
                         </span>
                       </div>
                       {!collapsed && (directoryLabel || group.results.length > 0) ? (
-                        <div className="pb-2 pl-7 pr-1">
+                        <div className="pb-2 ps-7 pe-1">
                           {directoryLabel ? (
                             <div className="mb-1 truncate font-mono text-[11px] text-(--text-secondary)">
                               {renderHighlightedSnippet(directoryLabel, query, caseSensitive)}
@@ -439,7 +439,7 @@ export function GlobalSearchPanel({
                               {visibleResults.map((result) => (
                                 <li key={result.id}>
                                   <button
-                                    className="block w-full cursor-pointer rounded-sm border-0 bg-transparent px-0 py-1 text-left outline-none transition-[background-color,color] duration-150 hover:bg-(--bg-hover) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
+                                    className="block w-full cursor-pointer rounded-sm border-0 bg-transparent px-0 py-1 text-start outline-none transition-[background-color,color] duration-150 hover:bg-(--bg-hover) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
                                     aria-label={searchLabel("app.workspaceSearch.openResult", {
                                       line: result.lineNumber,
                                       path: result.file.relativePath
@@ -457,7 +457,7 @@ export function GlobalSearchPanel({
                           ) : null}
                           {hiddenResultCount > 0 ? (
                             <button
-                              className="mt-0.5 cursor-pointer rounded-sm border-0 bg-transparent px-0 py-1 text-left text-[12px] font-[560] text-(--text-secondary) outline-none transition-colors duration-150 hover:text-(--text-heading) focus-visible:text-(--text-heading) focus-visible:ring-2 focus-visible:ring-(--accent)"
+                              className="mt-0.5 cursor-pointer rounded-sm border-0 bg-transparent px-0 py-1 text-start text-[12px] font-[560] text-(--text-secondary) outline-none transition-colors duration-150 hover:text-(--text-heading) focus-visible:text-(--text-heading) focus-visible:ring-2 focus-visible:ring-(--accent)"
                               type="button"
                               onClick={() => expandFilePreview(group.file.path)}
                             >
@@ -489,7 +489,7 @@ export function GlobalSearchPanel({
               {recentQueries.map((recentQuery) => (
                 <li key={recentQuery}>
                   <button
-                    className="block w-full cursor-pointer rounded-sm border-0 bg-transparent px-1.5 py-1.5 text-left font-mono text-[12px] text-(--text-primary) outline-none transition-[background-color,color] duration-150 hover:bg-(--bg-hover) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
+                    className="block w-full cursor-pointer rounded-sm border-0 bg-transparent px-1.5 py-1.5 text-start font-mono text-[12px] text-(--text-primary) outline-none transition-[background-color,color] duration-150 hover:bg-(--bg-hover) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
                     aria-label={searchLabel("app.workspaceSearch.recentSearch", { query: recentQuery })}
                     type="button"
                     onClick={() => onRecentQuerySelect?.(recentQuery)}

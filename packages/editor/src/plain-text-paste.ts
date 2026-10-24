@@ -1,7 +1,7 @@
 import { GFM, parser as markdownParser } from "@lezer/markdown";
 
-export const plainTextPasteMime = "application/x-markra-plain-text-paste";
-const pendingPlainTextPasteProperty = "__markraPendingPlainTextPasteAt";
+export const plainTextPasteMime = "application/x-helbaron-plain-text-paste";
+const pendingPlainTextPasteProperty = "__helbaronPendingPlainTextPasteAt";
 const plainTextPasteIntentDurationMs = 1_500;
 const markdownLiteralJoiner = "\u2060";
 const plainTextMarkdownParser = markdownParser.configure([GFM]);
@@ -147,7 +147,7 @@ export function escapePlainTextMarkdown(text: string) {
       text,
     );
 
-  // Highlight markers are a Markra extension rather than a GFM parser node.
+  // Highlight markers are a Helbaron extension rather than a GFM parser node.
   return escaped.replaceAll("==", `=${markdownLiteralJoiner}=`);
 }
 
@@ -256,7 +256,7 @@ function createPlainTextContentEditableInserter(target: HTMLElement) {
     for (const [index, line] of lines.entries()) {
       if (index > 0) {
         const lineBreak = target.ownerDocument.createElement("br");
-        lineBreak.dataset.markraSourceBreak = "true";
+        lineBreak.dataset.helbaronSourceBreak = "true";
         fragment.append(lineBreak);
         inserted = lineBreak;
       }

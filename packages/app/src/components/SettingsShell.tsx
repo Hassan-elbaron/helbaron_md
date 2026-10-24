@@ -21,7 +21,7 @@ import {
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import type { SettingsCategory } from "../hooks/useSettingsWindowState";
 import type { DesktopPlatform } from "../lib/platform";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 
 type Translate = (key: I18nKey) => string;
 
@@ -139,12 +139,12 @@ export function SettingsSidebar({
     ? "settings-sidebar-header flex h-14 items-center px-7 max-[700px]:hidden"
     : "settings-sidebar-header px-7 pt-14 pb-5 max-[700px]:hidden";
   const sidebarSurfaceClassName = platform === "windows"
-    ? "border-r-0 bg-(--bg-chrome)"
-    : "border-r border-(--border-default) bg-(--bg-secondary)";
+    ? "border-e-0 bg-(--bg-chrome)"
+    : "border-e border-(--border-default) bg-(--bg-secondary)";
   const visibleCategories = settingsCategories.filter((category) => !hiddenCategories.includes(category.id));
 
   return (
-    <aside className={`settings-sidebar flex min-h-0 flex-col max-[700px]:shrink-0 max-[700px]:border-r-0 max-[700px]:border-b max-[700px]:border-(--border-default) ${sidebarSurfaceClassName}`}>
+    <aside className={`settings-sidebar flex min-h-0 flex-col max-[700px]:shrink-0 max-[700px]:border-e-0 max-[700px]:border-b max-[700px]:border-(--border-default) ${sidebarSurfaceClassName}`}>
       <div className={headerClassName}>
         <h1 className="settings-sidebar-title m-0 text-[17px] leading-6 font-bold tracking-normal text-(--text-heading)">
           {translate("settings.title")}
@@ -167,7 +167,7 @@ export function SettingsSidebar({
       </nav>
 
       <div className="border-t border-(--border-default) px-7 py-4 text-[12px] leading-5 font-[560] text-(--text-secondary) max-[700px]:hidden">
-        Markra v{appVersion}
+        Helbaron v{appVersion}
       </div>
     </aside>
   );
@@ -189,7 +189,7 @@ function SettingsNavButton({
 
   return (
     <button
-      className="group inline-flex h-9 w-full items-center gap-3 rounded-md border-0 bg-transparent px-3 text-left text-[13px] leading-5 font-[620] tracking-normal text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) aria-[current=page]:bg-(--bg-active) aria-[current=page]:text-(--accent) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) max-[700px]:w-auto max-[700px]:shrink-0 max-[700px]:whitespace-nowrap"
+      className="group inline-flex h-9 w-full items-center gap-3 rounded-md border-0 bg-transparent px-3 text-start text-[13px] leading-5 font-[620] tracking-normal text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) aria-[current=page]:bg-(--bg-active) aria-[current=page]:text-(--accent) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) max-[700px]:w-auto max-[700px]:shrink-0 max-[700px]:whitespace-nowrap"
       type="button"
       aria-current={active ? "page" : undefined}
       aria-label={label}
@@ -216,7 +216,7 @@ export function SettingsContent({
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentSurfaceClassName = platform === "windows"
-    ? "border-t border-l border-(--border-default) rounded-tl-md"
+    ? "border-t border-s border-(--border-default) rounded-ss-md"
     : "";
   const contentHeaderDragRegion = platform === "linux" ? undefined : true;
 
@@ -238,7 +238,7 @@ export function SettingsContent({
         </h2>
         {onClose ? (
           <button
-            className="ml-auto inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-transparent bg-transparent text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
+            className="ms-auto inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-transparent bg-transparent text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
             type="button"
             aria-label={translate("menu.closeWindow")}
             onClick={onClose}

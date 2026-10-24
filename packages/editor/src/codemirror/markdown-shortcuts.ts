@@ -6,14 +6,14 @@ import {
   parseKeyboardShortcut,
   type KeyboardShortcutAction,
   type KeyboardShortcutMap,
-} from "@markra/shared";
+} from "@helbaron/shared";
 import {
   insertCodeMirrorMarkdownImage,
   insertCodeMirrorMarkdownLink,
   insertCodeMirrorMarkdownTable,
 } from "./controller.ts";
 import { toggleAllCodeMirrorFolds } from "./folding.ts";
-import { defineMarkraPlugin, runMarkraCommand } from "./plugin.ts";
+import { defineHelbaronPlugin, runHelbaronCommand } from "./plugin.ts";
 import {
   handlePendingPlainTextPasteEvent,
   isPlainTextPaste,
@@ -49,7 +49,7 @@ function runShortcutAction(
   shortcut: string,
 ) {
   const command = commandByAction[action];
-  if (command) return runMarkraCommand(view, command);
+  if (command) return runHelbaronCommand(view, command);
 
   switch (action) {
     case "image":
@@ -86,8 +86,8 @@ export function markdownShortcutsPlugin(
   const altOnlyActions = keymapActions.filter(
     (action) => parseKeyboardShortcut(shortcuts[action])?.mod === false,
   );
-  return defineMarkraPlugin({
-    id: "markra.markdown-shortcuts",
+  return defineHelbaronPlugin({
+    id: "helbaron.markdown-shortcuts",
     extension: [
       // macOS reports Option-modified digits and letters as generated symbols.
       // Match Alt-only shortcuts by physical code before CodeMirror's character keymap.

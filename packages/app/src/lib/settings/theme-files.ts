@@ -4,7 +4,7 @@ export type ThemeFileSelection = { light: string | null; dark: string | null };
 export type ThemeFileSettings = { directory: string | null; selection: ThemeFileSelection };
 
 export const emptyThemeFiles: ThemeFileSelection = { light: null, dark: null };
-export const themeFilesChangedEvent = "markra://theme-files-changed";
+export const themeFilesChangedEvent = "helbaron://theme-files-changed";
 
 function normalizeThemeFile(value: unknown): string | null {
   return typeof value === "string" && /^[^/\\\x00-\x1f:]+\.css$/i.test(value) ? value : null;

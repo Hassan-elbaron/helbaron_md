@@ -1,7 +1,7 @@
 import type {
   WebSearchProviderId,
   WebSearchSettings
-} from "@markra/ai";
+} from "@helbaron/ai";
 
 export type { WebSearchProviderId, WebSearchSettings };
 

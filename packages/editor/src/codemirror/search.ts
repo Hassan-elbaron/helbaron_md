@@ -9,7 +9,7 @@ import {
   EditorView,
   type DecorationSet,
 } from "@codemirror/view";
-import type { SearchRange } from "@markra/shared";
+import type { SearchRange } from "@helbaron/shared";
 
 export interface CodeMirrorSearchState {
   readonly activeIndex: number;
@@ -59,8 +59,8 @@ function createSearchState(
       Decoration.mark({
         class:
           index === activeIndex
-            ? "cm-markra-search-match cm-markra-search-match-current"
-            : "cm-markra-search-match",
+            ? "cm-helbaron-search-match cm-helbaron-search-match-current"
+            : "cm-helbaron-search-match",
       }).range(match.from, match.to),
     ),
     true,
@@ -91,11 +91,11 @@ const searchField = StateField.define<CodeMirrorSearchState>({
 });
 
 const searchTheme = EditorView.baseTheme({
-  ".cm-markra-search-match": {
+  ".cm-helbaron-search-match": {
     backgroundColor: "color-mix(in srgb, #f59e0b 32%, transparent)",
     borderRadius: "0.18em",
   },
-  ".cm-markra-search-match-current": {
+  ".cm-helbaron-search-match-current": {
     backgroundColor: "color-mix(in srgb, #f59e0b 58%, transparent)",
     boxShadow: "0 0 0 1px color-mix(in srgb, #d97706 72%, transparent)",
   },

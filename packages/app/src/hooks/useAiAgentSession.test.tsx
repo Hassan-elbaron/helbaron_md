@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { generateAiAgentSessionTitle, runDocumentAiAgent } from "@markra/ai";
+import { generateAiAgentSessionTitle, runDocumentAiAgent } from "@helbaron/ai";
 import {
   getStoredAcpAgentSettings,
   getStoredAiAgentSession,
@@ -9,7 +9,7 @@ import {
   saveStoredAiAgentSession,
   saveStoredAiAgentSessionTitle
 } from "../lib/settings/app-settings";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 import { configureAppRuntime, createDefaultAppRuntime, resetAppRuntimeForTests } from "../runtime";
 import { useAiAgentSession } from "./useAiAgentSession";
 import { storedAgentSession, testProvider } from "../test/ai-fixtures";
@@ -19,8 +19,8 @@ import {
   type DraftAiChatAttachment
 } from "../lib/ai-chat-attachments";
 
-vi.mock("@markra/ai", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@markra/ai")>();
+vi.mock("@helbaron/ai", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@helbaron/ai")>();
 
   return {
     ...actual,
@@ -575,7 +575,7 @@ describe("useAiAgentSession", () => {
     });
     expect(mockedRunDocumentAiAgent).not.toHaveBeenCalled();
     const editorContextBlock = (promptBlocks as Array<{ text?: string; type?: string }>).find((block) =>
-      block.type === "text" && block.text?.includes("Markra editor context:")
+      block.type === "text" && block.text?.includes("Helbaron editor context:")
     );
     expect(editorContextBlock?.text).toContain("Current selection snapshot:");
     expect(editorContextBlock?.text).toContain("Selected text:\nselected synthetic text");

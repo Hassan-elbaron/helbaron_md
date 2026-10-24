@@ -24,8 +24,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  APP_SLUG: markra
-  APP_PRODUCT_NAME: Markra
+  APP_SLUG: helbaron
+  APP_PRODUCT_NAME: Helbaron
   DESKTOP_DIR: apps/desktop
   NODE_VERSION: 24
   PNPM_VERSION: 10.30.3
@@ -343,7 +343,7 @@ jobs:
         shell: bash
         env:
           TARGET: ${{ matrix.target }}
-        run: pnpm --filter @markra/desktop verify:quicklook-bundle
+        run: pnpm --filter @helbaron/desktop verify:quicklook-bundle
 
       - name: Rebuild Linux AppImage library policy
         if: matrix.asset_platform == 'linux'
@@ -642,7 +642,7 @@ jobs:
             archlinux:base-devel \
             makepkg --noconfirm --nodeps
 
-          package_path="$(find generated/arch -maxdepth 1 -type f -name 'markra-*.pkg.tar.zst' -print -quit)"
+          package_path="$(find generated/arch -maxdepth 1 -type f -name 'helbaron-*.pkg.tar.zst' -print -quit)"
 
           if [[ -z "${package_path}" ]]; then
             echo "Arch Linux package was not created." >&2
@@ -650,7 +650,7 @@ jobs:
           fi
 
           version="${RELEASE_TAG#v}"
-          cp "${package_path}" "release-assets/Markra_${version}_linux_x64.pkg.tar.zst"
+          cp "${package_path}" "release-assets/Helbaron_${version}_linux_x64.pkg.tar.zst"
 
       - name: Generate updater manifest
         env:
@@ -668,7 +668,7 @@ jobs:
         if: ${{ !contains(env.RELEASE_TAG, '-') }}
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
-          OUTPUT_PATH: generated/homebrew/Casks/markra.rb
+          OUTPUT_PATH: generated/homebrew/Casks/helbaron.rb
           RELEASE_ASSETS_ROOT: release-assets
           RELEASE_VERSION: ${{ env.RELEASE_TAG }}
         run: node .release-scripts/scripts/release/generate-homebrew-cask.mjs
@@ -678,7 +678,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP_SLUG }}-homebrew-cask
-          path: generated/homebrew/Casks/markra.rb
+          path: generated/homebrew/Casks/helbaron.rb
           if-no-files-found: error
 
       - name: Collect release files
@@ -726,7 +726,7 @@ jobs:
               --repo "${GITHUB_REPOSITORY}" \
               --target "${GITHUB_SHA}" \
               --title "${APP_PRODUCT_NAME} Preview Update Channel" \
-              --notes "Rolling updater manifest for Markra preview and stable releases." \
+              --notes "Rolling updater manifest for Helbaron preview and stable releases." \
               --prerelease
           fi
 
@@ -767,17 +767,17 @@ jobs:
 
           tap_branch="${HOMEBREW_TAP_BRANCH:-main}"
           mkdir -p homebrew-tap/Casks
-          cp generated/homebrew/Casks/markra.rb homebrew-tap/Casks/markra.rb
+          cp generated/homebrew/Casks/helbaron.rb homebrew-tap/Casks/helbaron.rb
 
-          if [[ -z "$(git -C homebrew-tap status --porcelain -- Casks/markra.rb)" ]]; then
+          if [[ -z "$(git -C homebrew-tap status --porcelain -- Casks/helbaron.rb)" ]]; then
             echo "Homebrew cask is already up to date."
             exit 0
           fi
 
           git -C homebrew-tap config user.name "github-actions[bot]"
           git -C homebrew-tap config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C homebrew-tap add Casks/markra.rb
-          git -C homebrew-tap commit -m "Update Markra cask to ${RELEASE_TAG}"
+          git -C homebrew-tap add Casks/helbaron.rb
+          git -C homebrew-tap commit -m "Update Helbaron cask to ${RELEASE_TAG}"
           git -C homebrew-tap push -u "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/markrahq/homebrew-tap.git" "HEAD:${tap_branch}"
 
   publish_winget:

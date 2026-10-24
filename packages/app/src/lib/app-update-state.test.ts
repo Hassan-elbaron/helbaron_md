@@ -4,7 +4,7 @@ import {
   setDiscoveredAppUpdateVersion
 } from "./app-update-state";
 
-const discoveredAppUpdateVersionStorageKey = "markra.discoveredAppUpdate.version";
+const discoveredAppUpdateVersionStorageKey = "helbaron.discoveredAppUpdate.version";
 
 describe("app update state", () => {
   beforeEach(() => {

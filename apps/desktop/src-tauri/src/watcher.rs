@@ -11,8 +11,8 @@ mod directory;
 
 use directory::DirectoryWatcher;
 
-const MARKDOWN_FILE_CHANGED_EVENT: &str = "markra://file-changed";
-const MARKDOWN_TREE_CHANGED_EVENT: &str = "markra://tree-changed";
+const MARKDOWN_FILE_CHANGED_EVENT: &str = "helbaron://file-changed";
+const MARKDOWN_TREE_CHANGED_EVENT: &str = "helbaron://tree-changed";
 
 struct ActiveMarkdownWatcher {
     ignore_rules: Arc<Mutex<MarkdownIgnoreRules>>,
@@ -450,9 +450,9 @@ mod tests {
     }
 
     #[test]
-    fn uses_root_markraignore_for_tree_events() {
+    fn uses_root_helbaronignore_for_tree_events() {
         let root = std::env::temp_dir().join(format!(
-            "markra-ignore-watcher-test-{}",
+            "helbaron-ignore-watcher-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -462,10 +462,10 @@ mod tests {
 
         std::fs::create_dir_all(&generated).expect("generated folder should be created");
         let mut ignore_rules = MarkdownIgnoreRules::for_root(&root, None);
-        std::fs::write(root.join(".markraignore"), "generated/\n")
+        std::fs::write(root.join(".helbaronignore"), "generated/\n")
             .expect("ignore rules should be created");
         let control_event =
-            Event::new(EventKind::Create(CreateKind::File)).add_path(root.join(".markraignore"));
+            Event::new(EventKind::Create(CreateKind::File)).add_path(root.join(".helbaronignore"));
         reload_markdown_ignore_rules_for_event(&control_event, &mut ignore_rules);
         let event =
             Event::new(EventKind::Create(CreateKind::File)).add_path(generated.join("hidden.md"));
@@ -476,9 +476,9 @@ mod tests {
     }
 
     #[test]
-    fn preserves_global_rules_when_root_markraignore_reloads() {
+    fn preserves_global_rules_when_root_helbaronignore_reloads() {
         let root = std::env::temp_dir().join(format!(
-            "markra-global-ignore-watcher-test-{}",
+            "helbaron-global-ignore-watcher-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -488,9 +488,9 @@ mod tests {
 
         std::fs::create_dir_all(&generated).expect("generated folder should be created");
         let mut ignore_rules = MarkdownIgnoreRules::for_root(&root, Some("generated/\n"));
-        std::fs::write(root.join(".markraignore"), "").expect("workspace rules should be created");
+        std::fs::write(root.join(".helbaronignore"), "").expect("workspace rules should be created");
         let control_event = Event::new(EventKind::Modify(ModifyKind::Data(DataChange::Content)))
-            .add_path(root.join(".markraignore"));
+            .add_path(root.join(".helbaronignore"));
         reload_markdown_ignore_rules_for_event(&control_event, &mut ignore_rules);
         let event =
             Event::new(EventKind::Create(CreateKind::File)).add_path(generated.join("hidden.md"));
@@ -501,14 +501,14 @@ mod tests {
     }
 
     #[test]
-    fn emits_root_markraignore_tree_events() {
+    fn emits_root_helbaronignore_tree_events() {
         let root = PathBuf::from("/mock-files");
         let event = Event::new(EventKind::Modify(ModifyKind::Data(DataChange::Content)))
-            .add_path(root.join(".markraignore"));
+            .add_path(root.join(".helbaronignore"));
 
         assert_eq!(
             test_markdown_tree_event_path(&event, &root),
-            Some(root.join(".markraignore").as_path())
+            Some(root.join(".helbaronignore").as_path())
         );
     }
 

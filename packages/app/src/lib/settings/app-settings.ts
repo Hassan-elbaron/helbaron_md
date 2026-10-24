@@ -9,10 +9,10 @@ import {
   normalizeStoredAiAgentSessionSummary,
   type StoredAiAgentSessionSummary,
   type StoredAiAgentSessionState
-} from "@markra/ai";
-import { defaultMarkdownShortcuts, normalizeMarkdownShortcuts, type MarkdownShortcutBindings } from "@markra/editor";
-import { createDefaultAiSettings, normalizeAiSettings, type AiProviderSettings } from "@markra/providers";
-import { clampNumber, isAppLanguage, normalizeNullableString, type AppLanguage } from "@markra/shared";
+} from "@helbaron/ai";
+import { defaultMarkdownShortcuts, normalizeMarkdownShortcuts, type MarkdownShortcutBindings } from "@helbaron/editor";
+import { createDefaultAiSettings, normalizeAiSettings, type AiProviderSettings } from "@helbaron/providers";
+import { clampNumber, isAppLanguage, normalizeNullableString, type AppLanguage } from "@helbaron/shared";
 import {
   editorContentWidthOptions,
   normalizeEditorContentWidthPx,
@@ -220,11 +220,11 @@ const workspaceKey = "workspace";
 const recentMarkdownFilesKey = "recentMarkdownFiles";
 const recentMarkdownFoldersKey = "recentMarkdownFolders";
 const mainWorkspaceWindowLabel = "main";
-const settingsWorkspaceWindowLabel = "markra-settings";
+const settingsWorkspaceWindowLabel = "helbaron-settings";
 const maxFileTreeSortWorkspaceEntries = 50;
-const storedAppSettingsFileFormat = "markra-settings";
+const storedAppSettingsFileFormat = "helbaron-settings";
 const storedAppSettingsFileVersion = 1;
-const invalidStoredAppSettingsFileMessage = "Invalid Markra settings file.";
+const invalidStoredAppSettingsFileMessage = "Invalid Helbaron settings file.";
 
 type StoredWorkspaceStateOptions = {
   windowLabel?: string | null;
@@ -983,7 +983,14 @@ export async function getStoredLanguage(): Promise<AppLanguage> {
   const store = await loadSettingsStore();
   const language = await store.get<AppLanguage>(languageKey);
 
-  return isAppLanguage(language) ? language : "en";
+  return isAppLanguage(language) ? language : declaredDocumentLanguage();
+}
+
+// The edition's default language is declared once, by the entry page
+// (`<html lang="ar">`), so first launch matches the first paint.
+function declaredDocumentLanguage(): AppLanguage {
+  const declared = typeof document === "undefined" ? null : document.documentElement.getAttribute("lang");
+  return isAppLanguage(declared) ? declared : "en";
 }
 
 export async function saveStoredLanguage(language: AppLanguage) {
@@ -1581,7 +1588,7 @@ export type {
   AiProviderConfig,
   AiProviderModel,
   AiProviderSettings
-} from "@markra/providers";
+} from "@helbaron/providers";
 export type { StoredAiAgentSessionSummary };
 
 export function normalizeAiAgentPreferences(value: unknown): AiAgentPreferences {

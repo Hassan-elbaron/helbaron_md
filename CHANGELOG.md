@@ -914,7 +914,7 @@
 
 ### Features
 
-* **desktop:** add markra shell command installer ([#309](https://github.com/murongg/markra/issues/309)) ([722ad87](https://github.com/murongg/markra/commit/722ad8790420479f52535b8de12b2bcd13b6adc6)), closes [#291](https://github.com/murongg/markra/issues/291)
+* **desktop:** add helbaron shell command installer ([#309](https://github.com/murongg/markra/issues/309)) ([722ad87](https://github.com/murongg/markra/commit/722ad8790420479f52535b8de12b2bcd13b6adc6)), closes [#291](https://github.com/murongg/markra/issues/291)
 
 ### Bug Fixes
 
@@ -961,7 +961,7 @@
 * **app:** commit file tree rename on outside click ([#289](https://github.com/murongg/markra/issues/289)) ([832afaa](https://github.com/murongg/markra/commit/832afaa9e33c5f05aa62479ca1fefd6d36c850bc)), closes [#275](https://github.com/murongg/markra/issues/275)
 * **app:** reuse Windows file tree tabs by path equivalence ([#290](https://github.com/murongg/markra/issues/290)) ([6d437fb](https://github.com/murongg/markra/commit/6d437fb1ebfcb9fe4dff1cb298761bab4f016171)), closes [#262](https://github.com/murongg/markra/issues/262)
 * **editor:** create trailing paragraphs after body and math ([#292](https://github.com/murongg/markra/issues/292)) ([1dd8168](https://github.com/murongg/markra/commit/1dd8168081ac2d58f516307fa068df371c9dd814)), closes [#283](https://github.com/murongg/markra/issues/283)
-* **sync:** default remote folder to markra ([#288](https://github.com/murongg/markra/issues/288)) ([69e858f](https://github.com/murongg/markra/commit/69e858f63569a2d9cbbfe80a1b1d4920220519d0))
+* **sync:** default remote folder to helbaron ([#288](https://github.com/murongg/markra/issues/288)) ([69e858f](https://github.com/murongg/markra/commit/69e858f63569a2d9cbbfe80a1b1d4920220519d0))
 
 ## [0.11.5](https://github.com/murongg/markra/compare/v0.11.4...v0.11.5) (2026-06-15)
 
@@ -1754,7 +1754,7 @@
 * **files:** add native file tree actions ([25d9761](https://github.com/murongg/markra/commit/25d976184b02260812fd1eb81dba450d59e04f64))
 * **i18n:** localize desktop editor features ([a144a32](https://github.com/murongg/markra/commit/a144a32102611386c7dd5b259d92dd460e18c3e7))
 * **images:** save pasted images and preview assets ([d222362](https://github.com/murongg/markra/commit/d2223626e91fea4dc6030ddc33801ff6d23cdbf9))
-* scaffold Markra desktop editor ([cab5097](https://github.com/murongg/markra/commit/cab50972a9704212d444c1a3b188c25336f9464c))
+* scaffold Helbaron desktop editor ([cab5097](https://github.com/murongg/markra/commit/cab50972a9704212d444c1a3b188c25336f9464c))
 * **settings:** add system theme preference ([fe34f20](https://github.com/murongg/markra/commit/fe34f20cb9fcde60888e1a448c3984cb78a76194))
 * **settings:** streamline settings panel ([7e77f0b](https://github.com/murongg/markra/commit/7e77f0bb0df0273f23dacad348a1b5f1e4eaaa8a))
 * **shell:** polish native chrome and file tree ([b80c230](https://github.com/murongg/markra/commit/b80c230f98b4bde7ebe159e4a34c014eec124cbe))

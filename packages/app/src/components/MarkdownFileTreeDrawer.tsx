@@ -1,3 +1,4 @@
+import { horizontalDragSign } from "../lib/layout-direction";
 import {
   useCallback,
   useDeferredValue,
@@ -60,9 +61,9 @@ import {
   t,
   writeMarkdownImageDragPayload,
   type AppLanguage
-} from "@markra/shared";
-import { IconButton, PopoverSurface, Tooltip } from "@markra/ui";
-import { markraHighlightRemarkPlugin, type MarkdownOutlineItem } from "@markra/markdown";
+} from "@helbaron/shared";
+import { IconButton, PopoverSurface, Tooltip } from "@helbaron/ui";
+import { helbaronHighlightRemarkPlugin, type MarkdownOutlineItem } from "@helbaron/markdown";
 import { DocumentLinksPanel } from "./DocumentLinksPanel";
 import type { NativeMarkdownFolderFile } from "../lib/tauri";
 import { normalizeMovedPath, sameNativePath } from "../lib/path-move";
@@ -244,13 +245,13 @@ const fileTreeDropListTargetClassName = "rounded-sm bg-(--bg-active)";
 const sidebarPanelTabBaseClassName = "relative -mb-px h-10 cursor-pointer border-0 border-b border-transparent bg-transparent px-2 text-[13px] leading-none font-[560] transition-colors duration-150 ease-out focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)";
 const sidebarPanelTabActiveClassName = "border-(--text-secondary) text-(--text-heading)";
 const sidebarPanelTabInactiveClassName = "text-(--text-secondary) hover:text-(--text-heading)";
-const outlineTitleMarkdownPlugins = [remarkGfm, remarkMath, markraHighlightRemarkPlugin];
+const outlineTitleMarkdownPlugins = [remarkGfm, remarkMath, helbaronHighlightRemarkPlugin];
 const outlineTitleMarkdownComponents = {
   a: ({ children }) => <>{children}</>,
   code: ({ children, className }) => {
     const isMath = typeof className === "string" && className.split(/\s+/u).includes("math-inline");
     if (isMath) {
-      return <span className="markra-outline-title-math font-mono text-[0.92em] text-(--text-heading)">{children}</span>;
+      return <span className="helbaron-outline-title-math font-mono text-[0.92em] text-(--text-heading)">{children}</span>;
     }
 
     return (
@@ -405,7 +406,7 @@ function closestElementFromNode(node: Node | null) {
 
 function isSelfDrawnContextMenuTarget(node: Node | null) {
   return Boolean(
-    closestElementFromNode(node)?.closest("[data-markra-context-menu-root], [data-markra-context-menu]")
+    closestElementFromNode(node)?.closest("[data-helbaron-context-menu-root], [data-helbaron-context-menu]")
   );
 }
 
@@ -1643,21 +1644,21 @@ export function MarkdownFileTreeDrawer({
     showContextMenu(input.ownerDocument, {
       entries: [
         contextMenuItem(
-          "markra:file-tree-input:cut",
+          "helbaron:file-tree-input:cut",
           label("menu.cut"),
           "CmdOrCtrl+X",
           () => cutTextInputSelection(input, setValue),
           !canEditInput || !selectedText
         ),
         contextMenuItem(
-          "markra:file-tree-input:copy",
+          "helbaron:file-tree-input:copy",
           label("menu.copy"),
           "CmdOrCtrl+C",
           () => copyTextInputSelection(input),
           !selectedText
         ),
         contextMenuItem(
-          "markra:file-tree-input:paste",
+          "helbaron:file-tree-input:paste",
           label("menu.paste"),
           "CmdOrCtrl+V",
           () => pasteTextInputSelection(input, setValue),
@@ -1665,7 +1666,7 @@ export function MarkdownFileTreeDrawer({
         ),
         contextMenuSeparator(),
         contextMenuItem(
-          "markra:file-tree-input:select-all",
+          "helbaron:file-tree-input:select-all",
           label("menu.selectAll"),
           "CmdOrCtrl+A",
           () => {
@@ -1745,6 +1746,7 @@ export function MarkdownFileTreeDrawer({
     event.currentTarget.setPointerCapture?.(event.pointerId);
 
     const startX = event.clientX;
+    const dragSign = horizontalDragSign(event.currentTarget);
     const startWidth = resolvedWidth;
     const previousCursor = document.body.style.cursor;
     const previousUserSelect = document.body.style.userSelect;
@@ -1754,7 +1756,7 @@ export function MarkdownFileTreeDrawer({
     onResizeStart?.();
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
-      resizeDrawer(clampNumber(startWidth + moveEvent.clientX - startX, resolvedMinWidth, resolvedMaxWidth));
+      resizeDrawer(clampNumber(startWidth + (moveEvent.clientX - startX) * dragSign, resolvedMinWidth, resolvedMaxWidth));
     };
 
     const cleanup = () => {
@@ -1969,7 +1971,7 @@ export function MarkdownFileTreeDrawer({
   const rowBranchClassForDepth = (depth: number) => (
     depth === 0
       ? ""
-      : "before:absolute before:left-[-1px] before:top-1/2 before:h-px before:w-6 before:bg-(--border-default)"
+      : "before:absolute before:start-[-1px] before:top-1/2 before:h-px before:w-6 before:bg-(--border-default)"
   );
 
   const renderCreateRowContent = (createType: FileTreeCreateRowKind, depth: number, mode: FileTreeRowRenderMode) => {
@@ -1980,7 +1982,7 @@ export function MarkdownFileTreeDrawer({
     if (createType === "file") {
       return (
         <div
-          className={`relative grid h-8 ${creatingTemplate ? "grid-cols-[17px_minmax(0,1fr)_auto]" : "grid-cols-[17px_minmax(0,1fr)]"} items-center gap-1.5 py-0 pr-2 text-[13px] leading-none text-(--text-secondary) ${rowIndentClass} ${rowBranchClass}`}
+          className={`relative grid h-8 ${creatingTemplate ? "grid-cols-[17px_minmax(0,1fr)_auto]" : "grid-cols-[17px_minmax(0,1fr)]"} items-center gap-1.5 py-0 pe-2 text-[13px] leading-none text-(--text-secondary) ${rowIndentClass} ${rowBranchClass}`}
           style={rowIndentStyle}
         >
           <FileText aria-hidden="true" className="shrink-0" size={15} />
@@ -2022,7 +2024,7 @@ export function MarkdownFileTreeDrawer({
 
     return (
       <div
-        className={`relative grid h-8 grid-cols-[17px_minmax(0,1fr)] items-center gap-1.5 py-0 pr-2 text-[13px] leading-none text-(--text-secondary) ${rowIndentClass} ${rowBranchClass}`}
+        className={`relative grid h-8 grid-cols-[17px_minmax(0,1fr)] items-center gap-1.5 py-0 pe-2 text-[13px] leading-none text-(--text-secondary) ${rowIndentClass} ${rowBranchClass}`}
         style={rowIndentStyle}
       >
         <Folder aria-hidden="true" className="shrink-0" size={15} />
@@ -2098,7 +2100,7 @@ export function MarkdownFileTreeDrawer({
 
     return (
       <div
-        className={`relative grid h-8 w-full items-center py-0 pr-2 text-[13px] leading-none text-(--text-secondary) ${folder ? "grid-cols-[13px_16px_minmax(0,1fr)] gap-1" : "grid-cols-[17px_minmax(0,1fr)] gap-1.5"} ${rowIndentClass} ${rowBranchClass}`}
+        className={`relative grid h-8 w-full items-center py-0 pe-2 text-[13px] leading-none text-(--text-secondary) ${folder ? "grid-cols-[13px_16px_minmax(0,1fr)] gap-1" : "grid-cols-[17px_minmax(0,1fr)] gap-1.5"} ${rowIndentClass} ${rowBranchClass}`}
         style={rowIndentStyle}
       >
         {folder ? <span aria-hidden="true" /> : null}
@@ -2162,7 +2164,7 @@ export function MarkdownFileTreeDrawer({
                   dropTargetProps.setNodeRef,
                   dragSource.setNodeRef
                 )}
-                className={`relative flex h-8 w-full cursor-pointer touch-none items-center gap-1 border-0 py-0 pr-2 text-left text-[13px] leading-none text-(--text-secondary) focus-visible:outline-none ${folderRowStateClassName} ${dragSource.isDragging ? "opacity-70" : ""} ${fileTreeContextRowSelectionClassName} ${rowIndentClass} ${rowBranchClass}`}
+                className={`relative flex h-8 w-full cursor-pointer touch-none items-center gap-1 border-0 py-0 pe-2 text-start text-[13px] leading-none text-(--text-secondary) focus-visible:outline-none ${folderRowStateClassName} ${dragSource.isDragging ? "opacity-70" : ""} ${fileTreeContextRowSelectionClassName} ${rowIndentClass} ${rowBranchClass}`}
                 style={rowIndentStyle}
                 type="button"
                 aria-expanded={expanded}
@@ -2347,7 +2349,7 @@ export function MarkdownFileTreeDrawer({
           <Tooltip content={node.file.path}>
           <button
             ref={dragSource.setNodeRef}
-            className={`relative grid h-8 w-full cursor-pointer touch-none grid-cols-[17px_minmax(0,1fr)] items-center gap-1.5 border-0 bg-transparent py-0 pr-2 text-left text-[13px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-[current=page]:border-l-[3px] aria-[current=page]:border-(--text-secondary) aria-[current=page]:bg-(--bg-active) aria-[current=page]:text-(--text-heading) aria-selected:bg-(--accent-soft) aria-selected:text-(--text-heading) aria-selected:shadow-[inset_3px_0_0_var(--accent)] ${dragSource.isDragging ? "opacity-70" : ""} ${fileTreeContextRowSelectionClassName} ${rowIndentClass} ${rowBranchClass}`}
+            className={`relative grid h-8 w-full cursor-pointer touch-none grid-cols-[17px_minmax(0,1fr)] items-center gap-1.5 border-0 bg-transparent py-0 pe-2 text-start text-[13px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-[current=page]:border-s-[3px] aria-[current=page]:border-(--text-secondary) aria-[current=page]:bg-(--bg-active) aria-[current=page]:text-(--text-heading) aria-selected:bg-(--accent-soft) aria-selected:text-(--text-heading) aria-selected:shadow-[inset_3px_0_0_var(--accent)] ${dragSource.isDragging ? "opacity-70" : ""} ${fileTreeContextRowSelectionClassName} ${rowIndentClass} ${rowBranchClass}`}
             style={rowIndentStyle}
             type="button"
             aria-current={active ? "page" : undefined}
@@ -2402,7 +2404,7 @@ export function MarkdownFileTreeDrawer({
     const nodeList = (setNodeRef?: (element: HTMLOListElement | null) => undefined) => (
       <ol
         ref={setNodeRef}
-        className={depth === 0 ? "m-0 list-none p-0" : `ml-5 list-none border-l border-(--border-default) p-0 ${listDropTarget ? fileTreeDropListTargetClassName : ""}`}
+        className={depth === 0 ? "m-0 list-none p-0" : `ms-5 list-none border-s border-(--border-default) p-0 ${listDropTarget ? fileTreeDropListTargetClassName : ""}`}
         role={depth === 0 ? "tree" : "group"}
         aria-label={treeLabel}
         aria-multiselectable={depth === 0 ? "true" : undefined}
@@ -2456,7 +2458,7 @@ export function MarkdownFileTreeDrawer({
 
         return (
           <li
-            className="absolute left-0 top-0 w-full"
+            className="absolute start-0 top-0 w-full"
             data-index={virtualRow.index}
             key={virtualRow.key}
             style={{
@@ -2479,13 +2481,13 @@ export function MarkdownFileTreeDrawer({
           const outlineIndent = (item.level - 1) * 12;
           const active = activeOutlineIndex === index;
           const outlineButtonClassName = active
-            ? "h-7 min-w-0 cursor-pointer truncate rounded-sm border-0 bg-(--bg-active) px-1 text-left text-[13px] leading-5 font-[620] text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
-            : "h-7 min-w-0 cursor-pointer truncate rounded-sm border-0 bg-transparent px-1 text-left text-[13px] leading-5 text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none";
+            ? "h-7 min-w-0 cursor-pointer truncate rounded-sm border-0 bg-(--bg-active) px-1 text-start text-[13px] leading-5 font-[620] text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
+            : "h-7 min-w-0 cursor-pointer truncate rounded-sm border-0 bg-transparent px-1 text-start text-[13px] leading-5 text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none";
 
           return (
             <li key={key}>
               <div
-                className="grid h-7 w-full grid-cols-[24px_minmax(0,1fr)] items-center gap-1 py-0 pr-1 text-[13px] leading-none"
+                className="grid h-7 w-full grid-cols-[24px_minmax(0,1fr)] items-center gap-1 py-0 pe-1 text-[13px] leading-none"
                 style={{ paddingLeft: `${outlineIndent}px` }}
               >
                 {hasChildren ? (
@@ -2539,7 +2541,7 @@ export function MarkdownFileTreeDrawer({
     return (
       <button
         key={String(filter)}
-        className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-left text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
+        className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-start text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
         role="menuitemradio"
         aria-checked={outlineLevelFilter === filter}
         type="button"
@@ -2555,7 +2557,7 @@ export function MarkdownFileTreeDrawer({
 
   const renderSortMenuItem = (key: FileTreeSortKey, itemLabel: string) => (
     <button
-      className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-left text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
+      className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-start text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
       role="menuitemradio"
       aria-checked={fileTreeSortKey === key}
       type="button"
@@ -2574,7 +2576,7 @@ export function MarkdownFileTreeDrawer({
     icon: ReactNode
   ) => (
     <button
-      className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-left text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
+      className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-start text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none aria-checked:text-(--text-heading)"
       role="menuitemradio"
       aria-checked={fileTreeSortDirection === direction}
       type="button"
@@ -2590,7 +2592,7 @@ export function MarkdownFileTreeDrawer({
 
   const renderCreateMenuItem = (itemLabel: string, icon: ReactNode, onClick: () => unknown) => (
     <button
-      className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-left text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+      className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-start text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
       role="menuitem"
       type="button"
       onClick={onClick}
@@ -2631,7 +2633,7 @@ export function MarkdownFileTreeDrawer({
                 {availableMarkdownTemplates.map((template, index) => (
                   <button
                     key={`${template.id}-${index}`}
-                    className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-left text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+                    className="flex h-7 w-full items-center gap-2 border-0 bg-transparent px-2.5 text-start text-[12px] leading-none text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
                     role="menuitem"
                     type="button"
                     onClick={() => startCreatingFile(activeCreateParentPath, template)}
@@ -2661,7 +2663,7 @@ export function MarkdownFileTreeDrawer({
             <div
               aria-expanded={recentFoldersOpen}
               aria-label={recentFoldersOpen ? label("app.hideRecentMarkdownFolders") : label("app.showRecentMarkdownFolders")}
-              className="flex h-8 cursor-pointer items-center gap-1 px-3 pr-2 text-[12px] text-(--text-secondary) transition-colors hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+              className="flex h-8 cursor-pointer items-center gap-1 px-3 pe-2 text-[12px] text-(--text-secondary) transition-colors hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
               role="button"
               tabIndex={0}
               onClick={toggleRecentFoldersExpanded}
@@ -2704,7 +2706,7 @@ export function MarkdownFileTreeDrawer({
                         <button
                           aria-label={folderActionLabel}
                           aria-current={currentRecentFolder ? "page" : undefined}
-                          className={`flex ${duplicateName ? "h-10 items-center" : "h-7 items-center"} min-w-0 cursor-pointer gap-2 rounded-sm border-0 px-2 text-left text-[12px] leading-none focus-visible:outline-none ${recentFolderButtonStateClassName}`}
+                          className={`flex ${duplicateName ? "h-10 items-center" : "h-7 items-center"} min-w-0 cursor-pointer gap-2 rounded-sm border-0 px-2 text-start text-[12px] leading-none focus-visible:outline-none ${recentFolderButtonStateClassName}`}
                           type="button"
                           onClick={() => onOpenRecentFolder(folder)}
                         >
@@ -2820,7 +2822,7 @@ export function MarkdownFileTreeDrawer({
           {fileTreeSortMenuOpen ? (
             // The toolbar is left-aligned, so the menu must expand rightward to avoid the drawer's clipped edge.
             <div
-              className="absolute top-8 left-0 z-40 min-w-40 rounded-md border border-(--border-default) bg-(--bg-primary) py-1 shadow-[0_12px_30px_color-mix(in_srgb,var(--text-heading)_14%,transparent)]"
+              className="absolute top-8 start-0 z-40 min-w-40 rounded-md border border-(--border-default) bg-(--bg-primary) py-1 shadow-[0_12px_30px_color-mix(in_srgb,var(--text-heading)_14%,transparent)]"
               role="menu"
               aria-label={label("app.sortMarkdownFiles")}
             >
@@ -2942,11 +2944,11 @@ export function MarkdownFileTreeDrawer({
   const renderFileSearchInput = () => (
     searchOpen && fileSearchVisible ? (
       <>
-        <label className="sr-only" htmlFor="markra-file-search">
+        <label className="sr-only" htmlFor="helbaron-file-search">
           {label("app.searchMarkdownFiles")}
         </label>
         <input
-          id="markra-file-search"
+          id="helbaron-file-search"
           className="h-8 border-0 border-b border-(--border-default) bg-transparent px-3 text-[12px] text-(--text-primary) outline-none placeholder:text-(--text-secondary) focus:border-(--border-strong)"
           type="search"
           value={searchQuery}
@@ -2960,7 +2962,7 @@ export function MarkdownFileTreeDrawer({
     <>
       {!open ? (
         <IconButton
-          className="fixed bottom-3 left-3 z-30 opacity-40 hover:opacity-100 focus-visible:opacity-100"
+          className="fixed bottom-3 start-3 z-30 opacity-40 hover:opacity-100 focus-visible:opacity-100"
           label={label("settings.title")}
           onClick={onOpenSettings}
         >
@@ -2969,7 +2971,7 @@ export function MarkdownFileTreeDrawer({
       ) : null}
 
       <aside
-        className={`markdown-file-tree relative flex h-full min-h-0 w-full flex-col overflow-hidden border-r border-(--border-default) ${fileTreeSurfaceClassName} ${drawerTopPaddingClassName} will-change-[width,min-width,max-width] ${drawerWidthTransitionClassName} ${drawerStateClass}`}
+        className={`markdown-file-tree relative flex h-full min-h-0 w-full flex-col overflow-hidden border-e border-(--border-default) ${fileTreeSurfaceClassName} ${drawerTopPaddingClassName} will-change-[width,min-width,max-width] ${drawerWidthTransitionClassName} ${drawerStateClass}`}
         aria-label={label("app.markdownFileTree")}
         aria-hidden={!open}
         inert={!open}
@@ -2982,7 +2984,7 @@ export function MarkdownFileTreeDrawer({
         {renderSidebarPanelTabs()}
         {open && onResize && resolvedWidth !== null ? (
           <div
-            className="markdown-file-tree-resizer absolute top-10 right-0 bottom-0 z-30 w-1 cursor-col-resize touch-none outline-none"
+            className="markdown-file-tree-resizer absolute top-10 end-0 bottom-0 z-30 w-1 cursor-col-resize touch-none outline-none"
             role="separator"
             tabIndex={0}
             aria-label={label("app.resizeMarkdownFiles")}
@@ -2995,7 +2997,7 @@ export function MarkdownFileTreeDrawer({
           />
         ) : null}
         {!workspaceSearchVisible && !tabbedSidebarLayout && filePanelAvailable ? (
-          <div className="markdown-file-tree-files-header grid h-10 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center border-b border-(--border-default) pr-2 pl-3">
+          <div className="markdown-file-tree-files-header grid h-10 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center border-b border-(--border-default) pe-2 ps-3">
             <h2 className="m-0 truncate text-[14px] leading-5 font-[560] tracking-normal text-(--text-heading)">
               {label("app.files")}
             </h2>
@@ -3026,7 +3028,7 @@ export function MarkdownFileTreeDrawer({
 
                 {renderFileSearchInput()}
 
-                <div className="markdown-file-tree-root flex h-8 shrink-0 items-center gap-1 pr-2 pl-4 text-[13px] text-(--text-secondary)">
+                <div className="markdown-file-tree-root flex h-8 shrink-0 items-center gap-1 pe-2 ps-4 text-[13px] text-(--text-secondary)">
                   <FileTreeDropTarget
                     disabled={!dragMoveAvailable}
                     id={fileTreeRootDropId("header")}
@@ -3116,7 +3118,7 @@ export function MarkdownFileTreeDrawer({
               style={outlinePanelStyle}
             >
               {outlineToolbarVisible ? (
-                <div className={`markdown-file-tree-outline-toolbar flex shrink-0 items-center gap-1 text-[13px] text-(--text-secondary) ${tabbedSidebarLayout ? "h-8 justify-start border-b border-(--border-default) px-3" : "h-9 px-4 pr-2"}`}>
+                <div className={`markdown-file-tree-outline-toolbar flex shrink-0 items-center gap-1 text-[13px] text-(--text-secondary) ${tabbedSidebarLayout ? "h-8 justify-start border-b border-(--border-default) px-3" : "h-9 px-4 pe-2"}`}>
                   {!tabbedSidebarLayout ? (
                     <>
                       <TableOfContents aria-hidden="true" size={16} />
@@ -3146,7 +3148,7 @@ export function MarkdownFileTreeDrawer({
                       </button>
                       {outlineLevelMenuOpen ? (
                         <div
-                          className={`absolute z-40 min-w-32 rounded-md border border-(--border-default) bg-(--bg-primary) py-1 shadow-[0_12px_30px_color-mix(in_srgb,var(--text-heading)_14%,transparent)] ${tabbedSidebarLayout ? "top-7 left-0" : "top-8 right-0"}`}
+                          className={`absolute z-40 min-w-32 rounded-md border border-(--border-default) bg-(--bg-primary) py-1 shadow-[0_12px_30px_color-mix(in_srgb,var(--text-heading)_14%,transparent)] ${tabbedSidebarLayout ? "top-7 start-0" : "top-8 end-0"}`}
                           role="menu"
                           aria-label={label("app.outlineHeadingLevels")}
                         >
@@ -3157,7 +3159,7 @@ export function MarkdownFileTreeDrawer({
                   ) : null}
                   {outlinePanelOpen && outlineExpansionAvailable ? (
                     <IconButton
-                      className={tabbedSidebarLayout ? "ml-auto rounded-md" : "rounded-md"}
+                      className={tabbedSidebarLayout ? "ms-auto rounded-md" : "rounded-md"}
                       label={allOutlineItemsCollapsed ? label("app.expandOutlineHeadings") : label("app.collapseOutlineHeadings")}
                       pressed={allOutlineItemsCollapsed}
                       onClick={toggleAllOutlineItems}
@@ -3222,7 +3224,7 @@ export function MarkdownFileTreeDrawer({
             <div className={linksPanelClassName} style={linksPanelStyle}>
               {!tabbedSidebarLayout ? (
                 <button
-                  className="flex h-9 w-full shrink-0 cursor-pointer items-center gap-2 border-0 bg-transparent px-4 pr-2 text-left text-[13px] leading-none text-(--text-secondary) transition-colors duration-150 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+                  className="flex h-9 w-full shrink-0 cursor-pointer items-center gap-2 border-0 bg-transparent px-4 pe-2 text-start text-[13px] leading-none text-(--text-secondary) transition-colors duration-150 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
                   type="button"
                   aria-label={label("app.documentLinks")}
                   aria-expanded={documentLinksOpen}
@@ -3263,12 +3265,12 @@ export function MarkdownFileTreeDrawer({
 
             {updateAvailable && onInstallAvailableUpdate ? (
               <IconButton
-                className="relative ml-auto rounded-md text-(--accent) hover:opacity-90 focus-visible:bg-(--link-color) focus-visible:text-(--link-color)"
+                className="relative ms-auto rounded-md text-(--accent) hover:opacity-90 focus-visible:bg-(--link-color) focus-visible:text-(--link-color)"
                 label={label("app.updateInstallAndRestart")}
                 onClick={onInstallAvailableUpdate}
               >
                 <Download aria-hidden="true" size={15} className="text-(--link-color)" />
-                <span className="absolute top-1 right-1 size-1.5 rounded-full bg-(--link-color)" />
+                <span className="absolute top-1 end-1 size-1.5 rounded-full bg-(--link-color)" />
               </IconButton>
             ) : null}
 

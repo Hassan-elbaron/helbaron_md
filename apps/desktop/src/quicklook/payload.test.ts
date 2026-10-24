@@ -24,7 +24,7 @@ describe("Quick Look payload", () => {
     expect(resolveQuickLookImageSrc("assets/mock image.png")).toMatch(
       /^data:image\/svg\+xml;charset=utf-8,/
     );
-    expect(resolveQuickLookImageSrc("../outside.png")).not.toContain("markra-asset:");
+    expect(resolveQuickLookImageSrc("../outside.png")).not.toContain("helbaron-asset:");
   });
 
   it("allows web and raster data images while blocking active or local URL schemes", () => {

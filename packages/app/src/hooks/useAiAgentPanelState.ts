@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { clampNumber } from "@markra/shared";
+import { clampNumber } from "@helbaron/shared";
 import { shouldCloseAiCommandOnAgentPanelOpen } from "./ai-agent-panel-visibility";
 
 export const aiAgentPanelDefaultWidth = 384;

@@ -1,4 +1,4 @@
-# Markra Engineering Guidelines
+# Helbaron Engineering Guidelines
 
 This document only defines engineering conventions for this repository.
 
@@ -35,7 +35,7 @@ This document only defines engineering conventions for this repository.
   - `packages/markdown`: Markdown parsing and Markdown asset/path helpers.
 - Keep Tauri frontend bridge code in `apps/desktop/src/lib/tauri`; it is app shell integration, not a shared package.
 - Keep desktop-only build tooling such as the debug-strip Vite plugin in `apps/desktop/scripts/`.
-- Keep shared cross-cutting TypeScript in `packages/shared` and import it through `@markra/shared` public exports.
+- Keep shared cross-cutting TypeScript in `packages/shared` and import it through `@helbaron/shared` public exports.
 - Split reusable UI into components instead of concentrating layout and behavior in `App.tsx`.
 - Keep business logic, platform integration, and editor adapter logic in clear modules.
 - Prefer established libraries for mature domains such as editor behavior, Markdown parsing, and platform APIs.

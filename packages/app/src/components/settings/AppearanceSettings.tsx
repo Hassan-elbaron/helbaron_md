@@ -24,7 +24,7 @@ import {
 } from "./ThemeSettingsControls";
 import { mergeClassNames } from "./class-names";
 import type { SettingsTranslate } from "./translate";
-import { Tooltip } from "@markra/ui";
+import { Tooltip } from "@helbaron/ui";
 import { ThemeFileSelect, ThemeFolderSettings } from "./ThemeFolderSettings";
 import type { useThemeFiles } from "../../hooks/useThemeFiles";
 import type { ThemeCompatibility } from "../../lib/themes/typora";
@@ -64,7 +64,7 @@ function AppearanceModeControl({
           <Tooltip key={mode} content={tooltipLabel}>
           <button
             className={mergeClassNames(
-              "inline-flex h-8 min-w-20 cursor-pointer items-center justify-center gap-1.5 border-0 border-r border-(--border-default) bg-transparent px-3 text-[12px] leading-5 font-[620] text-(--text-secondary) transition-colors duration-150 ease-out last:border-r-0 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) focus-visible:ring-inset",
+              "inline-flex h-8 min-w-20 cursor-pointer items-center justify-center gap-1.5 border-0 border-e border-(--border-default) bg-transparent px-3 text-[12px] leading-5 font-[620] text-(--text-secondary) transition-colors duration-150 ease-out last:border-e-0 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) focus-visible:ring-inset",
               selected ? "bg-(--bg-active) text-(--text-heading)" : ""
             )}
             type="button"

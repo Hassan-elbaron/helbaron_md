@@ -1,4 +1,4 @@
-import { isRecord } from "@markra/shared";
+import { isRecord } from "@helbaron/shared";
 
 import { supportsAnthropicAdaptiveThinking } from "./compatibilities/claude";
 import { getMimoCompatibleThinkingRequestOptions, mimoWebSearchTool } from "./compatibilities/mimo";

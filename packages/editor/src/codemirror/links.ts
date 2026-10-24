@@ -1,28 +1,28 @@
 import { syntaxTree } from "@codemirror/language";
 import { EditorSelection, type EditorState } from "@codemirror/state";
 import { EditorView, type EditorView as CodeMirrorView } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
-import type { MarkraSyntaxNode } from "./renderers.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
+import type { HelbaronSyntaxNode } from "./renderers.ts";
 import { unescapeMarkdown } from "./syntax.ts";
 
-export type MarkraLinkActivation = "click" | "modifier" | "none";
+export type HelbaronLinkActivation = "click" | "modifier" | "none";
 
-export interface MarkraLinkSourceContext {
+export interface HelbaronLinkSourceContext {
   readonly source: string;
   readonly state: EditorState;
   readonly view: CodeMirrorView;
 }
 
-export interface MarkraLinkOpenContext extends MarkraLinkSourceContext {
+export interface HelbaronLinkOpenContext extends HelbaronLinkSourceContext {
   readonly target: string;
 }
 
 export interface LinksPluginOptions {
-  readonly activation?: MarkraLinkActivation;
+  readonly activation?: HelbaronLinkActivation;
   readonly label?: string;
-  readonly open: (context: MarkraLinkOpenContext) => unknown;
+  readonly open: (context: HelbaronLinkOpenContext) => unknown;
   readonly resolveTarget?: (
-    context: MarkraLinkSourceContext,
+    context: HelbaronLinkSourceContext,
   ) => string | null;
 }
 
@@ -86,7 +86,7 @@ export function readMarkdownLinkReferences(state: EditorState) {
 
 export function readMarkdownLinkDestination(
   state: EditorState,
-  node: MarkraSyntaxNode,
+  node: HelbaronSyntaxNode,
   references = readMarkdownLinkReferences(state),
 ) {
   const url = node.name === "URL" ? node : node.getChild("URL");
@@ -117,7 +117,7 @@ function linkNodeAt(state: EditorState, position: number) {
   ];
 
   for (const candidate of candidates) {
-    let node: MarkraSyntaxNode | null = candidate;
+    let node: HelbaronSyntaxNode | null = candidate;
     while (node) {
       if (node.name === "Link" || node.name === "Autolink") return node;
       if (
@@ -134,7 +134,7 @@ function linkNodeAt(state: EditorState, position: number) {
   return null;
 }
 
-function linkSource(state: EditorState, node: MarkraSyntaxNode) {
+function linkSource(state: EditorState, node: HelbaronSyntaxNode) {
   const source = readMarkdownLinkDestination(state, node);
   if (!source) return null;
   return node.name === "Link" ? source : resolveAutolinkTarget(source);
@@ -145,7 +145,7 @@ function resolvedLinkSource(
   source: string,
   resolver: LinksPluginOptions["resolveTarget"],
 ): ResolvedLink | null {
-  const sourceContext: MarkraLinkSourceContext = {
+  const sourceContext: HelbaronLinkSourceContext = {
     source,
     state: view.state,
     view,
@@ -198,7 +198,7 @@ function openResolvedLink(
   }
 }
 
-export function openMarkraLinkSource(
+export function openHelbaronLinkSource(
   view: CodeMirrorView,
   source: string,
   options: LinksPluginOptions,
@@ -219,7 +219,7 @@ function openLinkAt(
 function linkPositionFromEvent(event: MouseEvent, view: CodeMirrorView) {
   const target = event.target;
   if (!(target instanceof Element)) return null;
-  const link = target.closest(".cm-markra-link");
+  const link = target.closest(".cm-helbaron-link");
   if (!link || !view.contentDOM.contains(link)) return null;
 
   try {
@@ -257,9 +257,9 @@ function syncLinkModifierCursor(
   event: Pick<KeyboardEvent | MouseEvent, "ctrlKey" | "metaKey">,
 ) {
   if (event.metaKey || event.ctrlKey) {
-    view.dom.dataset.markraLinkModifier = "true";
+    view.dom.dataset.helbaronLinkModifier = "true";
   } else {
-    delete view.dom.dataset.markraLinkModifier;
+    delete view.dom.dataset.helbaronLinkModifier;
   }
 }
 
@@ -272,8 +272,8 @@ export function linksPlugin(options: LinksPluginOptions) {
       options.resolveTarget,
     ) !== null;
 
-  return defineMarkraPlugin({
-    id: "markra.links",
+  return defineHelbaronPlugin({
+    id: "helbaron.links",
     commands: [
       {
         id: "link.open",
@@ -296,13 +296,13 @@ export function linksPlugin(options: LinksPluginOptions) {
         ? []
         : EditorView.domEventHandlers({
             blur(_event, view) {
-              delete view.dom.dataset.markraLinkModifier;
+              delete view.dom.dataset.helbaronLinkModifier;
               return false;
             },
             click(event, view) {
               const target = event.target;
               if (!(target instanceof Element)) return false;
-              const link = target.closest(".cm-markra-link");
+              const link = target.closest(".cm-helbaron-link");
               if (!link || !view.contentDOM.contains(link)) return false;
 
               // Navigation is handled on mousedown so CodeMirror cannot move

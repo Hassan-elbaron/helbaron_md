@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-macos-notice-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-macos-notice-"));
 }
 
 function runNoticeScript(env) {
@@ -37,12 +37,12 @@ test("prepend-macos-unsigned-notice prepends the macOS unsigned app guidance onc
   assert.equal(secondResult.status, 0, secondResult.stderr);
 
   const notes = fs.readFileSync(notesPath, "utf8");
-  const markerMatches = notes.match(/markra-macos-unsigned-notice/g) || [];
+  const markerMatches = notes.match(/helbaron-macos-unsigned-notice/g) || [];
 
   assert.equal(markerMatches.length, 1);
-  assert.match(notes, /^<!-- markra-macos-unsigned-notice -->/);
+  assert.match(notes, /^<!-- helbaron-macos-unsigned-notice -->/);
   assert.match(notes, /macOS build is currently unsigned/);
-  assert.match(notes, /Markra-macOS-Open-Anyway\.command/);
+  assert.match(notes, /Helbaron-macOS-Open-Anyway\.command/);
   assert.match(notes, /inside the macOS DMG/);
   assert.match(notes, /only removes the quarantine flag/);
   assert.match(notes, /## Changes\n\n- Release v0\.0\.12/);

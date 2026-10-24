@@ -2,9 +2,9 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperti
 import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 import { AiProviderBadge } from "./AiProviderBadge";
-import { PopoverSurface } from "@markra/ui";
+import { PopoverSurface } from "@helbaron/ui";
 import type { AiProviderApiStyle, AiProviderConfig } from "../lib/settings/app-settings";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 import { anchoredPopoverStyle } from "../lib/anchored-popover";
 
 const menuExitDurationMs = 140;
@@ -172,7 +172,7 @@ export function AiModelPicker({
 
               return (
                 <button
-                  className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-[background-color,color,transform] duration-150 ease-out ${
+                  className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start transition-[background-color,color,transform] duration-150 ease-out ${
                     active
                       ? "bg-(--bg-hover) text-(--text-heading)"
                       : "text-(--text-primary) hover:bg-(--bg-hover) hover:text-(--text-heading)"

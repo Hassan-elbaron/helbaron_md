@@ -1,6 +1,6 @@
 export type DiagnosticDetailValue = boolean | number | string | null;
 
-export const runtimeDiagnosticEvent = "markra:runtime-diagnostic";
+export const runtimeDiagnosticEvent = "helbaron:runtime-diagnostic";
 
 const diagnosticDetailTextLimit = 1200;
 const redactedValue = "[redacted]";

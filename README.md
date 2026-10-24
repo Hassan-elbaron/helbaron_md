@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/desktop/app-icon.svg" width="96" alt="Markra logo" />
+  <img src="apps/desktop/app-icon.svg" width="96" alt="Helbaron logo" />
 </p>
 
 <p align="center">
@@ -56,18 +56,18 @@
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="195" height="54" />
   </a>
   <a href="https://www.producthunt.com/products/markra">
-    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=markra&theme=light" width="250" height="54" alt="Find Markra on Product Hunt" />
+    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=markra&theme=light" width="250" height="54" alt="Find Helbaron on Product Hunt" />
   </a>
 </p>
 
-Markra is a local-first, open-source Markdown editor that brings AI into the writing flow. Edit in WYSIWYG or source mode, keep everything as plain `.md` files on disk, and let AI polish, rewrite, or expand your content — with full preview before any change lands.
+Helbaron is a local-first, open-source Markdown editor that brings AI into the writing flow. Edit in WYSIWYG or source mode, keep everything as plain `.md` files on disk, and let AI polish, rewrite, or expand your content — with full preview before any change lands.
 
 No account required. Files stay on disk by default; optional WebDAV sync, remote image storage, and AI requests only contact the services you configure.
 
 ## Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/editor-workspace.png" alt="Markra WYSIWYG Markdown workspace" />
+  <img src="assets/screenshots/editor-workspace.png" alt="Helbaron WYSIWYG Markdown workspace" />
 </p>
 
 <p align="center">
@@ -76,20 +76,20 @@ No account required. Files stay on disk by default; optional WebDAV sync, remote
 
 | Native AI commands | Review AI edits |
 | --- | --- |
-| ![Markra inline AI command bar](assets/screenshots/inline-ai-command.png) | ![Markra AI edit preview](assets/screenshots/ai-edit-preview.png) |
+| ![Helbaron inline AI command bar](assets/screenshots/inline-ai-command.png) | ![Helbaron AI edit preview](assets/screenshots/ai-edit-preview.png) |
 
-| Markra AI side panel | Multi-provider AI settings |
+| Helbaron AI side panel | Multi-provider AI settings |
 | --- | --- |
-| ![Markra AI side panel with document context](assets/screenshots/ai-agent-panel.png) | ![Markra AI provider settings](assets/screenshots/ai-provider-settings.png) |
+| ![Helbaron AI side panel with document context](assets/screenshots/ai-agent-panel.png) | ![Helbaron AI provider settings](assets/screenshots/ai-provider-settings.png) |
 
 ## Download
 
-Use the web editor at [editor.markra.app](https://editor.markra.app/).
+Use the web editor at [editor.helbaron.app](https://editor.markra.app/).
 
 On macOS, install with Homebrew:
 
 ```sh
-brew install --cask markrahq/tap/markra
+brew install --cask markrahq/tap/helbaron
 ```
 
 Download the latest desktop builds from [GitHub Releases](https://github.com/markrahq/markra/releases/latest): macOS Apple Silicon/Intel, Windows installer/portable, and Linux AppImage/DEB/RPM/Arch Linux packages.
@@ -97,26 +97,26 @@ Download the latest desktop builds from [GitHub Releases](https://github.com/mar
 On Arch Linux, download the x64 package from the release and install it with:
 
 ```sh
-sudo pacman -U ./Markra_<version>_linux_x64.pkg.tar.zst
+sudo pacman -U ./Helbaron_<version>_linux_x64.pkg.tar.zst
 ```
 
 ### Custom User Data Directory
 
-The desktop app accepts `--user-data-dir=<path>` or `--user-data-dir <path>`. Relative paths resolve from the launch working directory. Markra creates the directory if needed and stores settings, AI sessions and attachments, themes, templates, document history, spellcheck dictionaries, logs, and window state there. Without the option, the existing system directories are used.
+The desktop app accepts `--user-data-dir=<path>` or `--user-data-dir <path>`. Relative paths resolve from the launch working directory. Helbaron creates the directory if needed and stores settings, AI sessions and attachments, themes, templates, document history, spellcheck dictionaries, logs, and window state there. Without the option, the existing system directories are used.
 
-For a Windows portable package on a USB drive, place this launcher beside the `Markra` app folder:
+For a Windows portable package on a USB drive, place this launcher beside the `Helbaron` app folder:
 
 ```bat
 @echo off
 cd /d "%~dp0"
-start "" "Markra\Markra.exe" "--user-data-dir=.\Markra_Data"
+start "" "Helbaron\Helbaron.exe" "--user-data-dir=.\Helbaron_Data"
 ```
 
-On macOS/Linux, use `markra --user-data-dir "./Markra_Data"` with the installed shell command or executable. File and folder arguments can follow the option.
+On macOS/Linux, use `helbaron --user-data-dir "./Helbaron_Data"` with the installed shell command or executable. File and folder arguments can follow the option.
 
-Quit Markra completely before switching data directories. A new directory starts with fresh settings; existing data is not moved automatically. Markdown documents and paths to external files remain where you saved them. To reuse existing settings, restore a settings backup into the new profile.
+Quit Helbaron completely before switching data directories. A new directory starts with fresh settings; existing data is not moved automatically. Markdown documents and paths to external files remain where you saved them. To reuse existing settings, restore a settings backup into the new profile.
 
-Windows/Linux WebView data is stored in the selected directory. On macOS, custom profiles use a temporary WebView cache because WKWebView does not support an arbitrary cache directory; persistent Markra data still uses the selected directory.
+Windows/Linux WebView data is stored in the selected directory. On macOS, custom profiles use a temporary WebView cache because WKWebView does not support an arbitrary cache directory; persistent Helbaron data still uses the selected directory.
 
 ## Demo
 
@@ -145,7 +145,7 @@ Windows/Linux WebView data is stored in the selected directory. On macOS, custom
 | File tree operations | Create, rename, move, delete, sort, reveal, and multi-select | Create, rename, move, and delete where browser permissions allow |
 | Auto-save and restore | Existing files, tabs, drafts, workspace windows | Browser file handles and IndexedDB state where available |
 | AI providers | Native runtime requests with app proxy settings | Browser requests subject to provider CORS support |
-| Spellcheck | Markra-managed local spellcheck with on-demand language packs and a personal dictionary | Not available yet |
+| Spellcheck | Helbaron-managed local spellcheck with on-demand language packs and a personal dictionary | Not available yet |
 | Image storage | Local folders, WebDAV, PicGo/PicList, and S3-compatible storage | Local/browser handles and WebDAV where CORS permits |
 | Backup and sync | Local backups, WebDAV note sync, and settings backup to local files, WebDAV, or S3-compatible storage | Settings backup to local files or WebDAV where CORS permits; note backup and sync are unavailable |
 | Custom themes | Theme folder, separate light/dark CSS files, manual refresh, and basic Typora compatibility | Custom CSS editing, import/export, and basic Typora compatibility |
@@ -155,14 +155,14 @@ For offline web use, open [the editor](https://editor.markra.app/) online first 
 
 ## Comparison
 
-Markra is not trying to replace every Markdown tool. It is closest to a calm document editor with native AI and local files.
+Helbaron is not trying to replace every Markdown tool. It is closest to a calm document editor with native AI and local files.
 
-| Focus | Markra | Typora | Obsidian |
+| Focus | Helbaron | Typora | Obsidian |
 | --- | --- | --- | --- |
 | Primary fit | Local-first Markdown writing with built-in AI editing | Minimal live-preview Markdown writing | Personal knowledge base and linked notes |
 | Editing model | WYSIWYG document surface plus source mode | Seamless live preview with Markdown syntax hidden while writing | Markdown notes with reading/live-preview editing modes |
 | AI workflow | Native inline actions, side panel, and ACP local agents, with preview before applying edits | Not a core product workflow | Not a core product workflow; plugins may vary |
-| Spellcheck | Markra-managed local dictionaries, on-demand downloads, correction suggestions, and a personal dictionary | System spellcheck on supported platforms, with Hunspell dictionaries where needed | Electron/Chromium-style editor spellcheck with configurable languages |
+| Spellcheck | Helbaron-managed local dictionaries, on-demand downloads, correction suggestions, and a personal dictionary | System spellcheck on supported platforms, with Hunspell dictionaries where needed | Electron/Chromium-style editor spellcheck with configurable languages |
 | File model | Plain `.md` files, single-file or folder workspaces | Plain Markdown files and folder/file tree workflows | Local vaults using open file formats |
 | Knowledge features | Tabs, outline, workspace search, and double-bracket link completion | Outline, file tree, internal links, and export-oriented writing tools | Backlinks, graph view, Canvas, and large plugin ecosystem |
 | Sync and storage | Optional WebDAV sync, local backups, and configurable image storage | Uses local files; external sync services can be used | Optional paid Obsidian Sync and Publish services |
@@ -176,7 +176,7 @@ Markra is not trying to replace every Markdown tool. It is closest to a calm doc
 - Slash commands and drag handles for block-level editing; full source mode one click away.
 - Adjustable writing width, font size, and line height.
 - Desktop spellcheck highlights likely mistakes, offers suggestions with the default `Ctrl/Cmd+.` shortcut, and keeps custom terms in a personal dictionary; the suggestion shortcut can be changed in keyboard shortcut settings.
-- Markra manages its own local dictionaries instead of relying on OS or Electron spellcheck, so behavior stays consistent across desktop platforms while language packs download on demand and stay out of the app bundle.
+- Helbaron manages its own local dictionaries instead of relying on OS or Electron spellcheck, so behavior stays consistent across desktop platforms while language packs download on demand and stay out of the app bundle.
 
 ### Native AI
 
@@ -224,7 +224,7 @@ To use a desktop theme file:
 
 On desktop or web, you can also use **Import CSS** in the same settings section. Supported files are UTF-8 CSS up to **1 MiB**. Theme files stay local and are not included in portable settings backups.
 
-One folder is active at a time. Switching to a different folder clears file selections so you can choose its themes. **Use default folder** returns to Markra's managed directory. Custom folders are only read; Markra does not move files or add templates to them.
+One folder is active at a time. Switching to a different folder clears file selections so you can choose its themes. **Use default folder** returns to Helbaron's managed directory. Custom folders are only read; Helbaron does not move files or add templates to them.
 
 Typora compatibility covers basic appearance, not every theme rule. Complex layouts, conditional rules, bundled fonts/images, and imported stylesheets are skipped with notices in Settings. See the [theme guide](packages/app/src/themes/README.md) for supported variables and compatibility details.
 
@@ -267,11 +267,11 @@ Contributions are welcome — whether it's product experience, Markdown editing,
 
 ## Contributors
 
-Thanks to everyone who has helped shape Markra through code, docs, design, testing, and feedback.
+Thanks to everyone who has helped shape Helbaron through code, docs, design, testing, and feedback.
 
 <p align="center">
   <a href="https://github.com/markrahq/markra/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=markrahq/markra" alt="Markra contributors" />
+    <img src="https://contrib.rocks/image?repo=markrahq/markra" alt="Helbaron contributors" />
   </a>
 </p>
 
@@ -281,4 +281,4 @@ Thanks to everyone who has helped shape Markra through code, docs, design, testi
 
 ## License
 
-Markra is licensed under AGPL-3.0.
+Helbaron is licensed under AGPL-3.0.

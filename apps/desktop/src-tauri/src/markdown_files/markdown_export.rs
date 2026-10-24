@@ -445,7 +445,7 @@ mod tests {
     #[test]
     fn exports_markdown_with_deduplicated_local_resources_and_rewritten_destinations() {
         let root = std::env::temp_dir().join(format!(
-            "markra-markdown-export-test-{}",
+            "helbaron-markdown-export-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -582,7 +582,7 @@ mod tests {
     #[test]
     fn removes_the_new_markdown_export_folder_after_failure() {
         let root = std::env::temp_dir().join(format!(
-            "markra-markdown-export-rollback-test-{}",
+            "helbaron-markdown-export-rollback-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -664,7 +664,7 @@ mod tests {
     #[test]
     fn exports_markdown_without_resources_to_a_standalone_folder() {
         let root = std::env::temp_dir().join(format!(
-            "markra-markdown-export-empty-test-{}",
+            "helbaron-markdown-export-empty-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -708,7 +708,7 @@ mod tests {
     #[test]
     fn validates_missing_resources_before_creating_the_export_folder() {
         let root = std::env::temp_dir().join(format!(
-            "markra-markdown-export-missing-test-{}",
+            "helbaron-markdown-export-missing-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

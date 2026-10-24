@@ -1,5 +1,5 @@
 import { Languages, RefreshCw, RotateCcw, Terminal, Trash2, Wrench } from "lucide-react";
-import { supportedLanguages, type AppLanguage } from "@markra/shared";
+import { supportedLanguages, type AppLanguage } from "@helbaron/shared";
 import {
   defaultFileIgnoreSettings,
   type EditorPreferences,
@@ -27,7 +27,7 @@ function LanguageSelect({
 }) {
   return (
     <div className="relative inline-flex items-center">
-      <Languages aria-hidden="true" className="pointer-events-none absolute left-2.5 text-(--text-secondary)" size={13} />
+      <Languages aria-hidden="true" className="pointer-events-none absolute start-2.5 text-(--text-secondary)" size={13} />
       <select
         className="h-8 min-w-42 appearance-none rounded-md border border-(--border-default) bg-(--bg-primary) px-8 text-[12px] leading-5 font-[560] text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
         aria-label={label}
@@ -51,15 +51,15 @@ function shellCommandDescription(
   if (!status) return translate("settings.shellCommand.descriptionChecking");
 
   if (status.status === "installed") {
-    return `${translate("settings.shellCommand.descriptionInstalled")} ${status.commandPath ?? "markra"}`;
+    return `${translate("settings.shellCommand.descriptionInstalled")} ${status.commandPath ?? "helbaron"}`;
   }
 
   if (status.status === "needsRepair") {
-    return `${translate("settings.shellCommand.descriptionNeedsRepair")} ${status.commandPath ?? "markra"}`;
+    return `${translate("settings.shellCommand.descriptionNeedsRepair")} ${status.commandPath ?? "helbaron"}`;
   }
 
   if (status.status === "conflict") {
-    return `${translate("settings.shellCommand.descriptionConflict")} ${status.commandPath ?? "markra"}`;
+    return `${translate("settings.shellCommand.descriptionConflict")} ${status.commandPath ?? "helbaron"}`;
   }
 
   if (status.status === "unavailable") {
@@ -327,7 +327,7 @@ export function GeneralSettings({
         <SettingsSection label={translate("settings.sections.updates")}>
           <SettingsRow
             title={translate("settings.update.currentVersion")}
-            description={`Markra ${appVersion}`}
+            description={`Helbaron ${appVersion}`}
           />
           <SettingsRow
             title={translate("settings.update.autoCheck")}

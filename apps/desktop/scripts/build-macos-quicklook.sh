@@ -2,21 +2,21 @@
 set -euo pipefail
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
-  echo "Markra Quick Look extension can only be built on macOS." >&2
+  echo "Helbaron Quick Look extension can only be built on macOS." >&2
   exit 1
 fi
 
 DESKTOP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WORKSPACE_DIR="$(cd "$DESKTOP_DIR/../.." && pwd)"
-SOURCE_DIR="$DESKTOP_DIR/src-tauri/macos/MarkraQuickLookPreview"
+SOURCE_DIR="$DESKTOP_DIR/src-tauri/macos/HelbaronQuickLookPreview"
 RENDERER_DIR="$DESKTOP_DIR/src-tauri/target/quicklook-renderer"
-OUTPUT_DIR="$DESKTOP_DIR/src-tauri/target/quicklook/MarkraQuickLookPreview.appex"
+OUTPUT_DIR="$DESKTOP_DIR/src-tauri/target/quicklook/HelbaronQuickLookPreview.appex"
 CONTENTS_DIR="$OUTPUT_DIR/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
 RESOURCES_DIR="$CONTENTS_DIR/Resources"
 PNPM_BIN="${PNPM_BIN:-pnpm}"
 
-"$PNPM_BIN" --dir "$WORKSPACE_DIR" --filter @markra/desktop build:quicklook-renderer
+"$PNPM_BIN" --dir "$WORKSPACE_DIR" --filter @helbaron/desktop build:quicklook-renderer
 
 rm -rf "$OUTPUT_DIR"
 mkdir -p "$MACOS_DIR" "$RESOURCES_DIR"
@@ -48,7 +48,7 @@ xcrun swiftc \
   "${SWIFT_SOURCES[@]}" \
   -emit-executable \
   -parse-as-library \
-  -module-name MarkraQuickLookPreview \
+  -module-name HelbaronQuickLookPreview \
   -application-extension \
   -O \
   -target "${SWIFT_TARGET_ARCH}-apple-macosx12.0" \
@@ -58,7 +58,7 @@ xcrun swiftc \
   -Xlinker @executable_path/../Frameworks \
   -Xlinker -rpath \
   -Xlinker @executable_path/../../../../Frameworks \
-  -o "$MACOS_DIR/MarkraQuickLookPreview" \
+  -o "$MACOS_DIR/HelbaronQuickLookPreview" \
   -framework Cocoa \
   -framework QuickLook \
   -framework QuickLookUI \
@@ -69,7 +69,7 @@ CODESIGN_ARGS=(
   --force
   --options runtime
   --sign "$CODESIGN_IDENTITY"
-  --entitlements "$SOURCE_DIR/MarkraQuickLookPreview.entitlements"
+  --entitlements "$SOURCE_DIR/HelbaronQuickLookPreview.entitlements"
 )
 if [[ "$CODESIGN_IDENTITY" != "-" ]]; then
   CODESIGN_ARGS+=(--timestamp)

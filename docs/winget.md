@@ -1,12 +1,12 @@
 # WinGet distribution
 
-Markra's WinGet package identifier is `Markra.Markra`. The initial package supports the Windows x64 NSIS installer (`Markra_<version>_windows_x64_setup.exe`) with the installer's default per-user scope. MSI, portable ZIPs, ARM64, and prereleases are excluded.
+Helbaron's WinGet package identifier is `Helbaron.Helbaron`. The initial package supports the Windows x64 NSIS installer (`Helbaron_<version>_windows_x64_setup.exe`) with the installer's default per-user scope. MSI, portable ZIPs, ARM64, and prereleases are excluded.
 
 The package becomes available through WinGet only after its pull request is merged into [`microsoft/winget-pkgs`](https://github.com/microsoft/winget-pkgs) and the catalog is refreshed. Preparing these files or opening a pull request does not publish the package immediately.
 
 ## Initial submission
 
-The bootstrap manifests in [`packaging/winget/manifests/m/Markra/Markra/2.13.0`](../packaging/winget/manifests/m/Markra/Markra/2.13.0) use the actual v2.13.0 release installer and its SHA-256. They are a fixed starting point, rather than a second catalog to update on every release. `scripts/release/generate-winget-manifests.mjs` generates fresh manifests from each release's installer and Tauri configuration.
+The bootstrap manifests in [`packaging/winget/manifests/m/Helbaron/Helbaron/2.13.0`](../packaging/winget/manifests/m/Helbaron/Helbaron/2.13.0) use the actual v2.13.0 release installer and its SHA-256. They are a fixed starting point, rather than a second catalog to update on every release. `scripts/release/generate-winget-manifests.mjs` generates fresh manifests from each release's installer and Tauri configuration.
 
 1. Run the **WinGet** workflow with `tag_name: v2.13.0` and `submit: false` to validate the manifests and test silent install/uninstall on Windows. Pull requests changing the WinGet tooling also run these checks against the bootstrap release.
 2. Add an Actions repository secret named `WINGET_CREATE_GITHUB_TOKEN`. Use a dedicated GitHub classic personal access token with the `public_repo` scope, as required by [WinGetCreate](https://github.com/microsoft/winget-create/blob/main/doc/token.md). Fine-grained tokens are not supported by this submission flow. Keep the token in the secret; do not commit it or pass it in command-line arguments.
@@ -19,8 +19,8 @@ Manual runs also verify a configured token through a read-only GitHub authentica
 To submit the checked-in bootstrap manifests manually on Windows:
 
 ```powershell
-winget validate --manifest packaging/winget/manifests/m/Markra/Markra/2.13.0
-wingetcreate submit packaging/winget/manifests/m/Markra/Markra/2.13.0 --prtitle "New package: Markra.Markra version 2.13.0"
+winget validate --manifest packaging/winget/manifests/m/Helbaron/Helbaron/2.13.0
+wingetcreate submit packaging/winget/manifests/m/Helbaron/Helbaron/2.13.0 --prtitle "New package: Helbaron.Helbaron version 2.13.0"
 ```
 
 Omitting the token argument allows WinGetCreate's interactive local authentication. The automated workflow instead uses the `WINGET_CREATE_GITHUB_TOKEN` environment variable.
@@ -48,13 +48,13 @@ Download the exact stable installer first, then run:
 ```sh
 RELEASE_VERSION=v2.13.0 \
 RELEASE_ASSETS_ROOT=/path/to/downloaded-assets \
-OUTPUT_DIR=/tmp/markra-winget \
+OUTPUT_DIR=/tmp/helbaron-winget \
 node scripts/release/generate-winget-manifests.mjs
 
 pnpm test:release
 ```
 
-`GITHUB_REPOSITORY` defaults to `markrahq/markra`. `TAURI_CONFIG_PATH` defaults to `apps/desktop/src-tauri/tauri.conf.json`; override it with the configuration from the released tag when generating an older version. The output follows the upstream layout under `<OUTPUT_DIR>/manifests/m/Markra/Markra/<version>/`.
+`GITHUB_REPOSITORY` defaults to `markrahq/markra`. `TAURI_CONFIG_PATH` defaults to `apps/desktop/src-tauri/tauri.conf.json`; override it with the configuration from the released tag when generating an older version. The output follows the upstream layout under `<OUTPUT_DIR>/manifests/m/Helbaron/Helbaron/<version>/`.
 
 If the NSIS install mode changes from `currentUser`, generation fails so the scope can be reviewed before publishing incorrect metadata.
 
@@ -64,11 +64,11 @@ After the initial package is merged and indexed, run on Windows:
 
 ```powershell
 winget source update
-winget show --id Markra.Markra --exact --source winget
-winget install --id Markra.Markra --exact --source winget
-winget list --id Markra.Markra --exact
-winget upgrade --id Markra.Markra --exact --source winget
-winget uninstall --id Markra.Markra --exact
+winget show --id Helbaron.Helbaron --exact --source winget
+winget install --id Helbaron.Helbaron --exact --source winget
+winget list --id Helbaron.Helbaron --exact
+winget upgrade --id Helbaron.Helbaron --exact --source winget
+winget uninstall --id Helbaron.Helbaron --exact
 ```
 
-For the first version update, also test upgrading an older NSIS installation and an installation updated through Markra's built-in updater. Verify that WinGet recognizes the installed version, upgrades the existing installation, and preserves user settings and documents. The automated silent install/uninstall check does not cover these upgrade scenarios or launching the editor UI.
+For the first version update, also test upgrading an older NSIS installation and an installation updated through Helbaron's built-in updater. Verify that WinGet recognizes the installed version, upgrades the existing installation, and preserves user settings and documents. The automated silent install/uninstall check does not cover these upgrade scenarios or launching the editor UI.

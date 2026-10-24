@@ -17,8 +17,8 @@ const localTestWorkerConfig = process.env.CI
 
 export default defineConfig(({ mode }) => ({
   define: {
-    __MARKRA_APP_VERSION__: JSON.stringify(appPackage.version ?? "0.0.0"),
-    __MARKRA_DEBUG__: JSON.stringify(mode !== "production")
+    __HELBARON_APP_VERSION__: JSON.stringify(appPackage.version ?? "0.0.0"),
+    __HELBARON_DEBUG__: JSON.stringify(mode !== "production")
   },
   resolve: mode === "test"
     ? undefined

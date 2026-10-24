@@ -1,14 +1,14 @@
-import type { MarkraMathKind } from "./math-render.ts";
+import type { HelbaronMathKind } from "./math-render.ts";
 
-export interface MarkraMathRange {
+export interface HelbaronMathRange {
   readonly from: number;
-  readonly kind: MarkraMathKind;
+  readonly kind: HelbaronMathKind;
   readonly source: string;
   readonly tex: string;
   readonly to: number;
 }
 
-export interface MarkraSourceRange {
+export interface HelbaronSourceRange {
   readonly from: number;
   readonly to: number;
 }
@@ -21,14 +21,14 @@ function isEscaped(source: string, index: number) {
   return count % 2 === 1;
 }
 
-function overlaps(range: MarkraSourceRange, other: MarkraSourceRange) {
+function overlaps(range: HelbaronSourceRange, other: HelbaronSourceRange) {
   return range.from < other.to && range.to > other.from;
 }
 
 function insideAnyRange(
   from: number,
   to: number,
-  ranges: readonly MarkraSourceRange[],
+  ranges: readonly HelbaronSourceRange[],
 ) {
   return ranges.some((range) => overlaps({ from, to }, range));
 }
@@ -37,7 +37,7 @@ function findClosingDelimiter(
   source: string,
   from: number,
   delimiter: string,
-  blocked: readonly MarkraSourceRange[],
+  blocked: readonly HelbaronSourceRange[],
 ) {
   let cursor = from;
   while (cursor < source.length) {
@@ -53,9 +53,9 @@ function findClosingDelimiter(
 
 function displayMathRanges(
   source: string,
-  blocked: readonly MarkraSourceRange[],
+  blocked: readonly HelbaronSourceRange[],
 ) {
-  const ranges: MarkraMathRange[] = [];
+  const ranges: HelbaronMathRange[] = [];
   const delimiters = [
     { close: "$$", open: "$$" },
     { close: String.raw`\]`, open: String.raw`\[` },
@@ -98,9 +98,9 @@ function displayMathRanges(
 
 function inlineDollarRanges(
   source: string,
-  blocked: readonly MarkraSourceRange[],
+  blocked: readonly HelbaronSourceRange[],
 ) {
-  const ranges: MarkraMathRange[] = [];
+  const ranges: HelbaronMathRange[] = [];
   let cursor = 0;
 
   while (cursor < source.length) {
@@ -156,9 +156,9 @@ function inlineDollarRanges(
 
 function inlineHugoRanges(
   source: string,
-  blocked: readonly MarkraSourceRange[],
+  blocked: readonly HelbaronSourceRange[],
 ) {
-  const ranges: MarkraMathRange[] = [];
+  const ranges: HelbaronMathRange[] = [];
   const open = String.raw`\(`;
   const close = String.raw`\)`;
   let cursor = 0;
@@ -194,9 +194,9 @@ function inlineHugoRanges(
   return ranges;
 }
 
-export function findMarkraMathRanges(
+export function findHelbaronMathRanges(
   source: string,
-  blocked: readonly MarkraSourceRange[] = [],
+  blocked: readonly HelbaronSourceRange[] = [],
 ) {
   const display = displayMathRanges(source, blocked);
   const unavailable = [...blocked, ...display];

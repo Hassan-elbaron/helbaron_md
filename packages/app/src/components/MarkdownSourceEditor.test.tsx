@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { redo, undo } from "@codemirror/commands";
 import { EditorView } from "@codemirror/view";
-import { defaultMarkdownShortcuts } from "@markra/editor";
+import { defaultMarkdownShortcuts } from "@helbaron/editor";
 import { MarkdownSourceEditor } from "./MarkdownSourceEditor";
 
 function getMarkdownSourceView(container: HTMLElement) {
@@ -109,13 +109,13 @@ describe("MarkdownSourceEditor", () => {
       expect(container.querySelector(".cm-line span[class]")).toBeInTheDocument();
     });
     const syntaxCharacters = Array.from(
-      container.querySelectorAll(".cm-markra-syntax-character"),
+      container.querySelectorAll(".cm-helbaron-syntax-character"),
       (element) => element.textContent ?? "",
     ).join("");
     expect(syntaxCharacters).toContain("#");
     expect(syntaxCharacters).toContain("====");
     const sourceMetadata = Array.from(
-      container.querySelectorAll(".cm-markra-source-metadata"),
+      container.querySelectorAll(".cm-helbaron-source-metadata"),
       (element) => element.textContent ?? "",
     ).join("");
     expect(sourceMetadata).toContain("ts");
@@ -257,7 +257,7 @@ describe("MarkdownSourceEditor", () => {
       expect(view.dom.querySelector(".cm-vim-panel")).toHaveTextContent(
         "--NORMAL--",
       );
-      expect(view.dom.querySelector(".markra-vim-hint")).toHaveTextContent(
+      expect(view.dom.querySelector(".helbaron-vim-hint")).toHaveTextContent(
         "i/a insert · # previous match",
       );
     });
@@ -284,7 +284,7 @@ describe("MarkdownSourceEditor", () => {
       expect(view.dom.querySelector(".cm-vim-panel")).toHaveTextContent(
         "--INSERT--",
       );
-      expect(view.dom.querySelector(".markra-vim-hint")).toHaveTextContent(
+      expect(view.dom.querySelector(".helbaron-vim-hint")).toHaveTextContent(
         "Esc return to Normal",
       );
     });

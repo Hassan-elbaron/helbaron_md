@@ -2,8 +2,8 @@ import { emit } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { platform as tauriPlatform, version as tauriVersion, type Platform as TauriPlatform } from "@tauri-apps/plugin-os";
 import { load } from "@tauri-apps/plugin-store";
-import { hasTauriRuntime } from "@markra/shared";
-import type { AppRuntime } from "@markra/app/runtime";
+import { hasTauriRuntime } from "@helbaron/shared";
+import type { AppRuntime } from "@helbaron/app/runtime";
 import * as acp from "./tauri/acp";
 import * as ai from "./tauri/native-ai";
 import * as aiChatAttachments from "./tauri/ai-chat-attachments";
@@ -82,7 +82,8 @@ export const desktopRuntime = {
     pandoc: true,
     s3ImageUpload: true,
     spellcheck: true,
-    updater: true
+    // Helbaron is a fork; upstream Helbaron updates must not replace it.
+    updater: false
   },
   files: {
     backupMarkdownFolder: files.backupNativeMarkdownFolder,
@@ -128,6 +129,8 @@ export const desktopRuntime = {
     saveMarkdownFile: files.saveNativeMarkdownFile,
     savePandocFile: files.saveNativePandocFile,
     savePdfFile: files.saveNativePdfFile,
+    openWordFile: files.openNativeWordFile,
+    saveWordFile: files.saveNativeWordFile,
     saveSettingsFile: files.saveNativeSettingsFile,
     searchMarkdownFiles: files.searchNativeMarkdownFilesForPath,
     syncMarkdownFolder: files.syncNativeMarkdownFolder,

@@ -43,9 +43,9 @@ describe("CodeMirror search decorations", () => {
       1,
     );
 
-    expect(view.dom.querySelectorAll(".cm-markra-search-match")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-search-match")).toHaveLength(2);
     expect(
-      view.dom.querySelector(".cm-markra-search-match-current")?.textContent,
+      view.dom.querySelector(".cm-helbaron-search-match-current")?.textContent,
     ).toBe("Alpha");
     expect(getCodeMirrorSearchState(view.state)).toMatchObject({
       activeIndex: 1,
@@ -74,7 +74,7 @@ describe("CodeMirror search decorations", () => {
 
     view.dispatch({ changes: { from: 0, insert: "!" } });
     expect(getCodeMirrorSearchState(view.state).matches).toEqual([]);
-    expect(view.dom.querySelector(".cm-markra-search-match")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-search-match")).toBeNull();
   });
 
   it("requests scrolling only for a valid match", () => {

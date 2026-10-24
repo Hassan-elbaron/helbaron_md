@@ -1,7 +1,7 @@
 import type {
   AppSettingsRuntime,
   RuntimeStoreLoadOptions
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import type { IndexedDbSettingsRuntimeOptions } from "./types";
 import { openWebRuntimeDatabase, requestToPromise, webRuntimeSettingsStoreName } from "./database";
 

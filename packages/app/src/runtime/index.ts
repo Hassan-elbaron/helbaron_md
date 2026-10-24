@@ -1,5 +1,5 @@
-import type { AppLanguage } from "@markra/shared";
-import type { MarkdownShortcutMap } from "@markra/editor";
+import type { AppLanguage } from "@helbaron/shared";
+import type { MarkdownShortcutMap } from "@helbaron/editor";
 import type { DesktopPlatform } from "../lib/platform";
 import type { ContextMenuEntry } from "../components/ContextMenu";
 import type {
@@ -46,6 +46,9 @@ import type {
   SavedNativePandocFile,
   SavedNativePdfFile,
   SavedNativeSettingsFile,
+  SavedNativeWordFile,
+  SaveNativeWordFileInput,
+  NativeWordFile,
   SaveNativeClipboardAttachmentInput,
   SaveNativeClipboardImageInput,
   SaveNativeHtmlFileInput,
@@ -86,7 +89,7 @@ import type {
 } from "../lib/tauri/spellcheck";
 import type { NativeWebResourceRequest, NativeWebResourceResponse } from "../lib/tauri/web-resource";
 import type { WorkspaceSearchRequest, WorkspaceSearchResponse } from "../lib/workspace-search";
-import type { AcpJsonRpcMessage, AiAgentSessionAttachment } from "@markra/ai";
+import type { AcpJsonRpcMessage, AiAgentSessionAttachment } from "@helbaron/ai";
 import { setAppLogBackendWriter, type AppLogEvent, type AppLogWriter } from "../lib/app-logger";
 
 export type { WorkspaceSearchRequest, WorkspaceSearchResponse } from "../lib/workspace-search";
@@ -222,6 +225,10 @@ export type AppFileRuntime = {
   saveMarkdownFile: (input: SaveNativeMarkdownFileInput) => Promise<SavedNativeMarkdownFile | null>;
   savePandocFile: (input: SaveNativePandocFileInput) => Promise<SavedNativePandocFile | null>;
   savePdfFile: (input: SaveNativePdfFileInput) => Promise<SavedNativePdfFile | null>;
+  /** Picks a Word (.docx) file and returns its bytes for conversion to Markdown. */
+  openWordFile?: (labels?: NativeMarkdownPickerLabels) => Promise<NativeWordFile | null>;
+  /** Saves converted Word (.docx) bytes chosen by the user. */
+  saveWordFile?: (input: SaveNativeWordFileInput) => Promise<SavedNativeWordFile | null>;
   saveSettingsFile: (input: SaveNativeSettingsFileInput) => Promise<SavedNativeSettingsFile | null>;
   searchMarkdownFiles?: (request: WorkspaceSearchRequest) => Promise<WorkspaceSearchResponse>;
   syncMarkdownFolder: (input: SyncNativeMarkdownFolderInput) => Promise<NativeMarkdownSyncSummary>;
@@ -722,6 +729,9 @@ export type {
   SavedNativePandocFile,
   SavedNativePdfFile,
   SavedNativeSettingsFile,
+  SavedNativeWordFile,
+  SaveNativeWordFileInput,
+  NativeWordFile,
   SaveNativeClipboardAttachmentInput,
   SaveNativeClipboardImageInput,
   SaveNativeHtmlFileInput,

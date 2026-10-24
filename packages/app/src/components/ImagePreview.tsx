@@ -1,4 +1,4 @@
-import { t, type AppLanguage } from "@markra/shared";
+import { t, type AppLanguage } from "@helbaron/shared";
 
 type ImagePreviewProps = {
   alt: string;

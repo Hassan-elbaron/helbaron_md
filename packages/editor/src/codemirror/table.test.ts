@@ -3,7 +3,7 @@ import { EditorView } from "@codemirror/view";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { dispatchPlainTextPaste } from "../plain-text-paste.ts";
 import { liveMarkdown, mathPreviewPlugin } from "./index.ts";
-import type { MarkraPlugin } from "./plugin.ts";
+import type { HelbaronPlugin } from "./plugin.ts";
 import {
   focusVisualTableCell,
   tablePreviewPlugin,
@@ -14,7 +14,7 @@ const views: EditorView[] = [];
 
 function createView(
   doc: string,
-  plugin: MarkraPlugin | readonly MarkraPlugin[] = tablePreviewPlugin(),
+  plugin: HelbaronPlugin | readonly HelbaronPlugin[] = tablePreviewPlugin(),
 ) {
   const parent = document.createElement("div");
   document.body.append(parent);
@@ -45,7 +45,7 @@ afterEach(() => {
 describe("tablePreviewPlugin", () => {
   it("clears text across cells while retaining the table grid", () => {
     const view = createView("| Name | Value |\n| --- | --- |\n| A | B |\n| C | D |\n\nAfter");
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table")!;
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table")!;
     const cells = [...table.querySelectorAll("tbody td")];
     const range = document.createRange(); range.setStart(cells[0]!, 0); range.setEnd(cells[3]!, cells[3]!.childNodes.length);
     document.getSelection()?.removeAllRanges(); document.getSelection()?.addRange(range);
@@ -66,7 +66,7 @@ describe("tablePreviewPlugin", () => {
       "After",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
 
     expect(table).not.toBeNull();
 
@@ -77,8 +77,8 @@ describe("tablePreviewPlugin", () => {
       userEvent: "input",
     });
 
-    expect(view.dom.querySelector(".cm-markra-table")).toBe(table);
-    expect(table?.closest<HTMLElement>(".cm-markra-table-wrap")?.dataset.tableFrom)
+    expect(view.dom.querySelector(".cm-helbaron-table")).toBe(table);
+    expect(table?.closest<HTMLElement>(".cm-helbaron-table-wrap")?.dataset.tableFrom)
       .toBe(String(inserted.length + doc.indexOf("| Name")));
 
     view.dom
@@ -99,7 +99,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
 
     expect(table).not.toBeNull();
     expect(table?.querySelector("th")?.textContent).toBe("Name");
@@ -116,7 +116,7 @@ describe("tablePreviewPlugin", () => {
       "| Day | 11 | 2 | 3 | 1 |",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const headers = table?.querySelectorAll<HTMLTableCellElement>("th");
 
     expect(table).not.toBeNull();
@@ -137,9 +137,9 @@ describe("tablePreviewPlugin", () => {
       "| Beta | 2 |",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cells = Array.from(
-      view.dom.querySelectorAll<HTMLTableCellElement>(".cm-markra-table th, .cm-markra-table td"),
+      view.dom.querySelectorAll<HTMLTableCellElement>(".cm-helbaron-table th, .cm-helbaron-table td"),
     );
 
     expect(table?.getAttribute("contenteditable")).toBe("true");
@@ -151,7 +151,7 @@ describe("tablePreviewPlugin", () => {
     const doc = ["|  |  |", "| --- | --- |", "|  |  |"].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table thead th:first-child",
+      ".cm-helbaron-table thead th:first-child",
     );
     const outside = document.createTextNode("Outside");
     document.body.append(outside);
@@ -188,7 +188,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cells = view.dom.querySelectorAll<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
     expect(cells[0]?.querySelector("strong")?.textContent).toBe("Bold");
@@ -196,7 +196,7 @@ describe("tablePreviewPlugin", () => {
     expect(cells[1]?.querySelector("a")?.getAttribute("href")).toBe(
       "https://example.test",
     );
-    expect(cells[1]?.querySelector(".markra-live-link-icon")).not.toBeNull();
+    expect(cells[1]?.querySelector(".helbaron-live-link-icon")).not.toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -210,15 +210,15 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const formulas = view.dom.querySelectorAll<HTMLElement>(
-      ".cm-markra-table .markra-math-render-inline",
+      ".cm-helbaron-table .helbaron-math-render-inline",
     );
 
     expect(formulas).toHaveLength(2);
     expect(formulas[0]?.querySelector(".katex")).not.toBeNull();
-    expect(formulas[0]?.dataset.markraMathMarkdown).toBe(
+    expect(formulas[0]?.dataset.helbaronMathMarkdown).toBe(
       String.raw`$\mathbf{A}x$`,
     );
-    expect(formulas[1]?.dataset.markraMathMarkdown).toBe(
+    expect(formulas[1]?.dataset.helbaronMathMarkdown).toBe(
       String.raw`\(\mathbf{A}^{\mathsf{T}}\)`,
     );
     expect(view.state.doc.toString()).toBe(doc);
@@ -235,7 +235,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
 
     cell?.focus();
@@ -248,7 +248,7 @@ describe("tablePreviewPlugin", () => {
     );
     expect(
       view.dom.querySelector(
-        ".cm-markra-table tbody td:nth-child(2) .markra-math-render-inline .katex",
+        ".cm-helbaron-table tbody td:nth-child(2) .helbaron-math-render-inline .katex",
       ),
     ).not.toBeNull();
   });
@@ -264,7 +264,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const followingText = cell?.lastChild;
 
@@ -280,7 +280,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const anchorNode = document.getSelection()?.anchorNode;
     expect(view.state.doc.toString()).toContain(
@@ -303,10 +303,10 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const math = cell?.querySelector<HTMLElement>(
-      ".markra-math-render-inline",
+      ".helbaron-math-render-inline",
     );
 
     expect(math).not.toBeNull();
@@ -320,7 +320,7 @@ describe("tablePreviewPlugin", () => {
       button: 0,
       cancelable: true,
     }))).toBe(false);
-    expect(cell?.querySelector(".markra-math-render-inline")).toBeNull();
+    expect(cell?.querySelector(".helbaron-math-render-inline")).toBeNull();
     const table = cell?.closest<HTMLTableElement>("table");
     table?.focus();
     expect(document.activeElement).toBe(table);
@@ -333,7 +333,7 @@ describe("tablePreviewPlugin", () => {
       document.getSelection()?.addRange(sourceRange);
     }
     await new Promise((resolve) => window.setTimeout(resolve, 0));
-    expect(cell?.querySelector(".markra-math-render-inline")).toBeNull();
+    expect(cell?.querySelector(".helbaron-math-render-inline")).toBeNull();
     expect(cell?.textContent).toBe(formula);
     math?.dispatchEvent(new MouseEvent("mouseup", {
       bubbles: true,
@@ -345,21 +345,21 @@ describe("tablePreviewPlugin", () => {
       button: 0,
       cancelable: true,
     }));
-    expect(cell?.querySelector(".markra-math-render-inline")).toBeNull();
+    expect(cell?.querySelector(".helbaron-math-render-inline")).toBeNull();
     expect(cell?.textContent).toBe(formula);
     expect(document.activeElement).toBe(table);
     expect(cell?.contains(document.getSelection()?.anchorNode ?? null)).toBe(true);
     expect(view.state.doc.toString()).toBe(doc);
 
     const editableMath = cell?.querySelector<HTMLElement>(
-      "[data-markra-table-math-source]",
+      "[data-helbaron-table-math-source]",
     );
     if (editableMath) editableMath.textContent = "$y^2$";
     cell?.dispatchEvent(new InputEvent("input", { bubbles: true }));
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     expect(updatedCell?.textContent).toBe("$y^2$");
     expect(view.state.doc.toString()).toContain("| Row | $y^2$ |");
@@ -371,8 +371,8 @@ describe("tablePreviewPlugin", () => {
     }));
     expect(
       view.dom.querySelector<HTMLElement>(
-        ".cm-markra-table tbody td:nth-child(2) [data-markra-math-markdown]",
-      )?.dataset.markraMathMarkdown,
+        ".cm-helbaron-table tbody td:nth-child(2) [data-helbaron-math-markdown]",
+      )?.dataset.helbaronMathMarkdown,
     ).toBe("$y^2$");
   });
 
@@ -386,10 +386,10 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const math = cell?.querySelector<HTMLElement>(
-      "[data-markra-math-markdown]",
+      "[data-helbaron-math-markdown]",
     );
 
     math?.dispatchEvent(new MouseEvent("mousedown", {
@@ -398,19 +398,19 @@ describe("tablePreviewPlugin", () => {
       cancelable: true,
     }));
     const editableMath = cell?.querySelector<HTMLElement>(
-      "[data-markra-table-math-source]",
+      "[data-helbaron-table-math-source]",
     );
     if (editableMath) editableMath.textContent = "$y^2$";
     cell?.dispatchEvent(new InputEvent("input", { bubbles: true }));
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const table = updatedCell?.closest<HTMLTableElement>("table");
     table?.focus();
     const sourceText = updatedCell?.querySelector<HTMLElement>(
-      "[data-markra-table-math-source]",
+      "[data-helbaron-table-math-source]",
     )?.firstChild;
     if (sourceText) {
       const sourceRange = document.createRange();
@@ -432,8 +432,8 @@ describe("tablePreviewPlugin", () => {
 
     expect(
       view.dom.querySelector<HTMLElement>(
-        ".cm-markra-table tbody td:nth-child(2) [data-markra-math-markdown]",
-      )?.dataset.markraMathMarkdown,
+        ".cm-helbaron-table tbody td:nth-child(2) [data-helbaron-math-markdown]",
+      )?.dataset.helbaronMathMarkdown,
     ).toBe("$y^2$");
     expect(view.state.doc.toString()).toContain("| Row | $y^2$ |");
   });
@@ -448,10 +448,10 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const math = cell?.querySelector<HTMLElement>(
-      "[data-markra-math-markdown]",
+      "[data-helbaron-math-markdown]",
     );
 
     math?.dispatchEvent(new MouseEvent("mousedown", {
@@ -460,7 +460,7 @@ describe("tablePreviewPlugin", () => {
       cancelable: true,
     }));
     const source = cell?.querySelector<HTMLElement>(
-      "[data-markra-table-math-source]",
+      "[data-helbaron-table-math-source]",
     );
     if (source) source.textContent = "$y^2$";
     else if (cell) cell.textContent = "$y^2$";
@@ -468,7 +468,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const table = updatedCell?.closest<HTMLTableElement>("table");
     table?.focus();
@@ -481,8 +481,8 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).toBe(doc);
     expect(
       view.dom.querySelector<HTMLElement>(
-        ".cm-markra-table tbody td:nth-child(2) [data-markra-math-markdown]",
-      )?.dataset.markraMathMarkdown,
+        ".cm-helbaron-table tbody td:nth-child(2) [data-helbaron-math-markdown]",
+      )?.dataset.helbaronMathMarkdown,
     ).toBe("$x^2$");
   });
 
@@ -495,12 +495,12 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const sourceCell = table?.querySelector<HTMLTableCellElement>(
       "tbody td:first-child",
     );
     const math = sourceCell?.querySelector<HTMLElement>(
-      "[data-markra-math-markdown]",
+      "[data-helbaron-math-markdown]",
     );
 
     math?.dispatchEvent(new MouseEvent("mousedown", {
@@ -509,7 +509,7 @@ describe("tablePreviewPlugin", () => {
       cancelable: true,
     }));
     const source = sourceCell?.querySelector<HTMLElement>(
-      "[data-markra-table-math-source]",
+      "[data-helbaron-table-math-source]",
     );
     if (source) source.textContent = "$y$";
     else if (sourceCell) sourceCell.textContent = "$y$";
@@ -517,7 +517,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const updatedTable = view.dom.querySelector<HTMLTableElement>(
-      ".cm-markra-table",
+      ".cm-helbaron-table",
     );
     const updatedTargetCell = updatedTable?.querySelector<HTMLTableCellElement>(
       "tbody td:nth-child(2)",
@@ -532,8 +532,8 @@ describe("tablePreviewPlugin", () => {
 
     expect(
       view.dom.querySelector<HTMLElement>(
-        ".cm-markra-table tbody td:first-child [data-markra-math-markdown]",
-      )?.dataset.markraMathMarkdown,
+        ".cm-helbaron-table tbody td:first-child [data-helbaron-math-markdown]",
+      )?.dataset.helbaronMathMarkdown,
     ).toBe("$y$");
     expect(
       updatedTargetCell?.contains(document.getSelection()?.anchorNode ?? null),
@@ -549,7 +549,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>("tbody td");
     const text = cell?.querySelector(".katex-html")?.firstChild;
 
@@ -568,7 +568,7 @@ describe("tablePreviewPlugin", () => {
     }));
 
     expect(
-      cell?.querySelector<HTMLElement>("[data-markra-table-math-source]")
+      cell?.querySelector<HTMLElement>("[data-helbaron-table-math-source]")
         ?.textContent,
     ).toBe("$x$");
   });
@@ -583,13 +583,13 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const button = view.dom.querySelector<HTMLButtonElement>(
-      ".cm-markra-table [data-markra-math-markdown]",
+      ".cm-helbaron-table [data-helbaron-math-markdown]",
     );
 
     button?.click();
 
     expect(
-      view.dom.querySelector<HTMLElement>("[data-markra-table-math-source]")
+      view.dom.querySelector<HTMLElement>("[data-helbaron-table-math-source]")
         ?.textContent,
     ).toBe("$x$");
   });
@@ -604,10 +604,10 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const firstMath = cell?.querySelector<HTMLElement>(
-      "[data-markra-math-markdown]",
+      "[data-helbaron-math-markdown]",
     );
 
     firstMath?.dispatchEvent(new MouseEvent("mousedown", {
@@ -616,41 +616,41 @@ describe("tablePreviewPlugin", () => {
       cancelable: true,
     }));
     const source = cell?.querySelector<HTMLElement>(
-      "[data-markra-table-math-source]",
+      "[data-helbaron-table-math-source]",
     );
     expect(source?.textContent).toBe("$x$");
-    expect(cell?.querySelectorAll("[data-markra-math-markdown]")).toHaveLength(1);
+    expect(cell?.querySelectorAll("[data-helbaron-math-markdown]")).toHaveLength(1);
 
     if (source) source.textContent = "$yx$";
     cell?.dispatchEvent(new InputEvent("input", { bubbles: true }));
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     expect(
-      updatedCell?.querySelector<HTMLElement>("[data-markra-table-math-source]")
+      updatedCell?.querySelector<HTMLElement>("[data-helbaron-table-math-source]")
         ?.textContent,
     ).toBe("$yx$");
     expect(
-      updatedCell?.querySelector<HTMLElement>("[data-markra-math-markdown]")
-        ?.dataset.markraMathMarkdown,
+      updatedCell?.querySelector<HTMLElement>("[data-helbaron-math-markdown]")
+        ?.dataset.helbaronMathMarkdown,
     ).toBe("$z$");
 
     updatedCell
-      ?.querySelector<HTMLElement>("[data-markra-math-markdown]")
+      ?.querySelector<HTMLElement>("[data-helbaron-math-markdown]")
       ?.dispatchEvent(new MouseEvent("mousedown", {
         bubbles: true,
         button: 0,
         cancelable: true,
       }));
     expect(
-      updatedCell?.querySelector<HTMLElement>("[data-markra-table-math-source]")
+      updatedCell?.querySelector<HTMLElement>("[data-helbaron-table-math-source]")
         ?.textContent,
     ).toBe("$z$");
     expect(
-      updatedCell?.querySelector<HTMLElement>("[data-markra-math-markdown]")
-        ?.dataset.markraMathMarkdown,
+      updatedCell?.querySelector<HTMLElement>("[data-helbaron-math-markdown]")
+        ?.dataset.helbaronMathMarkdown,
     ).toBe("$yx$");
 
     updatedCell?.dispatchEvent(new MouseEvent("mousedown", {
@@ -662,8 +662,8 @@ describe("tablePreviewPlugin", () => {
 
     expect(
       view.dom.querySelector<HTMLElement>(
-        ".cm-markra-table tbody td:nth-child(2) [data-markra-math-markdown]",
-      )?.dataset.markraMathMarkdown,
+        ".cm-helbaron-table tbody td:nth-child(2) [data-helbaron-math-markdown]",
+      )?.dataset.helbaronMathMarkdown,
     ).toBe("$yx$");
     expect(view.state.doc.toString()).toContain(
       "| Row | Before $yx$ plus $z$ after |",
@@ -680,10 +680,10 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, [mathPreviewPlugin(), tablePreviewPlugin()]);
     const cells = view.dom.querySelectorAll<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
-    expect(view.dom.querySelector(".cm-markra-table .katex")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table .katex")).toBeNull();
     expect(cells[0]?.textContent).toBe("$x$");
     expect(cells[1]?.querySelector("code")?.textContent).toBe("$y$");
     expect(view.state.doc.toString()).toBe(doc);
@@ -705,10 +705,10 @@ describe("tablePreviewPlugin", () => {
       tablePreviewPlugin({ links: { open: () => true, resolveTarget } }),
     );
     const cells = view.dom.querySelectorAll<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const attachment = cells[0]?.querySelector("a");
-    const rejected = cells[1]?.querySelector("[data-markra-link-markdown]");
+    const rejected = cells[1]?.querySelector("[data-helbaron-link-markdown]");
 
     expect(attachment?.textContent).toBe("Reference.pdf");
     expect(attachment?.getAttribute("href")).toBe(
@@ -735,7 +735,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const image = cell?.querySelector<HTMLImageElement>("img");
 
@@ -755,7 +755,7 @@ describe("tablePreviewPlugin", () => {
     );
     expect(
       view.dom.querySelector<HTMLImageElement>(
-        ".cm-markra-table tbody td:nth-child(2) img",
+        ".cm-helbaron-table tbody td:nth-child(2) img",
       )?.alt,
     ).toBe("Synthetic image");
   });
@@ -770,7 +770,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const image = cell?.querySelector<HTMLImageElement>("img");
 
@@ -798,7 +798,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
 
     cell?.focus();
@@ -827,7 +827,7 @@ describe("tablePreviewPlugin", () => {
     const open = vi.fn();
     const view = createView(doc, tablePreviewPlugin({ links: { open } }));
     const link = view.dom.querySelector<HTMLAnchorElement>(
-      ".cm-markra-table tbody td:nth-child(2) a",
+      ".cm-helbaron-table tbody td:nth-child(2) a",
     );
 
     expect(link?.getAttribute("href")).toBe(target);
@@ -858,7 +858,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
 
     cell?.focus();
@@ -882,10 +882,10 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const fallback = cell?.querySelector<HTMLElement>(
-      "[data-markra-link-markdown]",
+      "[data-helbaron-link-markdown]",
     );
 
     expect(fallback?.tagName).toBe("SPAN");
@@ -909,7 +909,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     const link = cell?.querySelector<HTMLAnchorElement>("a");
 
@@ -920,9 +920,9 @@ describe("tablePreviewPlugin", () => {
       cancelable: true,
     }))).toBe(false);
 
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
     expect(cell?.querySelector("a")).toBeNull();
-    expect(cell?.querySelector(".markra-live-link-icon")).toBeNull();
+    expect(cell?.querySelector(".helbaron-live-link-icon")).toBeNull();
     expect(cell?.textContent).toBe(
       "[Synthetic alt](https://example.test/guide)",
     );
@@ -937,7 +937,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     );
     expect(updatedCell?.querySelector("a")).toBeNull();
     expect(updatedCell?.textContent).toBe(
@@ -953,7 +953,7 @@ describe("tablePreviewPlugin", () => {
       key: "Enter",
     }));
     expect(
-      view.dom.querySelector(".cm-markra-table tbody td:nth-child(2) a")
+      view.dom.querySelector(".cm-helbaron-table tbody td:nth-child(2) a")
         ?.textContent,
     ).toBe("Changed alt");
   });
@@ -969,7 +969,7 @@ describe("tablePreviewPlugin", () => {
     const open = vi.fn();
     const view = createView(doc, tablePreviewPlugin({ links: { open } }));
     const link = view.dom.querySelector<HTMLAnchorElement>(
-      ".cm-markra-table tbody td:nth-child(2) a",
+      ".cm-helbaron-table tbody td:nth-child(2) a",
     );
 
     expect(link).not.toBeNull();
@@ -992,8 +992,8 @@ describe("tablePreviewPlugin", () => {
       target: "https://example.test/guide",
       view,
     }));
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
-    expect(view.dom.querySelector(".cm-markra-table a")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table a")).not.toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -1001,7 +1001,7 @@ describe("tablePreviewPlugin", () => {
     const doc = "| Name |\n| --- |\n| **Bold** |\n\nEdit";
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const strong = cell?.querySelector("strong");
 
@@ -1012,14 +1012,14 @@ describe("tablePreviewPlugin", () => {
 
     expect(view.state.doc.toString()).toContain("| **Updated** |");
     expect(
-      view.dom.querySelector(".cm-markra-table tbody td strong")?.textContent,
+      view.dom.querySelector(".cm-helbaron-table tbody td strong")?.textContent,
     ).toBe("Updated");
   });
 
   it("copies a visual table as Markdown plain text", () => {
     const tableMarkdown = "| Name | Value |\n| --- | --- |\n| Alpha | 1 |";
     const view = createView(`${tableMarkdown}\n\nEdit`);
-    const wrapper = view.dom.querySelector<HTMLElement>(".cm-markra-table-wrap");
+    const wrapper = view.dom.querySelector<HTMLElement>(".cm-helbaron-table-wrap");
     const setData = vi.fn();
     const event = new Event("copy", { bubbles: true, cancelable: true });
     Object.defineProperty(event, "clipboardData", {
@@ -1032,7 +1032,7 @@ describe("tablePreviewPlugin", () => {
     expect(setData).toHaveBeenCalledWith("text/plain", tableMarkdown);
   });
 
-  it("renders the original Markra table control layout and icons", () => {
+  it("renders the original Helbaron table control layout and icons", () => {
     const doc = [
       "| Name | Value |",
       "| :--- | :--- |",
@@ -1042,25 +1042,25 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const wrapper = view.dom.querySelector<HTMLElement>(
-      ".cm-markra-table-wrap",
+      ".cm-helbaron-table-wrap",
     );
 
     expect(wrapper?.classList.contains("tableWrapper")).toBe(true);
     expect(wrapper?.dataset.tableAlignment).toBe("left");
-    expect(wrapper?.querySelector(".cm-markra-table-controls")).toBeNull();
+    expect(wrapper?.querySelector(".cm-helbaron-table-controls")).toBeNull();
     expect(
-      wrapper?.querySelector(".markra-table-scroll > .cm-markra-table"),
+      wrapper?.querySelector(".helbaron-table-scroll > .cm-helbaron-table"),
     ).not.toBeNull();
     expect(
-      wrapper?.querySelectorAll(".markra-table-align-controls > button"),
+      wrapper?.querySelectorAll(".helbaron-table-align-controls > button"),
     ).toHaveLength(5);
     expect(
-      wrapper?.querySelectorAll(".markra-table-size-icon-square"),
+      wrapper?.querySelectorAll(".helbaron-table-size-icon-square"),
     ).toHaveLength(4);
     expect(
-      wrapper?.querySelectorAll(".markra-table-align-icon-line"),
+      wrapper?.querySelectorAll(".helbaron-table-align-icon-line"),
     ).toHaveLength(9);
-    expect(wrapper?.querySelector(".markra-table-width-icon")).not.toBeNull();
+    expect(wrapper?.querySelector(".helbaron-table-width-icon")).not.toBeNull();
 
     for (const label of [
       "Add column to the right",
@@ -1071,7 +1071,7 @@ describe("tablePreviewPlugin", () => {
     ]) {
       expect(
         wrapper?.querySelector(
-          `[aria-label="${label}"] svg.markra-lucide-icon.markra-table-control-icon`,
+          `[aria-label="${label}"] svg.helbaron-lucide-icon.helbaron-table-control-icon`,
         ),
       ).not.toBeNull();
     }
@@ -1096,13 +1096,13 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const wrapper = view.dom.querySelector<HTMLElement>(
-      ".cm-markra-table-wrap",
+      ".cm-helbaron-table-wrap",
     );
     const header = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table th:nth-child(2)",
+      ".cm-helbaron-table th:nth-child(2)",
     );
     const row = view.dom.querySelector<HTMLTableRowElement>(
-      ".cm-markra-table tbody tr",
+      ".cm-helbaron-table tbody tr",
     );
     const bodyCell = row?.querySelector<HTMLTableCellElement>("td");
     const deleteColumn = wrapper?.querySelector<HTMLButtonElement>(
@@ -1127,7 +1127,7 @@ describe("tablePreviewPlugin", () => {
       y: 10,
       toJSON: () => ({}),
     });
-    const scroll = wrapper!.querySelector<HTMLElement>(".markra-table-scroll")!;
+    const scroll = wrapper!.querySelector<HTMLElement>(".helbaron-table-scroll")!;
     scroll.getBoundingClientRect = wrapper!.getBoundingClientRect;
     header!.getBoundingClientRect = () => ({
       bottom: 70,
@@ -1180,7 +1180,7 @@ describe("tablePreviewPlugin", () => {
 
     view.dispatch({ selection: EditorSelection.cursor(doc.indexOf("Alpha")) });
 
-    expect(view.dom.querySelector(".cm-markra-table")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).toBeNull();
     expect(view.dom.textContent).toContain("| Alpha | 1 |");
   });
 
@@ -1200,7 +1200,7 @@ describe("tablePreviewPlugin", () => {
       selection: EditorSelection.range(anchor, doc.indexOf("| 1")),
     });
 
-    expect(view.dom.querySelector(".cm-markra-table")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).toBeNull();
     expect(view.dom.textContent).toContain("| Alpha | 1 |");
   });
 
@@ -1213,12 +1213,12 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const cell = view.dom.querySelector<HTMLTableCellElement>(".cm-markra-table tbody td");
+    const cell = view.dom.querySelector<HTMLTableCellElement>(".cm-helbaron-table tbody td");
 
     cell?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
 
     expect(view.state.selection.main.head).toBe(doc.length);
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
     expect(cell?.closest("table")?.getAttribute("contenteditable")).toBe("true");
     expect(cell?.hasAttribute("contenteditable")).toBe(false);
   });
@@ -1233,7 +1233,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
     cell?.focus();
@@ -1243,15 +1243,15 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| Updated \\| value | 1 |");
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
     expect(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td",
+        ".cm-helbaron-table tbody td",
       )?.textContent,
     ).toBe("Updated | value");
     expect(document.activeElement).toBe(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td",
+        ".cm-helbaron-table tbody td",
       ),
     );
   });
@@ -1266,7 +1266,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td:nth-child(2)",
+      ".cm-helbaron-table tbody td:nth-child(2)",
     )!;
     cell.focus();
     const range = document.createRange();
@@ -1282,7 +1282,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).toContain(
       "| Alpha | BeforeLine one<br>Line two |",
     );
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
   });
 
   it("keeps visual table structure when plain text selection spans cells", async () => {
@@ -1295,7 +1295,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cells = view.dom.querySelectorAll<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const first = cells[0]!;
     const second = cells[1]!;
@@ -1310,7 +1310,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| AlphaPASTED | Beta |");
-    expect(view.dom.querySelectorAll(".cm-markra-table tbody td")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-table tbody td")).toHaveLength(2);
   });
 
   it("updates Markdown when input targets the shared table editing host", async () => {
@@ -1322,7 +1322,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>("tbody td");
 
     cell?.focus();
@@ -1334,7 +1334,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).toContain("| Updated | 1 |");
     expect(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td",
+        ".cm-helbaron-table tbody td",
       )?.textContent,
     ).toBe("Updated");
   });
@@ -1349,7 +1349,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
     cell?.focus();
@@ -1365,7 +1365,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).not.toContain("<br>");
     expect(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td",
+        ".cm-helbaron-table tbody td",
       )?.textContent,
     ).toBe("");
   });
@@ -1379,7 +1379,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>("tbody td");
     const row = cell?.parentElement;
 
@@ -1402,7 +1402,7 @@ describe("tablePreviewPlugin", () => {
 
     expect(view.state.doc.toString()).toContain("|  | 1 |");
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     expect(document.activeElement).toBe(updatedCell);
     if (updatedCell) updatedCell.textContent = "Again";
@@ -1410,7 +1410,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| Again | 1 |");
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
   });
 
   it.each([
@@ -1425,7 +1425,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>("tbody td");
     const row = cell?.parentElement;
 
@@ -1461,7 +1461,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>("tbody td");
     const row = cell?.parentElement;
 
@@ -1522,7 +1522,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const sourceCell =
       table?.querySelector<HTMLTableCellElement>(sourceSelector);
     const targetCell =
@@ -1560,7 +1560,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain(expectedRow);
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
   });
 
   it("repairs an escaped selection before IME composition", async () => {
@@ -1572,7 +1572,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>("tbody td");
     const row = cell?.parentElement;
 
@@ -1605,7 +1605,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| 再次 | 1 |");
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
   });
 
   it("keeps IME composition inside a visual table header when WebKit lifts the selection", async () => {
@@ -1617,7 +1617,7 @@ describe("tablePreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const table = view.dom.querySelector<HTMLTableElement>(".cm-markra-table");
+    const table = view.dom.querySelector<HTMLTableElement>(".cm-helbaron-table");
     const cell = table?.querySelector<HTMLTableCellElement>(
       "thead th:nth-child(2)",
     );
@@ -1667,8 +1667,8 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| Name | Value中文 |");
-    expect(view.dom.querySelectorAll(".cm-markra-table thead th")).toHaveLength(2);
-    expect(view.dom.querySelectorAll(".cm-markra-table tbody td")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-table thead th")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-table tbody td")).toHaveLength(2);
   });
 
   it("stabilizes the caret host before composing into an empty visual table header", async () => {
@@ -1685,7 +1685,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table thead th:nth-child(2)",
+      ".cm-helbaron-table thead th:nth-child(2)",
     );
     const table = cell?.closest("table");
     expect(document.getSelection()?.anchorNode?.parentNode).toBe(cell);
@@ -1698,7 +1698,7 @@ describe("tablePreviewPlugin", () => {
     const compositionText = document.getSelection()?.anchorNode;
     const compositionHost = compositionText?.parentElement;
     expect(compositionText?.textContent).toBe("\u200b");
-    expect(compositionHost?.dataset.markraTableCaretHost).toBe("true");
+    expect(compositionHost?.dataset.helbaronTableCaretHost).toBe("true");
 
     if (compositionText) compositionText.textContent = "\u200b苏打水";
     table?.dispatchEvent(new InputEvent("input", {
@@ -1716,8 +1716,8 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| 1 | 苏打水 |");
-    expect(view.dom.querySelectorAll(".cm-markra-table thead th")).toHaveLength(2);
-    expect(view.dom.querySelectorAll(".cm-markra-table tbody td")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-table thead th")).toHaveLength(2);
+    expect(view.dom.querySelectorAll(".cm-helbaron-table tbody td")).toHaveLength(2);
   });
 
   it("commits a visual table cell after IME composition finishes", async () => {
@@ -1730,7 +1730,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
     cell?.focus();
@@ -1744,7 +1744,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| 中文 | 1 |");
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
     expect(document.activeElement?.textContent).toBe("中文");
   });
 
@@ -1758,7 +1758,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
     cell?.focus();
@@ -1767,7 +1767,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     )?.dispatchEvent(new KeyboardEvent("keydown", {
       bubbles: true,
       cancelable: true,
@@ -1775,7 +1775,7 @@ describe("tablePreviewPlugin", () => {
     }));
 
     expect(view.state.doc.toString()).toBe(doc);
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
   });
 
   it("uses Enter to finish editing a visual table cell", () => {
@@ -1788,7 +1788,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const event = new KeyboardEvent("keydown", {
       bubbles: true,
@@ -1800,7 +1800,7 @@ describe("tablePreviewPlugin", () => {
     cell?.closest("table")?.dispatchEvent(event);
 
     expect(event.defaultPrevented).toBe(true);
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
   });
 
   it.each([
@@ -1847,7 +1847,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const text = cell?.firstChild;
 
@@ -1873,7 +1873,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     expect(event.defaultPrevented).toBe(true);
     expect(view.state.doc.toString()).toContain(`| ${afterLineBreak} | 1 |`);
@@ -1917,7 +1917,7 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const text = cell?.firstChild;
 
@@ -1939,7 +1939,7 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     const updatedCell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
     const table = updatedCell?.closest("table");
     table?.dispatchEvent(new CompositionEvent("compositionstart", {
@@ -1974,11 +1974,11 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const cell = view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody td",
+      ".cm-helbaron-table tbody td",
     );
 
     expect(
-      cell?.querySelector('br[data-markra-source-break="true"]'),
+      cell?.querySelector('br[data-helbaron-source-break="true"]'),
     ).not.toBeNull();
     cell?.focus();
     cell?.dispatchEvent(new InputEvent("input", { bubbles: true }));
@@ -2002,7 +2002,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).toContain("|  |  |\n\nEdit");
     expect(document.activeElement).toBe(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody tr:last-child td:first-child",
+        ".cm-helbaron-table tbody tr:last-child td:first-child",
       ),
     );
     view.dom.querySelector<HTMLButtonElement>('[aria-label="Add column to the right"]')?.click();
@@ -2010,7 +2010,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).toContain("| Name | Value |  |");
     expect(document.activeElement).toBe(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table thead th:last-child",
+        ".cm-helbaron-table thead th:last-child",
       ),
     );
     view.dom.querySelector<HTMLButtonElement>('[aria-label="Align table right"]')?.click();
@@ -2029,18 +2029,18 @@ describe("tablePreviewPlugin", () => {
     const view = createView(doc);
 
     view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table tbody tr:first-child td",
+      ".cm-helbaron-table tbody tr:first-child td",
     )?.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
     view.dom.querySelector<HTMLButtonElement>('[aria-label="Delete row"]')?.click();
     await Promise.resolve();
     expect(view.state.doc.toString()).not.toContain("Alpha");
     expect(document.activeElement).toBe(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody tr:first-child td:first-child",
+        ".cm-helbaron-table tbody tr:first-child td:first-child",
       ),
     );
     view.dom.querySelector<HTMLTableCellElement>(
-      ".cm-markra-table th:nth-child(3)",
+      ".cm-helbaron-table th:nth-child(3)",
     )?.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
     view.dom.querySelector<HTMLButtonElement>('[aria-label="Delete column"]')?.click();
     await Promise.resolve();
@@ -2048,7 +2048,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).not.toContain("| B |");
     expect(document.activeElement).toBe(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table thead th:last-child",
+        ".cm-helbaron-table thead th:last-child",
       ),
     );
     view.dom.querySelector<HTMLButtonElement>('[aria-label="Delete table"]')?.click();
@@ -2081,7 +2081,7 @@ describe("tablePreviewPlugin", () => {
     expect(view.state.doc.toString()).toBe(doc);
   });
 
-  it("applies Markra's configured table width mode", () => {
+  it("applies Helbaron's configured table width mode", () => {
     const doc = [
       "| Name | Value |",
       "| --- | --- |",
@@ -2091,8 +2091,8 @@ describe("tablePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc, tablePreviewPlugin({ widthMode: "even" }));
 
-    expect(view.dom.querySelector(".cm-markra-table-wrap")?.getAttribute("data-width-mode")).toBe("even");
-    expect(view.dom.querySelector(".cm-markra-table")?.getAttribute("data-width-mode")).toBe("even");
+    expect(view.dom.querySelector(".cm-helbaron-table-wrap")?.getAttribute("data-width-mode")).toBe("even");
+    expect(view.dom.querySelector(".cm-helbaron-table")?.getAttribute("data-width-mode")).toBe("even");
   });
 
   it("toggles the original table width control for every table in the document", () => {
@@ -2115,13 +2115,13 @@ describe("tablePreviewPlugin", () => {
     button?.click();
 
     expect(
-      Array.from(view.dom.querySelectorAll(".cm-markra-table-wrap")).map(
+      Array.from(view.dom.querySelectorAll(".cm-helbaron-table-wrap")).map(
         (wrapper) => wrapper.getAttribute("data-width-mode"),
       ),
     ).toEqual(["even", "even"]);
     expect(
-      Array.from(view.dom.querySelectorAll(".cm-markra-table")).every(
-        (table) => !table.classList.contains("markra-table-width-auto"),
+      Array.from(view.dom.querySelectorAll(".cm-helbaron-table")).every(
+        (table) => !table.classList.contains("helbaron-table-width-auto"),
       ),
     ).toBe(true);
     expect(
@@ -2135,7 +2135,7 @@ describe("tablePreviewPlugin", () => {
     const doc = [
       "| Field | Value |",
       "| --- | --- |",
-      "| Name | Markra |",
+      "| Name | Helbaron |",
       "",
       "Edit",
     ].join("\n");
@@ -2164,13 +2164,13 @@ describe("tablePreviewPlugin", () => {
     await Promise.resolve();
 
     expect(view.state.doc.toString()).toContain("| Field | Value |  |");
-    expect(view.state.doc.toString()).toContain("| Name | Markra |  |");
+    expect(view.state.doc.toString()).toContain("| Name | Helbaron |  |");
     expect(view.state.doc.toString().match(/^\|  \|  \|  \|$/gmu)).toHaveLength(2);
-    expect(document.querySelector(".markra-table-size-popover")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-table")).not.toBeNull();
+    expect(document.querySelector(".helbaron-table-size-popover")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-table")).not.toBeNull();
     expect(document.activeElement).toBe(
       view.dom.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody tr:last-child td:last-child",
+        ".cm-helbaron-table tbody tr:last-child td:last-child",
       ),
     );
   });
@@ -2179,7 +2179,7 @@ describe("tablePreviewPlugin", () => {
     const doc = [
       "| Field | Value |",
       "| --- | --- |",
-      "| Name | Markra |",
+      "| Name | Helbaron |",
       "",
       "Edit",
     ].join("\n");
@@ -2189,7 +2189,7 @@ describe("tablePreviewPlugin", () => {
     );
 
     adjust?.click();
-    expect(document.querySelector(".markra-table-size-popover")).not.toBeNull();
+    expect(document.querySelector(".helbaron-table-size-popover")).not.toBeNull();
 
     adjust?.dispatchEvent(new MouseEvent("mousedown", {
       bubbles: true,
@@ -2198,7 +2198,7 @@ describe("tablePreviewPlugin", () => {
     }));
     adjust?.click();
 
-    expect(document.querySelector(".markra-table-size-popover")).toBeNull();
+    expect(document.querySelector(".helbaron-table-size-popover")).toBeNull();
   });
 
   it("clamps the size picker summary for tables larger than its grid", () => {

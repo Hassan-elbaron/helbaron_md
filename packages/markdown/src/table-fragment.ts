@@ -29,7 +29,7 @@ function syntheticTableMarkdown(
   columnCount: number,
   alignments: readonly GfmTableAlignment[]
 ) {
-  const headers = Array.from({ length: columnCount }, (_, index) => `markra-${index + 1}`);
+  const headers = Array.from({ length: columnCount }, (_, index) => `helbaron-${index + 1}`);
   const delimiters = Array.from(
     { length: columnCount },
     (_, index) => tableDelimiter(alignments[index] ?? null)

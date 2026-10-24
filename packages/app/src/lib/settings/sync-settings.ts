@@ -1,4 +1,4 @@
-import { clampNumber, normalizeNullableString } from "@markra/shared";
+import { clampNumber, normalizeNullableString } from "@helbaron/shared";
 
 export type SyncProvider = "webdav";
 
@@ -18,7 +18,7 @@ export type SyncSettings = {
   remotePath: string;
 };
 
-const defaultSyncRemotePath = "markra";
+const defaultSyncRemotePath = "helbaron";
 
 export const defaultSyncSettings: SyncSettings = {
   autoSyncOnSave: false,

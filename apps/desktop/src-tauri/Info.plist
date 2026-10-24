@@ -7,7 +7,7 @@
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
   <key>CFBundleIconName</key>
-  <string>Markra</string>
+  <string>Helbaron</string>
   <key>CFBundleLocalizations</key>
   <array>
     <string>en</string>
@@ -24,7 +24,7 @@
   </array>
   <key>CFBundlePlugIns</key>
   <array>
-    <string>Contents/PlugIns/MarkraQuickLookPreview.appex</string>
+    <string>Contents/PlugIns/HelbaronQuickLookPreview.appex</string>
   </array>
   <key>UTExportedTypeDeclarations</key>
   <array>

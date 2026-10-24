@@ -257,7 +257,7 @@ describe("save editor image", () => {
     });
     const s3 = {
       accessKeyId: "access-key",
-      bucket: "markra-images",
+      bucket: "helbaron-images",
       endpointUrl: "https://s3.example.com",
       publicBaseUrl: "https://cdn.example.com/images",
       region: "us-east-1",
@@ -306,7 +306,7 @@ describe("save editor image", () => {
     });
     const s3 = {
       accessKeyId: "access-key",
-      bucket: "markra-images",
+      bucket: "helbaron-images",
       endpointUrl: "https://s3.example.com",
       publicBaseUrl: "https://cdn.example.com/images",
       region: "",

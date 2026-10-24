@@ -73,7 +73,7 @@ export function attachHtmlColumnResizers(
 
   for (let column = 0; column < columnCount; column += 1) {
     const handle = document.createElement("div");
-    handle.className = "cm-markra-html-column-resize";
+    handle.className = "cm-helbaron-html-column-resize";
     handle.dataset.column = String(column);
     handle.tabIndex = 0;
     handle.setAttribute("role", "separator");
@@ -104,14 +104,14 @@ export function attachHtmlColumnResizers(
       }
       for (const group of groups) group.remove();
       table.insertBefore(preview, table.caption?.nextSibling ?? table.firstChild);
-      grid.classList.add("cm-markra-html-resizing");
+      grid.classList.add("cm-helbaron-html-resizing");
       let next = initial;
       const restore = () => {
         preview.remove();
         const before = table.caption?.nextSibling ?? table.firstChild;
         for (const group of groups) table.insertBefore(group, before);
         if (initialStyle === null) table.removeAttribute("style"); else table.setAttribute("style", initialStyle);
-        grid.classList.remove("cm-markra-html-resizing");
+        grid.classList.remove("cm-helbaron-html-resizing");
         window.removeEventListener("pointermove", move);
         window.removeEventListener("pointerup", finish);
         window.removeEventListener("pointercancel", cancel);

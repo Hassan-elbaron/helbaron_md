@@ -57,11 +57,11 @@ test("generates three WinGet manifests using only the exact x64 NSIS installer",
   ] });
   const result = run();
   assert.equal(result.status, 0, result.stderr);
-  const manifestDir = path.join(outputDir, "manifests/m/Markra/Markra/1.2.3");
+  const manifestDir = path.join(outputDir, "manifests/m/Helbaron/Helbaron/1.2.3");
   assert.equal(fs.readdirSync(manifestDir).length, 3);
-  const installer = fs.readFileSync(path.join(manifestDir, "Markra.Markra.installer.yaml"), "utf8");
-  const locale = fs.readFileSync(path.join(manifestDir, "Markra.Markra.locale.en-US.yaml"), "utf8");
-  const version = fs.readFileSync(path.join(manifestDir, "Markra.Markra.yaml"), "utf8");
+  const installer = fs.readFileSync(path.join(manifestDir, "Helbaron.Helbaron.installer.yaml"), "utf8");
+  const locale = fs.readFileSync(path.join(manifestDir, "Helbaron.Helbaron.locale.en-US.yaml"), "utf8");
+  const version = fs.readFileSync(path.join(manifestDir, "Helbaron.Helbaron.yaml"), "utf8");
   assert.match(installer, /InstallerType: nullsoft/);
   assert.match(installer, /Scope: user/);
   assert.match(installer, /Architecture: x64/);
@@ -76,7 +76,7 @@ test("generates three WinGet manifests using only the exact x64 NSIS installer",
   assert.match(version, /DefaultLocale: en-US/);
   for (const name of fs.readdirSync(manifestDir)) {
     const content = fs.readFileSync(path.join(manifestDir, name), "utf8");
-    assert.match(content, /PackageIdentifier: Markra.Markra/);
+    assert.match(content, /PackageIdentifier: Helbaron.Helbaron/);
     assert.match(content, /PackageVersion: "1.2.3"/);
     assert.match(content, /ManifestVersion: 1.10.0/);
     assert.match(content, /winget-manifest\.[a-zA-Z]+\.1\.10\.0\.schema\.json/);
@@ -87,7 +87,7 @@ test("uses an explicit publisher and accepts a version without the v prefix", (t
   const { run, outputDir } = fixture(t, { config: { bundle: { publisher: "Example Publisher" } } });
   const result = run({ RELEASE_VERSION: "1.2.3" });
   assert.equal(result.status, 0, result.stderr);
-  const locale = fs.readFileSync(path.join(outputDir, "manifests/m/Markra/Markra/1.2.3/Markra.Markra.locale.en-US.yaml"), "utf8");
+  const locale = fs.readFileSync(path.join(outputDir, "manifests/m/Helbaron/Helbaron/1.2.3/Helbaron.Helbaron.locale.en-US.yaml"), "utf8");
   assert.match(locale, /Publisher: "Example Publisher"/);
 });
 

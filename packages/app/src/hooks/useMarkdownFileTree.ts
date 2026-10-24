@@ -1,4 +1,4 @@
-import { assetFolderMatchesPath } from "@markra/markdown";
+import { assetFolderMatchesPath } from "@helbaron/markdown";
 import { startTransition, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   createAiAgentSessionId,
@@ -27,7 +27,7 @@ import {
   watchNativeMarkdownTree,
   type NativeMarkdownFolderFile
 } from "../lib/tauri";
-import { clampNumber, folderNameFromDocumentPath, isMarkdownPath, parentPathFromPath, pathNameFromPath } from "@markra/shared";
+import { clampNumber, folderNameFromDocumentPath, isMarkdownPath, parentPathFromPath, pathNameFromPath } from "@helbaron/shared";
 
 export const markdownFileTreeDefaultWidth = 288;
 export const markdownFileTreeMinWidth = 220;

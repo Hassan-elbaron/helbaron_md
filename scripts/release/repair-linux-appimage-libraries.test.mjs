@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-appimage-repair-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-appimage-repair-"));
 }
 
 function writeFile(filePath, content = "") {
@@ -40,7 +40,7 @@ test("repair-linux-appimage-libraries removes bundled Wayland client libraries",
 
 test("repair-linux-appimage-libraries succeeds when there is nothing to remove", () => {
   const appDir = makeTempDir();
-  writeFile(path.join(appDir, "usr", "bin", "markra"));
+  writeFile(path.join(appDir, "usr", "bin", "helbaron"));
 
   const result = runRepair(appDir);
 

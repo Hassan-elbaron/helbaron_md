@@ -19,16 +19,16 @@ describe("sync settings", () => {
 
     await expect(getStoredSyncSettings()).resolves.toEqual({
       ...defaultSyncSettings,
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
 
     expect(store.get).toHaveBeenCalledWith("syncSettings");
   });
 
-  it("defaults the remote sync folder to markra", () => {
+  it("defaults the remote sync folder to helbaron", () => {
     expect(normalizeSyncSettings({})).toEqual({
       ...defaultSyncSettings,
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
   });
 
@@ -71,14 +71,14 @@ describe("sync settings", () => {
       enabled: true,
       webdav: {
         password: "secret",
-        remotePath: " markra ",
+        remotePath: " helbaron ",
         serverUrl: "https://dav.example.test/",
         username: "ada"
       }
     })).toEqual({
       ...defaultSyncSettings,
       enabled: true,
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
   });
 });

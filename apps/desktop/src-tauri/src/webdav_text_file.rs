@@ -388,19 +388,19 @@ mod tests {
     fn builds_nested_webdav_text_file_urls() {
         let url = webdav_text_file_url(
             "https://dav.example.test/base/",
-            "markra/settings/markra-settings.json",
+            "helbaron/settings/helbaron-settings.json",
         )
         .expect("WebDAV settings URL should be built");
 
         assert_eq!(
             url.as_str(),
-            "https://dav.example.test/base/markra/settings/markra-settings.json"
+            "https://dav.example.test/base/helbaron/settings/helbaron-settings.json"
         );
     }
 
     #[test]
     fn rejects_unsafe_webdav_text_file_paths() {
-        for remote_path in ["", "/", ".", "../settings.json", "markra/../settings.json"] {
+        for remote_path in ["", "/", ".", "../settings.json", "helbaron/../settings.json"] {
             let error = webdav_text_file_url("https://dav.example.test/base/", remote_path)
                 .expect_err("unsafe paths should be rejected");
 

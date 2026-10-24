@@ -64,9 +64,9 @@ describe("rawHtmlPreviewPlugin", () => {
     const focused: Array<{ head: number; preview: boolean }> = [];
     view.contentDOM.addEventListener("focus", () => focused.push({
       head: view.state.selection.main.head,
-      preview: Boolean(view.dom.querySelector(".markra-html-node")),
+      preview: Boolean(view.dom.querySelector(".helbaron-html-node")),
     }));
-    view.dom.querySelector<HTMLElement>(".markra-html-node")!.dispatchEvent(
+    view.dom.querySelector<HTMLElement>(".helbaron-html-node")!.dispatchEvent(
       new MouseEvent("mousedown", { bubbles: true, cancelable: true }),
     );
     expect(focused).toEqual([{ head: from, preview: false }]);
@@ -78,46 +78,46 @@ describe("rawHtmlPreviewPlugin", () => {
     const from = doc.indexOf("<div>");
     const to = from + source.length;
     const view = createView(doc);
-    view.dom.querySelector<HTMLElement>(".markra-html-node")!.dispatchEvent(
+    view.dom.querySelector<HTMLElement>(".helbaron-html-node")!.dispatchEvent(
       new MouseEvent("mousedown", { bubbles: true, cancelable: true }),
     );
 
     view.dispatch({ selection: EditorSelection.cursor(from) });
-    expect(view.dom.querySelector(".markra-html-node")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-html-hidden-line")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-html-hidden-line")).toBeNull();
     expect(view.state.selection.main.head).toBe(from);
 
     view.dispatch({ selection: EditorSelection.cursor(to) });
-    expect(view.dom.querySelector(".markra-html-node")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node")).toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
 
     view.dispatch({ selection: EditorSelection.cursor(doc.length) });
-    expect(view.dom.querySelector(".markra-html-node strong")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node strong")).not.toBeNull();
   });
 
   it("preserves source intent through boundary edits, selection and blur without changing initial previews", () => {
     const source = "<div>\n<strong>Mock</strong>\n</div>";
     const doc = `${source}\n\nAfter`;
     const view = createView(doc, rawHtmlPreviewPlugin(), 0);
-    expect(view.dom.querySelector(".markra-html-node strong")).not.toBeNull();
-    view.dom.querySelector<HTMLElement>(".markra-html-node")!.dispatchEvent(
+    expect(view.dom.querySelector(".helbaron-html-node strong")).not.toBeNull();
+    view.dom.querySelector<HTMLElement>(".helbaron-html-node")!.dispatchEvent(
       new MouseEvent("mousedown", { bubbles: true, cancelable: true }),
     );
     view.dispatch({ selection: EditorSelection.cursor(0) });
     view.contentDOM.blur();
     view.dispatch({ selection: view.state.selection });
-    expect(view.dom.querySelector(".markra-html-node")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node")).toBeNull();
 
     view.focus();
     view.dispatch({ changes: { from: 0, insert: "\n" }, selection: EditorSelection.cursor(0) });
-    expect(view.dom.querySelector(".markra-html-node")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node")).toBeNull();
     view.dispatch({ changes: { from: 0, to: 1 }, selection: EditorSelection.cursor(0) });
     view.dispatch({ selection: EditorSelection.range(0, doc.length) });
-    expect(view.dom.querySelector(".markra-html-node")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node")).toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
 
     const reopened = createView(doc, rawHtmlPreviewPlugin(), 0);
-    expect(reopened.dom.querySelector(".markra-html-node strong")).not.toBeNull();
+    expect(reopened.dom.querySelector(".helbaron-html-node strong")).not.toBeNull();
   });
 
   it.each(["", "\n"])("renders merged HTML tables and preserves source through editing and recreation (%j)", (separator) => {
@@ -128,14 +128,14 @@ describe("rawHtmlPreviewPlugin", () => {
     ].join(separator);
     const doc = `${source}\n\nEdit here`;
     const view = createView(doc);
-    const preview = view.dom.querySelector<HTMLElement>(".markra-html-node");
+    const preview = view.dom.querySelector<HTMLElement>(".helbaron-html-node");
 
     expect(preview?.querySelector("th")?.colSpan).toBe(2);
     expect(preview?.querySelector("td")?.rowSpan).toBe(2);
     expect(view.state.doc.toString()).toBe(doc);
 
     view.dispatch({ selection: EditorSelection.cursor(source.indexOf("<table>") + 1) });
-    expect(view.dom.querySelector(".markra-html-node table")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-html-node table")).toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
 
     const position = doc.indexOf(">B<") + 1;
@@ -161,7 +161,7 @@ describe("rawHtmlPreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc);
-    const preview = view.dom.querySelector<HTMLElement>(".markra-html-node");
+    const preview = view.dom.querySelector<HTMLElement>(".helbaron-html-node");
 
     expect(preview?.textContent).toContain("Safe");
     expect(preview?.textContent).not.toContain("bad()");
@@ -188,7 +188,7 @@ describe("rawHtmlPreviewPlugin", () => {
     });
 
     expect(syntaxTreeIterations).toHaveLength(0);
-    expect(view.dom.querySelector(".markra-html-node")?.textContent).toContain(
+    expect(view.dom.querySelector(".helbaron-html-node")?.textContent).toContain(
       "Synthetic HTML",
     );
   });
@@ -196,13 +196,13 @@ describe("rawHtmlPreviewPlugin", () => {
   it("renders inline HTML and reveals its source when activated", () => {
     const doc = "Press <kbd>Mod</kbd> now.\n\nEdit";
     const view = createView(doc);
-    const preview = view.dom.querySelector<HTMLElement>(".cm-markra-inline-html");
+    const preview = view.dom.querySelector<HTMLElement>(".cm-helbaron-inline-html");
 
     expect(preview?.tagName).toBe("KBD");
     expect(preview?.textContent).toContain("Mod");
     preview?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
 
-    expect(view.dom.querySelector(".cm-markra-inline-html")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-inline-html")).toBeNull();
     expect(view.dom.textContent).toContain("<kbd>Mod</kbd>");
   });
 
@@ -214,7 +214,7 @@ describe("rawHtmlPreviewPlugin", () => {
     view.dispatch({ selection: EditorSelection.cursor(anchor) });
     view.dispatch({ selection: EditorSelection.range(anchor, anchor + 3) });
 
-    expect(view.dom.querySelector(".cm-markra-inline-html")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-inline-html")).toBeNull();
     expect(view.dom.textContent).toContain("<kbd>Mod</kbd>");
   });
 
@@ -224,14 +224,14 @@ describe("rawHtmlPreviewPlugin", () => {
 
     view.dispatch({ selection: EditorSelection.range(0, doc.length) });
 
-    expect(view.dom.querySelector(".cm-markra-inline-html")?.textContent).toBe("Mod");
+    expect(view.dom.querySelector(".cm-helbaron-inline-html")?.textContent).toBe("Mod");
     expect(view.dom.textContent).not.toContain("<kbd>Mod</kbd>");
   });
 
   it("balances nested inline HTML without leaving closing tags behind", () => {
     const doc = "Before <span><span>Inner</span></span> after\n\nEdit";
     const view = createView(doc);
-    const preview = view.dom.querySelector<HTMLElement>(".cm-markra-inline-html");
+    const preview = view.dom.querySelector<HTMLElement>(".cm-helbaron-inline-html");
 
     expect(preview?.tagName).toBe("SPAN");
     expect(preview?.querySelector("span")?.textContent).toBe("Inner");
@@ -250,7 +250,7 @@ describe("rawHtmlPreviewPlugin", () => {
       "Edit",
     ].join("\n");
     const view = createView(doc, rawHtmlPreviewPlugin({ resolveImageSrc }));
-    const images = view.dom.querySelectorAll<HTMLImageElement>(".markra-html-node img");
+    const images = view.dom.querySelectorAll<HTMLImageElement>(".helbaron-html-node img");
 
     expect(resolveImageSrc).toHaveBeenCalledWith("./mock.png");
     expect(images[0]?.getAttribute("src")).toBe("https://assets.example.test/mock.png");

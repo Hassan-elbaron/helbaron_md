@@ -55,7 +55,7 @@ export function BackupSettings({
             <SettingsTextInput
               label={translate("settings.backup.targetPath")}
               value={settings.targetPath}
-              placeholder="/Users/example/markra-backups"
+              placeholder="/Users/example/helbaron-backups"
               widthClassName="w-72"
               onChange={(targetPath) =>
                 onUpdateSettings({

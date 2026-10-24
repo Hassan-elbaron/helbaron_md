@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { AiSelectionContext } from "@markra/ai";
+import type { AiSelectionContext } from "@helbaron/ai";
 
 export const aiSelectionRevealDelayMs = 450;
 

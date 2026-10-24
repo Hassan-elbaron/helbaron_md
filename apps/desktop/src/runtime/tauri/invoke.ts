@@ -1,6 +1,6 @@
 import { invoke as tauriInvoke } from "@tauri-apps/api/core";
-import { diagnosticErrorMessage } from "@markra/shared";
-import { appLogger, type AppLogArea } from "@markra/app/runtime";
+import { diagnosticErrorMessage } from "@helbaron/shared";
+import { appLogger, type AppLogArea } from "@helbaron/app/runtime";
 
 type NativeInvokeArgs = Parameters<typeof tauriInvoke>[1];
 const nativeCommandErrorFileNamePattern = /\b[\w.-]+\.(?:docx?|gif|html|jpe?g|markdown|md|pdf|png|pptx?|svg|txt|webp|xlsx?)\b/giu;

@@ -36,7 +36,7 @@ describe("SyncSettings", () => {
     expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
     expect(screen.getByRole("textbox", { name: "Remote folder" })).toHaveAttribute(
       "placeholder",
-      "e.g. markra"
+      "e.g. helbaron"
     );
 
     fireEvent.click(screen.getByRole("switch", { name: "Enable sync" }));
@@ -46,11 +46,11 @@ describe("SyncSettings", () => {
     });
 
     fireEvent.change(screen.getByRole("textbox", { name: "Remote folder" }), {
-      target: { value: "markra" }
+      target: { value: "helbaron" }
     });
     expect(onUpdateSettings).toHaveBeenCalledWith({
       ...settings,
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
 
     fireEvent.click(screen.getByRole("switch", { name: "Sync after saving" }));
@@ -83,7 +83,7 @@ describe("SyncSettings", () => {
       />
     );
 
-    expect(screen.getByRole("textbox", { name: "Remote folder" })).toHaveValue("markra");
+    expect(screen.getByRole("textbox", { name: "Remote folder" })).toHaveValue("helbaron");
     expect(screen.getByRole("button", { name: "Sync now" })).toBeDisabled();
   });
 });

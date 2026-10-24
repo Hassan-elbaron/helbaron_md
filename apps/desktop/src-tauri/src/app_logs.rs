@@ -69,27 +69,27 @@ mod tests {
 
     #[test]
     fn builds_open_log_folder_commands_for_supported_platforms() {
-        let path = Path::new("/tmp/markra-logs");
+        let path = Path::new("/tmp/helbaron-logs");
 
         assert_eq!(
             log_folder_command_for_path(path, LogFolderPlatform::Macos),
             LogFolderCommand {
                 program: "open".to_string(),
-                args: vec!["-R".to_string(), "/tmp/markra-logs".to_string()],
+                args: vec!["-R".to_string(), "/tmp/helbaron-logs".to_string()],
             }
         );
         assert_eq!(
             log_folder_command_for_path(path, LogFolderPlatform::Windows),
             LogFolderCommand {
                 program: "explorer".to_string(),
-                args: vec!["/select,/tmp/markra-logs".to_string()],
+                args: vec!["/select,/tmp/helbaron-logs".to_string()],
             }
         );
         assert_eq!(
             log_folder_command_for_path(path, LogFolderPlatform::Linux),
             LogFolderCommand {
                 program: "xdg-open".to_string(),
-                args: vec!["/tmp/markra-logs".to_string()],
+                args: vec!["/tmp/helbaron-logs".to_string()],
             }
         );
     }

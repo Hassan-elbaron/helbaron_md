@@ -3,9 +3,9 @@ import { EditorView, runScopeHandlers } from "@codemirror/view";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   blocksPlugin,
-  listMarkraUi,
+  listHelbaronUi,
   liveMarkdown,
-  runMarkraCommand,
+  runHelbaronCommand,
 } from "./index.ts";
 
 import "./dom.test-support.ts";
@@ -47,11 +47,11 @@ afterEach(() => {
 });
 
 describe("blocksPlugin", () => {
-  it("publishes stable Markra-friendly slash-menu actions", () => {
+  it("publishes stable Helbaron-friendly slash-menu actions", () => {
     const view = createView();
 
     expect(
-      listMarkraUi(view, "slash-menu").map((action) => ({
+      listHelbaronUi(view, "slash-menu").map((action) => ({
         command: action.command,
         icon: action.icon,
         label: action.label,
@@ -93,12 +93,12 @@ describe("blocksPlugin", () => {
   it("restores the Callout and Table slash-menu block insertions", () => {
     const callout = createView({ doc: "", from: 0, to: 0 });
 
-    expect(runMarkraCommand(callout, "block.callout")).toBe(true);
+    expect(runHelbaronCommand(callout, "block.callout")).toBe(true);
     expect(callout.state.doc.toString()).toBe("> [!NOTE]\n> ");
     expect(callout.state.selection.main.head).toBe("> [!NOTE]\n> ".length);
 
     const table = createView({ doc: "", from: 0, to: 0 });
-    expect(runMarkraCommand(table, "block.table")).toBe(true);
+    expect(runHelbaronCommand(table, "block.table")).toBe(true);
     expect(table.state.doc.toString()).toBe(
       "|  |  |\n| --- | --- |\n|  |  |",
     );
@@ -117,7 +117,7 @@ describe("blocksPlugin", () => {
     views.push(view);
 
     expect(
-      listMarkraUi(view, "slash-menu").some(
+      listHelbaronUi(view, "slash-menu").some(
         (action) => action.command === "block.callout",
       ),
     ).toBe(false);
@@ -126,11 +126,11 @@ describe("blocksPlugin", () => {
   it("sets and removes a heading while keeping the caret with its text", () => {
     const view = createView({ doc: "Alpha", from: 2, to: 2 });
 
-    expect(runMarkraCommand(view, "block.heading.1")).toBe(true);
+    expect(runHelbaronCommand(view, "block.heading.1")).toBe(true);
     expect(view.state.doc.toString()).toBe("# Alpha");
     expect(view.state.selection.main.head).toBe(4);
 
-    expect(runMarkraCommand(view, "block.paragraph")).toBe(true);
+    expect(runHelbaronCommand(view, "block.paragraph")).toBe(true);
     expect(view.state.doc.toString()).toBe("Alpha");
     expect(view.state.selection.main.head).toBe(2);
   });
@@ -141,19 +141,19 @@ describe("blocksPlugin", () => {
     view.dispatch({ selection: view.state.selection });
 
     const button = view.dom.querySelector<HTMLButtonElement>(
-      ".markra-heading-level-button",
+      ".helbaron-heading-level-button",
     );
     expect(button?.dataset.headingLevel).toBe("H2");
     button?.click();
 
     const heading3 = view.dom.querySelector<HTMLButtonElement>(
-      '.markra-heading-level-option[data-heading-level="H3"]',
+      '.helbaron-heading-level-option[data-heading-level="H3"]',
     );
     expect(heading3?.getAttribute("aria-selected")).toBe("false");
     heading3?.click();
 
     expect(view.state.doc.toString()).toBe("### Synthetic heading");
-    expect(view.dom.querySelector(".markra-heading-level-list")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-heading-level-list")).toBeNull();
   });
 
   it("does not show a heading-level control for a code comment", () => {
@@ -163,39 +163,39 @@ describe("blocksPlugin", () => {
     view.focus();
     view.dispatch({ selection: view.state.selection });
 
-    expect(view.dom.querySelector(".markra-heading-level-button")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-heading-level-button")).toBeNull();
   });
 
   it("does not transform the next line when a selection ends at its start", () => {
     const view = createView({ doc: "Alpha\nBeta", from: 0, to: 6 });
 
-    expect(runMarkraCommand(view, "block.heading.2")).toBe(true);
+    expect(runHelbaronCommand(view, "block.heading.2")).toBe(true);
     expect(view.state.doc.toString()).toBe("## Alpha\nBeta");
   });
 
   it("toggles quote and list markers across selected lines", () => {
     const quote = createView();
-    expect(runMarkraCommand(quote, "block.quote")).toBe(true);
+    expect(runHelbaronCommand(quote, "block.quote")).toBe(true);
     expect(quote.state.doc.toString()).toBe("> Alpha\n> Beta");
-    expect(runMarkraCommand(quote, "block.quote")).toBe(true);
+    expect(runHelbaronCommand(quote, "block.quote")).toBe(true);
     expect(quote.state.doc.toString()).toBe("Alpha\nBeta");
 
     const bullet = createView();
-    expect(runMarkraCommand(bullet, "block.bullet-list")).toBe(true);
+    expect(runHelbaronCommand(bullet, "block.bullet-list")).toBe(true);
     expect(bullet.state.doc.toString()).toBe("- Alpha\n- Beta");
-    expect(runMarkraCommand(bullet, "block.bullet-list")).toBe(true);
+    expect(runHelbaronCommand(bullet, "block.bullet-list")).toBe(true);
     expect(bullet.state.doc.toString()).toBe("Alpha\nBeta");
 
     const task = createView();
-    expect(runMarkraCommand(task, "block.task-list")).toBe(true);
+    expect(runHelbaronCommand(task, "block.task-list")).toBe(true);
     expect(task.state.doc.toString()).toBe("- [ ] Alpha\n- [ ] Beta");
-    expect(runMarkraCommand(task, "block.task-list")).toBe(true);
+    expect(runHelbaronCommand(task, "block.task-list")).toBe(true);
     expect(task.state.doc.toString()).toBe("Alpha\nBeta");
 
     const ordered = createView();
-    expect(runMarkraCommand(ordered, "block.ordered-list")).toBe(true);
+    expect(runHelbaronCommand(ordered, "block.ordered-list")).toBe(true);
     expect(ordered.state.doc.toString()).toBe("1. Alpha\n2. Beta");
-    expect(runMarkraCommand(ordered, "block.ordered-list")).toBe(true);
+    expect(runHelbaronCommand(ordered, "block.ordered-list")).toBe(true);
     expect(ordered.state.doc.toString()).toBe("Alpha\nBeta");
   });
 
@@ -206,14 +206,14 @@ describe("blocksPlugin", () => {
       to: "- [x] Alpha\n* Beta".length,
     });
 
-    expect(runMarkraCommand(view, "block.ordered-list")).toBe(true);
+    expect(runHelbaronCommand(view, "block.ordered-list")).toBe(true);
     expect(view.state.doc.toString()).toBe("1. Alpha\n2. Beta");
   });
 
   it("wraps and unwraps a selected block in a fenced code block", () => {
     const view = createView();
 
-    expect(runMarkraCommand(view, "block.code")).toBe(true);
+    expect(runHelbaronCommand(view, "block.code")).toBe(true);
     expect(view.state.doc.toString()).toBe("```\nAlpha\nBeta\n```");
     expect(
       view.state.sliceDoc(
@@ -222,7 +222,7 @@ describe("blocksPlugin", () => {
       ),
     ).toBe("Alpha\nBeta");
 
-    expect(runMarkraCommand(view, "block.code")).toBe(true);
+    expect(runHelbaronCommand(view, "block.code")).toBe(true);
     expect(view.state.doc.toString()).toBe("Alpha\nBeta");
   });
 
@@ -233,20 +233,20 @@ describe("blocksPlugin", () => {
       to: 12,
     });
 
-    expect(runMarkraCommand(view, "block.code")).toBe(true);
+    expect(runHelbaronCommand(view, "block.code")).toBe(true);
     expect(view.state.doc.toString()).toBe("Alpha");
   });
 
   it("disables block commands in a read-only editor", () => {
     const view = createView({ readOnly: true });
 
-    expect(listMarkraUi(view, "slash-menu").every((action) => !action.enabled)).toBe(
+    expect(listHelbaronUi(view, "slash-menu").every((action) => !action.enabled)).toBe(
       true,
     );
-    expect(runMarkraCommand(view, "block.quote")).toBe(false);
+    expect(runHelbaronCommand(view, "block.quote")).toBe(false);
   });
 
-  it("provides the same heading shortcut family used by Markra", () => {
+  it("provides the same heading shortcut family used by Helbaron", () => {
     const view = createView({ doc: "Alpha", from: 2, to: 2 });
     const event = new KeyboardEvent("keydown", {
       altKey: true,

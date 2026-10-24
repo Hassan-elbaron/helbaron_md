@@ -1,5 +1,5 @@
-import { rebaseMarkdownLocalLinks } from "@markra/markdown";
-import { parentPathFromPath } from "@markra/shared";
+import { rebaseMarkdownLocalLinks } from "@helbaron/markdown";
+import { parentPathFromPath } from "@helbaron/shared";
 import type {
   NativeMarkdownFile,
   NativeMarkdownFolderFile,

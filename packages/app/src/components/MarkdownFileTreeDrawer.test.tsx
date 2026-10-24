@@ -2,7 +2,7 @@ import { useState } from "react";
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MarkdownFileTreeDrawer } from "./MarkdownFileTreeDrawer";
 import { fileTreeRowHeight } from "./file-tree/file-tree-model";
-import { getMarkdownOutline } from "@markra/markdown";
+import { getMarkdownOutline } from "@helbaron/markdown";
 import { readNativeClipboardText, showNativeMarkdownFileTreeContextMenu } from "../lib/tauri";
 import type { WorkspaceLinkIndex } from "../lib/workspace-links";
 
@@ -45,7 +45,7 @@ function createPartiallyUnsupportedDragDataTransfer() {
     effectAllowed: "uninitialized",
     getData: (type: string) => data.get(type) ?? "",
     setData: (type: string, value: string) => {
-      if (type === "application/x-markra-markdown-image") throw new Error("custom drag data unavailable");
+      if (type === "application/x-helbaron-markdown-image") throw new Error("custom drag data unavailable");
 
       data.set(type, value);
     },
@@ -119,7 +119,7 @@ describe("MarkdownFileTreeDrawer", () => {
     const settings = screen.getByRole("button", { name: "Settings" });
 
     expect(screen.queryByRole("button", { name: "Toggle file list" })).not.toBeInTheDocument();
-    expect(settings).toHaveClass("fixed", "bottom-3", "left-3");
+    expect(settings).toHaveClass("fixed", "bottom-3", "start-3");
     expect(settings).toContainElement(container.querySelector(".lucide-settings"));
     expect(container.querySelector(".markdown-file-tree")).toHaveStyle({
       maxWidth: "0px",
@@ -418,15 +418,15 @@ describe("MarkdownFileTreeDrawer", () => {
     expect(outlineList).toHaveTextContent("Details");
     expect(screen.getByRole("button", { name: "Intro" })).toHaveClass("h-7");
     expect(screen.getAllByText("Outline")).toHaveLength(1);
-    expect(screen.getByRole("button", { name: "Collapse outline headings" })).toHaveClass("ml-auto");
+    expect(screen.getByRole("button", { name: "Collapse outline headings" })).toHaveClass("ms-auto");
     expect(container.querySelector(".markdown-file-tree-outline")).toHaveClass("flex-1");
 
     fireEvent.click(within(outlineToolbar).getByRole("button", { name: "Outline heading levels: All headings" }));
 
     const outlineLevelMenu = screen.getByRole("menu", { name: "Outline heading levels" });
 
-    expect(outlineLevelMenu).toHaveClass("left-0", "top-7");
-    expect(outlineLevelMenu).not.toHaveClass("right-0");
+    expect(outlineLevelMenu).toHaveClass("start-0", "top-7");
+    expect(outlineLevelMenu).not.toHaveClass("end-0");
 
     fireEvent.click(within(layoutTabs).getByRole("button", { name: "Files" }));
 
@@ -1264,9 +1264,9 @@ describe("MarkdownFileTreeDrawer", () => {
     const root = container.querySelector(".markdown-file-tree-root") as HTMLElement;
 
     expect(toolbar).toHaveClass("h-8", "justify-start", "gap-0", "px-2");
-    expect(toolbar).not.toHaveClass("gap-1", "pl-2.5", "pr-4");
+    expect(toolbar).not.toHaveClass("gap-1", "ps-2.5", "pe-4");
     expect(toolbar).not.toHaveClass("absolute", "top-0");
-    expect(root).toHaveClass("h-8", "pl-4", "pr-2");
+    expect(root).toHaveClass("h-8", "ps-4", "pe-2");
     expect(root).not.toHaveClass("px-4");
     expect(
       within(toolbar).getAllByRole("button").map((button) => button.getAttribute("aria-label"))
@@ -1382,7 +1382,7 @@ describe("MarkdownFileTreeDrawer", () => {
     expect(footer).toHaveClass("shrink-0", "border-t", "bg-(--bg-chrome)");
     expect(settings.closest(".markdown-file-tree-footer")).toBe(footer);
     expect(screen.queryByRole("button", { name: "Toggle file list" })).not.toBeInTheDocument();
-    expect(settings).not.toHaveClass("fixed", "bottom-3", "left-3");
+    expect(settings).not.toHaveClass("fixed", "bottom-3", "start-3");
     expect(container.querySelector(".markdown-file-tree")).toHaveClass("pt-0");
     expect(container.querySelector(".markdown-file-tree")).not.toHaveClass("pt-10");
     expect(toggleMarkdownFiles).not.toHaveBeenCalled();
@@ -1481,7 +1481,7 @@ describe("MarkdownFileTreeDrawer", () => {
     expect(screen.getByText("Obsidian Vault")).toBeInTheDocument();
     expect(folder).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("button", { name: "deploy/deploy.md" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Untitled.md" })).toHaveClass("aria-[current=page]:border-l-[3px]");
+    expect(screen.getByRole("button", { name: "Untitled.md" })).toHaveClass("aria-[current=page]:border-s-[3px]");
     expect(screen.getByRole("button", { name: "Untitled.md" })).toHaveAttribute("aria-current", "page");
     expect(container.querySelector('[role="tree"]')).toBeInTheDocument();
 
@@ -2198,8 +2198,8 @@ describe("MarkdownFileTreeDrawer", () => {
 
     const sortMenu = screen.getByRole("menu", { name: "Sort files" });
 
-    expect(sortMenu).toHaveClass("left-0");
-    expect(sortMenu).not.toHaveClass("right-0");
+    expect(sortMenu).toHaveClass("start-0");
+    expect(sortMenu).not.toHaveClass("end-0");
   });
 
   it("closes sidebar option menus after clicking outside them", () => {
@@ -2390,7 +2390,7 @@ describe("MarkdownFileTreeDrawer", () => {
 
     fireEvent.dragStart(assetButton, { dataTransfer });
 
-    expect(JSON.parse(dataTransfer.getData("application/x-markra-markdown-image"))).toEqual({
+    expect(JSON.parse(dataTransfer.getData("application/x-helbaron-markdown-image"))).toEqual({
       alt: "diagram image",
       path: "/vault/assets/diagram image.png",
       relativePath: "assets/diagram image.png"
@@ -4027,7 +4027,7 @@ describe("MarkdownFileTreeDrawer", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "deploy" }));
 
-    expect(screen.getByRole("group", { name: "deploy children" })).toHaveClass("border-l");
+    expect(screen.getByRole("group", { name: "deploy children" })).toHaveClass("border-s");
   });
 
   it("keeps nested files visually deeper than their parent folder", () => {
@@ -4045,7 +4045,7 @@ describe("MarkdownFileTreeDrawer", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "deploy" }));
 
-    expect(screen.getByRole("button", { name: "deploy/deploy.md" })).toHaveClass("pl-8");
+    expect(screen.getByRole("button", { name: "deploy/deploy.md" })).toHaveClass("ps-8");
   });
 
   it("uses compact semantic icons for file and outline panels", () => {
@@ -4181,7 +4181,7 @@ describe("MarkdownFileTreeDrawer", () => {
     expect(deletedTitle.tagName).toBe("DEL");
   });
 
-  it("renders Markra highlight and inline math in outline titles", () => {
+  it("renders Helbaron highlight and inline math in outline titles", () => {
     render(
       <MarkdownFileTreeDrawer
         currentPath="/vault/Untitled.md"
@@ -4206,7 +4206,7 @@ describe("MarkdownFileTreeDrawer", () => {
 
     expect(highlightedTitle.tagName).toBe("MARK");
     expect(highlightedTitle).toHaveClass("bg-(--accent-soft)");
-    expect(mathTitle).toHaveClass("markra-outline-title-math");
+    expect(mathTitle).toHaveClass("helbaron-outline-title-math");
   });
 
   it("keeps links and images as plain outline title text", () => {

@@ -1,6 +1,6 @@
 import { ChevronDown, type LucideIcon } from "lucide-react";
 import { Children, type ReactNode } from "react";
-import { Button, Switch } from "@markra/ui";
+import { Button, Switch } from "@helbaron/ui";
 
 export function SettingsSection({
   children,
@@ -108,7 +108,7 @@ export function SettingsSelect({
   return (
     <div className="relative inline-flex items-center">
       <select
-        className="h-8 min-w-36 appearance-none rounded-md border border-(--border-default) bg-(--bg-primary) py-0 pr-8 pl-3 text-[12px] leading-5 font-[560] text-(--text-heading) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
+        className="h-8 min-w-36 appearance-none rounded-md border border-(--border-default) bg-(--bg-primary) py-0 pe-8 ps-3 text-[12px] leading-5 font-[560] text-(--text-heading) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
         aria-label={label}
         value={value}
         onChange={(event) => onChange(event.currentTarget.value)}
@@ -121,7 +121,7 @@ export function SettingsSelect({
       </select>
       <ChevronDown
         aria-hidden="true"
-        className="pointer-events-none absolute right-2.5 text-(--text-secondary)"
+        className="pointer-events-none absolute end-2.5 text-(--text-secondary)"
         size={13}
       />
     </div>

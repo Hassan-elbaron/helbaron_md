@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { initialMarkdown } from "../constants/initial-markdown";
+import { welcomeMarkdownForCurrentLanguage } from "../constants/initial-markdown";
 import {
   clearStoredRecentMarkdownFiles,
   consumeWelcomeDocumentState,
@@ -15,7 +15,7 @@ import {
   type StoredWorkspaceState,
   type StoredWorkspaceWindow
 } from "../lib/settings/app-settings";
-import { getMarkdownOutline, getWordCount, type MarkdownOutlineItem } from "@markra/markdown";
+import { getMarkdownOutline, getWordCount, type MarkdownOutlineItem } from "@helbaron/markdown";
 import {
   destroyNativeWindow,
   exitNativeApp,
@@ -44,7 +44,7 @@ import {
 } from "../lib/performance-marks";
 import { normalizeComparablePath, replaceMovedPath, sameNativePath } from "../lib/path-move";
 import { setNativeWindowTitle } from "../lib/tauri";
-import { debug, isMarkdownPath, parentPathFromPath, pathNameFromPath, type DocumentState } from "@markra/shared";
+import { debug, isMarkdownPath, parentPathFromPath, pathNameFromPath, type DocumentState } from "@helbaron/shared";
 import {
   activeFilePathFromTabs,
   activeFilePathFromWindowRestore,
@@ -757,7 +757,7 @@ export function useMarkdownDocument({
   const restoreDocumentContent = useCallback((content: string) => {
     const current = documentRef.current;
     if (!current.open) {
-      debug(() => ["[markra-history] document restore ignored", {
+      debug(() => ["[helbaron-history] document restore ignored", {
         reason: "document closed"
       }]);
       return false;
@@ -775,7 +775,7 @@ export function useMarkdownDocument({
       : tabsRef.current;
 
     setActiveDocument(nextDocument);
-    debug(() => ["[markra-history] document restore state updated", {
+    debug(() => ["[helbaron-history] document restore state updated", {
       activeTabId: currentActiveTabId,
       contentsChars: content.length,
       dirty: nextDocument.dirty,
@@ -892,7 +892,7 @@ export function useMarkdownDocument({
         targetTab.content !== expectedTab.content
       );
     if (!targetTab || staleRequest || targetTab.dirty || (!targetTab.deleted && targetTab.content === file.content)) {
-      debug(() => ["[markra-history] disk file event ignored", {
+      debug(() => ["[helbaron-history] disk file event ignored", {
         diskPath: file.path,
         reason: !targetTab
           ? "tab missing"
@@ -945,7 +945,7 @@ export function useMarkdownDocument({
       setDocument(nextDocument);
     }
 
-    debug(() => ["[markra-history] disk file content applied", {
+    debug(() => ["[helbaron-history] disk file content applied", {
       contentsChars: file.content.length,
       diskPath: file.path,
       nextRevision: nextDocument.revision,
@@ -1559,14 +1559,14 @@ export function useMarkdownDocument({
     async (contents: string, options: SaveCurrentDocumentContentOptions = {}) => {
       const current = documentRef.current;
       if (!current.open) {
-        debug(() => ["[markra-history] save restored document ignored", {
+        debug(() => ["[helbaron-history] save restored document ignored", {
           reason: "document closed"
         }]);
         return null;
       }
 
       const targetTabId = activeTabIdRef.current;
-      debug(() => ["[markra-history] save restored document start", {
+      debug(() => ["[helbaron-history] save restored document start", {
         contentsChars: contents.length,
         currentDirty: current.dirty,
         currentPath: current.path,
@@ -1588,7 +1588,7 @@ export function useMarkdownDocument({
           contents
         });
       } catch (error: unknown) {
-        debug(() => ["[markra-history] save restored document native error", {
+        debug(() => ["[helbaron-history] save restored document native error", {
           currentPath: current.path,
           error: error instanceof Error ? error.message : String(error)
         }]);
@@ -1596,7 +1596,7 @@ export function useMarkdownDocument({
       }
 
       if (!savedFile) {
-        debug(() => ["[markra-history] save restored document canceled", {
+        debug(() => ["[helbaron-history] save restored document canceled", {
           currentPath: current.path
         }]);
         return null;
@@ -1607,7 +1607,7 @@ export function useMarkdownDocument({
         sourceContent: current.content,
         targetTabId
       });
-      debug(() => ["[markra-history] save restored document applied", {
+      debug(() => ["[helbaron-history] save restored document applied", {
         contentsChars: contents.length,
         savedPath: savedFile.path
       }]);
@@ -1713,7 +1713,7 @@ export function useMarkdownDocument({
     try {
       await saveDirtyMarkdownFiles();
     } catch (error: unknown) {
-      debug(() => ["[markra-autosave] save failed", {
+      debug(() => ["[helbaron-autosave] save failed", {
         error: error instanceof Error ? error.message : String(error)
       }]);
     }
@@ -2206,7 +2206,7 @@ export function useMarkdownDocument({
             persistWorkspaceState({ aiAgentSessionId: sessionId });
           }
         } catch {
-          // Store issues should not prevent Markra from opening a usable document.
+          // Store issues should not prevent Helbaron from opening a usable document.
         }
       }
 
@@ -2222,7 +2222,7 @@ export function useMarkdownDocument({
 
       setActiveDocument({
         ...documentRef.current,
-        content: initialMarkdown,
+        content: welcomeMarkdownForCurrentLanguage(),
         revision: documentRef.current.revision + 1
       });
     })().catch(() => {});
@@ -2251,7 +2251,7 @@ export function useMarkdownDocument({
     const watchedFileReadStates = new Map<string, WatchedMarkdownFileReadState>();
 
     const readAndApplyWatchedFile = async (changedPath: string, watchedPath: string) => {
-      debug(() => ["[markra-history] watcher file event", {
+      debug(() => ["[helbaron-history] watcher file event", {
         changedPath,
         watchedPath
       }]);
@@ -2261,7 +2261,7 @@ export function useMarkdownDocument({
       } catch (error: unknown) {
         if (active && isMissingMarkdownFileReadError(error)) {
           const markedDeleted = markExternallyDeletedDocumentFile(changedPath);
-          debug(() => ["[markra-history] watcher marked missing file", {
+          debug(() => ["[helbaron-history] watcher marked missing file", {
             changedPath,
             markedDeleted,
             watchedPath
@@ -2270,7 +2270,7 @@ export function useMarkdownDocument({
           return;
         }
 
-        debug(() => ["[markra-history] watcher read failed", {
+        debug(() => ["[helbaron-history] watcher read failed", {
           changedPath,
           error: error instanceof Error ? error.message : String(error),
           watchedPath
@@ -2301,7 +2301,7 @@ export function useMarkdownDocument({
       if (existingState) {
         existingState.changedPath = changedPath;
         existingState.pending = true;
-        debug(() => ["[markra-history] watcher file event coalesced", {
+        debug(() => ["[helbaron-history] watcher file event coalesced", {
           changedPath,
           watchedPath
         }]);
@@ -2320,14 +2320,14 @@ export function useMarkdownDocument({
     };
 
     watchedPaths.forEach((watchedPath) => {
-      debug(() => ["[markra-history] watcher start", {
+      debug(() => ["[helbaron-history] watcher start", {
         path: watchedPath
       }]);
 
       const treeChangeHandler = sameNativePath(watchedPath, document.path)
         ? (changedPath: string) => {
             if (!active) return;
-            debug(() => ["[markra-history] watcher tree event", {
+            debug(() => ["[helbaron-history] watcher tree event", {
               changedPath,
               watchedPath
             }]);
@@ -2346,11 +2346,11 @@ export function useMarkdownDocument({
         }
 
         stopWatchers.push(stopWatching);
-        debug(() => ["[markra-history] watcher ready", {
+        debug(() => ["[helbaron-history] watcher ready", {
           path: watchedPath
         }]);
       }).catch((error: unknown) => {
-        debug(() => ["[markra-history] watcher failed", {
+        debug(() => ["[helbaron-history] watcher failed", {
           error: error instanceof Error ? error.message : String(error),
           path: watchedPath
         }]);
@@ -2360,7 +2360,7 @@ export function useMarkdownDocument({
     return () => {
       active = false;
       watchedPaths.forEach((watchedPath) => {
-        debug(() => ["[markra-history] watcher stop", {
+        debug(() => ["[helbaron-history] watcher stop", {
           path: watchedPath
         }]);
       });

@@ -1785,6 +1785,48 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
+name = "helbaron"
+version = "2.14.0"
+dependencies = [
+ "arboard",
+ "cap-fs-ext",
+ "cap-std",
+ "core-foundation",
+ "dirs",
+ "dispatch2",
+ "fontdb",
+ "hmac",
+ "ignore",
+ "notify",
+ "objc2",
+ "objc2-app-kit",
+ "objc2-foundation",
+ "quick-xml",
+ "reqwest 0.12.28",
+ "rustix",
+ "serde",
+ "serde_json",
+ "sha2",
+ "sys-locale",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-log",
+ "tauri-plugin-os",
+ "tauri-plugin-process",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-store",
+ "tauri-plugin-updater",
+ "tauri-plugin-window-state",
+ "tempfile",
+ "time",
+ "trash",
+ "windows-sys 0.61.2",
+ "winreg",
+ "zip",
+]
+
+[[package]]
 name = "hermit-abi"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2447,48 +2489,6 @@ name = "lru-slab"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "112b39cec0b298b6c1999fee3e31427f74f676e4cb9879ed1a121b43661a4154"
-
-[[package]]
-name = "markra"
-version = "2.14.0"
-dependencies = [
- "arboard",
- "cap-fs-ext",
- "cap-std",
- "core-foundation",
- "dirs",
- "dispatch2",
- "fontdb",
- "hmac",
- "ignore",
- "notify",
- "objc2",
- "objc2-app-kit",
- "objc2-foundation",
- "quick-xml",
- "reqwest 0.12.28",
- "rustix",
- "serde",
- "serde_json",
- "sha2",
- "sys-locale",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-log",
- "tauri-plugin-os",
- "tauri-plugin-process",
- "tauri-plugin-single-instance",
- "tauri-plugin-store",
- "tauri-plugin-updater",
- "tauri-plugin-window-state",
- "tempfile",
- "time",
- "trash",
- "windows-sys 0.61.2",
- "winreg",
- "zip",
-]
 
 [[package]]
 name = "markup5ever"

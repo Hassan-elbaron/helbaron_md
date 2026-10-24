@@ -1,16 +1,16 @@
 export {
-  MarkraEditorProvider,
-  type MarkraEditorProviderProps,
-  useMarkraEditorView,
-} from "./MarkraEditorProvider.tsx";
-export { markraEditorReactBridge } from "./bridge.ts";
+  HelbaronEditorProvider,
+  type HelbaronEditorProviderProps,
+  useHelbaronEditorView,
+} from "./HelbaronEditorProvider.tsx";
+export { helbaronEditorReactBridge } from "./bridge.ts";
 export {
-  type MarkraEditorSelectionToolbarState,
-  type MarkraEditorUiAnchor,
-  useMarkraEditorCaretAnchor,
-  useMarkraEditorDocumentLinks,
-  useMarkraEditorSelectionAnchor,
-  useMarkraEditorSelectionToolbar,
-  useMarkraEditorSlashMenu,
-  useMarkraEditorUi,
+  type HelbaronEditorSelectionToolbarState,
+  type HelbaronEditorUiAnchor,
+  useHelbaronEditorCaretAnchor,
+  useHelbaronEditorDocumentLinks,
+  useHelbaronEditorSelectionAnchor,
+  useHelbaronEditorSelectionToolbar,
+  useHelbaronEditorSlashMenu,
+  useHelbaronEditorUi,
 } from "./ui.ts";

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { t, type AppLanguage } from "@markra/shared";
-import type { MarkdownShortcutMap, Spellchecker } from "@markra/editor";
+import { t, type AppLanguage } from "@helbaron/shared";
+import type { MarkdownShortcutMap, Spellchecker } from "@helbaron/editor";
 import type { EditorContentWidth } from "../lib/editor-width";
 import type { EditorFontFamilyPreference } from "../lib/editor-font";
 import type { EditorTheme, ExtendedSyntaxPreferences, TableColumnWidthModePreference } from "../lib/settings/app-settings";

@@ -9,8 +9,8 @@ import {
   type AiProviderApiStyle,
   type AiProviderConfig,
   type AiProviderRequestStyle
-} from "@markra/providers";
-import { isRecord, joinApiUrl } from "@markra/shared";
+} from "@helbaron/providers";
+import { isRecord, joinApiUrl } from "@helbaron/shared";
 import type {
   ChatAdapter,
   ChatMessage,

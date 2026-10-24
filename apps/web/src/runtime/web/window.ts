@@ -2,10 +2,10 @@ import type {
   AppWindowRuntime,
   NativeSettingsWindowTarget,
   RuntimeCleanup
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import type { WebRuntimeOptions } from "./types";
 
-const settingsWindowTargetEvent = "markra://settings-window-target";
+const settingsWindowTargetEvent = "helbaron://settings-window-target";
 
 type SettingsWindowTargetEventDetail = {
   target?: NativeSettingsWindowTarget;

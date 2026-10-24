@@ -1,6 +1,6 @@
 import { lazy, Suspense, useId, useState } from "react";
 import { Braces, KeyRound, X } from "lucide-react";
-import { Button, Modal } from "@markra/ui";
+import { Button, Modal } from "@helbaron/ui";
 import {
   AiSettingsActionButton,
   AiSettingsSection,
@@ -16,9 +16,9 @@ import {
   readAiProviderCustomHeaders,
   type AiProviderConfig,
   type AiProviderRequestStyle
-} from "@markra/providers";
+} from "@helbaron/providers";
 import type { AiProviderActionState } from "../hooks/useAiProviderSettingsPanelState";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 
 type Translate = (key: I18nKey) => string;
 

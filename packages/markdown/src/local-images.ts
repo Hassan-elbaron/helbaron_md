@@ -1,5 +1,5 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
-import { hasTauriRuntime } from "@markra/shared";
+import { hasTauriRuntime } from "@helbaron/shared";
 
 type MarkdownImageSrcResolverOptions = {
   convertFileSrc?: (path: string) => string;

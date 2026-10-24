@@ -4,7 +4,7 @@ import type {
   NativeMarkdownFolderFile,
   NativeMarkdownFileTreeContextMenuHandlers,
   RuntimeCleanup
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import {
   createEditorContextMenuEntries,
   createEditorContextMenuEntriesFromOptions,
@@ -13,13 +13,13 @@ import {
   currentContextMenuPosition,
   showContextMenu,
   type ContextMenuIdPrefixes
-} from "@markra/app/runtime";
-import type { AppLanguage } from "@markra/shared";
+} from "@helbaron/app/runtime";
+import type { AppLanguage } from "@helbaron/shared";
 import type { WebRuntimeOptions } from "./types";
 
 const webContextMenuIdPrefixes: ContextMenuIdPrefixes = {
-  editor: "markra:web-context",
-  fileTree: "markra:web-file-tree"
+  editor: "helbaron:web-context",
+  fileTree: "helbaron:web-file-tree"
 };
 
 function resolveDocument(options: WebRuntimeOptions): Document | null {

@@ -1,5 +1,5 @@
-import type { MarkdownShortcutMap } from "@markra/editor";
-import type { AppLanguage } from "@markra/shared";
+import type { MarkdownShortcutMap } from "@helbaron/editor";
+import type { AppLanguage } from "@helbaron/shared";
 import { getAppRuntime } from "../../runtime";
 import type { RecentMarkdownFile } from "../settings/app-settings";
 import type { NativeMarkdownFolderFile } from "./file";

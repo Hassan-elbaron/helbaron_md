@@ -26,8 +26,8 @@ import {
   type UniqueIdentifier
 } from "@dnd-kit/core";
 import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable";
-import { IconButton, SegmentedControl, SegmentedControlItem, Tooltip } from "@markra/ui";
-import { clampNumber, type I18nKey } from "@markra/shared";
+import { IconButton, SegmentedControl, SegmentedControlItem, Tooltip } from "@helbaron/ui";
+import { clampNumber, type I18nKey } from "@helbaron/shared";
 import {
   defaultTitlebarActions,
   editorBodyFontSizeOptions,
@@ -160,7 +160,7 @@ function SettingsContentWidthInput({
     <div className="content-width-ratio-control inline-flex h-8 items-center overflow-hidden rounded-md border border-(--border-default) bg-(--bg-primary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus-within:ring-2 focus-within:ring-(--accent)">
       <div className="relative inline-flex h-full items-center">
         <input
-          className="h-full w-18 border-0 bg-transparent py-0 pr-7 pl-3 text-[12px] leading-5 font-[560] text-(--text-heading) outline-none"
+          className="h-full w-18 border-0 bg-transparent py-0 pe-7 ps-3 text-[12px] leading-5 font-[560] text-(--text-heading) outline-none"
           type="text"
           aria-label={label}
           autoCapitalize="none"
@@ -199,7 +199,7 @@ function SettingsContentWidthInput({
           }}
         />
         <span
-          className="pointer-events-none absolute right-2.5 text-[12px] leading-5 font-[560] text-(--text-secondary)"
+          className="pointer-events-none absolute end-2.5 text-[12px] leading-5 font-[560] text-(--text-secondary)"
           aria-hidden="true"
         >
           %
@@ -207,7 +207,7 @@ function SettingsContentWidthInput({
       </div>
       <Tooltip content={resetLabel}>
         <button
-          className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center border-0 border-l border-(--border-default) bg-transparent text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
+          className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center border-0 border-s border-(--border-default) bg-transparent text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)"
           type="button"
           aria-label={resetLabel}
           onClick={() => {

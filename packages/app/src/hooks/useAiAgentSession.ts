@@ -27,9 +27,9 @@ import {
   type StoredAiAgentSessionState,
   type WorkspaceChangePlanArgs,
   type WorkspacePlanVisualEvent
-} from "@markra/ai";
-import { getProviderCapabilities, type AiProviderConfig } from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+} from "@helbaron/ai";
+import { getProviderCapabilities, type AiProviderConfig } from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 import { requestNativeChat, requestNativeChatStream, requestNativeWebResource } from "../lib/tauri";
 import {
   getStoredAcpAgentSettings,

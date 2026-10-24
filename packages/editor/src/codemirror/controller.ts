@@ -11,12 +11,12 @@ import type {
   AiDocumentAnchor,
   AiHeadingAnchor,
   AiSelectionContext,
-} from "@markra/ai";
-import { getMarkdownOutline } from "@markra/markdown";
+} from "@helbaron/ai";
+import { getMarkdownOutline } from "@helbaron/markdown";
 import {
   normalizedExternalAutolinkUrl,
   type SearchRange,
-} from "@markra/shared";
+} from "@helbaron/shared";
 import { findCodeMirrorMathRanges } from "./math-preview.ts";
 import {
   focusVisualTableCell,

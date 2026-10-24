@@ -188,6 +188,22 @@ export type SavedNativePdfFile = {
   name: string;
 };
 
+export type NativeWordFile = {
+  bytes: Uint8Array;
+  name: string;
+  path: string;
+};
+
+export type SaveNativeWordFileInput = {
+  bytes: Uint8Array;
+  suggestedName: string;
+};
+
+export type SavedNativeWordFile = {
+  path: string;
+  name: string;
+};
+
 export type SavedNativeSettingsFile = {
   path: string;
   name: string;
@@ -522,6 +538,14 @@ export function saveNativeMarkdownBundleFile(input: SaveNativeMarkdownBundleFile
 
 export function saveNativePdfFile(input: SaveNativePdfFileInput) {
   return getAppRuntime().files.savePdfFile(input);
+}
+
+export function openNativeWordFile(labels?: NativeMarkdownPickerLabels) {
+  return getAppRuntime().files.openWordFile?.(labels) ?? Promise.resolve(null);
+}
+
+export function saveNativeWordFile(input: SaveNativeWordFileInput) {
+  return getAppRuntime().files.saveWordFile?.(input) ?? Promise.resolve(null);
 }
 
 export function saveNativeSettingsFile(input: SaveNativeSettingsFileInput) {

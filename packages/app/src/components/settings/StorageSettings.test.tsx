@@ -22,7 +22,7 @@ describe("StorageSettings", () => {
     expect(settingsBackupRow).not.toBeNull();
     expect(
       within(settingsBackupRow as HTMLElement).getByText(
-        "Back up or restore portable Markra settings with the selected storage type."
+        "Back up or restore portable Helbaron settings with the selected storage type."
       )
     ).toBeInTheDocument();
 
@@ -281,7 +281,7 @@ describe("StorageSettings", () => {
       target: { value: "https://s3.example.com" }
     });
     fireEvent.change(screen.getByRole("textbox", { name: "S3 bucket" }), {
-      target: { value: "markra-images" }
+      target: { value: "helbaron-images" }
     });
 
     expect(onUpdatePreferences).toHaveBeenCalledWith({
@@ -300,7 +300,7 @@ describe("StorageSettings", () => {
         ...defaultEditorPreferences.imageUpload,
         s3: {
           ...defaultEditorPreferences.imageUpload.s3,
-          bucket: "markra-images"
+          bucket: "helbaron-images"
         }
       }
     });

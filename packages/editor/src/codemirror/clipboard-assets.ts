@@ -16,7 +16,7 @@ import {
 import {
   markdownImageDragSrcForDocument,
   readMarkdownImageDragPayload,
-} from "@markra/shared";
+} from "@helbaron/shared";
 import type {
   RemoteClipboardImage,
   SaveClipboardAttachment,
@@ -37,7 +37,7 @@ import {
 } from "./controller.ts";
 import { detectCodePaste, type DetectedCodePaste } from "./code-paste.ts";
 import { convertCodeMirrorClipboardHtml } from "./html-paste.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
 export interface CodeMirrorClipboardAssetsPluginOptions {
   documentPath?: () => string | null | undefined;
@@ -74,7 +74,7 @@ let nextClipboardAssetSequence = 0;
 
 function nextClipboardAssetId(prefix: string) {
   nextClipboardAssetSequence += 1;
-  return `markra-${prefix}-${nextClipboardAssetSequence}`;
+  return `helbaron-${prefix}-${nextClipboardAssetSequence}`;
 }
 
 class UploadPlaceholderWidget extends WidgetType {
@@ -94,13 +94,13 @@ class UploadPlaceholderWidget extends WidgetType {
     const placeholder = document.createElement("span");
     const spinner = document.createElement("span");
     const label = document.createElement("span");
-    placeholder.className = "markra-image-upload-placeholder";
-    placeholder.dataset.markraImageUploadPlaceholder = this.id;
+    placeholder.className = "helbaron-image-upload-placeholder";
+    placeholder.dataset.helbaronImageUploadPlaceholder = this.id;
     placeholder.setAttribute("aria-live", "polite");
     placeholder.setAttribute("role", "status");
-    spinner.className = "markra-image-upload-placeholder-spinner";
+    spinner.className = "helbaron-image-upload-placeholder-spinner";
     spinner.setAttribute("aria-hidden", "true");
-    label.className = "markra-image-upload-placeholder-label";
+    label.className = "helbaron-image-upload-placeholder-label";
     label.textContent = this.label;
     placeholder.append(spinner, label);
     return placeholder;
@@ -309,7 +309,7 @@ async function saveAndInsertImages(
         view,
         placeholders.slice(index).map((candidate) => candidate.id),
       );
-      console.error("[markra-codemirror-clipboard] failed to save image", error);
+      console.error("[helbaron-codemirror-clipboard] failed to save image", error);
       return;
     }
     if (saved) {
@@ -332,7 +332,7 @@ async function saveAndInsertAttachments(
       const attachment = await saveAttachment(file);
       if (attachment) saved.push(attachment);
     } catch (error) {
-      console.error("[markra-codemirror-clipboard] failed to save attachment", error);
+      console.error("[helbaron-codemirror-clipboard] failed to save attachment", error);
       return;
     }
   }
@@ -421,7 +421,7 @@ function localizeRemoteImages(
       replaceRemoteImage(view, field, replacement.id, saved);
     }).catch((error: unknown) => {
       removeRemoteImage(view, replacement.id);
-      console.error("[markra-codemirror-clipboard] failed to save remote image", error);
+      console.error("[helbaron-codemirror-clipboard] failed to save remote image", error);
     });
   }
 }
@@ -552,21 +552,21 @@ function dropSelection(view: CodeMirrorView, event: DragEvent) {
 }
 
 const clipboardTheme = EditorView.baseTheme({
-  ".markra-image-upload-placeholder": {
+  ".helbaron-image-upload-placeholder": {
     alignItems: "center",
     display: "inline-flex",
     gap: "0.4em",
     opacity: "0.72",
   },
-  ".markra-image-upload-placeholder-spinner": {
-    animation: "markra-codemirror-upload-spin 0.9s linear infinite",
+  ".helbaron-image-upload-placeholder-spinner": {
+    animation: "helbaron-codemirror-upload-spin 0.9s linear infinite",
     border: "2px solid currentColor",
     borderRightColor: "transparent",
     borderRadius: "999px",
     height: "0.8em",
     width: "0.8em",
   },
-  "@keyframes markra-codemirror-upload-spin": {
+  "@keyframes helbaron-codemirror-upload-spin": {
     to: { transform: "rotate(360deg)" },
   },
 });
@@ -577,8 +577,8 @@ export function codeMirrorClipboardAssetsPlugin(
   const field = clipboardAssetsStateField(
     options.uploadLabel ?? "Uploading image...",
   );
-  return defineMarkraPlugin({
-    id: "markra.clipboard-assets",
+  return defineHelbaronPlugin({
+    id: "helbaron.clipboard-assets",
     extension: [
       field,
       EditorView.domEventHandlers({

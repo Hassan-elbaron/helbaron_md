@@ -10,6 +10,7 @@ export * from "./number.ts";
 export * from "./path.ts";
 export * from "./popover.ts";
 export * from "./record.ts";
+export * from "./text-direction.ts";
 export * from "./runtime.ts";
 export * from "./search.ts";
 export * from "./string.ts";

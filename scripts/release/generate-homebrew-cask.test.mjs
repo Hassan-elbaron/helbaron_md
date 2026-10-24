@@ -11,7 +11,7 @@ const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 const releaseWorkflowPath = path.join(repoRoot, ".github", "workflows", "release.yml");
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-homebrew-cask-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-homebrew-cask-"));
 }
 
 function writeFile(filePath, content) {
@@ -60,12 +60,12 @@ function extractWorkflowRunScript(stepName) {
 test("generate-homebrew-cask writes a dual-architecture cask from macOS DMGs", () => {
   const rootDir = makeTempDir();
   const assetsRoot = path.join(rootDir, "release-assets");
-  const outputPath = path.join(rootDir, "generated", "homebrew", "Casks", "markra.rb");
+  const outputPath = path.join(rootDir, "generated", "homebrew", "Casks", "helbaron.rb");
   const armContent = "arm64 dmg";
   const intelContent = "x64 dmg";
 
-  writeFile(path.join(assetsRoot, "macos-arm64", "Markra_1.2.3_macos_arm64.dmg"), armContent);
-  writeFile(path.join(assetsRoot, "macos-x64", "Markra_1.2.3_macos_x64.dmg"), intelContent);
+  writeFile(path.join(assetsRoot, "macos-arm64", "Helbaron_1.2.3_macos_arm64.dmg"), armContent);
+  writeFile(path.join(assetsRoot, "macos-x64", "Helbaron_1.2.3_macos_x64.dmg"), intelContent);
 
   const result = runCaskScript({
     GITHUB_REPOSITORY: "markrahq/markra",
@@ -78,28 +78,28 @@ test("generate-homebrew-cask writes a dual-architecture cask from macOS DMGs", (
 
   const cask = fs.readFileSync(outputPath, "utf8");
 
-  assert.match(cask, /cask "markra" do/);
+  assert.match(cask, /cask "helbaron" do/);
   assert.match(cask, /arch arm: "arm64", intel: "x64"/);
   assert.match(cask, /version "1\.2\.3"/);
   assert.match(cask, new RegExp(`sha256 arm: "${sha256(armContent)}"`));
   assert.match(cask, new RegExp(`intel: "${sha256(intelContent)}"`));
-  assert.match(cask, /url "https:\/\/github\.com\/markrahq\/markra\/releases\/download\/v#\{version\}\/Markra_#\{version\}_macos_#\{arch\}\.dmg"/);
+  assert.match(cask, /url "https:\/\/github\.com\/markrahq\/helbaron\/releases\/download\/v#\{version\}\/Helbaron_#\{version\}_macos_#\{arch\}\.dmg"/);
   assert.doesNotMatch(cask, /verified:/);
-  assert.match(cask, /name "Markra"/);
+  assert.match(cask, /name "Helbaron"/);
   assert.match(cask, /desc "AI-native Markdown editor"/);
-  assert.match(cask, /homepage "https:\/\/github\.com\/markrahq\/markra"/);
+  assert.match(cask, /homepage "https:\/\/github\.com\/markrahq\/helbaron"/);
   assert.match(cask, /strategy :github_latest/);
   assert.match(cask, /auto_updates true/);
-  assert.match(cask, /app "Markra\.app"/);
+  assert.match(cask, /app "Helbaron\.app"/);
   assert.equal(cask.endsWith("\n"), true);
 });
 
 test("generate-homebrew-cask fails clearly when an expected macOS DMG is missing", () => {
   const rootDir = makeTempDir();
   const assetsRoot = path.join(rootDir, "release-assets");
-  const outputPath = path.join(rootDir, "generated", "homebrew", "Casks", "markra.rb");
+  const outputPath = path.join(rootDir, "generated", "homebrew", "Casks", "helbaron.rb");
 
-  writeFile(path.join(assetsRoot, "macos-arm64", "Markra_1.2.3_macos_arm64.dmg"), "arm64 dmg");
+  writeFile(path.join(assetsRoot, "macos-arm64", "Helbaron_1.2.3_macos_arm64.dmg"), "arm64 dmg");
 
   const result = runCaskScript({
     OUTPUT_PATH: outputPath,
@@ -108,7 +108,7 @@ test("generate-homebrew-cask fails clearly when an expected macOS DMG is missing
   });
 
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, new RegExp(`Missing macOS x64 DMG: Markra_1\\.2\\.3_macos_x64\\.dmg under ${assetsRoot}`));
+  assert.match(result.stderr, new RegExp(`Missing macOS x64 DMG: Helbaron_1\\.2\\.3_macos_x64\\.dmg under ${assetsRoot}`));
   assert.equal(fs.existsSync(outputPath), false);
 });
 
@@ -250,7 +250,7 @@ test("release workflow publishes the Homebrew tap with token authentication", ()
   fs.mkdirSync(binDir, { recursive: true });
   fs.mkdirSync(path.join(rootDir, "generated", "homebrew", "Casks"), { recursive: true });
   fs.mkdirSync(path.join(rootDir, "homebrew-tap", ".git"), { recursive: true });
-  fs.writeFileSync(path.join(rootDir, "generated", "homebrew", "Casks", "markra.rb"), "cask");
+  fs.writeFileSync(path.join(rootDir, "generated", "homebrew", "Casks", "helbaron.rb"), "cask");
   fs.writeFileSync(scriptPath, extractWorkflowRunScript("Publish Homebrew cask to tap"));
   fs.writeFileSync(
     fakeGitPath,
@@ -268,7 +268,7 @@ fi
 
 case "\${args[0]}" in
   status)
-    printf ' M Casks/markra.rb\\n'
+    printf ' M Casks/helbaron.rb\\n'
     ;;
   config|add|commit)
     ;;
@@ -309,7 +309,7 @@ test("release workflow generates and publishes the Homebrew cask separately from
 
   assert.match(workflow, /Generate Homebrew cask/);
   assert.match(workflow, /generate-homebrew-cask\.mjs/);
-  assert.match(workflow, /OUTPUT_PATH: generated\/homebrew\/Casks\/markra\.rb/);
+  assert.match(workflow, /OUTPUT_PATH: generated\/homebrew\/Casks\/helbaron\.rb/);
   assert.match(workflow, /Upload Homebrew cask artifact/);
   assert.match(workflow, /name: \$\{\{ env\.APP_SLUG \}\}-homebrew-cask/);
   assert.match(workflow, /Prepare Homebrew tap checkout/);
@@ -320,6 +320,6 @@ test("release workflow generates and publishes the Homebrew cask separately from
   assert.match(workflow, /HOMEBREW_TAP_TOKEN/);
   assert.match(workflow, /tap_url="https:\/\/github\.com\/markrahq\/homebrew-tap\.git"/);
   assert.match(workflow, /git -C homebrew-tap push -u "https:\/\/x-access-token:\$\{HOMEBREW_TAP_TOKEN\}@github\.com\/markrahq\/homebrew-tap\.git" "HEAD:\$\{tap_branch\}"/);
-  assert.match(workflow, /git -C homebrew-tap status --porcelain -- Casks\/markra\.rb/);
+  assert.match(workflow, /git -C homebrew-tap status --porcelain -- Casks\/helbaron\.rb/);
   assert.equal(prereleaseGuards.length, 4);
 });

@@ -1,6 +1,6 @@
 import { Type } from "@earendil-works/pi-ai";
 import type { AiDiffResult } from "../inline";
-import { debug } from "@markra/shared";
+import { debug } from "@helbaron/shared";
 import { DocumentAgentToolFactory } from "./base";
 import { typedInsertContentArgs } from "./params";
 import {
@@ -41,7 +41,7 @@ export class InsertContentToolFactory extends DocumentAgentToolFactory<ReturnTyp
   protected executeTool(toolCallId: string, params: ReturnType<typeof typedInsertContentArgs>) {
     const duplicatePreparedInsertion = findDuplicatePreparedInsertion(this.state, params.content);
     if (duplicatePreparedInsertion) {
-      debug(() => ["[markra-ai-preview] duplicate insert preview suppressed", {
+      debug(() => ["[helbaron-ai-preview] duplicate insert preview suppressed", {
         duplicateOfPreviewId: duplicatePreparedInsertion.previewId,
         duplicatePosition: duplicatePreparedInsertion.position,
         previewId: toolCallId,

@@ -66,7 +66,7 @@ describe("file ignore settings", () => {
 
     await importStoredAppSettings(JSON.stringify({
       exportedAt: "2026-07-13T00:00:00.000Z",
-      format: "markra-settings",
+      format: "helbaron-settings",
       settings: {
         fileIgnoreSettings: { rules: "drafts/\r" }
       },

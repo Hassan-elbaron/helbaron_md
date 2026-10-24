@@ -1,5 +1,5 @@
 import type { Tool } from "@earendil-works/pi-ai";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import { buildAnthropicTools } from "./anthropic";
 import { buildGoogleTools } from "./google";
 import { buildOpenAiCompatibleFunctionTools, buildResponsesStyleTools } from "./openai-compatible";

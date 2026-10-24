@@ -255,7 +255,7 @@ describe("useAutoUpdater", () => {
       }),
       duration: Infinity,
       id: "app-update-toast",
-      message: "Update downloaded. Restart Markra to finish.",
+      message: "Update downloaded. Restart Helbaron to finish.",
       status: "success"
     });
 
@@ -321,7 +321,7 @@ describe("useAutoUpdater", () => {
       }),
       duration: Infinity,
       id: "app-update-toast",
-      message: "Markra 0.0.7 is available.",
+      message: "Helbaron 0.0.7 is available.",
       status: "success"
     });
 
@@ -424,7 +424,7 @@ describe("useAutoUpdater", () => {
     }
   });
 
-  it("lets the UI manually check for updates and reports when Markra is current", async () => {
+  it("lets the UI manually check for updates and reports when Helbaron is current", async () => {
     mockedCheckNativeAppUpdate.mockResolvedValue(null);
 
     render(<AutoUpdaterHarness autoCheck={false} />);
@@ -436,12 +436,12 @@ describe("useAutoUpdater", () => {
     await waitFor(() => expect(mockedCheckNativeAppUpdate).toHaveBeenCalledTimes(1));
     expect(mockedShowAppToast).toHaveBeenCalledWith({
       id: "app-update-toast",
-      message: "Checking for Markra updates...",
+      message: "Checking for Helbaron updates...",
       status: "loading"
     });
     expect(mockedShowAppToast).toHaveBeenLastCalledWith({
       id: "app-update-toast",
-      message: "Markra is up to date.",
+      message: "Helbaron is up to date.",
       status: "success"
     });
     expectUpdateLogEntry({
@@ -471,7 +471,7 @@ describe("useAutoUpdater", () => {
     await waitFor(() => expect(mockedCheckNativeAppUpdate).toHaveBeenCalledTimes(1));
     expect(mockedShowAppToast).toHaveBeenLastCalledWith({
       id: "app-update-toast",
-      message: "Markra update failed.",
+      message: "Helbaron update failed.",
       status: "error"
     });
     expectUpdateLogEntry({
@@ -523,7 +523,7 @@ describe("useAutoUpdater", () => {
     await waitFor(() =>
       expect(mockedShowAppToast).toHaveBeenLastCalledWith({
         id: "app-update-toast",
-        message: "Markra update failed.",
+        message: "Helbaron update failed.",
         status: "error"
       })
     );

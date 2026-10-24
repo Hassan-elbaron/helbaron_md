@@ -319,7 +319,7 @@ mod tests {
     #[test]
     fn snapshots_existing_markdown_before_overwriting() {
         let root = std::env::temp_dir().join(format!(
-            "markra-history-write-test-{}",
+            "helbaron-history-write-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -362,7 +362,7 @@ mod tests {
     #[test]
     fn skips_history_snapshot_when_saved_contents_match_disk() {
         let root = std::env::temp_dir().join(format!(
-            "markra-history-unchanged-test-{}",
+            "helbaron-history-unchanged-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -391,7 +391,7 @@ mod tests {
     #[test]
     fn skips_history_snapshot_when_requested() {
         let root = std::env::temp_dir().join(format!(
-            "markra-history-skip-test-{}",
+            "helbaron-history-skip-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -427,7 +427,7 @@ mod tests {
     #[test]
     fn truncates_future_history_after_saving_from_a_restored_state() {
         let root = std::env::temp_dir().join(format!(
-            "markra-history-linear-test-{}",
+            "helbaron-history-linear-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -529,7 +529,7 @@ mod tests {
     #[test]
     fn writes_markdown_when_history_root_is_unavailable() {
         let root = std::env::temp_dir().join(format!(
-            "markra-history-unavailable-test-{}",
+            "helbaron-history-unavailable-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

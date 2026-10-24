@@ -1,7 +1,7 @@
 import type {
   AiAgentSessionAttachment,
   DocumentAiChatImage
-} from "@markra/ai";
+} from "@helbaron/ai";
 import { getAppRuntime } from "../runtime";
 
 export const aiChatAttachmentMaxCount = 4;

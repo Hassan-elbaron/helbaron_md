@@ -240,7 +240,7 @@ mod tests {
 
     fn test_root(name: &str) -> PathBuf {
         std::env::temp_dir().join(format!(
-            "markra-asset-cleanup-{name}-{}",
+            "helbaron-asset-cleanup-{name}-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

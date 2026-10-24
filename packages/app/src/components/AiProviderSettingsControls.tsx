@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Button, Field, Select, Switch, Textarea, TextInput } from "@markra/ui";
+import { Button, Field, Select, Switch, Textarea, TextInput } from "@helbaron/ui";
 
 export function AiSettingsTextField({
   label,

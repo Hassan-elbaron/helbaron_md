@@ -107,8 +107,8 @@ describe("MarkdownExportDocument", () => {
     await waitFor(() => expect(onRendered).toHaveBeenCalledTimes(1));
 
     const bodyHtml = onRendered.mock.calls[0]?.[0].bodyHtml as string;
-    expect(bodyHtml).toContain("markra-math-render-inline");
-    expect(bodyHtml).toContain("markra-math-render-display");
+    expect(bodyHtml).toContain("helbaron-math-render-inline");
+    expect(bodyHtml).toContain("helbaron-math-render-display");
     expect(bodyHtml).toContain("katex");
     expect(bodyHtml).not.toContain("language-math");
   });
@@ -140,8 +140,8 @@ describe("MarkdownExportDocument", () => {
     await waitFor(() => expect(onRendered).toHaveBeenCalledTimes(1));
 
     const bodyHtml = onRendered.mock.calls[0]?.[0].bodyHtml as string;
-    expect(bodyHtml).toContain("markra-math-render-inline");
-    expect(bodyHtml).toContain("markra-math-render-display");
+    expect(bodyHtml).toContain("helbaron-math-render-inline");
+    expect(bodyHtml).toContain("helbaron-math-render-display");
     expect(bodyHtml).toContain("katex");
     expect(bodyHtml).not.toContain("<ul>");
     expect(bodyHtml).not.toContain("language-math");
@@ -198,7 +198,7 @@ describe("MarkdownExportDocument", () => {
     await waitFor(() => expect(onRendered).toHaveBeenCalledTimes(1));
 
     const bodyHtml = onRendered.mock.calls[0]?.[0].bodyHtml as string;
-    expect(bodyHtml).toContain("markra-mermaid-render");
+    expect(bodyHtml).toContain("helbaron-mermaid-render");
     expect(bodyHtml).toContain("<svg");
     expect(bodyHtml).not.toContain("language-mermaid");
   });
@@ -221,8 +221,8 @@ describe("MarkdownExportDocument", () => {
     await waitFor(() => expect(onRendered).toHaveBeenCalledTimes(1));
 
     const bodyHtml = onRendered.mock.calls[0]?.[0].bodyHtml as string;
-    expect(bodyHtml).toContain("markra-callout");
-    expect(bodyHtml).toContain("markra-callout-warning");
+    expect(bodyHtml).toContain("helbaron-callout");
+    expect(bodyHtml).toContain("helbaron-callout-warning");
     expect(bodyHtml).toContain('data-callout-type="warning"');
     expect(bodyHtml).toContain("Warning");
     expect(bodyHtml).toContain("Check this before publishing.");
@@ -250,7 +250,7 @@ describe("MarkdownExportDocument", () => {
     await waitFor(() => expect(onRendered).toHaveBeenCalledTimes(1));
 
     const bodyHtml = onRendered.mock.calls[0]?.[0].bodyHtml as string;
-    expect(bodyHtml).not.toContain("markra-callout");
+    expect(bodyHtml).not.toContain("helbaron-callout");
     expect(bodyHtml).toContain("[!WARNING]");
     expect(bodyHtml).toContain("Check this before publishing.");
   });
@@ -273,7 +273,7 @@ describe("MarkdownExportDocument", () => {
     await waitFor(() => expect(onRendered).toHaveBeenCalledTimes(1));
 
     const bodyHtml = onRendered.mock.calls[0]?.[0].bodyHtml as string;
-    expect(bodyHtml).toContain("markra-callout-note");
+    expect(bodyHtml).toContain("helbaron-callout-note");
     expect(bodyHtml).toContain("Keep this in mind.");
     expect(bodyHtml).not.toContain("<p></p>");
   });

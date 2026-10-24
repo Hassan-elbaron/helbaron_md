@@ -2,7 +2,7 @@ import type {
   AppWebResourceRuntime,
   NativeWebResourceRequest,
   NativeWebResourceResponse
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import type { WebRuntimeOptions } from "./types";
 
 export function createWebResourceRuntime(options: WebRuntimeOptions): AppWebResourceRuntime {

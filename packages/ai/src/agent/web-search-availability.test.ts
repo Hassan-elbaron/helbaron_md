@@ -1,5 +1,5 @@
 import { aiAgentWebSearchAvailable } from "./web-search-availability";
-import type { AiProviderConfig, AiProviderModel } from "@markra/providers";
+import type { AiProviderConfig, AiProviderModel } from "@helbaron/providers";
 
 function provider(overrides: Partial<AiProviderConfig>): AiProviderConfig {
   return {

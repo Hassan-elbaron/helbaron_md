@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { aiSelectionRevealDelayMs, useDeferredAiSelectionReveal } from "./ai-selection-reveal";
-import type { AiSelectionContext } from "@markra/ai";
+import type { AiSelectionContext } from "@helbaron/ai";
 
 function selection(overrides: Partial<AiSelectionContext> = {}): AiSelectionContext {
   return {

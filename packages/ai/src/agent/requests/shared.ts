@@ -1,4 +1,4 @@
-import { isRecord } from "@markra/shared";
+import { isRecord } from "@helbaron/shared";
 
 export function mergeRequestBody(left: Record<string, unknown>, right: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = { ...left };

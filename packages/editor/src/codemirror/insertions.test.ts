@@ -3,9 +3,9 @@ import { EditorView } from "@codemirror/view";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   insertionsPlugin,
-  listMarkraUi,
+  listHelbaronUi,
   liveMarkdown,
-  runMarkraCommand,
+  runHelbaronCommand,
 } from "./index.ts";
 
 import "./dom.test-support.ts";
@@ -51,7 +51,7 @@ describe("insertionsPlugin", () => {
     const view = createView();
 
     expect(
-      listMarkraUi(view, "slash-menu").map((action) => ({
+      listHelbaronUi(view, "slash-menu").map((action) => ({
         command: action.command,
         icon: action.icon,
         label: action.label,
@@ -64,7 +64,7 @@ describe("insertionsPlugin", () => {
       },
     ]);
 
-    expect(runMarkraCommand(view, "insert.today")).toBe(true);
+    expect(runHelbaronCommand(view, "insert.today")).toBe(true);
     expect(view.state.doc.toString()).toBe("Published: 2031-05-06");
     expect(view.state.selection.main.head).toBe(view.state.doc.length);
   });
@@ -72,8 +72,8 @@ describe("insertionsPlugin", () => {
   it("disables date insertion in a read-only editor", () => {
     const view = createView(true);
 
-    expect(listMarkraUi(view, "slash-menu")[0]?.enabled).toBe(false);
-    expect(runMarkraCommand(view, "insert.today")).toBe(false);
+    expect(listHelbaronUi(view, "slash-menu")[0]?.enabled).toBe(false);
+    expect(runHelbaronCommand(view, "insert.today")).toBe(false);
     expect(view.state.doc.toString()).toBe("Published: placeholder");
   });
 });

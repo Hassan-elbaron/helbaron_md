@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { isAppLanguage, t, type AppLanguage } from "@markra/shared";
+import { isAppLanguage, t, type AppLanguage } from "@helbaron/shared";
 import { appVersion } from "../lib/app-version";
 import {
   generateCrashDiagnosticsReport,

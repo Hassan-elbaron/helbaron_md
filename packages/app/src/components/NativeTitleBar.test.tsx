@@ -49,7 +49,7 @@ describe("NativeTitleBar", () => {
     expect(screen.getByRole("button", { name: "Open Markdown or Folder" }).closest(".titlebar-spacer")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Save Markdown" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Toggle Markra AI" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Toggle Helbaron AI" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Toggle file list" })).toBeInTheDocument();
     expect(container.querySelector("[data-titlebar-action='open']")).not.toBeInTheDocument();
     expect(within(container.querySelector(".document-actions") as HTMLElement).queryByRole("button", { name: "Open Markdown or Folder" })).not.toBeInTheDocument();
@@ -89,7 +89,7 @@ describe("NativeTitleBar", () => {
       />
     );
 
-    expect(screen.queryByRole("button", { name: "Toggle Markra AI" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Toggle Helbaron AI" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Editor view mode: Preview" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Save Markdown" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Switch to dark theme" })).not.toBeInTheDocument();
@@ -131,7 +131,7 @@ describe("NativeTitleBar", () => {
     const sidebarDivider = container.querySelector<HTMLElement>(".native-titlebar-sidebar-divider");
     expect(sidebarSurface).toHaveStyle({ width: "220px" });
     expect(sidebarSurface).toContainElement(sidebarDivider);
-    expect(sidebarDivider).toHaveClass("right-0", "opacity-100");
+    expect(sidebarDivider).toHaveClass("end-0", "opacity-100");
     expect(container.querySelector(".native-title-slot")).toHaveStyle({
       marginLeft: "24px"
     });
@@ -168,7 +168,7 @@ describe("NativeTitleBar", () => {
     expect(surface).toHaveStyle({ width: "288px" });
     expect(divider).toBeInTheDocument();
     expect(surface).toContainElement(divider);
-    expect(divider).toHaveClass("right-0", "opacity-100");
+    expect(divider).toHaveClass("end-0", "opacity-100");
     expect(divider).not.toHaveClass("transition-[left]");
     expect(divider).not.toHaveStyle({ left: "287px" });
 
@@ -363,27 +363,27 @@ describe("NativeTitleBar", () => {
     expect(container.querySelector(".native-titlebar")).toHaveStyle({
       left: "219px"
     });
-    expect(container.querySelector(".native-titlebar")).toHaveClass("rounded-tl-md");
+    expect(container.querySelector(".native-titlebar")).toHaveClass("rounded-ss-md");
     expect(container.querySelector(".native-titlebar")).not.toHaveClass("overflow-hidden");
     expect(container.querySelector(".native-titlebar")).not.toHaveClass("border-t");
-    expect(container.querySelector(".native-titlebar")).not.toHaveClass("border-l");
+    expect(container.querySelector(".native-titlebar")).not.toHaveClass("border-s");
     expect(container.querySelector(".native-titlebar")).toHaveClass("transition-[left]");
     expect(container.querySelector(".windows-titlebar-top-divider")).toHaveClass(
       "absolute",
       "top-0",
-      "right-0",
-      "left-1.5",
+      "end-0",
+      "start-1.5",
       "h-px",
       "bg-(--border-default)"
     );
     expect(container.querySelector(".windows-titlebar-corner-divider")).toHaveClass(
       "absolute",
       "top-0",
-      "left-0",
+      "start-0",
       "size-1.5",
-      "rounded-tl-md",
+      "rounded-ss-md",
       "border-t",
-      "border-l",
+      "border-s",
       "border-(--border-default)"
     );
     const titlebar = container.querySelector<HTMLElement>(".native-titlebar");
@@ -391,15 +391,15 @@ describe("NativeTitleBar", () => {
     expect(sidebarDivider).toBeInTheDocument();
     expect(titlebar).toContainElement(sidebarDivider);
     expect(container.querySelector(".windows-titlebar-sidebar-surface")).not.toBeInTheDocument();
-    expect(sidebarDivider).toHaveClass("absolute", "top-1.5", "bottom-0", "left-0", "w-px", "bg-(--border-default)");
-    expect(sidebarDivider).not.toHaveClass("right-0");
+    expect(sidebarDivider).toHaveClass("absolute", "top-1.5", "bottom-0", "start-0", "w-px", "bg-(--border-default)");
+    expect(sidebarDivider).not.toHaveClass("end-0");
     expect(container.querySelector(".windows-titlebar-corner-mask")).toHaveStyle({
       left: "218px",
       width: "3px"
     });
     expect(container.querySelector(".native-titlebar-sidebar-spacer")).not.toBeInTheDocument();
     expect(container.querySelector(".native-title-slot")).not.toHaveStyle({ paddingLeft: "232px" });
-    expect(container.querySelector(".native-title-slot")).toHaveClass("pl-2.5");
+    expect(container.querySelector(".native-title-slot")).toHaveClass("ps-2.5");
   });
 
   it("keeps Windows titlebar file actions outside the drag region", () => {
@@ -476,15 +476,15 @@ describe("NativeTitleBar", () => {
     expect(container.querySelector(".native-titlebar")).toHaveClass("top-10");
     expect(container.querySelector(".native-titlebar")).toHaveClass("bg-(--bg-primary)");
     expect(container.querySelector(".native-titlebar")).toHaveClass("border-t");
-    expect(container.querySelector(".native-titlebar")).not.toHaveClass("border-l");
-    expect(container.querySelector(".native-titlebar")).not.toHaveClass("rounded-tl-md");
+    expect(container.querySelector(".native-titlebar")).not.toHaveClass("border-s");
+    expect(container.querySelector(".native-titlebar")).not.toHaveClass("rounded-ss-md");
     expect(container.querySelector(".native-titlebar")).not.toHaveClass("overflow-hidden");
     expect(container.querySelector(".windows-titlebar-top-divider")).not.toBeInTheDocument();
     expect(container.querySelector(".windows-titlebar-corner-divider")).not.toBeInTheDocument();
     expect(container.querySelector(".windows-titlebar-sidebar-divider")).not.toBeInTheDocument();
     expect(container.querySelector(".native-titlebar")).toHaveClass("transition-[left]");
     expect(container.querySelector(".windows-titlebar-sidebar-surface")).not.toBeInTheDocument();
-    expect(container.querySelector(".native-title-slot")).toHaveClass("pl-3");
+    expect(container.querySelector(".native-title-slot")).toHaveClass("ps-3");
     expect(container.querySelector(".windows-titlebar-corner-mask")).not.toBeInTheDocument();
     expect(container.querySelector(".native-titlebar")).toHaveStyle({
       gridTemplateColumns: "minmax(0,1fr) 196px"
@@ -638,22 +638,22 @@ describe("NativeTitleBar", () => {
       />
     );
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Markra" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Helbaron" }));
 
-    expect(screen.getByRole("menu", { name: "Markra" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("menuitem", { name: "About Markra" }));
+    expect(screen.getByRole("menu", { name: "Helbaron" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: "About Helbaron" }));
     expect(showAbout).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Markra" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Helbaron" }));
     fireEvent.click(screen.getByRole("menuitem", { name: "Settings... Ctrl+," }));
     expect(openSettings).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Markra" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Helbaron" }));
     fireEvent.click(screen.getByRole("menuitem", { name: "Check for updates" }));
     expect(checkForUpdates).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Markra" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: "Quit Markra" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Helbaron" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Quit Helbaron" }));
     expect(exitApp).toHaveBeenCalledTimes(1);
 
     fireEvent.click(screen.getByRole("menuitem", { name: "File" }));
@@ -765,9 +765,9 @@ describe("NativeTitleBar", () => {
       />
     );
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Markra" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Helbaron" }));
 
-    const hiddenItem = screen.getByRole("menuitem", { name: "Hide Markra" });
+    const hiddenItem = screen.getByRole("menuitem", { name: "Hide Helbaron" });
     expect(hiddenItem).toHaveAttribute("data-disabled");
     expect(hiddenItem.className).toContain("data-disabled:opacity-45");
     expect(hiddenItem.className).toContain("data-disabled:pointer-events-none");
@@ -801,8 +801,8 @@ describe("NativeTitleBar", () => {
       />
     );
 
-    fireEvent.click(screen.getByRole("menuitem", { name: "Markra" }));
-    expect(screen.getByRole("menu", { name: "Markra" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: "Helbaron" }));
+    expect(screen.getByRole("menu", { name: "Helbaron" })).toBeInTheDocument();
 
     fireEvent.mouseEnter(screen.getByRole("menuitem", { name: "File" }), {
       clientX: 80,
@@ -810,7 +810,7 @@ describe("NativeTitleBar", () => {
     });
 
     expect(screen.getByRole("menu", { name: "File" })).toBeInTheDocument();
-    expect(screen.queryByRole("menu", { name: "Markra" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("menu", { name: "Helbaron" })).not.toBeInTheDocument();
   });
 
   it("toggles the Windows window state from self-drawn titlebar double-click mouse downs", () => {
@@ -873,7 +873,7 @@ describe("NativeTitleBar", () => {
     expect(container.querySelector(".windows-app-chrome .windows-window-controls")).toBeInTheDocument();
   });
 
-  it("keeps compact Windows file actions clear of the Markra AI panel", () => {
+  it("keeps compact Windows file actions clear of the Helbaron AI panel", () => {
     const { container } = render(
       <NativeTitleBar
         aiAgentOpen
@@ -899,10 +899,10 @@ describe("NativeTitleBar", () => {
     expect(container.querySelector(".windows-titlebar-actions")).not.toHaveStyle({ transform: "translateX(-384px)" });
     expect(container.querySelector(".windows-app-chrome .windows-window-controls")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Open Markdown or Folder" })).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Toggle Markra AI" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Toggle Helbaron AI" })).toBeInTheDocument();
   });
 
-  it("toggles the right-side Markra AI panel from the file action area", () => {
+  it("toggles the right-side Helbaron AI panel from the file action area", () => {
     const toggleAiAgent = vi.fn();
     const { container } = render(
       <NativeTitleBar
@@ -920,7 +920,7 @@ describe("NativeTitleBar", () => {
       />
     );
 
-    const button = screen.getByRole("button", { name: "Toggle Markra AI" });
+    const button = screen.getByRole("button", { name: "Toggle Helbaron AI" });
 
     expect(button).toHaveAttribute("aria-pressed", "true");
     expect(button).toContainElement(container.querySelector(".lucide-bot"));
@@ -1273,7 +1273,7 @@ describe("NativeTitleBar", () => {
 
     expect(actionLabels).toEqual([
       "Switch to dark theme",
-      "Toggle Markra AI",
+      "Toggle Helbaron AI",
       "Editor view mode: Preview",
       "Show history"
     ]);
@@ -1306,7 +1306,7 @@ describe("NativeTitleBar", () => {
       />
     );
 
-    const aiButton = screen.getByRole("button", { name: "Toggle Markra AI" });
+    const aiButton = screen.getByRole("button", { name: "Toggle Helbaron AI" });
     mockTitlebarActionRects(["aiAgent", "sourceMode", "save", "theme", "viewMode", "history"]);
 
     fireEvent.mouseDown(aiButton, { button: 0, clientX: 10, clientY: 10 });
@@ -1392,7 +1392,7 @@ describe("NativeTitleBar", () => {
     expect(screen.queryByRole("group", { name: "Content width" })).not.toBeInTheDocument();
   });
 
-  it("centers the document title inside the editor area when the Markra AI panel is open", () => {
+  it("centers the document title inside the editor area when the Helbaron AI panel is open", () => {
     const { container } = render(
       <NativeTitleBar
         aiAgentOpen
@@ -1433,7 +1433,7 @@ describe("NativeTitleBar", () => {
     expect(container.querySelector(".native-title")).toHaveStyle({ transform: "translateX(110px)" });
   });
 
-  it("balances the document title between the markdown files sidebar and Markra AI panel", () => {
+  it("balances the document title between the markdown files sidebar and Helbaron AI panel", () => {
     const { container } = render(
       <NativeTitleBar
         aiAgentOpen
@@ -1454,7 +1454,7 @@ describe("NativeTitleBar", () => {
     expect(container.querySelector(".native-title")).toHaveStyle({ transform: "translateX(-112px)" });
   });
 
-  it("keeps file actions synced immediately while the Markra AI panel is resizing", () => {
+  it("keeps file actions synced immediately while the Helbaron AI panel is resizing", () => {
     const { container } = render(
       <NativeTitleBar
         aiAgentOpen
@@ -1520,7 +1520,7 @@ describe("NativeTitleBar", () => {
     const controls = container.querySelector(".mac-window-controls");
 
     expect(controls).toBeInTheDocument();
-    expect(toggle.closest(".titlebar-spacer")).not.toHaveClass("pl-22");
+    expect(toggle.closest(".titlebar-spacer")).not.toHaveClass("ps-22");
     expect(toggle.closest(".titlebar-spacer")).toHaveClass("h-10");
     expect(toggle).toHaveAttribute("aria-pressed", "true");
     expect(toggle).toContainElement(container.querySelector(".lucide-panel-left"));
@@ -1554,7 +1554,7 @@ describe("NativeTitleBar", () => {
 
     expect(screen.getAllByLabelText("Window drag region")).toHaveLength(2);
     expect(titlebar).toHaveClass("fixed", "inset-x-0", "grid", "z-10");
-    expect(titlebar).not.toHaveClass("right-3.5", "w-auto");
+    expect(titlebar).not.toHaveClass("end-3.5", "w-auto");
     expect(titlebar).not.toHaveClass("grid-cols-[240px_minmax(0,1fr)_240px]");
     expect(container.querySelector(".mac-window-controls")).not.toBeInTheDocument();
     expect(container.querySelector(".windows-app-chrome .windows-window-controls")).toBeInTheDocument();
@@ -1564,7 +1564,7 @@ describe("NativeTitleBar", () => {
     expect(screen.queryByRole("button", { name: "Open Markdown or Folder" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Save Markdown" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Toggle Markra AI" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Toggle Helbaron AI" })).toBeInTheDocument();
     expect(container.querySelector(".document-actions")).toHaveClass("relative");
     expect(container.querySelector(".document-actions")).not.toHaveStyle({ transform: "translateX(-384px)" });
     expect(container.querySelector(".windows-titlebar-actions")).not.toHaveStyle({ transform: "translateX(-384px)" });

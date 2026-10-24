@@ -1,6 +1,6 @@
 import { Decoration, EditorView, WidgetType, type EditorView as CodeMirrorView } from "@codemirror/view";
-import { defineMarkraPlugin } from "./plugin.ts";
-import { markraRenderer } from "./renderers.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
+import { helbaronRenderer } from "./renderers.ts";
 import { readCodeMirrorFrontmatter } from "./frontmatter-preview.ts";
 
 class HorizontalRuleWidget extends WidgetType {
@@ -18,7 +18,7 @@ class HorizontalRuleWidget extends WidgetType {
 
   toDOM(view: CodeMirrorView) {
     const rule = view.dom.ownerDocument.createElement("hr");
-    rule.className = "cm-markra-horizontal-rule";
+    rule.className = "cm-helbaron-horizontal-rule";
     rule.addEventListener("mousedown", (event) => {
       if (event.button !== 0 || event.ctrlKey) return;
       event.preventDefault();
@@ -34,7 +34,7 @@ class HorizontalRuleWidget extends WidgetType {
 }
 
 const horizontalRuleTheme = EditorView.baseTheme({
-  ".cm-markra-horizontal-rule": {
+  ".cm-helbaron-horizontal-rule": {
     border: "0",
     borderTop: "1px solid color-mix(in srgb, currentColor 22%, transparent)",
     cursor: "pointer",
@@ -45,11 +45,11 @@ const horizontalRuleTheme = EditorView.baseTheme({
 });
 
 export function horizontalRulePlugin() {
-  return defineMarkraPlugin({
-    id: "markra.horizontal-rule",
+  return defineHelbaronPlugin({
+    id: "helbaron.horizontal-rule",
     extension: [
-      markraRenderer({
-        id: "markra.horizontal-rule",
+      helbaronRenderer({
+        id: "helbaron.horizontal-rule",
         nodeNames: ["HorizontalRule"],
         render(context) {
           const frontmatter = readCodeMirrorFrontmatter(

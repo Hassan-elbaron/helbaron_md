@@ -15,7 +15,7 @@ import {
 import {
   syntaxTreeChanged,
 } from "./changes.ts";
-import { markraListDepth } from "./renderers.ts";
+import { helbaronListDepth } from "./renderers.ts";
 
 type HeadingEdge = "after" | "before";
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -79,7 +79,7 @@ class HeadingSpacerWidget extends MeasuredSpacerWidget {
   }
 
   toDOM(view: CodeMirrorView) {
-    const spacer = this.createSpacer(view, "cm-markra-heading-spacer");
+    const spacer = this.createSpacer(view, "cm-helbaron-heading-spacer");
     spacer.dataset.headingEdge = this.edge;
     spacer.dataset.headingLevel = String(this.level);
     return spacer;
@@ -92,7 +92,7 @@ class ParagraphSpacerWidget extends MeasuredSpacerWidget {
   }
 
   toDOM(view: CodeMirrorView) {
-    return this.createSpacer(view, "cm-markra-paragraph-spacer");
+    return this.createSpacer(view, "cm-helbaron-paragraph-spacer");
   }
 }
 
@@ -102,7 +102,7 @@ class BlockquoteSpacerWidget extends MeasuredSpacerWidget {
   }
 
   toDOM(view: CodeMirrorView) {
-    return this.createSpacer(view, "cm-markra-blockquote-spacer");
+    return this.createSpacer(view, "cm-helbaron-blockquote-spacer");
   }
 }
 
@@ -173,7 +173,7 @@ function buildBlockSpacing(
       if (
         paragraphSpacing <= 0 ||
         node.type.name !== "Paragraph" ||
-        markraListDepth(node.node) > 0 ||
+        helbaronListDepth(node.node) > 0 ||
         node.to <= node.from
       ) {
         return;

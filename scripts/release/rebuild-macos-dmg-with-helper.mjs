@@ -36,14 +36,14 @@ function removeIfExists(filePath) {
 const dmgDir = requireEnv("DMG_DIR");
 const macosBundleDir = requireEnv("MACOS_BUNDLE_DIR");
 const helperPath = requireEnv("HELPER_PATH");
-const productName = process.env.APP_PRODUCT_NAME?.trim() || "Markra";
+const productName = process.env.APP_PRODUCT_NAME?.trim() || "Helbaron";
 const appName = `${productName}.app`;
 const appPath = path.join(macosBundleDir, appName);
 const helperName = path.basename(helperPath);
 const dmgPath = findSingleFile(dmgDir, (name) => name.endsWith(".dmg") && !name.endsWith(".with-helper.dmg"), "DMG file");
 const bundleDmgScript = path.join(dmgDir, "bundle_dmg.sh");
 const outputDmgPath = path.join(dmgDir, `${path.basename(dmgPath, ".dmg")}.with-helper.dmg`);
-const stageRoot = fs.mkdtempSync(path.join(os.tmpdir(), "markra-dmg-stage-"));
+const stageRoot = fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-dmg-stage-"));
 const stageSourceDir = path.join(stageRoot, "source");
 const stagedAppPath = path.join(stageSourceDir, appName);
 

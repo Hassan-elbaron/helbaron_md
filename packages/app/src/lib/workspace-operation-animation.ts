@@ -1,7 +1,7 @@
 import type {
   WorkspacePlanVisualEvent,
   WorkspacePlanVisualStepEvent
-} from "@markra/ai";
+} from "@helbaron/ai";
 
 export type WorkspaceOperationAnimationStatus = "applied" | "applying" | "error" | "idle";
 export type WorkspaceOperationTarget = "editor" | "file_tree";

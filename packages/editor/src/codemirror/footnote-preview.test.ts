@@ -76,7 +76,7 @@ describe("footnotePreviewPlugin", () => {
     const view = createView(doc);
     const closingFenceFrom = doc.lastIndexOf("```");
 
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")).toBeNull();
     view.dispatch({
       changes: [
         { from: 0, to: "```\n".length },
@@ -84,25 +84,25 @@ describe("footnotePreviewPlugin", () => {
       ],
     });
 
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")).not.toBeNull();
   });
 
   it("renders references and definition labels without changing Markdown", () => {
     const doc = "Alpha[^one]\n\n[^one]: Synthetic detail.\n\nEdit";
     const view = createView(doc);
 
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")?.textContent).toContain("one");
-    expect(view.dom.querySelector(".cm-markra-footnote-definition")?.textContent).toContain("Synthetic detail.");
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")?.textContent).toContain("one");
+    expect(view.dom.querySelector(".cm-helbaron-footnote-definition")?.textContent).toContain("Synthetic detail.");
     expect(view.state.doc.toString()).toBe(doc);
   });
 
   it("shows a definition preview and navigates to its source with modifier-click", () => {
     const doc = "Alpha[^one]\n\n[^one]: Synthetic detail.\n    Continued detail.\n\nEdit";
     const view = createView(doc);
-    const reference = view.dom.querySelector<HTMLElement>(".cm-markra-footnote-reference");
+    const reference = view.dom.querySelector<HTMLElement>(".cm-helbaron-footnote-reference");
 
     reference?.dispatchEvent(new MouseEvent("mouseenter"));
-    expect(view.dom.querySelector(".markra-footnote-preview")?.textContent).toContain(
+    expect(view.dom.querySelector(".helbaron-footnote-preview")?.textContent).toContain(
       "Synthetic detail. Continued detail.",
     );
 
@@ -119,7 +119,7 @@ describe("footnotePreviewPlugin", () => {
     const doc = "Alpha[^one]\n\n[^one]: Synthetic detail.\n\nEdit";
     const from = doc.indexOf("[^one]");
     const view = createView(doc);
-    const reference = view.dom.querySelector<HTMLElement>(".cm-markra-footnote-reference");
+    const reference = view.dom.querySelector<HTMLElement>(".cm-helbaron-footnote-reference");
 
     reference?.dispatchEvent(new MouseEvent("mousedown", {
       bubbles: true,
@@ -128,7 +128,7 @@ describe("footnotePreviewPlugin", () => {
 
     expect(view.state.selection.main.head).toBeGreaterThan(from);
     expect(view.state.selection.main.head).toBeLessThan(from + "[^one]".length);
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")).toBeNull();
     expect(view.dom.textContent).toContain("Alpha[^one]");
   });
 
@@ -137,7 +137,7 @@ describe("footnotePreviewPlugin", () => {
     const definitionFrom = doc.lastIndexOf("[^one]");
     const view = createView(doc);
     const label = view.dom.querySelector<HTMLElement>(
-      ".cm-markra-footnote-definition-label",
+      ".cm-helbaron-footnote-definition-label",
     );
 
     label?.dispatchEvent(new MouseEvent("mousedown", {
@@ -146,7 +146,7 @@ describe("footnotePreviewPlugin", () => {
     }));
 
     expect(view.state.selection.main.head).toBeGreaterThan(definitionFrom);
-    expect(view.dom.querySelector(".cm-markra-footnote-definition-label")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-definition-label")).toBeNull();
     expect(view.dom.textContent).toContain("[^one]: Synthetic detail.");
   });
 
@@ -157,7 +157,7 @@ describe("footnotePreviewPlugin", () => {
 
     view.dispatch({ selection: EditorSelection.cursor(from + 2) });
 
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")).toBeNull();
     expect(view.dom.textContent).toContain("Alpha[^one]");
   });
 
@@ -169,7 +169,7 @@ describe("footnotePreviewPlugin", () => {
     view.dispatch({ selection: EditorSelection.cursor(anchor) });
     view.dispatch({ selection: EditorSelection.range(anchor, anchor + 3) });
 
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")).toBeNull();
     expect(view.dom.textContent).toContain("Alpha[^one]");
   });
 
@@ -179,7 +179,7 @@ describe("footnotePreviewPlugin", () => {
 
     view.dispatch({ selection: EditorSelection.range(0, doc.length) });
 
-    expect(view.dom.querySelector(".cm-markra-footnote-reference")).not.toBeNull();
-    expect(view.dom.querySelector(".cm-markra-footnote-definition")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-reference")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-footnote-definition")).not.toBeNull();
   });
 });

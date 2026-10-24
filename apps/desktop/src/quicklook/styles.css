@@ -45,7 +45,7 @@ body {
   overflow-x: hidden;
 }
 
-.markra-quicklook-state {
+.helbaron-quicklook-state {
   display: flex;
   min-height: 100vh;
   align-items: center;
@@ -55,35 +55,35 @@ body {
   font-size: 14px;
 }
 
-.markra-quicklook-spinner {
+.helbaron-quicklook-spinner {
   width: 1rem;
   height: 1rem;
   border: 2px solid var(--preview-border);
   border-top-color: var(--preview-link);
   border-radius: 999px;
-  animation: markra-quicklook-spin 700ms linear infinite;
+  animation: helbaron-quicklook-spin 700ms linear infinite;
 }
 
-@keyframes markra-quicklook-spin {
+@keyframes helbaron-quicklook-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-.markra-quicklook-document {
+.helbaron-quicklook-document {
   width: min(100%, 920px);
   min-height: 100vh;
   margin: 0 auto;
   padding: 34px clamp(24px, 6vw, 64px) 72px;
 }
 
-.markra-quicklook-header {
+.helbaron-quicklook-header {
   margin-bottom: 32px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--preview-border);
 }
 
-.markra-quicklook-header > span {
+.helbaron-quicklook-header > span {
   display: block;
   margin-bottom: 6px;
   color: var(--preview-muted);
@@ -93,7 +93,7 @@ body {
   text-transform: uppercase;
 }
 
-.markra-quicklook-header h1 {
+.helbaron-quicklook-header h1 {
   margin: 0;
   overflow: hidden;
   color: var(--preview-heading);
@@ -176,7 +176,7 @@ body {
   color: var(--preview-muted);
 }
 
-.markdown-preview-paper blockquote.markra-callout {
+.markdown-preview-paper blockquote.helbaron-callout {
   --callout-color: #3578c8;
   padding: 0.8em 1em 0.9em;
   border: 1px solid color-mix(in srgb, var(--callout-color) 30%, var(--preview-border));
@@ -186,23 +186,23 @@ body {
   color: var(--preview-text);
 }
 
-.markdown-preview-paper .markra-callout-tip {
+.markdown-preview-paper .helbaron-callout-tip {
   --callout-color: #2d8a57;
 }
 
-.markdown-preview-paper .markra-callout-important {
+.markdown-preview-paper .helbaron-callout-important {
   --callout-color: #8250df;
 }
 
-.markdown-preview-paper .markra-callout-warning {
+.markdown-preview-paper .helbaron-callout-warning {
   --callout-color: #bf8700;
 }
 
-.markdown-preview-paper .markra-callout-caution {
+.markdown-preview-paper .helbaron-callout-caution {
   --callout-color: #cf222e;
 }
 
-.markdown-preview-paper .markra-callout-header {
+.markdown-preview-paper .helbaron-callout-header {
   display: flex;
   align-items: center;
   gap: 0.45em;
@@ -212,14 +212,14 @@ body {
   font-weight: 700;
 }
 
-.markdown-preview-paper .markra-callout-icon {
+.markdown-preview-paper .helbaron-callout-icon {
   width: 0.65em;
   height: 0.65em;
   border-radius: 999px;
   background: currentColor;
 }
 
-.markdown-preview-paper blockquote.markra-callout p:last-child {
+.markdown-preview-paper blockquote.helbaron-callout p:last-child {
   margin-bottom: 0;
 }
 
@@ -291,7 +291,7 @@ body {
   margin-right: 0.45em;
 }
 
-.markdown-preview-paper .markra-math-render-display {
+.markdown-preview-paper .helbaron-math-render-display {
   display: block;
   max-width: 100%;
   margin: 1em 0;
@@ -300,26 +300,26 @@ body {
   text-align: center;
 }
 
-.markdown-preview-paper .markra-math-render-inline {
+.markdown-preview-paper .helbaron-math-render-inline {
   display: inline-flex;
   vertical-align: -0.08em;
 }
 
-.markdown-preview-paper .markra-mermaid-render {
+.markdown-preview-paper .helbaron-mermaid-render {
   max-width: 100%;
   margin: 1.25em 0;
   overflow-x: auto;
   text-align: center;
 }
 
-.markdown-preview-paper .markra-mermaid-render svg {
+.markdown-preview-paper .helbaron-mermaid-render svg {
   display: block;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
 }
 
-.markdown-preview-paper .markra-mermaid-render-invalid {
+.markdown-preview-paper .helbaron-mermaid-render-invalid {
   max-height: 18em;
   overflow: auto;
   padding: 0.8em 1em;
@@ -335,13 +335,13 @@ body {
 }
 
 @media (max-width: 520px) {
-  .markra-quicklook-document {
+  .helbaron-quicklook-document {
     padding: 24px 20px 48px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .markra-quicklook-spinner {
+  .helbaron-quicklook-spinner {
     animation: none;
   }
 }

@@ -91,8 +91,8 @@ function buildDecorations(matches: readonly SpellcheckMatch[]) {
       .sort((left, right) => left.from - right.from || left.to - right.to)
       .map((match) =>
         Decoration.mark({
-          attributes: { "data-markra-spellcheck-word": match.word },
-          class: "cm-markra-spellcheck-error",
+          attributes: { "data-helbaron-spellcheck-word": match.word },
+          class: "cm-helbaron-spellcheck-error",
         }).range(match.from, match.to),
       ),
     true,
@@ -314,7 +314,7 @@ const spellcheckView = ViewPlugin.fromClass(
 );
 
 const spellcheckTheme = EditorView.baseTheme({
-  ".cm-markra-spellcheck-error": {
+  ".cm-helbaron-spellcheck-error": {
     textDecoration: "underline wavy #ef4444",
     textDecorationSkipInk: "none",
     textUnderlineOffset: "0.18em",

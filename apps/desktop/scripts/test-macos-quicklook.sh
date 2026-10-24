@@ -7,8 +7,8 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
 fi
 
 DESKTOP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SOURCE_DIR="$DESKTOP_DIR/src-tauri/macos/MarkraQuickLookPreview"
-TEST_DIR="$DESKTOP_DIR/src-tauri/macos/MarkraQuickLookPreviewTests"
+SOURCE_DIR="$DESKTOP_DIR/src-tauri/macos/HelbaronQuickLookPreview"
+TEST_DIR="$DESKTOP_DIR/src-tauri/macos/HelbaronQuickLookPreviewTests"
 OUTPUT_DIR="$DESKTOP_DIR/src-tauri/target/quicklook-tests"
 TEST_BINARY="$OUTPUT_DIR/PreviewPayloadTests"
 

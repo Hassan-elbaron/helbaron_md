@@ -1,4 +1,4 @@
-import { clampNumber, normalizeNullableString } from "@markra/shared";
+import { clampNumber, normalizeNullableString } from "@helbaron/shared";
 
 export type BackupSettings = {
   backupOnExit: boolean;

@@ -1,5 +1,5 @@
 import { Agent } from "@earendil-works/pi-agent-core";
-import { getProviderCapabilities, providerSupportsNativeWebSearch, type AiProviderConfig } from "@markra/providers";
+import { getProviderCapabilities, providerSupportsNativeWebSearch, type AiProviderConfig } from "@helbaron/providers";
 import { createNativeChatStreamFn, createPiAgentModel } from "./runtime";
 import { chatCompletionStream } from "./chat-completion";
 import { runReadOnlyAgentTools } from "./read-only-tools";

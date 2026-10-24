@@ -272,9 +272,9 @@ describe("AI provider requests", () => {
     expect(buildAiProviderModelsRequest(provider({ type: "xai" }))).toMatchObject({
       url: "https://api.x.ai/v1/models"
     });
-    expect(buildAiProviderModelsRequest(provider({ type: "azure-openai", baseUrl: "https://markra.openai.azure.com" }))).toMatchObject({
+    expect(buildAiProviderModelsRequest(provider({ type: "azure-openai", baseUrl: "https://helbaron.openai.azure.com" }))).toMatchObject({
       headers: expect.objectContaining({ "api-key": "sk-test" }),
-      url: "https://markra.openai.azure.com/openai/models?api-version=2024-10-21"
+      url: "https://helbaron.openai.azure.com/openai/models?api-version=2024-10-21"
     });
     expect(buildAiProviderModelsRequest(provider({ type: "openai-compatible", baseUrl: "https://example.test/v1" }))).toMatchObject({
       url: "https://example.test/v1/models"
@@ -319,14 +319,14 @@ describe("AI provider requests", () => {
       buildAiProviderModelsRequest(
         provider({
           baseUrl: "https://proxy.example.test/v1",
-          customHeaders: '{"HTTP-Referer":"https://markra.app","X-Title":"Markra"}',
+          customHeaders: '{"HTTP-Referer":"https://markra.app","X-Title":"Helbaron"}',
           type: "openai-compatible"
         } as Partial<AiProviderConfig>)
       )
     ).toMatchObject({
       headers: expect.objectContaining({
         "HTTP-Referer": "https://markra.app",
-        "X-Title": "Markra"
+        "X-Title": "Helbaron"
       })
     });
   });

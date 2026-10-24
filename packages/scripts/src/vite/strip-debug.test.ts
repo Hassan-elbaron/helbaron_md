@@ -7,9 +7,9 @@ describe("stripDebugStatements", () => {
       'import { debug } from "./index";',
       "",
       "const value = 1;",
-      'debug(() => ["[markra] first", { value }]);',
+      'debug(() => ["[helbaron] first", { value }]);',
       "const next = value + 1;",
-      'debug(() => ["[markra] second"]);',
+      'debug(() => ["[helbaron] second"]);',
       "export { next };"
     ].join("\n");
 

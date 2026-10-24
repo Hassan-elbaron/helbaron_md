@@ -47,7 +47,7 @@ describe("GeneralSettings", () => {
 
     render(<GeneralSettings {...props} />);
 
-    expect(screen.getByRole("status")).toHaveTextContent("Markra 0.0.8 is available.");
+    expect(screen.getByRole("status")).toHaveTextContent("Helbaron 0.0.8 is available.");
     expect(screen.getByRole("button", { name: "Check for updates" })).toBeInTheDocument();
   });
 
@@ -221,42 +221,42 @@ describe("GeneralSettings", () => {
       <GeneralSettings
         {...baseProps}
         shellCommandStatus={{
-          commandPath: "/mock-bin/markra",
-          targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+          commandPath: "/mock-bin/helbaron",
+          targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
           status: "missing"
         }}
       />
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Install markra command" }));
+    fireEvent.click(screen.getByRole("button", { name: "Install helbaron command" }));
     expect(onInstallShellCommand).toHaveBeenCalledTimes(1);
 
     rerender(
       <GeneralSettings
         {...baseProps}
         shellCommandStatus={{
-          commandPath: "/mock-bin/markra",
-          targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+          commandPath: "/mock-bin/helbaron",
+          targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
           status: "needsRepair"
         }}
       />
     );
-    fireEvent.click(screen.getByRole("button", { name: "Repair markra command" }));
+    fireEvent.click(screen.getByRole("button", { name: "Repair helbaron command" }));
     expect(onInstallShellCommand).toHaveBeenCalledTimes(2);
 
     rerender(
       <GeneralSettings
         {...baseProps}
         shellCommandStatus={{
-          commandPath: "/mock-bin/markra",
-          targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+          commandPath: "/mock-bin/helbaron",
+          targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
           status: "installed"
         }}
       />
     );
-    expect(screen.getByText(/Installed at \/mock-bin\/markra/)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Uninstall markra command" }));
-    fireEvent.click(screen.getByRole("button", { name: "Refresh markra command status" }));
+    expect(screen.getByText(/Installed at \/mock-bin\/helbaron/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Uninstall helbaron command" }));
+    fireEvent.click(screen.getByRole("button", { name: "Refresh helbaron command status" }));
 
     expect(onUninstallShellCommand).toHaveBeenCalledTimes(1);
     expect(onRefreshShellCommand).toHaveBeenCalledTimes(1);

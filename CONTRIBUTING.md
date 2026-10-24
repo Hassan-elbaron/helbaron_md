@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve Markra. Contributions can be product polish, Markdown editing fixes, AI provider work, cross-platform desktop fixes, documentation, tests, or issue triage.
+Thanks for helping improve Helbaron. Contributions can be product polish, Markdown editing fixes, AI provider work, cross-platform desktop fixes, documentation, tests, or issue triage.
 
 ## Development Setup
 

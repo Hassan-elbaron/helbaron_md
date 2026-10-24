@@ -4,7 +4,7 @@ import QuickLookUI
 import WebKit
 
 private let previewLogger = Logger(
-    subsystem: "dev.markra.app.quicklook",
+    subsystem: "dev.helbaron.app.quicklook",
     category: "preview"
 )
 
@@ -83,10 +83,10 @@ final class PreviewViewController: NSViewController, QLPreviewingController, WKN
 
         webView.callAsyncJavaScript(
             """
-            if (typeof window.__MARKRA_RENDER_QUICKLOOK__ !== 'function') {
+            if (typeof window.__HELBARON_RENDER_QUICKLOOK__ !== 'function') {
               throw new Error('Quick Look renderer bridge is unavailable');
             }
-            return window.__MARKRA_RENDER_QUICKLOOK__(payload);
+            return window.__HELBARON_RENDER_QUICKLOOK__(payload);
             """,
             arguments: ["payload": payload],
             in: nil,
@@ -142,7 +142,7 @@ final class PreviewViewController: NSViewController, QLPreviewingController, WKN
               <head><meta charset="utf-8"></head>
               <body style="margin:0;display:grid;min-height:100vh;place-items:center;font:14px -apple-system,BlinkMacSystemFont,sans-serif;color:#68707a;background:#fff;">
                 <main style="display:grid;gap:8px;text-align:center;padding:24px;">
-                  <strong style="color:#202428;font-size:16px;">Unable to generate Markra preview</strong>
+                  <strong style="color:#202428;font-size:16px;">Unable to generate Helbaron preview</strong>
                   <span>\(message)</span>
                 </main>
               </body>

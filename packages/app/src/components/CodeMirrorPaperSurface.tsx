@@ -24,7 +24,7 @@ import {
   linksPlugin,
   markdownEditingPlugin,
   markdownShortcutsPlugin,
-  markraPlugins,
+  helbaronPlugins,
   mathPreviewPlugin,
   rawHtmlPreviewPlugin,
   readCodeMirrorAiSelectionContext,
@@ -38,25 +38,25 @@ import {
   trailingSpacePlugin,
   updateCodeMirrorHeadingAnchors,
   updateCodeMirrorSpellcheckOptions,
-  type MarkraPlugin,
-} from "@markra/editor/codemirror";
+  type HelbaronPlugin,
+} from "@helbaron/editor/codemirror";
 import type {
   SaveClipboardAttachment,
   SaveClipboardImage,
   SaveRemoteClipboardImage,
   MarkdownShortcutMap,
   Spellchecker,
-} from "@markra/editor";
-import type { AiSelectionContext } from "@markra/ai";
+} from "@helbaron/editor";
+import type { AiSelectionContext } from "@helbaron/ai";
 import {
-  MarkraEditorProvider,
-  markraEditorReactBridge,
-} from "@markra/editor-react";
+  HelbaronEditorProvider,
+  helbaronEditorReactBridge,
+} from "@helbaron/editor-react";
 import { Compartment, EditorState, type Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { t, type AppLanguage } from "@markra/shared";
+import { t, type AppLanguage } from "@helbaron/shared";
 import type {
   ExtendedSyntaxPreferences,
   TableColumnWidthModePreference,
@@ -86,7 +86,7 @@ import {
   type SpellcheckSuggestionMenuState,
 } from "./SpellcheckSuggestionMenu";
 
-const emptyPlugins: readonly MarkraPlugin[] = [];
+const emptyPlugins: readonly HelbaronPlugin[] = [];
 
 export interface CodeMirrorPaperSurfaceProps {
   autoFocus?: boolean;
@@ -109,7 +109,7 @@ export interface CodeMirrorPaperSurfaceProps {
   openExternalUrl?: (url: string) => unknown;
   openLocalAttachment?: (src: string) => unknown;
   paragraphSpacingPx?: number;
-  plugins?: readonly MarkraPlugin[];
+  plugins?: readonly HelbaronPlugin[];
   readClipboardText?: ClipboardTextReader;
   readOnly?: boolean;
   resolveImageSrc?: (src: string) => string;
@@ -150,7 +150,7 @@ interface MarkdownExtensionOptions {
   resolveImageSrc: (source: string) => string | undefined;
   hideHeadingMarkersOnFocus: boolean;
   showCodeBlockLineNumbers: boolean;
-  plugins: readonly MarkraPlugin[];
+  plugins: readonly HelbaronPlugin[];
   pastePlainText: (view: EditorView, shortcut: string) => boolean;
   shortcuts?: MarkdownShortcutMap;
   tableColumnWidthMode: TableColumnWidthModePreference;
@@ -572,7 +572,7 @@ export function CodeMirrorPaperSurface({
               workspaceFiles: () => workspaceFilesRef.current,
             }),
           ),
-          markraPlugins([
+          helbaronPlugins([
             codeMirrorClipboardAssetsPlugin({
               documentPath: () => documentPathRef.current,
               saveAttachment: (attachment) =>
@@ -585,7 +585,7 @@ export function CodeMirrorPaperSurface({
           ]),
           codeMirrorAiPreviewPlugin(),
           codeMirrorAiSelectionHoldPlugin(),
-          markraEditorReactBridge,
+          helbaronEditorReactBridge,
           codeMirrorSearchPlugin(),
           codeMirrorLocationCue(),
           spellcheckCompartmentRef.current.of(
@@ -800,7 +800,7 @@ export function CodeMirrorPaperSurface({
   }, [autoFocus]);
 
   return (
-    <MarkraEditorProvider view={editorView}>
+    <HelbaronEditorProvider view={editorView}>
       <div className="h-full min-h-0" ref={containerRef} />
       <CodeMirrorEditorFloatingMenus
         documentLinksLabel={t(language, "app.markdownDocument")}
@@ -816,6 +816,6 @@ export function CodeMirrorPaperSurface({
           onReplace={handleReplaceSpellcheckSuggestion}
         />
       ) : null}
-    </MarkraEditorProvider>
+    </HelbaronEditorProvider>
   );
 }

@@ -4,7 +4,7 @@ import {
   parseMarkdownLinkReferences,
   parseMarkdownMentionRanges,
   type MarkdownMentionRange
-} from "@markra/markdown";
+} from "@helbaron/markdown";
 import { resolveMarkdownDocumentLinkFile } from "./document-links";
 import { shouldBlockLargeMarkdownVisual } from "./large-markdown";
 

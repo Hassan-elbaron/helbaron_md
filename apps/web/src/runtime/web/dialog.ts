@@ -1,4 +1,4 @@
-import type { AppDialogRuntime } from "@markra/app/runtime";
+import type { AppDialogRuntime } from "@helbaron/app/runtime";
 import { confirmWithBrowser } from "./browser";
 import type { WebRuntimeOptions } from "./types";
 

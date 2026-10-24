@@ -7,16 +7,16 @@ import {
 import type { Decoration, EditorView } from "@codemirror/view";
 import type { RevealScope } from "./policy.ts";
 
-export interface MarkraSyntaxNode {
+export interface HelbaronSyntaxNode {
   readonly from: number;
   readonly name: string;
-  readonly parent: MarkraSyntaxNode | null;
+  readonly parent: HelbaronSyntaxNode | null;
   readonly to: number;
-  getChild(name: string): MarkraSyntaxNode | null;
-  getChildren(name: string): readonly MarkraSyntaxNode[];
+  getChild(name: string): HelbaronSyntaxNode | null;
+  getChildren(name: string): readonly HelbaronSyntaxNode[];
 }
 
-export function markraListDepth(node: MarkraSyntaxNode) {
+export function helbaronListDepth(node: HelbaronSyntaxNode) {
   let depth = 0;
   let parent = node.parent;
   while (parent) {
@@ -26,8 +26,8 @@ export function markraListDepth(node: MarkraSyntaxNode) {
   return depth;
 }
 
-export interface MarkraRendererContext {
-  readonly node: MarkraSyntaxNode;
+export interface HelbaronRendererContext {
+  readonly node: HelbaronSyntaxNode;
   readonly state: EditorState;
   readonly view: EditorView;
   readonly visibleRange: Readonly<{ from: number; to: number }>;
@@ -35,28 +35,28 @@ export interface MarkraRendererContext {
   revealed(scope?: RevealScope): boolean;
 }
 
-export interface MarkraRenderer {
+export interface HelbaronRenderer {
   readonly id: string;
   readonly nodeNames: readonly string[];
-  readonly scope?: MarkraRendererScope;
-  render(context: MarkraRendererContext): unknown;
+  readonly scope?: HelbaronRendererScope;
+  render(context: HelbaronRendererContext): unknown;
 }
 
-export type MarkraRendererScope = "node" | "visible-range";
+export type HelbaronRendererScope = "node" | "visible-range";
 
 interface RendererRegistry {
-  byNodeName: ReadonlyMap<string, readonly MarkraRenderer[]>;
+  byNodeName: ReadonlyMap<string, readonly HelbaronRenderer[]>;
 }
 
 function createRendererRegistry(
-  renderers: readonly MarkraRenderer[],
+  renderers: readonly HelbaronRenderer[],
 ): RendererRegistry {
   const ids = new Set<string>();
-  const byNodeName = new Map<string, MarkraRenderer[]>();
+  const byNodeName = new Map<string, HelbaronRenderer[]>();
 
   for (const renderer of renderers) {
     if (ids.has(renderer.id)) {
-      throw new Error(`Duplicate Markra renderer id "${renderer.id}"`);
+      throw new Error(`Duplicate Helbaron renderer id "${renderer.id}"`);
     }
     ids.add(renderer.id);
 
@@ -70,20 +70,20 @@ function createRendererRegistry(
   return { byNodeName };
 }
 
-const rendererFacet = Facet.define<MarkraRenderer, RendererRegistry>({
+const rendererFacet = Facet.define<HelbaronRenderer, RendererRegistry>({
   combine: createRendererRegistry,
 });
 
-export function markraRenderer(renderer: MarkraRenderer): Extension {
+export function helbaronRenderer(renderer: HelbaronRenderer): Extension {
   if (!renderer.id.trim()) {
-    throw new Error("Markra renderer id must not be empty");
+    throw new Error("Helbaron renderer id must not be empty");
   }
   if (renderer.nodeNames.length === 0) {
-    throw new Error(`Markra renderer "${renderer.id}" must declare a node name`);
+    throw new Error(`Helbaron renderer "${renderer.id}" must declare a node name`);
   }
   return rendererFacet.of(renderer);
 }
 
-export function getMarkraRenderers(state: EditorState, nodeName: string) {
+export function getHelbaronRenderers(state: EditorState, nodeName: string) {
   return state.facet(rendererFacet).byNodeName.get(nodeName) ?? [];
 }

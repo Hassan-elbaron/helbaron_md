@@ -17,17 +17,17 @@ import {
   type RevealScope,
 } from "./policy.ts";
 import {
-  getMarkraRenderers,
-  markraListDepth,
-  type MarkraRenderer,
-  type MarkraSyntaxNode,
+  getHelbaronRenderers,
+  helbaronListDepth,
+  type HelbaronRenderer,
+  type HelbaronSyntaxNode,
 } from "./renderers.ts";
 import {
   readMarkdownLinkDestination,
   readMarkdownLinkReferences,
   resolveAutolinkTarget,
   resolveSafeLinkTarget,
-  type MarkraLinkSourceContext,
+  type HelbaronLinkSourceContext,
 } from "./links.ts";
 import { unescapeMarkdown } from "./syntax.ts";
 import { createTaskDecoration } from "./tasks.ts";
@@ -36,14 +36,14 @@ import { syntaxTreeChanged, updateOnlyInsertsPlainText } from "./changes.ts";
 import { blockSpacingExtension } from "./block-spacing.ts";
 
 const HEADING_CLASSES: Readonly<Record<string, string>> = {
-  ATXHeading1: "cm-markra-h1",
-  ATXHeading2: "cm-markra-h2",
-  ATXHeading3: "cm-markra-h3",
-  ATXHeading4: "cm-markra-h4",
-  ATXHeading5: "cm-markra-h5",
-  ATXHeading6: "cm-markra-h6",
-  SetextHeading1: "cm-markra-h1",
-  SetextHeading2: "cm-markra-h2",
+  ATXHeading1: "cm-helbaron-h1",
+  ATXHeading2: "cm-helbaron-h2",
+  ATXHeading3: "cm-helbaron-h3",
+  ATXHeading4: "cm-helbaron-h4",
+  ATXHeading5: "cm-helbaron-h5",
+  ATXHeading6: "cm-helbaron-h6",
+  SetextHeading1: "cm-helbaron-h1",
+  SetextHeading2: "cm-helbaron-h2",
 };
 
 const HEADING_LEVELS: Readonly<Record<string, string>> = {
@@ -58,18 +58,18 @@ const HEADING_LEVELS: Readonly<Record<string, string>> = {
 };
 
 const INLINE_CLASSES: Readonly<Record<string, string>> = {
-  Autolink: "cm-markra-link",
-  StrongEmphasis: "cm-markra-strong",
-  Emphasis: "cm-markra-emphasis",
-  InlineCode: "cm-markra-inline-code",
-  Strikethrough: "cm-markra-strikethrough",
-  Link: "cm-markra-link",
-  Highlight: "cm-markra-highlight",
+  Autolink: "cm-helbaron-link",
+  StrongEmphasis: "cm-helbaron-strong",
+  Emphasis: "cm-helbaron-emphasis",
+  InlineCode: "cm-helbaron-inline-code",
+  Strikethrough: "cm-helbaron-strikethrough",
+  Link: "cm-helbaron-link",
+  Highlight: "cm-helbaron-highlight",
 };
 
 const BLOCK_CLASSES: Readonly<Record<string, string>> = {
-  Blockquote: "cm-markra-blockquote",
-  Paragraph: "cm-markra-paragraph",
+  Blockquote: "cm-helbaron-blockquote",
+  Paragraph: "cm-helbaron-paragraph",
 };
 
 const HIDEABLE_MARKS = new Set([
@@ -121,7 +121,7 @@ function listLineAttributes(source: string) {
 
 function orderedListMarker(
   state: EditorState,
-  item: MarkraSyntaxNode,
+  item: HelbaronSyntaxNode,
   markers: Map<number, string>,
 ) {
   const list = item.parent;
@@ -178,7 +178,7 @@ function buildListMarkerSelectionDecorations(view: EditorView) {
       decoratedLines.add(line.from);
       ranges.push(
         Decoration.line({
-          attributes: { "data-markra-list-marker-selected": "true" },
+          attributes: { "data-helbaron-list-marker-selected": "true" },
         }).range(line.from),
       );
     }
@@ -227,7 +227,7 @@ function emptyTaskMarkerRange(source: string) {
 
 function hasUnclosedInlineDestination(
   state: EditorView["state"],
-  node: MarkraSyntaxNode,
+  node: HelbaronSyntaxNode,
 ) {
   const nodeLine = state.doc.lineAt(node.from);
   const sourceBeforeNode = state.sliceDoc(nodeLine.from, node.from);
@@ -240,7 +240,7 @@ function hasUnclosedInlineDestination(
     return true;
   }
 
-  let container: MarkraSyntaxNode | null = node;
+  let container: HelbaronSyntaxNode | null = node;
   while (
     container &&
     container.name !== "Image" &&
@@ -283,7 +283,7 @@ function headingAriaLabel(source: string, setext: boolean) {
 }
 
 export interface LivePreviewConfig {
-  resolveLinkTarget?: (context: MarkraLinkSourceContext) => string | null;
+  resolveLinkTarget?: (context: HelbaronLinkSourceContext) => string | null;
   reveal?: RevealPolicy;
   hideHeadingMarkersOnFocus?: boolean;
   paragraphSpacing?: number;
@@ -320,7 +320,7 @@ class LinkIconWidget extends WidgetType {
   toDOM(view: EditorView) {
     const icon = view.dom.ownerDocument.createElement("span");
     icon.ariaHidden = "true";
-    icon.className = "cm-markra-link-icon";
+    icon.className = "cm-helbaron-link-icon";
     icon.contentEditable = "false";
     icon.draggable = false;
     return icon;
@@ -333,8 +333,8 @@ function isLinkDestination(name: string, parentName: string | undefined) {
   return name === "URL" && parentName === "Link";
 }
 
-function isFootnoteLinkSyntax(state: EditorView["state"], node: MarkraSyntaxNode) {
-  let current: MarkraSyntaxNode | null = node;
+function isFootnoteLinkSyntax(state: EditorView["state"], node: HelbaronSyntaxNode) {
+  let current: HelbaronSyntaxNode | null = node;
   while (current) {
     if (
       (current.name === "Link" || current.name === "LinkReference") &&
@@ -356,7 +356,7 @@ function pushHiddenRange(
   let cursor = from;
 
   // CodeMirror view plugins cannot replace a range that crosses a line break.
-  // Splitting here keeps custom Markdown parsers safe to compose with Markra.
+  // Splitting here keeps custom Markdown parsers safe to compose with Helbaron.
   while (cursor < to) {
     const line = doc.lineAt(cursor);
     const segmentEnd = Math.min(to, line.to);
@@ -416,7 +416,7 @@ function buildDecorations(
         let paragraphEndLine: number | null = null;
         if (
           node.name === "Paragraph" &&
-          markraListDepth(node.node as MarkraSyntaxNode) === 0
+          helbaronListDepth(node.node as HelbaronSyntaxNode) === 0
         ) {
           const endLine = state.doc.lineAt(node.to - 1).number;
           let nextContentLine = endLine + 1;
@@ -438,7 +438,7 @@ function buildDecorations(
           if (!decoratedBlockLines.has(key)) {
             decoratedBlockLines.add(key);
             const className = lineNumber === paragraphEndLine
-              ? `${blockClass} cm-markra-paragraph-end`
+              ? `${blockClass} cm-helbaron-paragraph-end`
               : blockClass;
             ranges.push(Decoration.line({ class: className }).range(line.from));
           }
@@ -447,13 +447,13 @@ function buildDecorations(
     }
 
     const nodeKey = `${node.name}:${node.from}:${node.to}`;
-    const renderers = getMarkraRenderers(state, node.name);
-    const runRenderer = (renderer: MarkraRenderer) =>
+    const renderers = getHelbaronRenderers(state, node.name);
+    const runRenderer = (renderer: HelbaronRenderer) =>
       renderer.render({
         add(range) {
           ranges.push(range);
         },
-        node: node.node as MarkraSyntaxNode,
+        node: node.node as HelbaronSyntaxNode,
         revealed(scope = "node") {
           return isRevealed({
             view,
@@ -522,19 +522,19 @@ function buildDecorations(
           Decoration.line({
             attributes: {
               "data-list-depth": String(
-                markraListDepth(node.node as MarkraSyntaxNode),
+                helbaronListDepth(node.node as HelbaronSyntaxNode),
               ),
               "data-list-kind": listAttributes.kind,
               "data-list-marker": listAttributes.kind === "ordered"
                 ? orderedListMarker(
                   state,
-                  node.node as MarkraSyntaxNode,
+                  node.node as HelbaronSyntaxNode,
                   orderedListMarkers,
                 ) ?? listAttributes.marker
                 : listAttributes.marker,
-              "data-markra-list-source": sourceVisible ? "visible" : "hidden",
+              "data-helbaron-list-source": sourceVisible ? "visible" : "hidden",
             },
-            class: "cm-markra-list-item",
+            class: "cm-helbaron-list-item",
           }).range(line.from),
         );
       }
@@ -594,7 +594,7 @@ function buildDecorations(
     const parentName = node.node.parent?.name;
     const unfinishedInlineDestination = hasUnclosedInlineDestination(
       state,
-      node.node as MarkraSyntaxNode,
+      node.node as HelbaronSyntaxNode,
     );
     const link = node.name === "Link"
       ? node.node
@@ -621,7 +621,7 @@ function buildDecorations(
     const inlineClass = unfinishedInlineDestination
       ? undefined
       : INLINE_CLASSES[node.name] ??
-        (standaloneUrl ? "cm-markra-link" : undefined);
+        (standaloneUrl ? "cm-helbaron-link" : undefined);
     if (inlineClass && node.from < node.to) {
       const linkUrl = node.name === "URL"
         ? node.node
@@ -657,19 +657,19 @@ function buildDecorations(
           if (node.from < labelFrom) {
             ranges.push(
               Decoration.mark({
-                class: "cm-markra-link-source",
+                class: "cm-helbaron-link-source",
               }).range(node.from, labelFrom),
             );
           }
           ranges.push(
             Decoration.mark({
-              class: "cm-markra-link-source-label",
+              class: "cm-helbaron-link-source-label",
             }).range(labelFrom, labelTo),
           );
           if (labelTo < node.to) {
             ranges.push(
               Decoration.mark({
-                class: "cm-markra-link-source",
+                class: "cm-helbaron-link-source",
               }).range(labelTo, node.to),
             );
           }
@@ -718,7 +718,7 @@ function buildDecorations(
       node.name === "HeaderMark" && parentName === "Paragraph";
     const isHideable =
       !unfinishedInlineDestination &&
-      !isFootnoteLinkSyntax(state, node.node as MarkraSyntaxNode) &&
+      !isFootnoteLinkSyntax(state, node.node as HelbaronSyntaxNode) &&
       !taskSourceRemainsVisible &&
       !isReferenceDefinitionMark &&
       !isUncommittedSetextMark &&
@@ -829,7 +829,7 @@ function buildDecorations(
         decoratedEmptyLines.add(line.from);
         ranges.push(
           Decoration.line({
-            class: "cm-markra-empty-line",
+            class: "cm-helbaron-empty-line",
           }).range(line.from),
         );
       }
@@ -856,9 +856,9 @@ function previewPlugin(config: LivePreviewConfig): Extension {
 
   function syncCompositionUi(view: EditorView, composing: boolean) {
     if (composing) {
-      view.dom.dataset.markraComposing = "true";
+      view.dom.dataset.helbaronComposing = "true";
     } else {
-      delete view.dom.dataset.markraComposing;
+      delete view.dom.dataset.helbaronComposing;
     }
   }
 
@@ -879,7 +879,7 @@ function previewPlugin(config: LivePreviewConfig): Extension {
       update.state.selection.ranges.length !== 1 ||
       !before.empty ||
       !after.empty ||
-      getMarkraRenderers(update.state, "Paragraph").length > 0
+      getHelbaronRenderers(update.state, "Paragraph").length > 0
     ) {
       return false;
     }

@@ -5,7 +5,7 @@ import {
   type PdfMarginPreset,
   type PdfPageSize
 } from "../../lib/settings/app-settings";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 import type { AppSystemFontFamily } from "../../runtime";
 import { FontFamilySelect } from "./FontFamilySelect";
 import {

@@ -4,9 +4,9 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   clearCodeMirrorSelectionFormatting,
   formattingPlugin,
-  listMarkraUi,
+  listHelbaronUi,
   liveMarkdown,
-  runMarkraCommand,
+  runHelbaronCommand,
 } from "./index.ts";
 
 import "./dom.test-support.ts";
@@ -42,11 +42,11 @@ afterEach(() => {
 });
 
 describe("formattingPlugin", () => {
-  it("publishes stable Markra-friendly formatting actions", () => {
+  it("publishes stable Helbaron-friendly formatting actions", () => {
     const view = createView();
 
     expect(
-      listMarkraUi(view, "selection-toolbar").map((action) => ({
+      listHelbaronUi(view, "selection-toolbar").map((action) => ({
         command: action.command,
         icon: action.icon,
         label: action.label,
@@ -71,7 +71,7 @@ describe("formattingPlugin", () => {
   it("wraps and unwraps a selection while preserving the selected text", () => {
     const view = createView();
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
     expect(view.state.doc.toString()).toBe("Before **text** after");
     expect(
       view.state.sliceDoc(
@@ -80,20 +80,20 @@ describe("formattingPlugin", () => {
       ),
     ).toBe("text");
     expect(
-      listMarkraUi(view, "selection-toolbar").find(
+      listHelbaronUi(view, "selection-toolbar").find(
         (action) => action.command === "format.bold",
       )?.active,
     ).toBe(true);
     expect(
-      listMarkraUi(view, "selection-toolbar").find(
+      listHelbaronUi(view, "selection-toolbar").find(
         (action) => action.command === "format.italic",
       )?.active,
     ).toBe(false);
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
     expect(view.state.doc.toString()).toBe("Before text after");
     expect(
-      listMarkraUi(view, "selection-toolbar").find(
+      listHelbaronUi(view, "selection-toolbar").find(
         (action) => action.command === "format.bold",
       )?.active,
     ).toBe(false);
@@ -121,7 +121,7 @@ describe("formattingPlugin", () => {
         to: "Before ".length + selected.length,
       });
 
-      expect(runMarkraCommand(view, command)).toBe(true);
+      expect(runHelbaronCommand(view, command)).toBe(true);
       expect(view.state.doc.toString()).toBe(
         `Before ${marker}plain marked tail${marker} after`,
       );
@@ -132,7 +132,7 @@ describe("formattingPlugin", () => {
         ),
       ).toBe("plain marked tail");
 
-      expect(runMarkraCommand(view, command)).toBe(true);
+      expect(runHelbaronCommand(view, command)).toBe(true);
       expect(view.state.doc.toString()).toBe(
         "Before plain marked tail after",
       );
@@ -147,12 +147,12 @@ describe("formattingPlugin", () => {
       to: "Before ".length + selected.length,
     });
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       "Before **plain *marked* tail** after",
     );
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       "Before plain *marked* tail after",
     );
@@ -164,7 +164,7 @@ describe("formattingPlugin", () => {
     const to = doc.indexOf("end") + "end".length;
     const view = createView({ doc, from, to });
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       "Before **start plain end** after",
     );
@@ -175,7 +175,7 @@ describe("formattingPlugin", () => {
       ),
     ).toBe("start plain end");
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       "Before start plain end after",
     );
@@ -189,12 +189,12 @@ describe("formattingPlugin", () => {
       to: "Before ".length + selected.length,
     });
 
-    expect(runMarkraCommand(view, "format.italic")).toBe(true);
+    expect(runHelbaronCommand(view, "format.italic")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       String.raw`Before *plain \*literal\* and italic tail* after`,
     );
 
-    expect(runMarkraCommand(view, "format.italic")).toBe(true);
+    expect(runHelbaronCommand(view, "format.italic")).toBe(true);
     expect(view.state.doc.toString()).toBe(
       String.raw`Before plain \*literal\* and italic tail after`,
     );
@@ -203,24 +203,24 @@ describe("formattingPlugin", () => {
   it("tracks and toggles nested bold and italic markers independently", () => {
     const view = createView();
 
-    expect(runMarkraCommand(view, "format.bold")).toBe(true);
-    expect(runMarkraCommand(view, "format.italic")).toBe(true);
+    expect(runHelbaronCommand(view, "format.bold")).toBe(true);
+    expect(runHelbaronCommand(view, "format.italic")).toBe(true);
     expect(view.state.doc.toString()).toBe("Before ***text*** after");
     expect(
-      listMarkraUi(view, "selection-toolbar").find(
+      listHelbaronUi(view, "selection-toolbar").find(
         (action) => action.command === "format.bold",
       )?.active,
     ).toBe(true);
     expect(
-      listMarkraUi(view, "selection-toolbar").find(
+      listHelbaronUi(view, "selection-toolbar").find(
         (action) => action.command === "format.italic",
       )?.active,
     ).toBe(true);
 
-    expect(runMarkraCommand(view, "format.italic")).toBe(true);
+    expect(runHelbaronCommand(view, "format.italic")).toBe(true);
     expect(view.state.doc.toString()).toBe("Before **text** after");
     expect(
-      listMarkraUi(view, "selection-toolbar").find(
+      listHelbaronUi(view, "selection-toolbar").find(
         (action) => action.command === "format.italic",
       )?.active,
     ).toBe(false);
@@ -243,12 +243,12 @@ describe("formattingPlugin", () => {
     ).toBe("text");
   });
 
-  it("toggles Markra highlight syntax", () => {
+  it("toggles Helbaron highlight syntax", () => {
     const view = createView();
 
-    expect(runMarkraCommand(view, "format.highlight")).toBe(true);
+    expect(runHelbaronCommand(view, "format.highlight")).toBe(true);
     expect(view.state.doc.toString()).toBe("Before ==text== after");
-    expect(runMarkraCommand(view, "format.highlight")).toBe(true);
+    expect(runHelbaronCommand(view, "format.highlight")).toBe(true);
     expect(view.state.doc.toString()).toBe("Before text after");
   });
 
@@ -257,17 +257,17 @@ describe("formattingPlugin", () => {
     const readOnlySelection = createView({ readOnly: true });
 
     expect(
-      listMarkraUi(emptySelection, "selection-toolbar").every(
+      listHelbaronUi(emptySelection, "selection-toolbar").every(
         (action) => !action.enabled,
       ),
     ).toBe(true);
-    expect(runMarkraCommand(emptySelection, "format.bold")).toBe(false);
+    expect(runHelbaronCommand(emptySelection, "format.bold")).toBe(false);
     expect(
-      listMarkraUi(readOnlySelection, "selection-toolbar").every(
+      listHelbaronUi(readOnlySelection, "selection-toolbar").every(
         (action) => !action.enabled,
       ),
     ).toBe(true);
-    expect(runMarkraCommand(readOnlySelection, "format.bold")).toBe(false);
+    expect(runHelbaronCommand(readOnlySelection, "format.bold")).toBe(false);
   });
 
   it("provides common document-editor formatting shortcuts", () => {

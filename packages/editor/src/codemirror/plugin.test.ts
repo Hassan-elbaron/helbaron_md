@@ -2,11 +2,11 @@ import { EditorState, Facet, type Extension } from "@codemirror/state";
 import { EditorView, runScopeHandlers } from "@codemirror/view";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  defineMarkraPlugin,
-  listMarkraUi,
+  defineHelbaronPlugin,
+  listHelbaronUi,
   liveMarkdown,
-  markraPlugins,
-  runMarkraCommand,
+  helbaronPlugins,
+  runHelbaronCommand,
 } from "./index.ts";
 
 import "./dom.test-support.ts";
@@ -32,13 +32,13 @@ afterEach(() => {
   document.body.replaceChildren();
 });
 
-describe("Markra plugins", () => {
+describe("Helbaron plugins", () => {
   it("composes CodeMirror extensions and exposes command-backed UI", () => {
     const syntheticFacet = Facet.define<string, string>({
       combine: (values) => values.join(","),
     });
-    const plugin = defineMarkraPlugin({
-      id: "markra.synthetic",
+    const plugin = defineHelbaronPlugin({
+      id: "helbaron.synthetic",
       extension: syntheticFacet.of("installed"),
       commands: [
         {
@@ -66,8 +66,8 @@ describe("Markra plugins", () => {
     const view = createView([liveMarkdown({ plugins: [plugin] })]);
 
     expect(view.state.facet(syntheticFacet)).toBe("installed");
-    expect(listMarkraUi(view, "slash-menu")).toEqual([]);
-    expect(listMarkraUi(view, "toolbar")).toMatchObject([
+    expect(listHelbaronUi(view, "slash-menu")).toEqual([]);
+    expect(listHelbaronUi(view, "toolbar")).toMatchObject([
       {
         active: false,
         command: "synthetic.append",
@@ -77,18 +77,18 @@ describe("Markra plugins", () => {
         label: "Append synthetic marker",
         order: 20,
         placement: "toolbar",
-        plugin: "markra.synthetic",
+        plugin: "helbaron.synthetic",
       },
     ]);
 
-    expect(runMarkraCommand(view, "synthetic.append")).toBe(true);
+    expect(runHelbaronCommand(view, "synthetic.append")).toBe(true);
     expect(view.state.doc.toString()).toBe("Synthetic document!");
-    expect(listMarkraUi(view, "toolbar")[0]?.active).toBe(true);
+    expect(listHelbaronUi(view, "toolbar")[0]?.active).toBe(true);
   });
 
   it("rejects duplicate plugin and command identifiers", () => {
-    const first = defineMarkraPlugin({
-      id: "markra.first",
+    const first = defineHelbaronPlugin({
+      id: "helbaron.first",
       commands: [
         {
           id: "synthetic.command",
@@ -97,9 +97,9 @@ describe("Markra plugins", () => {
         },
       ],
     });
-    const duplicatePlugin = defineMarkraPlugin({ id: "markra.first" });
-    const duplicateCommand = defineMarkraPlugin({
-      id: "markra.second",
+    const duplicatePlugin = defineHelbaronPlugin({ id: "helbaron.first" });
+    const duplicateCommand = defineHelbaronPlugin({
+      id: "helbaron.second",
       commands: [
         {
           id: "synthetic.command",
@@ -109,17 +109,17 @@ describe("Markra plugins", () => {
       ],
     });
 
-    expect(() => createView([markraPlugins([first, duplicatePlugin])])).toThrow(
-      'Duplicate Markra plugin id "markra.first"',
+    expect(() => createView([helbaronPlugins([first, duplicatePlugin])])).toThrow(
+      'Duplicate Helbaron plugin id "helbaron.first"',
     );
-    expect(() => createView([markraPlugins([first, duplicateCommand])])).toThrow(
-      'Duplicate Markra command id "synthetic.command"',
+    expect(() => createView([helbaronPlugins([first, duplicateCommand])])).toThrow(
+      'Duplicate Helbaron command id "synthetic.command"',
     );
   });
 
   it("routes declared keybindings through the command registry", () => {
-    const plugin = defineMarkraPlugin({
-      id: "markra.shortcuts",
+    const plugin = defineHelbaronPlugin({
+      id: "helbaron.shortcuts",
       commands: [
         {
           id: "synthetic.shortcut",
@@ -134,7 +134,7 @@ describe("Markra plugins", () => {
         },
       ],
     });
-    const view = createView([markraPlugins([plugin])]);
+    const view = createView([helbaronPlugins([plugin])]);
     const event = new KeyboardEvent("keydown", {
       bubbles: true,
       ctrlKey: true,
@@ -146,13 +146,13 @@ describe("Markra plugins", () => {
   });
 
   it("rejects UI contributions that reference an unknown command", () => {
-    const plugin = defineMarkraPlugin({
-      id: "markra.invalid-ui",
+    const plugin = defineHelbaronPlugin({
+      id: "helbaron.invalid-ui",
       ui: [{ command: "missing.command", placement: "toolbar" }],
     });
 
-    expect(() => createView([markraPlugins([plugin])])).toThrow(
-      'Unknown Markra command id "missing.command"',
+    expect(() => createView([helbaronPlugins([plugin])])).toThrow(
+      'Unknown Helbaron command id "missing.command"',
     );
   });
 });

@@ -69,7 +69,7 @@ describe("block spacing", () => {
     ].join("\n"));
 
     const spacers = Array.from(
-      view.dom.querySelectorAll<HTMLElement>(".cm-markra-heading-spacer"),
+      view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-heading-spacer"),
       (spacer) => ({
         edge: spacer.dataset.headingEdge,
         height: spacer.style.height,
@@ -90,7 +90,7 @@ describe("block spacing", () => {
     ]);
     expect(
       view.dom.querySelectorAll(
-        ".cm-markra-heading-spacer[aria-hidden='true']",
+        ".cm-helbaron-heading-spacer[aria-hidden='true']",
       ),
     ).toHaveLength(spacers.length);
   });
@@ -101,7 +101,7 @@ describe("block spacing", () => {
       14,
     );
     const spacers = view.dom.querySelectorAll<HTMLElement>(
-      ".cm-markra-paragraph-spacer",
+      ".cm-helbaron-paragraph-spacer",
     );
 
     expect(spacers).toHaveLength(1);
@@ -112,7 +112,7 @@ describe("block spacing", () => {
   it("uses a measured block spacer before separated blockquotes", () => {
     const view = createView("Synthetic lead\n\n> Synthetic quote");
     const spacers = view.dom.querySelectorAll<HTMLElement>(
-      ".cm-markra-blockquote-spacer",
+      ".cm-helbaron-blockquote-spacer",
     );
 
     expect(spacers).toHaveLength(1);
@@ -126,7 +126,7 @@ describe("block spacing", () => {
     const insertion = view.state.doc.line(3).from;
 
     expect(
-      view.dom.querySelectorAll(".cm-markra-paragraph-spacer"),
+      view.dom.querySelectorAll(".cm-helbaron-paragraph-spacer"),
     ).toHaveLength(1);
 
     view.dispatch({
@@ -136,7 +136,7 @@ describe("block spacing", () => {
     });
 
     expect(
-      view.dom.querySelectorAll(".cm-markra-paragraph-spacer"),
+      view.dom.querySelectorAll(".cm-helbaron-paragraph-spacer"),
     ).toHaveLength(2);
   });
 

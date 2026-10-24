@@ -1,4 +1,4 @@
-import { pathNameFromPath } from "@markra/shared";
+import { pathNameFromPath } from "@helbaron/shared";
 
 export type RecentMarkdownFolder = {
   name: string;

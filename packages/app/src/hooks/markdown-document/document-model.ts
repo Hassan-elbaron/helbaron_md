@@ -3,7 +3,7 @@ import type {
   StoredWorkspaceWindow
 } from "../../lib/settings/app-settings";
 import { normalizeMovedPath } from "../../lib/path-move";
-import { pathNameFromPath, type DocumentState } from "@markra/shared";
+import { pathNameFromPath, type DocumentState } from "@helbaron/shared";
 
 export type MarkdownDocumentTab = DocumentState & {
   id: string;

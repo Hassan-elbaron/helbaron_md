@@ -1,3 +1,4 @@
+mod ar;
 mod de;
 mod en;
 mod es;
@@ -51,7 +52,7 @@ pub(crate) struct MenuLabels {
     pub(crate) quit: &'static str,
     pub(crate) fullscreen: &'static str,
     pub(crate) toggle_file_list: &'static str,
-    pub(crate) toggle_markra_ai: &'static str,
+    pub(crate) toggle_helbaron_ai: &'static str,
     pub(crate) ai_writing_command: &'static str,
     pub(crate) toggle_all_folds: &'static str,
     pub(crate) toggle_read_only_mode: &'static str,
@@ -77,6 +78,7 @@ pub(crate) struct MenuLabels {
 
 pub(crate) fn for_language(language: AppLanguage) -> MenuLabels {
     match language {
+        AppLanguage::Ar => ar::LABELS,
         AppLanguage::En => en::LABELS,
         AppLanguage::ZhCn => zh_cn::LABELS,
         AppLanguage::ZhTw => zh_tw::LABELS,

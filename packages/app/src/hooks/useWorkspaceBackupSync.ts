@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { debug, type I18nKey } from "@markra/shared";
+import { debug, type I18nKey } from "@helbaron/shared";
 import { showAppToast } from "../lib/app-toast";
 import { runMarkdownBackup } from "../lib/backup";
 import { runMarkdownSync } from "../lib/sync";
@@ -77,7 +77,7 @@ export function useWorkspaceBackupSync({
 
       return result;
     } catch (error) {
-      debug(() => ["[markra-backup] backup failed", {
+      debug(() => ["[helbaron-backup] backup failed", {
         error: error instanceof Error ? error.message : String(error)
       }]);
       if (!silent) {
@@ -141,7 +141,7 @@ export function useWorkspaceBackupSync({
 
       return result;
     } catch (error) {
-      debug(() => ["[markra-sync] sync failed", {
+      debug(() => ["[helbaron-sync] sync failed", {
         error: error instanceof Error ? error.message : String(error)
       }]);
       if (!silent) {

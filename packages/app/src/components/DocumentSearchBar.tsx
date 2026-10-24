@@ -1,7 +1,7 @@
 import { useEffect, useRef, type KeyboardEvent } from "react";
 import { CaseSensitive, ChevronDown, ChevronUp, Replace, Search, X } from "lucide-react";
-import { t, type AppLanguage } from "@markra/shared";
-import { Tooltip } from "@markra/ui";
+import { t, type AppLanguage } from "@helbaron/shared";
+import { Tooltip } from "@helbaron/ui";
 
 type DocumentSearchBarProps = {
   activeIndex: number;
@@ -136,7 +136,7 @@ export function DocumentSearchBar({
 
   return (
     <div
-      className="document-search-bar absolute right-4 top-12 z-40 flex w-[min(calc(100%-2rem),460px)] flex-col gap-2 rounded-md border border-(--border-strong) bg-(--bg-secondary)/96 p-2 text-[12px] text-(--text-primary) shadow-[0_14px_42px_rgba(0,0,0,0.14)] backdrop-blur-sm"
+      className="document-search-bar absolute end-4 top-12 z-40 flex w-[min(calc(100%-2rem),460px)] flex-col gap-2 rounded-md border border-(--border-strong) bg-(--bg-secondary)/96 p-2 text-[12px] text-(--text-primary) shadow-[0_14px_42px_rgba(0,0,0,0.14)] backdrop-blur-sm"
       role="search"
       aria-label={label.findInDocument}
     >
@@ -205,7 +205,7 @@ export function DocumentSearchBar({
         </button>
       </div>
       {replaceOpen ? (
-        <div className="flex min-w-0 items-center gap-1.5 pl-5">
+        <div className="flex min-w-0 items-center gap-1.5 ps-5">
           <input
             className="h-8 min-w-0 flex-1 rounded-sm border border-(--border-default) bg-(--bg-primary) px-2 text-[12px] text-(--text-heading) outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-(--text-secondary) focus:border-(--accent) focus:shadow-[0_0_0_2px_var(--accent-soft)] disabled:cursor-not-allowed disabled:opacity-55"
             aria-label={label.replacePlaceholder}

@@ -8,8 +8,8 @@ import {
   type WheelEvent as ReactWheelEvent
 } from "react";
 import { Columns2, FileText, ImageIcon, LocateFixed, Pencil, Plus, X } from "lucide-react";
-import { IconButton, Tooltip } from "@markra/ui";
-import { t, type AppLanguage } from "@markra/shared";
+import { IconButton, Tooltip } from "@helbaron/ui";
+import { t, type AppLanguage } from "@helbaron/shared";
 import type { MarkdownDocumentTab } from "../hooks/useMarkdownDocument";
 import { ContextMenu, type ContextMenuEntry } from "./ContextMenu";
 
@@ -63,7 +63,7 @@ type PointerTabDropTarget = {
   tabId: string;
 };
 
-export const markdownTabDragDataType = "application/x-markra-document-tab";
+export const markdownTabDragDataType = "application/x-helbaron-document-tab";
 const pointerTabDragThresholdPx = 6;
 const pointerTabDragPreviewOffsetPx = 12;
 
@@ -378,7 +378,7 @@ export function MarkdownTabsBar({
       ? [
           {
             icon: <Pencil aria-hidden="true" size={14} />,
-            id: "markra:tab:rename",
+            id: "helbaron:tab:rename",
             kind: "item" as const,
             label: label("app.renameMarkdownFile"),
             onSelect: () => runTabContextMenuAction(() => startRenamingTab(contextMenuTab))
@@ -390,7 +390,7 @@ export function MarkdownTabsBar({
           {
             disabled: !contextMenuTabCanOpenToSide,
             icon: <Columns2 aria-hidden="true" size={14} />,
-            id: "markra:tab:open-to-side",
+            id: "helbaron:tab:open-to-side",
             kind: "item" as const,
             label: label("app.openDocumentToSide"),
             onSelect: () => runTabContextMenuAction(() => onOpenTabToSide(contextMenuTab.id))
@@ -401,7 +401,7 @@ export function MarkdownTabsBar({
       ? [
           {
             icon: <LocateFixed aria-hidden="true" size={14} />,
-            id: "markra:tab:reveal-in-file-tree",
+            id: "helbaron:tab:reveal-in-file-tree",
             kind: "item" as const,
             label: label("app.revealActiveFile"),
             onSelect: () => runTabContextMenuAction(() => onRevealTabInFileTree(contextMenuTab.path as string))
@@ -412,7 +412,7 @@ export function MarkdownTabsBar({
       ? [
           {
             icon: <Columns2 aria-hidden="true" size={14} />,
-            id: "markra:tab:cancel-side-by-side",
+            id: "helbaron:tab:cancel-side-by-side",
             kind: "item" as const,
             label: label("app.cancelSideBySideDocuments"),
             onSelect: () => runTabContextMenuAction(() => onCancelSideBySide(contextMenuTab.id))
@@ -421,7 +421,7 @@ export function MarkdownTabsBar({
       : []),
     {
       icon: <X aria-hidden="true" size={14} />,
-      id: "markra:tab:close",
+      id: "helbaron:tab:close",
       kind: "item",
       label: label("app.closeDocumentTab"),
       onSelect: () => runTabContextMenuAction(() => closeTabs([contextMenuTab.id]))
@@ -429,7 +429,7 @@ export function MarkdownTabsBar({
     {
       disabled: contextMenuOtherTabIds.length === 0,
       icon: <X aria-hidden="true" size={14} />,
-      id: "markra:tab:close-other",
+      id: "helbaron:tab:close-other",
       kind: "item",
       label: label("app.closeOtherDocumentTabs"),
       onSelect: () => runTabContextMenuAction(() => closeTabs(contextMenuOtherTabIds))
@@ -437,7 +437,7 @@ export function MarkdownTabsBar({
     {
       disabled: contextMenuRightTabIds.length === 0,
       icon: <X aria-hidden="true" size={14} />,
-      id: "markra:tab:close-right",
+      id: "helbaron:tab:close-right",
       kind: "item",
       label: label("app.closeDocumentTabsToRight"),
       onSelect: () => runTabContextMenuAction(() => closeTabs(contextMenuRightTabIds))
@@ -474,7 +474,7 @@ export function MarkdownTabsBar({
     <span
       aria-hidden="true"
       className={`pointer-events-none absolute top-1 bottom-1 z-10 w-0.5 rounded-full bg-(--accent) ${
-        position === "before" ? "left-0" : "right-0"
+        position === "before" ? "start-0" : "end-0"
       }`}
       data-document-tab-drop-indicator="true"
     />
@@ -491,7 +491,7 @@ export function MarkdownTabsBar({
     const tabTitle = tab.path ?? (tab.name || "Untitled.md");
 
     if (renaming) return (
-      <div className="flex h-full min-w-0 items-center gap-1.5 rounded-l-md px-2">
+      <div className="flex h-full min-w-0 items-center gap-1.5 rounded-s-md px-2">
         <TabIcon aria-hidden="true" className="shrink-0 opacity-65" size={13} />
         <input
           ref={renameInputRef}
@@ -520,7 +520,7 @@ export function MarkdownTabsBar({
     return (
       <Tooltip content={tabTitle} side="bottom">
         <button
-          className={`flex h-full min-w-0 items-center gap-1.5 rounded-l-md px-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) ${
+          className={`flex h-full min-w-0 items-center gap-1.5 rounded-s-md px-2 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) ${
             active ? "text-(--text-heading)" : "text-(--text-secondary)"
           }`}
           draggable={false}
@@ -548,7 +548,7 @@ export function MarkdownTabsBar({
   };
   const renderCloseTabButton = (tab: MarkdownTabsBarDocumentItem, active: boolean, alwaysVisible = false) => (
     <button
-      className={`mr-1 flex size-5 items-center justify-center rounded text-(--text-secondary) transition-[opacity,background-color,color] duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) ${
+      className={`me-1 flex size-5 items-center justify-center rounded text-(--text-secondary) transition-[opacity,background-color,color] duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) ${
         alwaysVisible ? "opacity-100" : active ? "opacity-100" : "opacity-0 group-hover/tab:opacity-100 focus-visible:opacity-100"
       }`}
       type="button"
@@ -611,7 +611,7 @@ export function MarkdownTabsBar({
           return (
             <div
               className={`group/tab relative grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] items-center transition-colors duration-150 ease-out ${
-                tabIndex > 0 ? "border-l border-(--border-default)" : ""
+                tabIndex > 0 ? "border-s border-(--border-default)" : ""
               } ${sideDropTarget || active ? "bg-(--bg-active)" : "bg-transparent"} ${sideDropTarget ? "outline outline-(--accent) -outline-offset-1" : ""} ${dragged ? "opacity-60" : ""}`}
               data-document-tab-id={tab.id}
               data-document-tab-pane-focus={paneFocused ? "true" : undefined}
@@ -677,7 +677,7 @@ export function MarkdownTabsBar({
       {pointerTabDragPreview && pointerTabDragPreviewTab ? (
         <div
           aria-hidden="true"
-          className="document-tab-drag-preview pointer-events-none fixed top-0 left-0 z-50 flex h-7 max-w-52 min-w-28 items-center gap-1.5 rounded-md border border-(--border-default) bg-(--bg-primary)/96 px-2 text-[12px] leading-5 font-[560] text-(--text-heading) shadow-[0_12px_28px_color-mix(in_srgb,var(--text-heading)_18%,transparent)] backdrop-blur-[2px] will-change-transform"
+          className="document-tab-drag-preview pointer-events-none fixed top-0 start-0 z-50 flex h-7 max-w-52 min-w-28 items-center gap-1.5 rounded-md border border-(--border-default) bg-(--bg-primary)/96 px-2 text-[12px] leading-5 font-[560] text-(--text-heading) shadow-[0_12px_28px_color-mix(in_srgb,var(--text-heading)_18%,transparent)] backdrop-blur-[2px] will-change-transform"
           style={{
             transform: `translate3d(${pointerTabDragPreview.x + pointerTabDragPreviewOffsetPx}px, ${pointerTabDragPreview.y + pointerTabDragPreviewOffsetPx}px, 0)`
           }}

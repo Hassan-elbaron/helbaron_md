@@ -411,7 +411,7 @@ mod tests {
     #[test]
     fn resolves_markdown_file_or_folder_path() {
         let root = std::env::temp_dir().join(format!(
-            "markra-drop-resolve-test-{}",
+            "helbaron-drop-resolve-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -445,7 +445,7 @@ mod tests {
     #[test]
     fn classifies_unified_open_picker_targets() {
         let root = std::env::temp_dir().join(format!(
-            "markra-open-target-test-{}",
+            "helbaron-open-target-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -560,7 +560,7 @@ mod tests {
     #[test]
     fn resolves_markdown_attachment_links_inside_the_workspace_root() {
         let root = std::env::temp_dir().join(format!(
-            "markra-attachment-open-test-{}",
+            "helbaron-attachment-open-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { debug, t, type AppLanguage } from "@markra/shared";
-import { Tooltip } from "@markra/ui";
+import { debug, t, type AppLanguage } from "@helbaron/shared";
+import { Tooltip } from "@helbaron/ui";
 import {
   listNativeMarkdownFileHistory,
   readNativeMarkdownFileHistory,
@@ -112,7 +112,7 @@ export function DocumentHistoryDialog({
     }
     setEntriesError(false);
 
-    debug(() => ["[markra-history] list start", {
+    debug(() => ["[helbaron-history] list start", {
       documentPath,
       mode: documentPathChanged ? "reset" : "refresh"
     }]);
@@ -121,7 +121,7 @@ export function DocumentHistoryDialog({
       .then((historyEntries) => {
         if (!active) return;
 
-        debug(() => ["[markra-history] list success", {
+        debug(() => ["[helbaron-history] list success", {
           documentPath,
           entryCount: historyEntries.length,
           firstEntryId: historyEntries[0]?.id ?? null
@@ -141,7 +141,7 @@ export function DocumentHistoryDialog({
       .catch((error: unknown) => {
         if (!active) return;
 
-        debug(() => ["[markra-history] list failed", {
+        debug(() => ["[helbaron-history] list failed", {
           documentPath,
           error: error instanceof Error ? error.message : String(error)
         }]);
@@ -162,7 +162,7 @@ export function DocumentHistoryDialog({
 
   const previewEntry = (entry: NativeMarkdownFileHistoryEntry) => {
     if (previewPendingId !== null || restorePending) {
-      debug(() => ["[markra-history] preview ignored", {
+      debug(() => ["[helbaron-history] preview ignored", {
         documentPath,
         historyId: entry.id,
         previewPendingId,
@@ -176,7 +176,7 @@ export function DocumentHistoryDialog({
     setPreviewError(false);
     setPreviewPendingId(entry.id);
     setSelectedId(entry.id);
-    debug(() => ["[markra-history] preview click", {
+    debug(() => ["[helbaron-history] preview click", {
       documentPath,
       historyId: entry.id,
       mode: "state-click"
@@ -186,7 +186,7 @@ export function DocumentHistoryDialog({
       .then((file) => {
         if (previewRequestIdRef.current !== requestId) return;
 
-        debug(() => ["[markra-history] preview contents resolved", {
+        debug(() => ["[helbaron-history] preview contents resolved", {
           documentPath,
           historyId: file.id,
           contentsChars: file.contents.length
@@ -198,7 +198,7 @@ export function DocumentHistoryDialog({
       .catch((error: unknown) => {
         if (previewRequestIdRef.current !== requestId) return;
 
-        debug(() => ["[markra-history] preview failed", {
+        debug(() => ["[helbaron-history] preview failed", {
           documentPath,
           historyId: entry.id,
           error: error instanceof Error ? error.message : String(error)
@@ -213,7 +213,7 @@ export function DocumentHistoryDialog({
 
     setRestorePending(true);
     setPreviewError(false);
-    debug(() => ["[markra-history] restore click", {
+    debug(() => ["[helbaron-history] restore click", {
       documentPath,
       historyId: preview.id,
       mode: "preview-confirm"
@@ -221,7 +221,7 @@ export function DocumentHistoryDialog({
     try {
       await onRestore(preview.contents, preview.id);
     } catch (error: unknown) {
-      debug(() => ["[markra-history] restore failed", {
+      debug(() => ["[helbaron-history] restore failed", {
         documentPath,
         historyId: preview.id,
         error: error instanceof Error ? error.message : String(error)
@@ -235,7 +235,7 @@ export function DocumentHistoryDialog({
   return (
     <section
       aria-label={label("app.documentHistory")}
-      className="fixed z-40 grid animate-[markra-history-panel-in_140ms_cubic-bezier(0.2,0,0,1)_both] grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-lg border border-(--border-default) bg-(--bg-primary) shadow-xl motion-reduce:animate-none"
+      className="fixed z-40 grid animate-[helbaron-history-panel-in_140ms_cubic-bezier(0.2,0,0,1)_both] grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-lg border border-(--border-default) bg-(--bg-primary) shadow-xl motion-reduce:animate-none"
       ref={panelRef}
       role="region"
       style={{
@@ -285,7 +285,7 @@ export function DocumentHistoryDialog({
                 <button
                   aria-selected={selected}
                   disabled={previewPendingId !== null || restorePending}
-                  className={`grid w-full min-w-0 rounded-md px-2 py-2 text-left transition-colors duration-150 ease-out ${
+                  className={`grid w-full min-w-0 rounded-md px-2 py-2 text-start transition-colors duration-150 ease-out ${
                     selected || pending
                       ? "bg-(--bg-active) text-(--text-heading)"
                       : "text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-heading)"

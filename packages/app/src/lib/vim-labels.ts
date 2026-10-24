@@ -1,5 +1,5 @@
-import type { CodeMirrorVimLabels } from "@markra/editor/codemirror";
-import { t, type AppLanguage } from "@markra/shared";
+import type { CodeMirrorVimLabels } from "@helbaron/editor/codemirror";
+import { t, type AppLanguage } from "@helbaron/shared";
 
 export function codeMirrorVimLabels(
   language: AppLanguage,

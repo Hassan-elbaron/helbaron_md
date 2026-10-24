@@ -1,5 +1,5 @@
 import { lazy, Suspense, type CSSProperties, type Ref, type UIEvent } from "react";
-import { t, type AppLanguage } from "@markra/shared";
+import { t, type AppLanguage } from "@helbaron/shared";
 import {
   editorContentWidthPixels,
   editorCustomContentWidthMax,

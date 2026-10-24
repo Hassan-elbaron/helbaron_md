@@ -13,8 +13,8 @@ import qwenLogo from "../assets/provider-logos/qwen.svg";
 import togetherLogo from "../assets/provider-logos/together.svg";
 import volcengineLogo from "../assets/provider-logos/volcengine.svg";
 import xiaomiMimoLogo from "../assets/provider-logos/xiaomi-mimo.svg";
-import type { AiProviderApiStyle, AiProviderConfig, AiProviderRequestStyle } from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+import type { AiProviderApiStyle, AiProviderConfig, AiProviderRequestStyle } from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 
 type Translate = (key: I18nKey) => string;
 

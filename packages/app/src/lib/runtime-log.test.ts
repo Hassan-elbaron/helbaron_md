@@ -133,7 +133,7 @@ describe("runtime log", () => {
     const uninstall = installRuntimeLogCapture();
 
     try {
-      window.dispatchEvent(new CustomEvent("markra:runtime-diagnostic", {
+      window.dispatchEvent(new CustomEvent("helbaron:runtime-diagnostic", {
         detail: {
           area: "storage",
           details: {
@@ -177,7 +177,7 @@ describe("runtime log", () => {
   it("does not recursively log console errors raised while writing a log entry", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const dispatchSpy = vi.spyOn(window, "dispatchEvent").mockImplementation((event) => {
-      if (event.type === "markra:runtime-log-changed") console.error("Nested console error");
+      if (event.type === "helbaron:runtime-log-changed") console.error("Nested console error");
 
       return true;
     });

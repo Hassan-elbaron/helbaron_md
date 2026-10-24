@@ -1,7 +1,7 @@
 use crate::windows::is_settings_window_label;
 use tauri::{Emitter, Manager, Runtime};
 
-const APP_EXIT_REQUESTED_EVENT: &str = "markra://app-exit-requested";
+const APP_EXIT_REQUESTED_EVENT: &str = "helbaron://app-exit-requested";
 
 #[derive(Clone)]
 struct AppExitWindowInfo {
@@ -114,7 +114,7 @@ mod tests {
     fn ignores_settings_windows_for_app_exit_interception() {
         let windows = [AppExitWindowInfo {
             focused: true,
-            label: "markra-settings".to_string(),
+            label: "helbaron-settings".to_string(),
             visible: false,
         }];
         let user_window_count = windows
@@ -132,7 +132,7 @@ mod tests {
         let windows = [
             AppExitWindowInfo {
                 focused: true,
-                label: "markra-settings".to_string(),
+                label: "helbaron-settings".to_string(),
                 visible: false,
             },
             AppExitWindowInfo {

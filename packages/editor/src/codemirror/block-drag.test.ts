@@ -8,7 +8,7 @@ import {
   readCodeMirrorBlockRanges,
 } from "./block-drag.ts";
 import { horizontalRulePlugin } from "./horizontal-rule.ts";
-import { getMarkraSlashMenuState, liveMarkdown } from "./index.ts";
+import { getHelbaronSlashMenuState, liveMarkdown } from "./index.ts";
 import "./dom.test-support.ts";
 
 const views: EditorView[] = [];
@@ -130,10 +130,10 @@ describe("codeMirrorBlockDragPlugin", () => {
     expect(changedRanges[0]?.to).toBeLessThan(doc.length);
 
     const childLine = Array.from(
-      view.dom.querySelectorAll<HTMLElement>(".cm-markra-list-item"),
+      view.dom.querySelectorAll<HTMLElement>(".cm-helbaron-list-item"),
     ).find((line) => line.textContent === "Second title: Body");
     expect(childLine?.getAttribute("data-list-depth")).toBe("1");
-    expect(childLine?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(childLine?.getAttribute("data-helbaron-list-source")).toBe("hidden");
   });
 
   it("clamps a child drop to the deepest available parent level", () => {
@@ -164,7 +164,7 @@ describe("codeMirrorBlockDragPlugin", () => {
       view.dom.querySelectorAll<HTMLElement>(".cm-line"),
     ).find((line) => line.textContent?.includes("Moved title"));
     expect(movedLine?.getAttribute("data-list-depth")).toBe("1");
-    expect(movedLine?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(movedLine?.getAttribute("data-helbaron-list-source")).toBe("hidden");
   });
 
   it("uses the parent marker width when nesting below an ordered item", () => {
@@ -193,7 +193,7 @@ describe("codeMirrorBlockDragPlugin", () => {
       view.dom.querySelectorAll<HTMLElement>(".cm-line"),
     ).find((line) => line.textContent?.includes("Moved title"));
     expect(movedLine?.getAttribute("data-list-depth")).toBe("1");
-    expect(movedLine?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(movedLine?.getAttribute("data-helbaron-list-source")).toBe("hidden");
   });
 
   it("preserves tab-expanded columns when nesting a second-level item deeper", () => {
@@ -261,17 +261,17 @@ describe("codeMirrorBlockDragPlugin", () => {
       view.dom.querySelectorAll<HTMLElement>(".cm-line"),
     ).find((line) => line.textContent === "Child paragraph");
     expect(childLine?.getAttribute("data-list-depth")).toBe("1");
-    expect(childLine?.getAttribute("data-markra-list-source")).toBe("hidden");
+    expect(childLine?.getAttribute("data-helbaron-list-source")).toBe("hidden");
   });
 
   it("renders block controls with the app-compatible icon structure", () => {
     const view = createView("First\n\nSecond");
-    const add = view.dom.querySelector(".markra-block-add-button");
-    const drag = view.dom.querySelector(".markra-block-drag-handle");
+    const add = view.dom.querySelector(".helbaron-block-add-button");
+    const drag = view.dom.querySelector(".helbaron-block-drag-handle");
 
-    expect(add?.classList.contains("markra-block-tool-button")).toBe(true);
-    expect(drag?.classList.contains("markra-block-tool-button")).toBe(true);
-    expect(drag?.querySelectorAll(".markra-block-drag-dot")).toHaveLength(6);
+    expect(add?.classList.contains("helbaron-block-tool-button")).toBe(true);
+    expect(drag?.classList.contains("helbaron-block-tool-button")).toBe(true);
+    expect(drag?.querySelectorAll(".helbaron-block-drag-dot")).toHaveLength(6);
   });
 
   it("moves a top-level block as one undoable source edit", () => {
@@ -292,7 +292,7 @@ describe("codeMirrorBlockDragPlugin", () => {
     const rule = blocks.find((block) => block.name === "HorizontalRule");
     const second = blocks.find((block) => view.state.sliceDoc(block.from, block.to) === "Second");
 
-    expect(view.dom.querySelectorAll("hr.cm-markra-horizontal-rule")).toHaveLength(1);
+    expect(view.dom.querySelectorAll("hr.cm-helbaron-horizontal-rule")).toHaveLength(1);
     expect(rule && second && moveCodeMirrorBlock(view, rule.from, second.from, "after")).toBe(true);
     expect(view.state.doc.toString()).toBe("First\n\nSecond\n\n****");
   });
@@ -301,10 +301,10 @@ describe("codeMirrorBlockDragPlugin", () => {
     const view = createView("First\n\nSecond\n\nThird");
     const [first, second] = readCodeMirrorBlockRanges(view.state);
     const handle = view.dom.querySelector<HTMLElement>(
-      `[data-block-from="${first?.from}"] .markra-block-drag-handle`,
+      `[data-block-from="${first?.from}"] .helbaron-block-drag-handle`,
     );
     const target = view.dom.querySelector<HTMLElement>(
-      `.cm-line[data-markra-block-from="${second?.from}"]`,
+      `.cm-line[data-helbaron-block-from="${second?.from}"]`,
     );
     const values = new Map<string, string>();
     const dataTransfer = {
@@ -322,14 +322,14 @@ describe("codeMirrorBlockDragPlugin", () => {
 
     handle?.dispatchEvent(dragStart);
     target?.dispatchEvent(dragOver);
-    expect(view.dom.querySelector(".markra-block-drag-source")).not.toBeNull();
-    expect(view.dom.querySelector(".markra-block-drop-indicator")?.getAttribute("data-show")).toBe("true");
+    expect(view.dom.querySelector(".helbaron-block-drag-source")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drop-indicator")?.getAttribute("data-show")).toBe("true");
     target?.dispatchEvent(drop);
 
     expect(drop.defaultPrevented).toBe(true);
     expect(view.state.doc.toString()).toBe("Second\n\nFirst\n\nThird");
-    expect(view.dom.querySelector(".markra-block-drag-source")).toBeNull();
-    expect(view.dom.querySelector(".markra-block-drop-indicator")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drag-source")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drop-indicator")).toBeNull();
   });
 
   it("reorders task items through pointer dragging when native drag events are unavailable", () => {
@@ -338,10 +338,10 @@ describe("codeMirrorBlockDragPlugin", () => {
     );
     const [first, second] = readCodeMirrorBlockRanges(view.state);
     const handle = view.dom.querySelector<HTMLElement>(
-      `[data-block-from="${first?.from}"] .markra-block-drag-handle`,
+      `[data-block-from="${first?.from}"] .helbaron-block-drag-handle`,
     );
     const target = view.dom.querySelector<HTMLElement>(
-      `.cm-line[data-markra-block-from="${second?.from}"]`,
+      `.cm-line[data-helbaron-block-from="${second?.from}"]`,
     );
 
     handle?.dispatchEvent(new PointerEvent("pointerdown", {
@@ -360,9 +360,9 @@ describe("codeMirrorBlockDragPlugin", () => {
       pointerId: 1,
     }));
 
-    expect(view.dom.querySelector(".markra-block-drag-source")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drag-source")).not.toBeNull();
     expect(
-      view.dom.querySelector(".markra-block-drop-indicator")?.getAttribute(
+      view.dom.querySelector(".helbaron-block-drop-indicator")?.getAttribute(
         "data-show",
       ),
     ).toBe("true");
@@ -378,8 +378,8 @@ describe("codeMirrorBlockDragPlugin", () => {
     expect(view.state.doc.toString()).toBe(
       "- [ ] Second task\n- [ ] First task\n- [ ] Third task",
     );
-    expect(view.dom.querySelector(".markra-block-drag-source")).toBeNull();
-    expect(view.dom.querySelector(".markra-block-drop-indicator")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drag-source")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drop-indicator")).toBeNull();
   });
 
   it("nests a second-level item as a third-level item through pointer dragging", () => {
@@ -397,10 +397,10 @@ describe("codeMirrorBlockDragPlugin", () => {
       view.state.sliceDoc(block.from, block.to).startsWith("  - Second child")
     );
     const handle = view.dom.querySelector<HTMLElement>(
-      `[data-block-from="${secondChild?.from}"] .markra-block-drag-handle`,
+      `[data-block-from="${secondChild?.from}"] .helbaron-block-drag-handle`,
     );
     const target = view.dom.querySelector<HTMLElement>(
-      `.cm-line[data-markra-block-from="${firstChild?.from}"]`,
+      `.cm-line[data-helbaron-block-from="${firstChild?.from}"]`,
     );
 
     handle?.dispatchEvent(new PointerEvent("pointerdown", {
@@ -448,11 +448,11 @@ describe("codeMirrorBlockDragPlugin", () => {
     button?.click();
 
     expect(view.state.doc.toString()).toBe("First\n\nSecond\n\n\n\nThird");
-    expect(getMarkraSlashMenuState(view)).toMatchObject({
+    expect(getHelbaronSlashMenuState(view)).toMatchObject({
       open: true,
       source: "virtual",
     });
-    expect(view.dom.querySelectorAll(".markra-block-add-button")).toHaveLength(4);
+    expect(view.dom.querySelectorAll(".helbaron-block-add-button")).toHaveLength(4);
   });
 
   it("keeps later block controls mounted while typing plain text before them", () => {
@@ -475,7 +475,7 @@ describe("codeMirrorBlockDragPlugin", () => {
     ).toBe(laterToolbar);
     expect(
       view.dom.querySelector(
-        `.cm-line[data-markra-block-from="${nextLaterFrom}"]`,
+        `.cm-line[data-helbaron-block-from="${nextLaterFrom}"]`,
       ),
     ).not.toBeNull();
   });
@@ -483,7 +483,7 @@ describe("codeMirrorBlockDragPlugin", () => {
   it("does not render mutation controls in a read-only editor", () => {
     const view = createView("First\n\nSecond", true);
 
-    expect(view.dom.querySelector(".markra-block-drag-handle")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-block-drag-handle")).toBeNull();
     const [first, second] = readCodeMirrorBlockRanges(view.state);
     expect(first && second && moveCodeMirrorBlock(view, first.from, second.from, "after")).toBe(false);
     expect(view.state.doc.toString()).toBe("First\n\nSecond");

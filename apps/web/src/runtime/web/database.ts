@@ -27,7 +27,7 @@ export function openWebRuntimeDatabase(
   settingsStoreName = webRuntimeSettingsStoreName
 ) {
   const indexedDb = resolveIndexedDbFactory(options.indexedDB);
-  const request = indexedDb.open(options.databaseName ?? "markra-web-runtime", webRuntimeDatabaseVersion);
+  const request = indexedDb.open(options.databaseName ?? "helbaron-web-runtime", webRuntimeDatabaseVersion);
 
   return new Promise<IDBDatabase>((resolve, reject) => {
     request.onupgradeneeded = () => {

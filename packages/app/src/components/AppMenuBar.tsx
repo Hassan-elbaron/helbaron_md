@@ -22,7 +22,7 @@ const popupClassName =
   "min-w-[216px] max-w-[min(280px,calc(100vw-16px))] rounded-lg border border-(--border-default) bg-(--bg-primary) p-1 text-[13px] leading-5 font-[520] text-(--text-primary) shadow-[0_14px_36px_color-mix(in_srgb,var(--text-heading)_16%,transparent)] outline-none select-none";
 
 const itemClassName =
-  "flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-left font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out cursor-pointer hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none data-disabled:opacity-45 data-disabled:cursor-default data-disabled:pointer-events-none";
+  "flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-start font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out cursor-pointer hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none data-disabled:opacity-45 data-disabled:cursor-default data-disabled:pointer-events-none";
 
 const separatorClassName = "my-1 h-px bg-(--border-default)";
 
@@ -30,7 +30,7 @@ const acceleratorClassName =
   "shrink-0 text-[12px] font-[520] text-(--text-secondary)";
 
 const submenuTriggerClassName =
-  "flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-left font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out cursor-pointer hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none data-disabled:opacity-45 data-disabled:cursor-default data-disabled:pointer-events-none";
+  "flex h-7 w-full items-center justify-between gap-4 rounded-md border-0 bg-transparent px-2 text-start font-inherit text-(--text-primary) outline-none transition-[background-color,color,opacity] duration-150 ease-out cursor-pointer hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none data-disabled:opacity-45 data-disabled:cursor-default data-disabled:pointer-events-none";
 
 function formatAccelerator(accelerator: string) {
   return accelerator.replace(/CmdOrCtrl/gu, "Cmd/Ctrl");

@@ -22,10 +22,10 @@ import {
 } from "lucide-react";
 import { AiModelPicker, type AiModelPickerOption } from "./AiModelPicker";
 import { useImeInputGuard } from "../hooks/useImeInputGuard";
-import type { AiDiffResult, AiEditIntent } from "@markra/ai";
+import type { AiDiffResult, AiEditIntent } from "@helbaron/ai";
 import type { AiProviderApiStyle } from "../lib/settings/app-settings";
-import { aiTranslationLanguageName, t, type AppLanguage, type I18nKey } from "@markra/shared";
-import { RoundIconButton, ToggleButton } from "@markra/ui";
+import { aiTranslationLanguageName, t, type AppLanguage, type I18nKey } from "@helbaron/shared";
+import { RoundIconButton, ToggleButton } from "@helbaron/ui";
 import {
   aiQuickActionLabelKeys,
   defaultAiQuickActionPrompt,
@@ -529,14 +529,14 @@ export function AiCommandBar({
     <form
       className={
         unifiedExpandedSurface
-            ? `ai-command-box flex min-h-21 origin-bottom ${closing ? "animate-[markra-ai-command-close_180ms_ease-in_both] " : ""}flex-col gap-2 rounded-lg border border-(--ai-command-expanded-border) bg-(--bg-primary) p-3 shadow-(--ai-command-expanded-shadow) transition-[border-color,box-shadow,opacity,transform] duration-200 ease-out motion-reduce:animate-none motion-reduce:transition-none`
-            : `ai-command-box flex h-14 origin-bottom ${closing ? "animate-[markra-ai-command-close_180ms_ease-in_both]" : playCompactOpenAnimation ? "animate-[markra-ai-command-open_220ms_ease-out_both]" : ""} items-center gap-3 rounded-xl border border-(--border-default) bg-(--bg-primary) px-4 py-2 shadow-(--ai-command-shadow) transition-[border-color,box-shadow,opacity,transform] duration-200 ease-out motion-reduce:animate-none motion-reduce:transition-none`
+            ? `ai-command-box flex min-h-21 origin-bottom ${closing ? "animate-[helbaron-ai-command-close_180ms_ease-in_both] " : ""}flex-col gap-2 rounded-lg border border-(--ai-command-expanded-border) bg-(--bg-primary) p-3 shadow-(--ai-command-expanded-shadow) transition-[border-color,box-shadow,opacity,transform] duration-200 ease-out motion-reduce:animate-none motion-reduce:transition-none`
+            : `ai-command-box flex h-14 origin-bottom ${closing ? "animate-[helbaron-ai-command-close_180ms_ease-in_both]" : playCompactOpenAnimation ? "animate-[helbaron-ai-command-open_220ms_ease-out_both]" : ""} items-center gap-3 rounded-xl border border-(--border-default) bg-(--bg-primary) px-4 py-2 shadow-(--ai-command-shadow) transition-[border-color,box-shadow,opacity,transform] duration-200 ease-out motion-reduce:animate-none motion-reduce:transition-none`
       }
       data-state={commandState}
       onSubmit={handleSubmit}
     >
       <div className={showExpandedInput ? "flex w-full min-w-0 items-end gap-3" : "flex w-full min-w-0 items-center gap-3"}>
-        <label className="sr-only" htmlFor="markra-ai-command-input">
+        <label className="sr-only" htmlFor="helbaron-ai-command-input">
           {label("app.aiCommandInput")}
         </label>
         {!showExpandedInput ? <Sparkles aria-hidden="true" className="shrink-0 self-center text-(--text-secondary)" size={18} /> : null}
@@ -544,7 +544,7 @@ export function AiCommandBar({
           renderCompactLoadingStatus()
         ) : (
           <textarea
-            id="markra-ai-command-input"
+            id="helbaron-ai-command-input"
             ref={inputRef}
             className={
               showExpandedInput
@@ -641,8 +641,8 @@ export function AiCommandBar({
           <div
             className={
               commandState === "collapsing" || closing
-                ? "ai-command-actions absolute bottom-[calc(100%+10px)] left-0 w-66 animate-[markra-ai-float-out_160ms_ease-in_both] rounded-lg border border-(--border-default) bg-(--bg-primary) px-3 py-3 shadow-(--ai-command-popover-shadow) transition-[opacity,transform] duration-160 ease-in max-[760px]:hidden motion-reduce:animate-none motion-reduce:transition-none"
-                : "ai-command-actions absolute bottom-[calc(100%+10px)] left-0 w-66 animate-[markra-ai-float-in_180ms_ease-out_both] rounded-lg border border-(--border-default) bg-(--bg-primary) px-3 py-3 shadow-(--ai-command-popover-shadow) transition-[opacity,transform] duration-180 ease-out max-[760px]:hidden motion-reduce:animate-none motion-reduce:transition-none"
+                ? "ai-command-actions absolute bottom-[calc(100%+10px)] start-0 w-66 animate-[helbaron-ai-float-out_160ms_ease-in_both] rounded-lg border border-(--border-default) bg-(--bg-primary) px-3 py-3 shadow-(--ai-command-popover-shadow) transition-[opacity,transform] duration-160 ease-in max-[760px]:hidden motion-reduce:animate-none motion-reduce:transition-none"
+                : "ai-command-actions absolute bottom-[calc(100%+10px)] start-0 w-66 animate-[helbaron-ai-float-in_180ms_ease-out_both] rounded-lg border border-(--border-default) bg-(--bg-primary) px-3 py-3 shadow-(--ai-command-popover-shadow) transition-[opacity,transform] duration-180 ease-out max-[760px]:hidden motion-reduce:animate-none motion-reduce:transition-none"
             }
             aria-label={label("app.aiQuickActions")}
           >
@@ -656,7 +656,7 @@ export function AiCommandBar({
 
                 return (
                   <button
-                    className="inline-flex h-8 w-full cursor-pointer items-center gap-2 rounded-sm border-0 bg-transparent px-2 text-left text-[13px] leading-5 font-[560] text-(--text-primary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
+                    className="inline-flex h-8 w-full cursor-pointer items-center gap-2 rounded-sm border-0 bg-transparent px-2 text-start text-[13px] leading-5 font-[560] text-(--text-primary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none"
                     key={action.intent}
                     type="button"
                     onClick={() => handleQuickAction(action)}

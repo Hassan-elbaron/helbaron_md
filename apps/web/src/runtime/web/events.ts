@@ -1,4 +1,4 @@
-import type { AppEventsRuntime } from "@markra/app/runtime";
+import type { AppEventsRuntime } from "@helbaron/app/runtime";
 
 function createCustomEvent<TPayload>(event: string, payload: TPayload) {
   if (typeof CustomEvent === "function") {

@@ -4,7 +4,7 @@ import {
   type Extension,
 } from "@codemirror/state";
 import { Decoration, EditorView } from "@codemirror/view";
-import type { AiSelectionContext } from "@markra/ai";
+import type { AiSelectionContext } from "@helbaron/ai";
 
 interface HeldSelection {
   readonly from: number;
@@ -49,7 +49,7 @@ const selectionHoldField = StateField.define<HeldSelection | null>({
       return Decoration.none;
     }
     return Decoration.set([
-      Decoration.mark({ class: "markra-ai-selection-hold" }).range(
+      Decoration.mark({ class: "helbaron-ai-selection-hold" }).range(
         selection.from,
         selection.to,
       ),
@@ -58,7 +58,7 @@ const selectionHoldField = StateField.define<HeldSelection | null>({
 });
 
 const selectionHoldTheme = EditorView.baseTheme({
-  ".markra-ai-selection-hold": {
+  ".helbaron-ai-selection-hold": {
     background: "color-mix(in srgb, var(--accent, #3b82f6) 18%, transparent)",
     borderRadius: "0.2em",
   },

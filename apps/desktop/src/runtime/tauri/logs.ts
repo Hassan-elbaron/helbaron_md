@@ -4,8 +4,8 @@ import {
   info as logInfo,
   warn as logWarn
 } from "@tauri-apps/plugin-log";
-import { sanitizeDiagnosticDetails, sanitizeDiagnosticText } from "@markra/shared";
-import type { AppLogEvent } from "@markra/app/runtime";
+import { sanitizeDiagnosticDetails, sanitizeDiagnosticText } from "@helbaron/shared";
+import type { AppLogEvent } from "@helbaron/app/runtime";
 import { invokeNative } from "./invoke";
 
 export function isNativeLoggingAvailable() {

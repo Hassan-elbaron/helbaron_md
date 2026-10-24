@@ -75,7 +75,7 @@ type ImageUploadFileNameOptions = {
   timestamp?: () => string;
 };
 
-const storageConnectionTestFileName = "markra-connection-test.png";
+const storageConnectionTestFileName = "helbaron-connection-test.png";
 const transparentOnePixelPng = new Uint8Array([
   137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82,
   0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196,

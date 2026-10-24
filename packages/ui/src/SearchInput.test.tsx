@@ -17,7 +17,7 @@ describe("SearchInput", () => {
 
     const input = screen.getByRole("searchbox", { name: "Search providers" });
     expect(input).toHaveAttribute("type", "search");
-    expect(input).toHaveClass("pl-8");
+    expect(input).toHaveClass("ps-8");
     expect(screen.getByText("S")).toHaveAttribute("aria-hidden", "true");
 
     fireEvent.change(input, { target: { value: "deep" } });

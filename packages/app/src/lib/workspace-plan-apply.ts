@@ -1,9 +1,9 @@
 import type {
   AgentWorkspaceFile,
   WorkspaceChangePlanOperations
-} from "@markra/ai";
-import { normalizeWorkspaceRelativePath } from "@markra/ai";
-import { parentPathFromPath, pathNameFromPath } from "@markra/shared";
+} from "@helbaron/ai";
+import { normalizeWorkspaceRelativePath } from "@helbaron/ai";
+import { parentPathFromPath, pathNameFromPath } from "@helbaron/shared";
 import type { NativeMarkdownFolderFile } from "./tauri";
 
 export type WorkspacePlanNativeOperations = {

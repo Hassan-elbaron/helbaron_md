@@ -1,11 +1,11 @@
 import ignore from "ignore";
 import type { WebDirectoryHandle } from "./types";
 
-const markraIgnoreFileName = ".markraignore";
+const helbaronIgnoreFileName = ".helbaronignore";
 const builtInSkippedDirectoryNames = new Set([
   ".codex",
   ".git",
-  ".markra-sync",
+  ".helbaron-sync",
   ".obsidian",
   "build",
   "dist",
@@ -21,9 +21,9 @@ function normalizeRelativePath(path: string) {
   return path.replace(/\\+/gu, "/").replace(/^\.\/|^\/|\/$/gu, "");
 }
 
-async function readMarkraIgnore(root: WebDirectoryHandle) {
+async function readHelbaronIgnore(root: WebDirectoryHandle) {
   try {
-    const handle = await root.getFileHandle?.(markraIgnoreFileName);
+    const handle = await root.getFileHandle?.(helbaronIgnoreFileName);
     return handle ? await (await handle.getFile()).text() : "";
   } catch {
     // Missing or unreadable control files must not block opening a workspace.
@@ -43,7 +43,7 @@ export async function loadMarkdownIgnoreRules(
   }
   try {
     // Workspace rules are appended later so they can override global defaults.
-    matcher.add(await readMarkraIgnore(root));
+    matcher.add(await readHelbaronIgnore(root));
   } catch {
     // Invalid workspace rules fail open so users can still access and repair them.
   }
@@ -51,13 +51,13 @@ export async function loadMarkdownIgnoreRules(
   return {
     ignores(relativePath, isDirectory) {
       const normalizedPath = normalizeRelativePath(relativePath);
-      if (normalizedPath === markraIgnoreFileName) return true;
+      if (normalizedPath === helbaronIgnoreFileName) return true;
 
       const parts = normalizedPath.split("/").filter(Boolean);
       const directoryParts = isDirectory ? parts : parts.slice(0, -1);
 
       // Built-in exclusions stay authoritative so user negations cannot restore
-      // generated or tool-heavy subtrees that Markra deliberately avoids scanning.
+      // generated or tool-heavy subtrees that Helbaron deliberately avoids scanning.
       if (directoryParts.some((part) => builtInSkippedDirectoryNames.has(part))) return true;
 
       return normalizedPath.length > 0 && matcher.ignores(isDirectory ? `${normalizedPath}/` : normalizedPath);

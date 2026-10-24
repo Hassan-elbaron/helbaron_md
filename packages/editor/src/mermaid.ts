@@ -1,9 +1,9 @@
-type MarkraMermaidTheme = "base" | "dark" | "default" | "forest" | "neutral";
+type HelbaronMermaidTheme = "base" | "dark" | "default" | "forest" | "neutral";
 type MermaidRenderer = typeof import("mermaid")["default"];
 
 type RenderMermaidOptions = {
   idPrefix?: string;
-  theme?: MarkraMermaidTheme | string | null;
+  theme?: HelbaronMermaidTheme | string | null;
 };
 
 const darkMermaidThemeNames = new Set([
@@ -17,7 +17,7 @@ const darkMermaidThemeNames = new Set([
   "catppuccin-mocha"
 ]);
 
-let configuredTheme: MarkraMermaidTheme | null = null;
+let configuredTheme: HelbaronMermaidTheme | null = null;
 let mermaidRenderer: Promise<MermaidRenderer> | null = null;
 let mermaidRenderSequence = 0;
 
@@ -29,7 +29,7 @@ function isDarkMermaidThemeName(theme: string) {
   return darkMermaidThemeNames.has(theme.toLowerCase());
 }
 
-export function mermaidThemeFromElement(element: Element | null): MarkraMermaidTheme {
+export function mermaidThemeFromElement(element: Element | null): HelbaronMermaidTheme {
   const theme = element?.closest(".markdown-paper")?.getAttribute("data-editor-theme") ??
     element?.ownerDocument.documentElement.getAttribute("data-theme") ??
     "";
@@ -37,7 +37,7 @@ export function mermaidThemeFromElement(element: Element | null): MarkraMermaidT
   return isDarkMermaidThemeName(theme) ? "dark" : "default";
 }
 
-function normalizeMermaidTheme(theme: RenderMermaidOptions["theme"]): MarkraMermaidTheme {
+function normalizeMermaidTheme(theme: RenderMermaidOptions["theme"]): HelbaronMermaidTheme {
   if (theme === "base" || theme === "dark" || theme === "forest" || theme === "neutral") return theme;
   return "default";
 }
@@ -47,7 +47,7 @@ function loadMermaidRenderer() {
   return mermaidRenderer;
 }
 
-function configureMermaid(renderer: MermaidRenderer, theme: MarkraMermaidTheme) {
+function configureMermaid(renderer: MermaidRenderer, theme: HelbaronMermaidTheme) {
   if (configuredTheme === theme) return;
 
   renderer.initialize({
@@ -56,7 +56,7 @@ function configureMermaid(renderer: MermaidRenderer, theme: MarkraMermaidTheme) 
     },
     securityLevel: "antiscript",
     startOnLoad: false,
-    // Markra displays the diagnostic in place; Mermaid's fallback SVG would leak into the page.
+    // Helbaron displays the diagnostic in place; Mermaid's fallback SVG would leak into the page.
     suppressErrorRendering: true,
     theme
   });
@@ -84,7 +84,7 @@ export async function renderMermaidToSvg(source: string, options: RenderMermaidO
   const renderer = await loadMermaidRenderer();
   configureMermaid(renderer, theme);
 
-  const idPrefix = options.idPrefix ?? "markra-mermaid";
+  const idPrefix = options.idPrefix ?? "helbaron-mermaid";
   mermaidRenderSequence += 1;
   const result = await renderer.render(`${idPrefix}-${mermaidRenderSequence}`, definition);
 

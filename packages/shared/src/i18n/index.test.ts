@@ -1,4 +1,5 @@
 import { supportedLanguages, t } from "./index";
+import arMessages from "./locales/ar";
 import deMessages from "./locales/de";
 import enMessages from "./locales/en";
 import esMessages from "./locales/es";
@@ -13,6 +14,7 @@ import zhTwMessages from "./locales/zh-TW";
 import type { AppLanguage, I18nKey, LocaleMessages } from "./locales/types";
 
 const nonEnglishLocaleMessages: Record<Exclude<AppLanguage, "en">, LocaleMessages> = {
+  ar: arMessages,
   de: deMessages,
   es: esMessages,
   fr: frMessages,
@@ -36,8 +38,9 @@ function untranslatedKeys(messages: LocaleMessages) {
 }
 
 describe("i18n", () => {
-  it("ships common app languages with English as the first default", () => {
+  it("ships common app languages with Arabic first in this Arabic-first edition", () => {
     expect(supportedLanguages.map((language) => language.code)).toEqual([
+      "ar",
       "en",
       "zh-CN",
       "zh-TW",

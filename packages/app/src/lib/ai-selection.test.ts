@@ -1,4 +1,4 @@
-import type { AiSelectionContext } from "@markra/ai";
+import type { AiSelectionContext } from "@helbaron/ai";
 import { automaticAiSelection, aiCommandSelection } from "./ai-selection";
 
 function selection(overrides: Partial<AiSelectionContext> = {}): AiSelectionContext {

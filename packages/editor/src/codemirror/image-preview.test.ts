@@ -56,7 +56,7 @@ describe("imagePreviewPlugin", () => {
     });
 
     expect(
-      view.dom.querySelector<HTMLInputElement>(".markra-image-node-source")
+      view.dom.querySelector<HTMLInputElement>(".helbaron-image-node-source")
         ?.value,
     ).toBe(markdown);
 
@@ -66,16 +66,16 @@ describe("imagePreviewPlugin", () => {
       userEvent: "input",
     });
 
-    expect(view.dom.querySelector(".markra-image-node-source")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-image")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-node-source")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-image")).not.toBeNull();
   });
 
   it("renders an existing image when the initial caret is at its end", () => {
     const doc = "![Synthetic alt](https://example.test/image.png)";
     const view = createView(doc);
 
-    expect(view.dom.querySelector(".markra-image-node-source")).toBeNull();
-    expect(view.dom.querySelector(".cm-markra-image")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-node-source")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-image")).not.toBeNull();
   });
 
   it("renders a safe Markdown image without changing its source", () => {
@@ -83,7 +83,7 @@ describe("imagePreviewPlugin", () => {
       'Before ![Synthetic alt](https://example.test/image.png "Preview") after\n\nEdit';
     const view = createView(doc);
     const image = view.dom.querySelector<HTMLImageElement>(
-      ".cm-markra-image",
+      ".cm-helbaron-image",
     );
 
     expect(image).not.toBeNull();
@@ -112,7 +112,7 @@ describe("imagePreviewPlugin", () => {
       ].join("\n");
       const view = createView(doc);
       const image = view.dom.querySelector<HTMLImageElement>(
-        ".cm-markra-image",
+        ".cm-helbaron-image",
       );
       const requestMeasure = vi.spyOn(view, "requestMeasure");
       const baselineView = createView(doc, null);
@@ -135,7 +135,7 @@ describe("imagePreviewPlugin", () => {
         userEvent: "input",
       });
 
-      expect(view.dom.querySelector(".cm-markra-image")).toBe(image);
+      expect(view.dom.querySelector(".cm-helbaron-image")).toBe(image);
       expect(sourceSetter).not.toHaveBeenCalled();
       expect(requestMeasure).toHaveBeenCalledTimes(
         baselineRequestMeasure.mock.calls.length,
@@ -148,16 +148,16 @@ describe("imagePreviewPlugin", () => {
   it("marks a standalone Markdown image line for block layout", () => {
     const doc = "![Synthetic alt](https://example.test/image.png)\n\nEdit";
     const view = createView(doc);
-    const image = view.dom.querySelector<HTMLImageElement>(".cm-markra-image");
+    const image = view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image");
 
     expect(image).not.toBeNull();
-    expect(image?.closest(".cm-markra-image-line")).not.toBeNull();
+    expect(image?.closest(".cm-helbaron-image-line")).not.toBeNull();
   });
 
   it("keeps the preview visible and shows editable Markdown source when selected", () => {
     const doc = "Before ![Synthetic alt](./assets/mock.png) after\n\nEdit";
     const view = createView(doc);
-    const image = view.dom.querySelector<HTMLImageElement>(".cm-markra-image");
+    const image = view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image");
 
     expect(image).not.toBeNull();
     image?.dispatchEvent(new MouseEvent("click", {
@@ -165,10 +165,10 @@ describe("imagePreviewPlugin", () => {
       cancelable: true,
     }));
 
-    expect(view.dom.querySelector(".cm-markra-image")).not.toBeNull();
-    expect(view.dom.querySelector(".markra-image-node-selected")).not.toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-image")).not.toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-node-selected")).not.toBeNull();
     expect(
-      view.dom.querySelector<HTMLInputElement>(".markra-image-node-source")
+      view.dom.querySelector<HTMLInputElement>(".helbaron-image-node-source")
         ?.value,
     ).toBe("![Synthetic alt](./assets/mock.png)");
     expect(view.state.doc.toString()).toBe(doc);
@@ -178,23 +178,23 @@ describe("imagePreviewPlugin", () => {
     const doc =
       '![Synthetic detail](https://example.test/detail.png "Detailed preview")\n\nEdit';
     const view = createView(doc);
-    const image = view.dom.querySelector<HTMLImageElement>(".cm-markra-image");
+    const image = view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image");
     const enlargeButton = view.dom.querySelector<HTMLButtonElement>(
-      ".markra-image-viewer-button",
+      ".helbaron-image-viewer-button",
     );
 
     expect(image).not.toBeNull();
     expect(enlargeButton?.ariaLabel).toBe("Enlarge image");
     expect(enlargeButton?.querySelector("svg")).not.toBeNull();
     expect(image?.parentElement).toBe(enlargeButton?.parentElement);
-    expect(image?.parentElement?.classList).toContain("markra-image-frame");
+    expect(image?.parentElement?.classList).toContain("helbaron-image-frame");
 
     enlargeButton?.click();
     let dialog = document.querySelector<HTMLElement>(
-      ".markra-media-viewer-dialog",
+      ".helbaron-media-viewer-dialog",
     );
     let enlargedImage = dialog?.querySelector<HTMLImageElement>(
-      ".markra-media-viewer-image",
+      ".helbaron-media-viewer-image",
     );
 
     expect(dialog?.getAttribute("role")).toBe("dialog");
@@ -204,23 +204,23 @@ describe("imagePreviewPlugin", () => {
     );
     expect(enlargedImage?.alt).toBe("Synthetic detail");
     expect(
-      dialog?.querySelector(".markra-media-viewer-zoom-in-button"),
+      dialog?.querySelector(".helbaron-media-viewer-zoom-in-button"),
     ).not.toBeNull();
 
     dialog
-      ?.querySelector<HTMLButtonElement>(".markra-media-viewer-close-button")
+      ?.querySelector<HTMLButtonElement>(".helbaron-media-viewer-close-button")
       ?.click();
-    expect(document.querySelector(".markra-media-viewer-dialog")).toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).toBeNull();
 
     image?.dispatchEvent(new MouseEvent("dblclick", {
       bubbles: true,
       cancelable: true,
     }));
     dialog = document.querySelector<HTMLElement>(
-      ".markra-media-viewer-dialog",
+      ".helbaron-media-viewer-dialog",
     );
     enlargedImage = dialog?.querySelector<HTMLImageElement>(
-      ".markra-media-viewer-image",
+      ".helbaron-media-viewer-image",
     );
 
     expect(dialog).not.toBeNull();
@@ -233,19 +233,19 @@ describe("imagePreviewPlugin", () => {
   it("opens the viewer in read-only mode without revealing editable source", () => {
     const doc = "![Synthetic detail](https://example.test/detail.png)";
     const view = createView(doc, imagePreviewPlugin(), true);
-    const image = view.dom.querySelector<HTMLImageElement>(".cm-markra-image");
+    const image = view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image");
 
     image?.dispatchEvent(new MouseEvent("click", {
       bubbles: true,
       cancelable: true,
     }));
-    expect(view.dom.querySelector(".markra-image-node-source")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-node-source")).toBeNull();
 
     image?.dispatchEvent(new MouseEvent("dblclick", {
       bubbles: true,
       cancelable: true,
     }));
-    expect(document.querySelector(".markra-media-viewer-dialog")).not.toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).not.toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 
@@ -259,7 +259,7 @@ describe("imagePreviewPlugin", () => {
     ].join("\n");
     const view = createView(doc);
     const images = view.dom.querySelectorAll<HTMLImageElement>(
-      ".cm-markra-image",
+      ".cm-helbaron-image",
     );
 
     images[0]?.dispatchEvent(new MouseEvent("dblclick", {
@@ -267,7 +267,7 @@ describe("imagePreviewPlugin", () => {
       cancelable: true,
     }));
     expect(
-      document.querySelector<HTMLImageElement>(".markra-media-viewer-image")
+      document.querySelector<HTMLImageElement>(".helbaron-media-viewer-image")
         ?.getAttribute("src"),
     ).toBe(firstSource);
 
@@ -275,9 +275,9 @@ describe("imagePreviewPlugin", () => {
       bubbles: true,
       cancelable: true,
     }));
-    expect(document.querySelectorAll(".markra-media-viewer-dialog")).toHaveLength(1);
+    expect(document.querySelectorAll(".helbaron-media-viewer-dialog")).toHaveLength(1);
     expect(
-      document.querySelector<HTMLImageElement>(".markra-media-viewer-image")
+      document.querySelector<HTMLImageElement>(".helbaron-media-viewer-image")
         ?.getAttribute("src"),
     ).toBe(secondSource);
 
@@ -291,32 +291,32 @@ describe("imagePreviewPlugin", () => {
       userEvent: "input",
     });
 
-    expect(document.querySelector(".markra-media-viewer-dialog")).toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).toBeNull();
   });
 
   it("closes an active viewer when its editor is destroyed", () => {
     const view = createView(
       "![Synthetic detail](https://example.test/detail.png)",
     );
-    view.dom.querySelector<HTMLImageElement>(".cm-markra-image")?.dispatchEvent(
+    view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image")?.dispatchEvent(
       new MouseEvent("dblclick", { bubbles: true, cancelable: true }),
     );
-    expect(document.querySelector(".markra-media-viewer-dialog")).not.toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).not.toBeNull();
 
     view.destroy();
     views.splice(views.indexOf(view), 1);
 
-    expect(document.querySelector(".markra-media-viewer-dialog")).toBeNull();
+    expect(document.querySelector(".helbaron-media-viewer-dialog")).toBeNull();
   });
 
   it("updates and deletes an image through its inline Markdown source", () => {
     const doc = "![Synthetic alt](./assets/mock.png)\n\nEdit";
     const view = createView(doc);
-    view.dom.querySelector<HTMLImageElement>(".cm-markra-image")?.dispatchEvent(
+    view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image")?.dispatchEvent(
       new MouseEvent("click", { bubbles: true, cancelable: true }),
     );
     const source = view.dom.querySelector<HTMLInputElement>(
-      ".markra-image-node-source",
+      ".helbaron-image-node-source",
     );
 
     expect(source).not.toBeNull();
@@ -329,11 +329,11 @@ describe("imagePreviewPlugin", () => {
       "![Changed](https://example.test/changed.png)\n\nEdit",
     );
     expect(
-      view.dom.querySelector<HTMLImageElement>(".cm-markra-image")?.src,
+      view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image")?.src,
     ).toBe("https://example.test/changed.png");
 
     const updatedSource = view.dom.querySelector<HTMLInputElement>(
-      ".markra-image-node-source",
+      ".helbaron-image-node-source",
     );
     expect(updatedSource).not.toBeNull();
     if (!updatedSource) return;
@@ -341,17 +341,17 @@ describe("imagePreviewPlugin", () => {
     updatedSource.dispatchEvent(new Event("input", { bubbles: true }));
 
     expect(view.state.doc.toString()).toBe("\n\nEdit");
-    expect(view.dom.querySelector(".cm-markra-image")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-image")).toBeNull();
   });
 
   it("moves into the blank line after an edited image on Enter", () => {
     const doc = "![Synthetic alt](./assets/mock.png)\n\nEdit";
     const view = createView(doc);
-    view.dom.querySelector<HTMLImageElement>(".cm-markra-image")?.dispatchEvent(
+    view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image")?.dispatchEvent(
       new MouseEvent("click", { bubbles: true, cancelable: true }),
     );
     const source = view.dom.querySelector<HTMLInputElement>(
-      ".markra-image-node-source",
+      ".helbaron-image-node-source",
     );
 
     expect(source).not.toBeNull();
@@ -363,14 +363,14 @@ describe("imagePreviewPlugin", () => {
 
     expect(view.state.doc.toString()).toBe(doc);
     expect(view.state.selection.main.head).toBe(doc.indexOf("\n") + 1);
-    expect(view.dom.querySelector(".markra-image-node-source")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-node-source")).toBeNull();
   });
 
   it("moves below a selected image when Enter comes from the editor", () => {
     const imageMarkdown = "![Synthetic alt](./assets/mock.png)";
     const doc = `${imageMarkdown}\nFollowing`;
     const view = createView(doc);
-    view.dom.querySelector<HTMLImageElement>(".cm-markra-image")?.dispatchEvent(
+    view.dom.querySelector<HTMLImageElement>(".cm-helbaron-image")?.dispatchEvent(
       new MouseEvent("click", { bubbles: true, cancelable: true }),
     );
     const event = new KeyboardEvent("keydown", {
@@ -385,7 +385,7 @@ describe("imagePreviewPlugin", () => {
     expect(event.defaultPrevented).toBe(true);
     expect(view.state.doc.toString()).toBe(doc);
     expect(view.state.selection.main.head).toBe(imageMarkdown.length + 1);
-    expect(view.dom.querySelector(".markra-image-node-source")).toBeNull();
+    expect(view.dom.querySelector(".helbaron-image-node-source")).toBeNull();
 
     view.dispatch({
       changes: { from: imageMarkdown.length + 1, insert: "Plain " },
@@ -395,7 +395,7 @@ describe("imagePreviewPlugin", () => {
     expect(view.state.doc.toString()).toBe(
       `${imageMarkdown}\nPlain Following`,
     );
-    expect(view.dom.querySelector(".cm-markra-link")).toBeNull();
+    expect(view.dom.querySelector(".cm-helbaron-link")).toBeNull();
   });
 
   it("rejects executable and local protocols by default", () => {
@@ -404,8 +404,8 @@ describe("imagePreviewPlugin", () => {
     );
     const local = createView("![Local](file:///mock/private.png)\n\nEdit");
 
-    expect(executable.dom.querySelector(".cm-markra-image")).toBeNull();
-    expect(local.dom.querySelector(".cm-markra-image")).toBeNull();
+    expect(executable.dom.querySelector(".cm-helbaron-image")).toBeNull();
+    expect(local.dom.querySelector(".cm-helbaron-image")).toBeNull();
   });
 
   it("allows common browser image sources but rejects SVG data URLs", () => {
@@ -423,25 +423,25 @@ describe("imagePreviewPlugin", () => {
     ).toBeNull();
   });
 
-  it("lets Markra resolve application assets through a host callback", () => {
+  it("lets Helbaron resolve application assets through a host callback", () => {
     const resolveSource = vi.fn((context) =>
-      context.source.startsWith("markra://")
+      context.source.startsWith("helbaron://")
         ? "https://assets.example.test/mock.png"
         : null,
     );
     const view = createView(
-      '![Asset](markra://images/mock.png "Asset preview")\n\nEdit',
+      '![Asset](helbaron://images/mock.png "Asset preview")\n\nEdit',
       imagePreviewPlugin({
-        className: "markra-image",
+        className: "helbaron-image",
         resolveSource,
       }),
     );
-    const image = view.dom.querySelector<HTMLImageElement>(".markra-image");
+    const image = view.dom.querySelector<HTMLImageElement>(".helbaron-image");
 
     expect(resolveSource).toHaveBeenCalledWith(
       expect.objectContaining({
         alt: "Asset",
-        source: "markra://images/mock.png",
+        source: "helbaron://images/mock.png",
         title: "Asset preview",
         view,
       }),

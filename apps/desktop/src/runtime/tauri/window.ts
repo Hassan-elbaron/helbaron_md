@@ -23,8 +23,8 @@ type NativeSettingsWindowTargetPayload = {
   target?: unknown;
 };
 
-const nativeSettingsWindowTargetEvent = "markra://settings-window-target";
-const nativeAppExitRequestedEvent = "markra://app-exit-requested";
+const nativeSettingsWindowTargetEvent = "helbaron://settings-window-target";
+const nativeAppExitRequestedEvent = "helbaron://app-exit-requested";
 
 function isNativeSettingsWindowTarget(value: unknown): value is NativeSettingsWindowTarget {
   return value === "exportPandocPath";

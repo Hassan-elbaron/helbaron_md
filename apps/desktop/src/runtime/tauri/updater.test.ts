@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
-import { getStoredNetworkSettings, saveStoredWorkspaceState } from "@markra/app/settings";
+import { getStoredNetworkSettings, saveStoredWorkspaceState } from "@helbaron/app/settings";
 import { listNativeEditorWindowRestoreStates } from "./window";
 import { checkNativeAppUpdate } from "./updater";
 
@@ -20,7 +20,7 @@ vi.mock("@tauri-apps/plugin-process", () => ({
   relaunch: vi.fn()
 }));
 
-vi.mock("@markra/app/settings", () => ({
+vi.mock("@helbaron/app/settings", () => ({
   getStoredNetworkSettings: vi.fn(),
   saveStoredWorkspaceState: vi.fn()
 }));
@@ -178,7 +178,7 @@ describe("native app updater", () => {
       },
       {
         filePath: "/mock-files/second.md",
-        label: "markra-editor-1",
+        label: "helbaron-editor-1",
         openFilePaths: ["/mock-files/second.md"]
       }
     ]);
@@ -201,7 +201,7 @@ describe("native app updater", () => {
         },
         {
           filePath: "/mock-files/second.md",
-          label: "markra-editor-1",
+          label: "helbaron-editor-1",
           openFilePaths: ["/mock-files/second.md"]
         }
       ]

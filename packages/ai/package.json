@@ -1,5 +1,5 @@
 {
-  "name": "@markra/ai",
+  "name": "@helbaron/ai",
   "version": "0.0.1",
   "license": "AGPL-3.0-only",
   "private": true,
@@ -30,8 +30,8 @@
     "@ai-sdk/xai": "3.0.91",
     "@earendil-works/pi-agent-core": "0.75.5",
     "@earendil-works/pi-ai": "0.75.5",
-    "@markra/providers": "workspace:*",
-    "@markra/shared": "workspace:*",
+    "@helbaron/providers": "workspace:*",
+    "@helbaron/shared": "workspace:*",
     "@mozilla/readability": "^0.6.0",
     "ai": "6.0.184",
     "turndown": "^7.2.4",

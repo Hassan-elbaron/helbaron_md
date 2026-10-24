@@ -2,7 +2,7 @@ export const tableCaretPlaceholder = "\u200b";
 
 export function createTableCaretHost(ownerDocument: Document) {
   const host = ownerDocument.createElement("span");
-  host.dataset.markraTableCaretHost = "true";
+  host.dataset.helbaronTableCaretHost = "true";
   const text = ownerDocument.createTextNode(tableCaretPlaceholder);
   host.append(text);
   return { host, text };
@@ -13,7 +13,7 @@ export function isTableCaretPlaceholder(cell: HTMLTableCellElement) {
   return (
     cell.childNodes.length === 1 &&
     cell.firstElementChild?.tagName === "BR" &&
-    cell.firstElementChild.getAttribute("data-markra-source-break") !== "true"
+    cell.firstElementChild.getAttribute("data-helbaron-source-break") !== "true"
   );
 }
 

@@ -100,7 +100,7 @@ fn is_ignored_backup_directory(path: &Path) -> bool {
         .is_some_and(|name| {
             matches!(
                 name,
-                ".git" | ".markra-sync" | "build" | "dist" | "node_modules" | "target"
+                ".git" | ".helbaron-sync" | "build" | "dist" | "node_modules" | "target"
             )
         })
 }
@@ -202,7 +202,7 @@ mod tests {
             .duration_since(UNIX_EPOCH)
             .expect("system time should be after Unix epoch")
             .as_nanos();
-        let root = std::env::temp_dir().join(format!("markra-{name}-{nanos}"));
+        let root = std::env::temp_dir().join(format!("helbaron-{name}-{nanos}"));
         fs::create_dir_all(&root).expect("test root should be created");
         root
     }

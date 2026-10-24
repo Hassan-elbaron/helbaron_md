@@ -18,14 +18,14 @@ describe("native shell command", () => {
 
   it("reads the shell command status from Tauri", async () => {
     mockedInvoke.mockResolvedValue({
-      commandPath: "/mock-bin/markra",
-      targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+      commandPath: "/mock-bin/helbaron",
+      targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
       status: "installed"
     });
 
     await expect(getNativeShellCommandStatus()).resolves.toEqual({
-      commandPath: "/mock-bin/markra",
-      targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+      commandPath: "/mock-bin/helbaron",
+      targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
       status: "installed"
     });
 
@@ -35,13 +35,13 @@ describe("native shell command", () => {
   it("installs and uninstalls the shell command through Tauri", async () => {
     mockedInvoke
       .mockResolvedValueOnce({
-        commandPath: "/mock-bin/markra",
-        targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+        commandPath: "/mock-bin/helbaron",
+        targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
         status: "installed"
       })
       .mockResolvedValueOnce({
-        commandPath: "/mock-bin/markra",
-        targetPath: "/Applications/Markra.app/Contents/MacOS/markra",
+        commandPath: "/mock-bin/helbaron",
+        targetPath: "/Applications/Helbaron.app/Contents/MacOS/helbaron",
         status: "missing"
       });
 

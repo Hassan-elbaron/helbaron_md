@@ -5,8 +5,8 @@ import {
   normalizeMarkdownShortcuts,
   type MarkdownShortcutAction,
   type MarkdownShortcutMap
-} from "@markra/editor";
-import { t, type AppLanguage, type I18nKey } from "@markra/shared";
+} from "@helbaron/editor";
+import { t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import {
   collapseContextMenuEntries,
   contextMenuItem,
@@ -43,8 +43,8 @@ export type ContextMenuIdPrefixes = {
 };
 
 const defaultContextMenuIdPrefixes: ContextMenuIdPrefixes = {
-  editor: "markra:context",
-  fileTree: "markra:file-tree"
+  editor: "helbaron:context",
+  fileTree: "helbaron:file-tree"
 };
 
 const nativeMarkdownShortcutCommands: Partial<Record<MarkdownShortcutAction, NativeMenuCommand>> = {

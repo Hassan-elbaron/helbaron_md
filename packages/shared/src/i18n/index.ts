@@ -1,3 +1,4 @@
+import arMessages from "./locales/ar.ts";
 import deMessages from "./locales/de.ts";
 import enMessages from "./locales/en.ts";
 import esMessages from "./locales/es.ts";
@@ -17,6 +18,7 @@ export const supportedLanguages: Array<{
   code: AppLanguage;
   label: string;
 }> = [
+  { code: "ar", label: "العربية" },
   { code: "en", label: "English" },
   { code: "zh-CN", label: "简体中文" },
   { code: "zh-TW", label: "繁體中文" },
@@ -31,6 +33,7 @@ export const supportedLanguages: Array<{
 ];
 
 const aiTranslationLanguageNames: Record<AppLanguage, string> = {
+  ar: "Arabic",
   de: "German",
   en: "English",
   es: "Spanish",
@@ -45,6 +48,7 @@ const aiTranslationLanguageNames: Record<AppLanguage, string> = {
 };
 
 const dictionaries: Record<AppLanguage, LocaleMessages> = {
+  ar: arMessages,
   en: enMessages,
   "zh-CN": zhCnMessages,
   "zh-TW": zhTwMessages,
@@ -66,6 +70,12 @@ export function aiTranslationLanguageName(language: AppLanguage | null | undefin
   if (!language) return "English";
 
   return aiTranslationLanguageNames[language] ?? "English";
+}
+
+export const rtlLanguages: ReadonlySet<AppLanguage> = new Set<AppLanguage>(["ar"]);
+
+export function isRtlLanguage(language: AppLanguage | null | undefined) {
+  return Boolean(language && rtlLanguages.has(language));
 }
 
 export function t(language: AppLanguage, key: string) {

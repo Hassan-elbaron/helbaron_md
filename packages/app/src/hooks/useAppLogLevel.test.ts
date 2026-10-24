@@ -65,7 +65,7 @@ describe("useAppLogLevel", () => {
     await waitFor(() => {
       expect(set).toHaveBeenCalledWith("logLevel", "error");
       expect(save).toHaveBeenCalledTimes(1);
-      expect(emit).toHaveBeenCalledWith("markra://log-level-changed", { level: "error" });
+      expect(emit).toHaveBeenCalledWith("helbaron://log-level-changed", { level: "error" });
     });
   });
 });

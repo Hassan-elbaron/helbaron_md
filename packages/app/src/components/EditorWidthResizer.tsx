@@ -1,5 +1,6 @@
+import { horizontalDragSign } from "../lib/layout-direction";
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
-import { clampNumber, t, type AppLanguage } from "@markra/shared";
+import { clampNumber, t, type AppLanguage } from "@helbaron/shared";
 
 type EditorWidthResizerProps = {
   language?: AppLanguage;
@@ -46,6 +47,7 @@ export function EditorWidthResizer({
     event.currentTarget.setPointerCapture?.(event.pointerId);
 
     const startX = event.clientX;
+    const dragSign = horizontalDragSign(event.currentTarget);
     const startWidth = resolvedWidth;
     const previousCursor = document.body.style.cursor;
     const previousUserSelect = document.body.style.userSelect;
@@ -56,7 +58,7 @@ export function EditorWidthResizer({
     onResizeStart?.();
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
-      resizeEditor(clampNumber(startWidth + moveEvent.clientX - startX, resolvedMinWidth, resolvedMaxWidth));
+      resizeEditor(clampNumber(startWidth + (moveEvent.clientX - startX) * dragSign, resolvedMinWidth, resolvedMaxWidth));
     };
 
     const cleanup = () => {
@@ -114,7 +116,7 @@ export function EditorWidthResizer({
     : "bg-(--border-default) opacity-0 group-hover/width-resizer:bg-(--border-strong) group-hover/width-resizer:opacity-100 group-focus-within/width-resizer:bg-(--accent) group-focus-within/width-resizer:opacity-100";
 
   return (
-    <div className="editor-width-resizer-shell group/width-resizer absolute top-8 right-0 bottom-8 z-20 w-8 translate-x-1/2">
+    <div className="editor-width-resizer-shell group/width-resizer absolute top-8 end-0 bottom-8 z-20 w-8 translate-x-1/2 rtl:-translate-x-1/2">
       <div
         className="editor-width-resizer absolute inset-0 cursor-col-resize touch-none outline-none"
         role="separator"
@@ -128,7 +130,7 @@ export function EditorWidthResizer({
         onPointerDown={handleResizePointerDown}
       >
         <span
-          className={`editor-width-resizer-indicator pointer-events-none absolute top-2 right-4 bottom-2 w-px transition-colors duration-150 ease-out ${indicatorVisibilityClassName}`}
+          className={`editor-width-resizer-indicator pointer-events-none absolute top-2 end-4 bottom-2 w-px transition-colors duration-150 ease-out ${indicatorVisibilityClassName}`}
         />
       </div>
     </div>

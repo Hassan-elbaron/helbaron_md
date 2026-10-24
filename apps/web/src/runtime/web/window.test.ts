@@ -15,10 +15,10 @@ describe("web window runtime", () => {
     });
 
     await runtime.window.openExternalUrl("https://example.test");
-    await runtime.window.setWindowTitle("Markra Web");
+    await runtime.window.setWindowTitle("Helbaron Web");
 
     expect(open).toHaveBeenCalledWith("https://example.test");
-    expect(document.title).toBe("Markra Web");
+    expect(document.title).toBe("Helbaron Web");
   });
 
   it("opens settings in the current browser route without opening another page", async () => {

@@ -12,14 +12,14 @@ describe("document search", () => {
   });
 
   it("supports case-sensitive matching", () => {
-    const text = "Markra markra MARKRA";
+    const text = "Helbaron helbaron HELBARON";
 
-    expect(findSearchRanges(text, "markra")).toEqual([
-      { from: 0, to: 6 },
-      { from: 7, to: 13 },
-      { from: 14, to: 20 }
+    expect(findSearchRanges(text, "helbaron")).toEqual([
+      { from: 0, to: 8 },
+      { from: 9, to: 17 },
+      { from: 18, to: 26 }
     ]);
-    expect(findSearchRanges(text, "markra", { caseSensitive: true })).toEqual([{ from: 7, to: 13 }]);
+    expect(findSearchRanges(text, "helbaron", { caseSensitive: true })).toEqual([{ from: 9, to: 17 }]);
   });
 
   it("keeps original offsets when case folding changes string length", () => {

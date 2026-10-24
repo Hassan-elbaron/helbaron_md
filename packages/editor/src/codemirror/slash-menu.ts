@@ -10,27 +10,27 @@ import {
 } from "@codemirror/state";
 import { keymap, type EditorView } from "@codemirror/view";
 import {
-  runMarkraCommand,
-  searchMarkraUi,
-  type MarkraUiAction,
+  runHelbaronCommand,
+  searchHelbaronUi,
+  type HelbaronUiAction,
 } from "./plugin.ts";
 
-export type MarkraSlashMenuSource = "typed" | "virtual";
+export type HelbaronSlashMenuSource = "typed" | "virtual";
 
-export interface MarkraSlashMenuState {
-  readonly actions: readonly MarkraUiAction[];
+export interface HelbaronSlashMenuState {
+  readonly actions: readonly HelbaronUiAction[];
   readonly from: number | null;
   readonly open: boolean;
   readonly query: string;
   readonly selectedIndex: number;
-  readonly source: MarkraSlashMenuSource | null;
+  readonly source: HelbaronSlashMenuSource | null;
   readonly to: number | null;
 }
 
 interface SlashMenuRange {
   from: number;
   query: string;
-  source: MarkraSlashMenuSource;
+  source: HelbaronSlashMenuSource;
   to: number;
 }
 
@@ -198,7 +198,7 @@ function internalState(view: EditorView) {
 }
 
 function moveSelection(view: EditorView, amount: -1 | 1) {
-  const menu = getMarkraSlashMenuState(view);
+  const menu = getHelbaronSlashMenuState(view);
   if (!menu.open) return false;
   const count = menu.actions.length;
   const index = count === 0 ? 0 : (menu.selectedIndex + amount + count) % count;
@@ -207,9 +207,9 @@ function moveSelection(view: EditorView, amount: -1 | 1) {
 }
 
 function runSelectedAction(view: EditorView) {
-  const menu = getMarkraSlashMenuState(view);
+  const menu = getHelbaronSlashMenuState(view);
   if (!menu.open || menu.actions.length === 0) return false;
-  return runMarkraSlashMenuAction(
+  return runHelbaronSlashMenuAction(
     view,
     menu.actions[menu.selectedIndex]?.command,
   );
@@ -221,17 +221,17 @@ const slashMenuKeymap = Prec.highest(
     { key: "ArrowUp", run: (view) => moveSelection(view, -1) },
     { key: "Enter", run: runSelectedAction },
     { key: "Tab", run: runSelectedAction },
-    { key: "Escape", run: closeMarkraSlashMenu },
+    { key: "Escape", run: closeHelbaronSlashMenu },
   ]),
 );
 
-export function markraSlashMenu(): Extension {
+export function helbaronSlashMenu(): Extension {
   return [slashMenuField, slashMenuKeymap];
 }
 
-export function getMarkraSlashMenuState(
+export function getHelbaronSlashMenuState(
   view: EditorView,
-): MarkraSlashMenuState {
+): HelbaronSlashMenuState {
   const state = internalState(view);
   if (!state?.active) {
     return {
@@ -246,10 +246,10 @@ export function getMarkraSlashMenuState(
   }
 
   const { active } = state;
-  const actions = searchMarkraUi(view, "slash-menu", active.query).map(
+  const actions = searchHelbaronUi(view, "slash-menu", active.query).map(
     (action) => ({
       ...action,
-      run: () => runMarkraSlashMenuAction(view, action.command),
+      run: () => runHelbaronSlashMenuAction(view, action.command),
     }),
   );
   const selectedIndex = Math.min(
@@ -268,7 +268,7 @@ export function getMarkraSlashMenuState(
   };
 }
 
-export function openMarkraSlashMenu(view: EditorView) {
+export function openHelbaronSlashMenu(view: EditorView) {
   if (!virtualRangeFromState(view.state)) return false;
   view.dispatch({ effects: updateSlashMenu.of({ type: "open" }) });
   // Toolbar buttons take DOM focus before their click handler runs. Restore it
@@ -277,17 +277,17 @@ export function openMarkraSlashMenu(view: EditorView) {
   return true;
 }
 
-export function closeMarkraSlashMenu(view: EditorView) {
+export function closeHelbaronSlashMenu(view: EditorView) {
   if (!internalState(view)?.active) return false;
   view.dispatch({ effects: updateSlashMenu.of({ type: "close" }) });
   return true;
 }
 
-export function runMarkraSlashMenuAction(
+export function runHelbaronSlashMenuAction(
   view: EditorView,
   commandId?: string,
 ) {
-  const menu = getMarkraSlashMenuState(view);
+  const menu = getHelbaronSlashMenuState(view);
   if (!menu.open) return false;
   const action = commandId
     ? menu.actions.find((candidate) => candidate.command === commandId)
@@ -296,14 +296,14 @@ export function runMarkraSlashMenuAction(
   const query = menu.query;
 
   // Delete the typed or virtual query first so block commands operate on the
-  // clean Markdown line, matching Markra's existing slash-command semantics.
+  // clean Markdown line, matching Helbaron's existing slash-command semantics.
   view.dispatch({
     changes: { from: menu.from, to: menu.to },
     effects: updateSlashMenu.of({ type: "close" }),
     selection: EditorSelection.cursor(menu.from),
     userEvent: "input.delete",
   });
-  const handled = runMarkraCommand(view, action.command, {
+  const handled = runHelbaronCommand(view, action.command, {
     query,
     source: "slash-menu",
   });

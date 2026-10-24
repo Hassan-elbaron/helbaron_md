@@ -9,8 +9,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { Archive, ArchiveRestore, Check, History, MessageSquarePlus, PencilLine, Search, Trash2 } from "lucide-react";
-import { Button, IconButton, PopoverSurface, SearchInput } from "@markra/ui";
-import { t, type AppLanguage, type I18nKey } from "@markra/shared";
+import { Button, IconButton, PopoverSurface, SearchInput } from "@helbaron/ui";
+import { t, type AppLanguage, type I18nKey } from "@helbaron/shared";
 import type { StoredAiAgentSessionSummary } from "../lib/settings/app-settings";
 import { anchoredPopoverStyle } from "../lib/anchored-popover";
 import { confirmNativeAiAgentSessionDelete } from "../lib/tauri";
@@ -196,7 +196,7 @@ export function AiAgentSessionMenu({
           >
             <div className="border-b border-(--border-default) p-1.5">
               <Button
-                className="w-full justify-start rounded-lg bg-(--bg-secondary) text-left font-semibold text-(--text-primary) hover:border-(--border-strong)"
+                className="w-full justify-start rounded-lg bg-(--bg-secondary) text-start font-semibold text-(--text-primary) hover:border-(--border-strong)"
                 size="md"
                 role="menuitem"
                 onClick={() => {
@@ -283,7 +283,7 @@ export function AiAgentSessionMenu({
                         ) : (
                           <>
                             <button
-                              className="grid w-full cursor-pointer gap-0.5 rounded-lg px-3 py-2 pr-24 text-left"
+                              className="grid w-full cursor-pointer gap-0.5 rounded-lg px-3 py-2 pe-24 text-start"
                               type="button"
                               role="menuitemradio"
                               aria-checked={active}
@@ -302,7 +302,7 @@ export function AiAgentSessionMenu({
                                 {formatter.format(session.updatedAt)}
                               </span>
                             </button>
-                            <div className="absolute top-2 right-2 flex items-center gap-1">
+                            <div className="absolute top-2 end-2 flex items-center gap-1">
                               <IconButton
                                 className="hover:bg-(--bg-active) focus-visible:bg-(--bg-active)"
                                 label={`${label("app.aiAgentRenameSession")} ${sessionTitle}`}

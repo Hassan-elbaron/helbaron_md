@@ -16,7 +16,7 @@ import {
   type ViewUpdate,
 } from "@codemirror/view";
 import { syntaxTreeChanged } from "./changes.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 
 export interface FoldToggleLabels {
   readonly collapseListItem: string;
@@ -136,8 +136,8 @@ class FoldToggleWidget extends WidgetType {
         : this.labels.collapseListItem;
     button.type = "button";
     button.className = heading
-      ? "markra-heading-toggle-button"
-      : "markra-list-toggle-button";
+      ? "helbaron-heading-toggle-button"
+      : "helbaron-list-toggle-button";
     button.dataset.collapsed = String(this.collapsed);
     button.ariaExpanded = String(!this.collapsed);
     button.ariaLabel = label;
@@ -162,8 +162,8 @@ function toggleDecorations(
   const decorations = toggleRanges(state).flatMap((range) => {
     const collapsed = rangeIsFolded(state, range);
     const className = range.kind === "heading"
-      ? "markra-heading-toggle-heading"
-      : "markra-list-toggle-item";
+      ? "helbaron-heading-toggle-heading"
+      : "helbaron-list-toggle-item";
     return [
       Decoration.line({
         attributes: {
@@ -203,7 +203,7 @@ class FoldToggleViewPlugin {
 }
 
 const foldToggleTheme = EditorView.baseTheme({
-  ".markra-heading-toggle-button, .markra-list-toggle-button": {
+  ".helbaron-heading-toggle-button, .helbaron-list-toggle-button": {
     background: "transparent",
     border: "0",
     color: "inherit",
@@ -213,10 +213,10 @@ const foldToggleTheme = EditorView.baseTheme({
     opacity: "0.45",
     padding: "0 0.15em",
   },
-  ".markra-heading-toggle-button::before, .markra-list-toggle-button::before": {
+  ".helbaron-heading-toggle-button::before, .helbaron-list-toggle-button::before": {
     content: '"▾"',
   },
-  '.markra-heading-toggle-button[data-collapsed="true"]::before, .markra-list-toggle-button[data-collapsed="true"]::before': {
+  '.helbaron-heading-toggle-button[data-collapsed="true"]::before, .helbaron-list-toggle-button[data-collapsed="true"]::before': {
     content: '"▸"',
   },
 });
@@ -225,8 +225,8 @@ export function foldTogglePlugin(
   options: FoldTogglePluginOptions = {},
 ) {
   const labels = { ...defaultLabels, ...options.labels };
-  return defineMarkraPlugin({
-    id: "markra.fold-toggle",
+  return defineHelbaronPlugin({
+    id: "helbaron.fold-toggle",
     extension: [
       ViewPlugin.define(
         (view) => new FoldToggleViewPlugin(view, labels),

@@ -344,7 +344,7 @@ export function StorageSettings({
               <SettingsTextInput
                 label={translate("settings.editor.s3Bucket")}
                 value={imageUpload.s3.bucket}
-                placeholder="markra-images"
+                placeholder="helbaron-images"
                 widthClassName="w-56"
                 onChange={(bucket) => updateS3ImageUpload({ bucket })}
               />

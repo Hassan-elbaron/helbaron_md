@@ -1,5 +1,5 @@
 {
-  "name": "@markra/desktop",
+  "name": "@helbaron/desktop",
   "version": "2.14.0",
   "license": "AGPL-3.0-only",
   "private": true,
@@ -20,9 +20,9 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@markra/app": "workspace:*",
-    "@markra/editor": "workspace:*",
-    "@markra/shared": "workspace:*",
+    "@helbaron/app": "workspace:*",
+    "@helbaron/editor": "workspace:*",
+    "@helbaron/shared": "workspace:*",
     "@tauri-apps/api": "2.11.0",
     "@tauri-apps/plugin-dialog": "2.7.1",
     "@tauri-apps/plugin-log": "2.8.0",
@@ -35,7 +35,7 @@
     "react-dom": "19.2.5"
   },
   "devDependencies": {
-    "@markra/scripts": "workspace:*",
+    "@helbaron/scripts": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "@tauri-apps/cli": "2.11.0",
     "@testing-library/jest-dom": "6.9.1",

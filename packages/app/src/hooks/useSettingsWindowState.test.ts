@@ -56,7 +56,7 @@ describe("settings window import and export", () => {
     resetAppRuntimeForTests();
   });
 
-  it("exports the current app settings to a Markra settings file", async () => {
+  it("exports the current app settings to a Helbaron settings file", async () => {
     const defaultRuntime = createDefaultAppRuntime();
     const saveSettingsFile = vi.fn(async (input) => ({
       name: input.suggestedName,
@@ -76,11 +76,11 @@ describe("settings window import and export", () => {
     });
 
     expect(saveSettingsFile).toHaveBeenCalledWith({
-      suggestedName: "markra-settings.json",
+      suggestedName: "helbaron-settings.json",
       contents: expect.any(String)
     });
     expect(JSON.parse(saveSettingsFile.mock.calls[0][0].contents)).toMatchObject({
-      format: "markra-settings",
+      format: "helbaron-settings",
       version: 1
     });
     expect(mockedShowAppToast).toHaveBeenCalledWith({
@@ -89,11 +89,11 @@ describe("settings window import and export", () => {
     });
   });
 
-  it("imports settings from a selected Markra settings file and refreshes the panel state", async () => {
+  it("imports settings from a selected Helbaron settings file and refreshes the panel state", async () => {
     const defaultRuntime = createDefaultAppRuntime();
     const emit = vi.fn(async () => undefined);
     const importedSettings = {
-      format: "markra-settings",
+      format: "helbaron-settings",
       version: 1,
       exportedAt: "2030-01-02T03:04:05.000Z",
       settings: {
@@ -107,8 +107,8 @@ describe("settings window import and export", () => {
     };
     const openSettingsFile = vi.fn(async () => ({
       content: JSON.stringify(importedSettings),
-      name: "markra-settings.json",
-      path: "/mock-files/markra-settings.json"
+      name: "helbaron-settings.json",
+      path: "/mock-files/helbaron-settings.json"
     }));
     configureAppRuntime({
       ...defaultRuntime,
@@ -128,7 +128,7 @@ describe("settings window import and export", () => {
       await result.current.handleImportSettings();
     });
 
-    expect(openSettingsFile).toHaveBeenCalledWith({ title: "Import Markra settings" });
+    expect(openSettingsFile).toHaveBeenCalledWith({ title: "Import Helbaron settings" });
     await waitFor(() => {
       expect(result.current.editorPreferences.bodyFontSize).toBe(20);
     });
@@ -136,7 +136,7 @@ describe("settings window import and export", () => {
       message: "Settings imported.",
       status: "success"
     });
-    expect(emit).toHaveBeenCalledWith("markra://log-level-changed", { level: "error" });
+    expect(emit).toHaveBeenCalledWith("helbaron://log-level-changed", { level: "error" });
   });
 
   it("backs up and restores portable settings through the selected remote storage", async () => {
@@ -196,14 +196,14 @@ describe("settings window import and export", () => {
 
     const backedUpFile = JSON.parse(remoteContents);
     expect(backedUpFile).toMatchObject({
-      format: "markra-settings-backup",
+      format: "helbaron-settings-backup",
       includesSensitiveSettings: false,
       version: 1
     });
     expect(backedUpFile.settings.editorPreferences.imageUpload.webdav.password).toBe("");
     expect(writeWebDavTextFile).toHaveBeenCalledWith({
       contents: expect.any(String),
-      remotePath: "markra/settings/markra-settings.json",
+      remotePath: "helbaron/settings/helbaron-settings.json",
       settings: preferences.imageUpload.webdav
     });
 
@@ -216,7 +216,7 @@ describe("settings window import and export", () => {
     });
 
     expect(readWebDavTextFile).toHaveBeenCalledWith({
-      remotePath: "markra/settings/markra-settings.json",
+      remotePath: "helbaron/settings/helbaron-settings.json",
       settings: preferences.imageUpload.webdav
     });
     await waitFor(() => {
@@ -239,11 +239,11 @@ describe("settings window import and export", () => {
 
     expect(writeS3TextFile).toHaveBeenCalledWith({
       contents: expect.any(String),
-      objectKey: "markra/settings/markra-settings.json",
+      objectKey: "helbaron/settings/helbaron-settings.json",
       settings: preferences.imageUpload.s3
     });
     expect(readS3TextFile).toHaveBeenCalledWith({
-      objectKey: "markra/settings/markra-settings.json",
+      objectKey: "helbaron/settings/helbaron-settings.json",
       settings: preferences.imageUpload.s3
     });
   });
@@ -261,8 +261,8 @@ describe("settings window import and export", () => {
     });
     const openSettingsFile = vi.fn(async () => ({
       content: localContents,
-      name: "markra-settings-backup.json",
-      path: "/mock-files/markra-settings-backup.json"
+      name: "helbaron-settings-backup.json",
+      path: "/mock-files/helbaron-settings-backup.json"
     }));
     configureAppRuntime({
       ...defaultRuntime,
@@ -280,10 +280,10 @@ describe("settings window import and export", () => {
 
     expect(saveSettingsFile).toHaveBeenCalledWith({
       contents: expect.any(String),
-      suggestedName: "markra-settings-backup.json"
+      suggestedName: "helbaron-settings-backup.json"
     });
     expect(JSON.parse(saveSettingsFile.mock.calls[0][0].contents)).toMatchObject({
-      format: "markra-settings-backup",
+      format: "helbaron-settings-backup",
       includesSensitiveSettings: false,
       version: 1
     });
@@ -350,7 +350,7 @@ describe("settings window import and export", () => {
 
     await waitFor(() => {
       expect(set).toHaveBeenCalledWith("fileIgnoreSettings", { rules: "generated/\n" });
-      expect(emit).toHaveBeenCalledWith("markra://file-ignore-settings-changed", {
+      expect(emit).toHaveBeenCalledWith("helbaron://file-ignore-settings-changed", {
         settings: { rules: "generated/\n" }
       });
       expect(result.current.fileIgnoreSettings).toEqual({ rules: "generated/\n" });
@@ -473,22 +473,22 @@ describe("settings window storage connection tests", () => {
     }
 
     expect(uploadWebDavImage).toHaveBeenCalledWith({
-      fileName: "markra-connection-test.png",
+      fileName: "helbaron-connection-test.png",
       image: expect.any(File),
       settings: providerPreferences.imageUpload.webdav
     });
     expect(uploadPicGoImage).toHaveBeenCalledWith({
-      fileName: "markra-connection-test.png",
+      fileName: "helbaron-connection-test.png",
       image: expect.any(File),
       settings: providerPreferences.imageUpload.picgo
     });
     expect(uploadS3Image).toHaveBeenCalledWith({
-      fileName: "markra-connection-test.png",
+      fileName: "helbaron-connection-test.png",
       image: expect.any(File),
       settings: providerPreferences.imageUpload.s3
     });
     const webDavUploadInput = uploadWebDavImage.mock.lastCall?.[0];
-    expect(webDavUploadInput?.image.name).toBe("markra-connection-test.png");
+    expect(webDavUploadInput?.image.name).toBe("helbaron-connection-test.png");
     expect(webDavUploadInput?.image.type).toBe("image/png");
     expect(mockedShowAppToast).toHaveBeenCalledWith({
       message: "Storage connection verified.",
@@ -537,17 +537,17 @@ describe("settings window storage connection tests", () => {
 
 describe("settings window shell command errors", () => {
   it("includes native shell command failure details when available", () => {
-    expect(shellCommandActionFailureMessage("Could not update the markra command.", "Registry write failed")).toBe(
-      "Could not update the markra command. Registry write failed"
+    expect(shellCommandActionFailureMessage("Could not update the helbaron command.", "Registry write failed")).toBe(
+      "Could not update the helbaron command. Registry write failed"
     );
-    expect(shellCommandActionFailureMessage("Could not update the markra command.", new Error("Access denied"))).toBe(
-      "Could not update the markra command. Access denied"
+    expect(shellCommandActionFailureMessage("Could not update the helbaron command.", new Error("Access denied"))).toBe(
+      "Could not update the helbaron command. Access denied"
     );
   });
 
   it("falls back to the generic shell command error", () => {
-    expect(shellCommandActionFailureMessage("Could not update the markra command.", "")).toBe(
-      "Could not update the markra command."
+    expect(shellCommandActionFailureMessage("Could not update the helbaron command.", "")).toBe(
+      "Could not update the helbaron command."
     );
   });
 });

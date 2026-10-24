@@ -5,32 +5,32 @@ import {
   type KeyBinding,
 } from "@codemirror/view";
 
-export type MarkraUiPlacement =
+export type HelbaronUiPlacement =
   | "toolbar"
   | "selection-toolbar"
   | "slash-menu"
   | "context-menu";
 
-export type MarkraKeyBinding = Omit<KeyBinding, "any" | "run" | "shift">;
+export type HelbaronKeyBinding = Omit<KeyBinding, "any" | "run" | "shift">;
 
-export interface MarkraCommandContext {
+export interface HelbaronCommandContext {
   readonly query?: string;
   readonly source?: "slash-menu" | "ui";
 }
 
-export interface MarkraCommand {
+export interface HelbaronCommand {
   readonly id: string;
   readonly label: string;
   readonly description?: string;
-  readonly keybindings?: readonly MarkraKeyBinding[];
+  readonly keybindings?: readonly HelbaronKeyBinding[];
   readonly isActive?: (view: EditorView) => boolean;
   readonly isEnabled?: (view: EditorView) => boolean;
-  readonly run: (view: EditorView, context?: MarkraCommandContext) => boolean;
+  readonly run: (view: EditorView, context?: HelbaronCommandContext) => boolean;
 }
 
-export interface MarkraUiContribution {
+export interface HelbaronUiContribution {
   readonly command: string;
-  readonly placement: MarkraUiPlacement;
+  readonly placement: HelbaronUiPlacement;
   readonly label?: string;
   readonly icon?: string;
   readonly group?: string;
@@ -39,14 +39,14 @@ export interface MarkraUiContribution {
   readonly when?: (view: EditorView) => boolean;
 }
 
-export interface MarkraPlugin {
+export interface HelbaronPlugin {
   readonly id: string;
   readonly extension?: Extension;
-  readonly commands?: readonly MarkraCommand[];
-  readonly ui?: readonly MarkraUiContribution[];
+  readonly commands?: readonly HelbaronCommand[];
+  readonly ui?: readonly HelbaronUiContribution[];
 }
 
-export interface MarkraUiAction {
+export interface HelbaronUiAction {
   readonly active: boolean;
   readonly command: string;
   readonly description?: string;
@@ -56,36 +56,36 @@ export interface MarkraUiAction {
   readonly keywords: readonly string[];
   readonly label: string;
   readonly order: number;
-  readonly placement: MarkraUiPlacement;
+  readonly placement: HelbaronUiPlacement;
   readonly plugin: string;
   run: () => boolean;
 }
 
 interface RegisteredCommand {
-  command: MarkraCommand;
+  command: HelbaronCommand;
   plugin: string;
 }
 
-interface MarkraRegistry {
+interface HelbaronRegistry {
   commands: ReadonlyMap<string, RegisteredCommand>;
-  plugins: readonly MarkraPlugin[];
-  ui: readonly MarkraUiContribution[];
+  plugins: readonly HelbaronPlugin[];
+  ui: readonly HelbaronUiContribution[];
 }
 
-function createRegistry(plugins: readonly MarkraPlugin[]): MarkraRegistry {
+function createRegistry(plugins: readonly HelbaronPlugin[]): HelbaronRegistry {
   const pluginIds = new Set<string>();
   const commands = new Map<string, RegisteredCommand>();
-  const ui: MarkraUiContribution[] = [];
+  const ui: HelbaronUiContribution[] = [];
 
   for (const plugin of plugins) {
     if (pluginIds.has(plugin.id)) {
-      throw new Error(`Duplicate Markra plugin id "${plugin.id}"`);
+      throw new Error(`Duplicate Helbaron plugin id "${plugin.id}"`);
     }
     pluginIds.add(plugin.id);
 
     for (const command of plugin.commands ?? []) {
       if (commands.has(command.id)) {
-        throw new Error(`Duplicate Markra command id "${command.id}"`);
+        throw new Error(`Duplicate Helbaron command id "${command.id}"`);
       }
       commands.set(command.id, { command, plugin: plugin.id });
     }
@@ -96,7 +96,7 @@ function createRegistry(plugins: readonly MarkraPlugin[]): MarkraRegistry {
   for (const contribution of ui) {
     if (!commands.has(contribution.command)) {
       throw new Error(
-        `Unknown Markra command id "${contribution.command}" in UI contribution`,
+        `Unknown Helbaron command id "${contribution.command}" in UI contribution`,
       );
     }
   }
@@ -104,19 +104,19 @@ function createRegistry(plugins: readonly MarkraPlugin[]): MarkraRegistry {
   return { commands, plugins: [...plugins], ui };
 }
 
-const registryFacet = Facet.define<MarkraPlugin, MarkraRegistry>({
+const registryFacet = Facet.define<HelbaronPlugin, HelbaronRegistry>({
   combine: createRegistry,
 });
 
-export function defineMarkraPlugin(plugin: MarkraPlugin): MarkraPlugin {
+export function defineHelbaronPlugin(plugin: HelbaronPlugin): HelbaronPlugin {
   if (!plugin.id.trim()) {
-    throw new Error("Markra plugin id must not be empty");
+    throw new Error("Helbaron plugin id must not be empty");
   }
   return plugin;
 }
 
-export function markraPlugins(
-  plugins: readonly MarkraPlugin[],
+export function helbaronPlugins(
+  plugins: readonly HelbaronPlugin[],
 ): Extension {
   const bindings: KeyBinding[] = [];
 
@@ -125,7 +125,7 @@ export function markraPlugins(
       for (const binding of command.keybindings ?? []) {
         bindings.push({
           ...binding,
-          run: (view) => runMarkraCommand(view, command.id),
+          run: (view) => runHelbaronCommand(view, command.id),
         });
       }
     }
@@ -140,16 +140,16 @@ export function markraPlugins(
   ];
 }
 
-export function listMarkraPlugins(
+export function listHelbaronPlugins(
   state: EditorState,
-): readonly MarkraPlugin[] {
+): readonly HelbaronPlugin[] {
   return state.facet(registryFacet).plugins;
 }
 
-export function runMarkraCommand(
+export function runHelbaronCommand(
   view: EditorView,
   id: string,
-  context?: MarkraCommandContext,
+  context?: HelbaronCommandContext,
 ) {
   const registered = view.state.facet(registryFacet).commands.get(id);
   if (!registered) return false;
@@ -157,10 +157,10 @@ export function runMarkraCommand(
   return registered.command.run(view, context);
 }
 
-export function listMarkraUi(
+export function listHelbaronUi(
   view: EditorView,
-  placement: MarkraUiPlacement,
-): MarkraUiAction[] {
+  placement: HelbaronUiPlacement,
+): HelbaronUiAction[] {
   const registry = view.state.facet(registryFacet);
 
   return registry.ui
@@ -171,7 +171,7 @@ export function listMarkraUi(
     .map((contribution) => {
       const registered = registry.commands.get(contribution.command);
       if (!registered) {
-        throw new Error(`Unknown Markra command id "${contribution.command}"`);
+        throw new Error(`Unknown Helbaron command id "${contribution.command}"`);
       }
 
       const { command, plugin } = registered;
@@ -187,7 +187,7 @@ export function listMarkraUi(
         order: contribution.order ?? 0,
         placement: contribution.placement,
         plugin,
-        run: () => runMarkraCommand(view, command.id, { source: "ui" }),
+        run: () => runHelbaronCommand(view, command.id, { source: "ui" }),
       };
     })
     .sort((left, right) => left.order - right.order || left.label.localeCompare(right.label));
@@ -197,12 +197,12 @@ function normalizedSearchText(value: string) {
   return value.normalize("NFKC").toLocaleLowerCase().replace(/\s+/gu, "");
 }
 
-export function searchMarkraUi(
+export function searchHelbaronUi(
   view: EditorView,
-  placement: MarkraUiPlacement,
+  placement: HelbaronUiPlacement,
   query: string,
 ) {
-  const actions = listMarkraUi(view, placement);
+  const actions = listHelbaronUi(view, placement);
   const normalizedQuery = normalizedSearchText(query);
   if (!normalizedQuery) return actions;
 

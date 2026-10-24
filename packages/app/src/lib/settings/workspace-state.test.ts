@@ -302,7 +302,7 @@ describe("workspace state settings", () => {
           folderPath: null,
           openFilePaths: ["/mock-files/main.md"]
         },
-        "markra-editor-1": {
+        "helbaron-editor-1": {
           aiAgentSessionId: "session-secondary",
           filePath: "/mock-files/secondary.md",
           fileTreeOpen: true,
@@ -316,7 +316,7 @@ describe("workspace state settings", () => {
     await saveStoredWorkspaceState({
       filePath: "/mock-files/secondary-next.md",
       openFilePaths: ["/mock-files/secondary-next.md"]
-    }, { windowLabel: "markra-editor-1" });
+    }, { windowLabel: "helbaron-editor-1" });
 
     expect(store.set).toHaveBeenCalledWith("workspace", {
       openWindows: [],
@@ -329,7 +329,7 @@ describe("workspace state settings", () => {
           folderPath: null,
           openFilePaths: ["/mock-files/main.md"]
         },
-        "markra-editor-1": {
+        "helbaron-editor-1": {
           aiAgentSessionId: "session-secondary",
           filePath: "/mock-files/secondary-next.md",
           fileTreeOpen: true,
@@ -354,7 +354,7 @@ describe("workspace state settings", () => {
           openFilePaths: ["/mock-files/main.md"],
           recentFoldersOpen: true
         },
-        "markra-editor-1": {
+        "helbaron-editor-1": {
           aiAgentSessionId: "session-secondary",
           filePath: "/mock-files/secondary.md",
           fileTreeOpen: true,
@@ -368,7 +368,7 @@ describe("workspace state settings", () => {
 
     await saveStoredWorkspaceState({
       recentFoldersOpen: false
-    }, { windowLabel: "markra-editor-1" });
+    }, { windowLabel: "helbaron-editor-1" });
 
     expect(store.set).toHaveBeenCalledWith("workspace", {
       openWindows: [],
@@ -382,7 +382,7 @@ describe("workspace state settings", () => {
           openFilePaths: ["/mock-files/main.md"],
           recentFoldersOpen: true
         },
-        "markra-editor-1": {
+        "helbaron-editor-1": {
           aiAgentSessionId: "session-secondary",
           filePath: "/mock-files/secondary.md",
           fileTreeOpen: true,
@@ -413,7 +413,7 @@ describe("workspace state settings", () => {
           folderPath: null,
           openFilePaths: ["/mock-files/main.md"]
         },
-        "markra-editor-1": {
+        "helbaron-editor-1": {
           aiAgentSessionId: "session-secondary",
           filePath: "/mock-files/secondary.md",
           fileTreeOpen: true,
@@ -424,7 +424,7 @@ describe("workspace state settings", () => {
       }
     });
 
-    await expect(getStoredWorkspaceState({ windowLabel: "markra-editor-1" })).resolves.toEqual({
+    await expect(getStoredWorkspaceState({ windowLabel: "helbaron-editor-1" })).resolves.toEqual({
       aiAgentSessionId: "session-secondary",
       filePath: "/mock-files/secondary.md",
       fileTreeOpen: true,
@@ -450,7 +450,7 @@ describe("workspace state settings", () => {
       },
       window: {
         ...runtime.window,
-        getCurrentWindowLabel: async () => "markra-editor-2"
+        getCurrentWindowLabel: async () => "helbaron-editor-2"
       }
     });
     store.get.mockResolvedValue({
@@ -483,7 +483,7 @@ describe("workspace state settings", () => {
           folderPath: null,
           openFilePaths: ["/mock-files/main.md"]
         },
-        "markra-editor-2": {
+        "helbaron-editor-2": {
           aiAgentSessionId: null,
           filePath: "/mock-files/secondary.md",
           fileTreeOpen: false,

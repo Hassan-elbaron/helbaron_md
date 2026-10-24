@@ -18,10 +18,10 @@ import {
   type EditorView as CodeMirrorView,
 } from "@codemirror/view";
 import {
-  highlightMarkraCode,
-  markraCodeLanguageOptions,
-  normalizeMarkraCodeLanguage,
-  type MarkraCodeLanguageOption,
+  highlightHelbaronCode,
+  helbaronCodeLanguageOptions,
+  normalizeHelbaronCodeLanguage,
+  type HelbaronCodeLanguageOption,
 } from "../code-support.ts";
 import {
   formatMermaidError,
@@ -30,16 +30,16 @@ import {
   renderMermaidToSvg,
 } from "../mermaid.ts";
 import { syntaxTreeChanged } from "./changes.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
 import {
   createMediaViewerEnlargeIcon,
   openMediaViewer,
   type MediaViewerHandle,
 } from "./media-viewer.ts";
 import {
-  markraRenderer,
-  type MarkraRendererContext,
-  type MarkraSyntaxNode,
+  helbaronRenderer,
+  type HelbaronRendererContext,
+  type HelbaronSyntaxNode,
 } from "./renderers.ts";
 
 export interface CodeBlockHighlightSpan {
@@ -60,7 +60,7 @@ export interface CodeBlockPreviewPluginOptions {
     context: CodeBlockHighlightContext,
   ) => readonly CodeBlockHighlightSpan[];
   labels?: Partial<CodeBlockPreviewLabels>;
-  languages?: readonly MarkraCodeLanguageOption[];
+  languages?: readonly HelbaronCodeLanguageOption[];
   plainTextLabel?: string;
   showLineNumbers?: boolean;
   renderMermaid?: (
@@ -84,7 +84,7 @@ export interface CodeBlockPreviewLabels {
 
 interface CodeBlockParts {
   code: string;
-  codeNode: MarkraSyntaxNode | null;
+  codeNode: HelbaronSyntaxNode | null;
   hasClosingFence: boolean;
   language: string;
   languageFrom: number;
@@ -159,24 +159,24 @@ const checkIconChildren = [
 ] as const;
 
 const codeBlockTheme = EditorView.baseTheme({
-  ".cm-markra-code-line": {
+  ".cm-helbaron-code-line": {
     backgroundColor: "color-mix(in srgb, currentColor 5%, transparent)",
     fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
     paddingLeft: "0.85em",
     paddingRight: "0.85em",
   },
-  ".cm-markra-code-header-line": {
+  ".cm-helbaron-code-header-line": {
     borderRadius: "0.45em 0.45em 0 0",
     paddingBottom: "0.35em",
     paddingTop: "0.35em",
   },
-  ".cm-markra-code-top-gap": {
+  ".cm-helbaron-code-top-gap": {
     height: "12px",
     margin: "0",
     pointerEvents: "none",
     width: "100%",
   },
-  ".cm-markra-code-header": {
+  ".cm-helbaron-code-header": {
     color: "color-mix(in srgb, currentColor 62%, transparent)",
     display: "inline-block",
     fontFamily: 'var(--font-ui, "Noto Sans SC Variable", sans-serif)',
@@ -184,18 +184,18 @@ const codeBlockTheme = EditorView.baseTheme({
     fontWeight: "650",
     letterSpacing: "0.04em",
   },
-  ".cm-markra-code-header-wrap": {
+  ".cm-helbaron-code-header-wrap": {
     alignItems: "center",
     display: "flex",
     gap: "0.5em",
     justifyContent: "space-between",
   },
-  ".cm-markra-code-header-actions": {
+  ".cm-helbaron-code-header-actions": {
     alignItems: "center",
     display: "inline-flex",
     gap: "0.35em",
   },
-  ".markra-code-copy-button, .markra-code-language-select": {
+  ".helbaron-code-copy-button, .helbaron-code-language-select": {
     background: "transparent",
     border: "1px solid color-mix(in srgb, currentColor 15%, transparent)",
     borderRadius: "0.35em",
@@ -204,7 +204,7 @@ const codeBlockTheme = EditorView.baseTheme({
     fontSize: "0.78em",
     minHeight: "1.65rem",
   },
-  ".markra-code-copy-button": {
+  ".helbaron-code-copy-button": {
     cursor: "pointer",
     opacity: "1",
     padding: "0.15em 0.55em",
@@ -212,14 +212,14 @@ const codeBlockTheme = EditorView.baseTheme({
     position: "static",
     transform: "none",
   },
-  ".markra-code-language-select": {
+  ".helbaron-code-language-select": {
     padding: "0.1em 0.35em",
   },
-  ".cm-markra-code-content-line": {
+  ".cm-helbaron-code-content-line": {
     borderLeft: "1px solid color-mix(in srgb, currentColor 10%, transparent)",
     borderRight: "1px solid color-mix(in srgb, currentColor 10%, transparent)",
   },
-  ".cm-markra-code-content-line[data-code-line-number]::before": {
+  ".cm-helbaron-code-content-line[data-code-line-number]::before": {
     color: "color-mix(in srgb, currentColor 38%, transparent)",
     content: "attr(data-code-line-number)",
     display: "inline-block",
@@ -228,7 +228,7 @@ const codeBlockTheme = EditorView.baseTheme({
     textAlign: "right",
     userSelect: "none",
   },
-  ".cm-markra-code-closing-line": {
+  ".cm-helbaron-code-closing-line": {
     borderRadius: "0 0 0.45em 0.45em",
     height: "3.5em",
     lineHeight: "0.75em",
@@ -236,21 +236,21 @@ const codeBlockTheme = EditorView.baseTheme({
     overflow: "visible",
     position: "relative",
   },
-  ".cm-markra-code-exit-wrap": {
+  ".cm-helbaron-code-exit-wrap": {
     display: "inline-block",
     height: "100%",
     width: "100%",
   },
-  ".cm-markra-code-exit": {
+  ".cm-helbaron-code-exit": {
     cursor: "text",
     display: "inline-block",
     height: "100%",
     width: "100%",
   },
-  ".cm-markra-code-source-line": {
+  ".cm-helbaron-code-source-line": {
     color: "color-mix(in srgb, currentColor 72%, transparent)",
   },
-  ".markra-mermaid-render": {
+  ".helbaron-mermaid-render": {
     background: "color-mix(in srgb, currentColor 3%, transparent)",
     border: "1px solid color-mix(in srgb, currentColor 12%, transparent)",
     borderRadius: "0.45em",
@@ -265,7 +265,7 @@ const codeBlockTheme = EditorView.baseTheme({
   },
   // An inline-block avoids the empty line boxes WebKit can produce around
   // CodeMirror's widget buffers while still letting the preview fill the row.
-  ".markra-code-block[data-mermaid-mode='preview']": {
+  ".helbaron-code-block[data-mermaid-mode='preview']": {
     boxSizing: "border-box",
     display: "inline-block",
     margin: "0",
@@ -273,17 +273,17 @@ const codeBlockTheme = EditorView.baseTheme({
     verticalAlign: "top",
     width: "100%",
   },
-  ".markra-code-block[data-mermaid-mode='preview'] .markra-mermaid-render": {
+  ".helbaron-code-block[data-mermaid-mode='preview'] .helbaron-mermaid-render": {
     background: "transparent",
     border: "0",
     margin: "0",
     padding: "0",
   },
-  ".markra-mermaid-render svg": {
+  ".helbaron-mermaid-render svg": {
     height: "auto",
     maxWidth: "100%",
   },
-  ".markra-mermaid-render-invalid": {
+  ".helbaron-mermaid-render-invalid": {
     fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
     fontSize: "0.86em",
     maxHeight: "18em",
@@ -310,7 +310,7 @@ class CodeBlockTopGapWidget extends WidgetType {
 
   toDOM(view: CodeMirrorView) {
     const gap = view.dom.ownerDocument.createElement("div");
-    gap.className = "cm-markra-code-top-gap";
+    gap.className = "cm-helbaron-code-top-gap";
     gap.setAttribute("aria-hidden", "true");
     gap.setAttribute(
       "data-code-line-numbers",
@@ -333,7 +333,7 @@ function codeBlockTopGapDecorations(
       if (firstLine.number === lastLine.number) return;
       const fencedLanguage = /^\s*(?:`{3,}|~{3,})\s*([^\s`]*)/u
         .exec(firstLine.text)?.[1] ?? "";
-      if (isMermaidLanguage(normalizeMarkraCodeLanguage(fencedLanguage))) {
+      if (isMermaidLanguage(normalizeHelbaronCodeLanguage(fencedLanguage))) {
         return;
       }
       // Fenced code may be indented by up to three spaces. Block widgets
@@ -376,7 +376,7 @@ class CodeBlockHeaderWidget extends WidgetType {
     readonly language: string,
     readonly languageFrom: number,
     readonly languageTo: number,
-    readonly languages: readonly MarkraCodeLanguageOption[],
+    readonly languages: readonly HelbaronCodeLanguageOption[],
     readonly openingMarkTo: number,
   ) {
     super();
@@ -404,15 +404,15 @@ class CodeBlockHeaderWidget extends WidgetType {
     const language = document.createElement("select");
     const copy = document.createElement("button");
 
-    wrapper.className = "cm-markra-code-header-wrap";
-    label.className = "cm-markra-code-header";
+    wrapper.className = "cm-helbaron-code-header-wrap";
+    label.className = "cm-helbaron-code-header";
     label.textContent = this.displayLanguage;
-    actions.className = "cm-markra-code-header-actions";
-    languageControl.className = "markra-code-language-control";
-    language.className = "markra-code-language-select";
+    actions.className = "cm-helbaron-code-header-actions";
+    languageControl.className = "helbaron-code-language-control";
+    language.className = "helbaron-code-language-select";
     language.ariaLabel = this.labels.language;
     language.disabled = view.state.readOnly;
-    copy.className = "markra-code-copy-button";
+    copy.className = "helbaron-code-copy-button";
     copy.type = "button";
     copy.ariaLabel = this.labels.copyCode;
     copy.title = this.labels.copyCode;
@@ -420,12 +420,12 @@ class CodeBlockHeaderWidget extends WidgetType {
     copy.append(
       createCodeControlIcon(
         document,
-        "markra-code-copy-icon",
+        "helbaron-code-copy-icon",
         copyIconChildren,
       ),
       createCodeControlIcon(
         document,
-        "markra-code-copy-check-icon",
+        "helbaron-code-copy-check-icon",
         checkIconChildren,
       ),
     );
@@ -450,7 +450,7 @@ class CodeBlockHeaderWidget extends WidgetType {
       event.preventDefault();
       event.stopPropagation();
       if (view.state.readOnly) return;
-      const nextLanguage = normalizeMarkraCodeLanguage(language.value);
+      const nextLanguage = normalizeHelbaronCodeLanguage(language.value);
       if (nextLanguage === this.language) return;
       view.dispatch({
         changes: this.languageFrom < this.languageTo
@@ -525,8 +525,8 @@ class CodeBlockExitWidget extends WidgetType {
     const document = view.dom.ownerDocument;
     const wrapper = document.createElement("span");
     const exit = document.createElement("span");
-    wrapper.className = "cm-markra-code-exit-wrap";
-    exit.className = "cm-markra-code-exit";
+    wrapper.className = "cm-helbaron-code-exit-wrap";
+    exit.className = "cm-helbaron-code-exit";
     exit.setAttribute("aria-hidden", "true");
 
     exit.addEventListener("mousedown", (event) => {
@@ -627,15 +627,15 @@ class MermaidPreviewWidget extends WidgetType {
     wrapper: HTMLElement,
   ) {
     if (!preview.querySelector("svg")) return;
-    wrapper.querySelector(".markra-mermaid-zoom-button")?.remove();
+    wrapper.querySelector(".helbaron-mermaid-zoom-button")?.remove();
     const button = view.dom.ownerDocument.createElement("button");
     button.type = "button";
-    button.className = "markra-mermaid-zoom-button";
+    button.className = "helbaron-mermaid-zoom-button";
     button.ariaLabel = "Enlarge Mermaid diagram";
     button.title = "Enlarge Mermaid diagram";
     button.append(createMediaViewerEnlargeIcon(
       view.dom.ownerDocument,
-      "markra-mermaid-zoom-icon",
+      "helbaron-mermaid-zoom-icon",
     ));
     button.addEventListener("mousedown", (event) => event.stopPropagation());
     button.addEventListener("click", (event) => {
@@ -656,9 +656,9 @@ class MermaidPreviewWidget extends WidgetType {
       renderToken: 0,
     };
     mermaidPreviewRuntimes.set(wrapper, runtime);
-    wrapper.className = "markra-code-block";
+    wrapper.className = "helbaron-code-block";
     wrapper.dataset.mermaidMode = "preview";
-    preview.className = "markra-mermaid-render";
+    preview.className = "helbaron-mermaid-render";
     preview.tabIndex = 0;
     preview.ariaLabel = this.labels.mermaidDiagram;
     preview.setAttribute("aria-busy", "true");
@@ -695,7 +695,7 @@ class MermaidPreviewWidget extends WidgetType {
           if (token !== runtime.renderToken) return;
           this.closeViewer(runtime);
           preview.innerHTML = svg;
-          preview.classList.remove("markra-mermaid-render-invalid");
+          preview.classList.remove("helbaron-mermaid-render-invalid");
           delete preview.dataset.error;
           removeEmptyMermaidLabels(preview);
           this.appendZoomButton(runtime, view, preview, wrapper);
@@ -705,9 +705,9 @@ class MermaidPreviewWidget extends WidgetType {
         .catch((error: unknown) => {
           if (token !== runtime.renderToken) return;
           this.closeViewer(runtime);
-          wrapper.querySelector(".markra-mermaid-zoom-button")?.remove();
+          wrapper.querySelector(".helbaron-mermaid-zoom-button")?.remove();
           preview.textContent = formatMermaidError(error, this.labels.mermaidError);
-          preview.classList.add("markra-mermaid-render-invalid");
+          preview.classList.add("helbaron-mermaid-render-invalid");
           preview.dataset.error = "true";
           preview.setAttribute("aria-busy", "false");
           view.requestMeasure();
@@ -744,7 +744,7 @@ class MermaidPreviewWidget extends WidgetType {
 
 function codeBlockParts(
   state: EditorState,
-  node: MarkraSyntaxNode,
+  node: HelbaronSyntaxNode,
 ): CodeBlockParts {
   const codeNode = node.getChild("CodeText");
   const infoNode = node.getChild("CodeInfo");
@@ -757,7 +757,7 @@ function codeBlockParts(
     code: codeNode ? state.sliceDoc(codeNode.from, codeNode.to) : "",
     codeNode,
     hasClosingFence: node.getChildren("CodeMark").length > 1,
-    language: normalizeMarkraCodeLanguage(rawLanguage),
+    language: normalizeHelbaronCodeLanguage(rawLanguage),
     languageFrom: infoNode?.from ?? openingMark?.to ?? node.from,
     languageTo: infoNode ? infoNode.from + rawLanguage.length : openingMark?.to ?? node.from,
     openingMarkTo: openingMark?.to ?? node.from,
@@ -798,7 +798,7 @@ function readMermaidPreviewBlocks(state: EditorState) {
   syntaxTree(state).iterate({
     enter(node) {
       if (node.type.name !== "FencedCode") return;
-      const parts = codeBlockParts(state, node.node as MarkraSyntaxNode);
+      const parts = codeBlockParts(state, node.node as HelbaronSyntaxNode);
       if (
         !parts.codeNode ||
         !parts.code.trim() ||
@@ -1086,7 +1086,7 @@ function fencedCodeAtPosition(state: EditorState, position: number) {
   let node: ReturnType<typeof syntaxTree>["topNode"] | null =
     syntaxTree(state).resolveInner(position, -1);
   while (node) {
-    if (node.name === "FencedCode") return node as MarkraSyntaxNode;
+    if (node.name === "FencedCode") return node as HelbaronSyntaxNode;
     node = node.parent;
   }
   return null;
@@ -1378,7 +1378,7 @@ const codeBlockPointerHandlers = EditorView.domEventHandlers({
   mousedown(event, view) {
     if (event.button !== 0 || !(event.target instanceof Element)) return false;
     const closingLine = event.target.closest<HTMLElement>(
-      ".cm-markra-code-closing-line",
+      ".cm-helbaron-code-closing-line",
     );
     const rawAfterFence = closingLine?.dataset.codeBlockEnd;
     if (!closingLine || rawAfterFence === undefined) return false;
@@ -1397,13 +1397,13 @@ export function codeBlockPreviewPlugin(
 ) {
   const plainTextLabel = options.plainTextLabel?.trim() || "Plain text";
   const labels = { ...defaultLabels, ...options.labels };
-  const languages = options.languages ?? markraCodeLanguageOptions;
+  const languages = options.languages ?? helbaronCodeLanguageOptions;
   const showLineNumbers = options.showLineNumbers ?? true;
   const highlight = options.highlight ?? ((context: CodeBlockHighlightContext) =>
-    highlightMarkraCode(context.language, context.code));
+    highlightHelbaronCode(context.language, context.code));
   const renderMermaid = options.renderMermaid ?? ((context: CodeBlockMermaidContext) =>
     renderMermaidToSvg(context.source, {
-      idPrefix: "markra-codemirror-mermaid",
+      idPrefix: "helbaron-codemirror-mermaid",
       theme: context.theme,
     }));
   const highlightCache: Array<{
@@ -1416,7 +1416,7 @@ export function codeBlockPreviewPlugin(
   const maxCachedCodeCharacters = 1_000_000;
 
   const highlightsFor = (
-    context: MarkraRendererContext,
+    context: HelbaronRendererContext,
     parts: CodeBlockParts,
   ) => {
     if (!parts.codeNode) return [];
@@ -1465,8 +1465,8 @@ export function codeBlockPreviewPlugin(
     return highlighted;
   };
 
-  return defineMarkraPlugin({
-    id: "markra.code-block-preview",
+  return defineHelbaronPlugin({
+    id: "helbaron.code-block-preview",
     extension: [
       // Vertical margins and padding on editable lines are not part of
       // CodeMirror's height map in every WebView. State-field block widgets
@@ -1475,8 +1475,8 @@ export function codeBlockPreviewPlugin(
       createMermaidPreviewField(labels, renderMermaid),
       createCodeBlockTopGapField(showLineNumbers),
       hoveredCodeBlockField,
-      markraRenderer({
-        id: "markra.code-block-preview",
+      helbaronRenderer({
+        id: "helbaron.code-block-preview",
         nodeNames: ["FencedCode"],
         scope: "visible-range",
         render(context) {
@@ -1532,14 +1532,14 @@ export function codeBlockPreviewPlugin(
             const roleClass =
               line.number === firstLine.number
                 ? sourceRevealed
-                  ? "cm-markra-code-source-line"
-                  : "cm-markra-code-header-line"
+                  ? "cm-helbaron-code-source-line"
+                  : "cm-helbaron-code-header-line"
                 : parts.hasClosingFence && line.number === lastLine.number
                   ? sourceRevealed
-                    ? "cm-markra-code-source-line"
-                    : "cm-markra-code-closing-line"
-                  : "cm-markra-code-content-line";
-            const codeContentLine = roleClass === "cm-markra-code-content-line";
+                    ? "cm-helbaron-code-source-line"
+                    : "cm-helbaron-code-closing-line"
+                  : "cm-helbaron-code-content-line";
+            const codeContentLine = roleClass === "cm-helbaron-code-content-line";
             if (codeContentLine) codeLineNumber += 1;
             const codeBlockIdentity = {
               "data-code-block-from": String(node.from),
@@ -1557,7 +1557,7 @@ export function codeBlockPreviewPlugin(
                         ? { "data-code-line-number": String(codeLineNumber) }
                         : {}),
                     }
-                  : roleClass === "cm-markra-code-closing-line"
+                  : roleClass === "cm-helbaron-code-closing-line"
                     ? {
                         ...codeBlockIdentity,
                         ...lineNumberVisibility,
@@ -1565,7 +1565,7 @@ export function codeBlockPreviewPlugin(
                         "data-code-block-end": String(node.to),
                       }
                     : codeBlockIdentity,
-                class: `cm-markra-code-line ${roleClass}`,
+                class: `cm-helbaron-code-line ${roleClass}`,
               }).range(line.from),
             );
           }
@@ -1606,7 +1606,7 @@ export function codeBlockPreviewPlugin(
             const contentTo = Math.min(parts.codeNode.to, visibleRange.to);
             if (contentFrom < contentTo) {
               context.add(
-                Decoration.mark({ class: "cm-markra-code-content" }).range(
+                Decoration.mark({ class: "cm-helbaron-code-content" }).range(
                   contentFrom,
                   contentTo,
                 ),
@@ -1625,7 +1625,7 @@ export function codeBlockPreviewPlugin(
               if (from >= to) continue;
               context.add(
                 Decoration.mark({
-                  class: `cm-markra-code-token ${span.className}`,
+                  class: `cm-helbaron-code-token ${span.className}`,
                 }).range(from, to),
               );
             }

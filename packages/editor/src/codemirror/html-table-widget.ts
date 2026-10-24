@@ -1,4 +1,4 @@
-import { createLucideIcon } from "@markra/shared";
+import { createLucideIcon } from "@helbaron/shared";
 import { TableCellsMerge, TableCellsSplit } from "lucide";
 import { createTableControls, defaultTableLabels, type TableControlLabels } from "./table-controls.ts";
 import { clearTableSelection, activeTableCell, placeTableCellCaret, tableCellCaretOffset, createTableCaretHost, tableCaretPlaceholder } from "./table-selection.ts";
@@ -51,17 +51,17 @@ function contentPoint(element: HTMLElement): CellFocus {
   return { table: Number(element.dataset.table), row: Number(element.dataset.row), column: Number(element.dataset.column) };
 }
 function refreshCellCaret(content: HTMLElement) {
-  content.querySelectorAll("[data-markra-caret-break]").forEach(element => element.remove());
+  content.querySelectorAll("[data-helbaron-caret-break]").forEach(element => element.remove());
   let last = content.lastChild;
   while (last?.nodeType === Node.TEXT_NODE && !last.textContent) last = last.previousSibling;
   // Browsers need one extra trailing break to display the caret after an authored final line break.
   if (!last || (last instanceof Element && last.tagName === "BR")) {
     const br = content.ownerDocument.createElement("br");
-    br.dataset.markraCaretBreak = "true"; content.append(br);
+    br.dataset.helbaronCaretBreak = "true"; content.append(br);
   }
 }
 function insertCellText(content: HTMLElement, text: string) {
-  content.querySelectorAll("[data-markra-caret-break]").forEach(element => element.remove());
+  content.querySelectorAll("[data-helbaron-caret-break]").forEach(element => element.remove());
   const document = content.ownerDocument;
   const selection = document.getSelection();
   let range = selection?.rangeCount ? selection.getRangeAt(0) : document.createRange();
@@ -69,7 +69,7 @@ function insertCellText(content: HTMLElement, text: string) {
   range.deleteContents();
   const fragment = document.createDocumentFragment();
   text.replace(/\r\n?/gu, "\n").split("\n").forEach((part, index) => {
-    if (index) { const br = document.createElement("br"); br.dataset.markraSourceBreak = "true"; fragment.append(br); }
+    if (index) { const br = document.createElement("br"); br.dataset.helbaronSourceBreak = "true"; fragment.append(br); }
     fragment.append(document.createTextNode(part));
   });
   const last = fragment.lastChild;
@@ -103,7 +103,7 @@ export class HtmlTableWidget extends WidgetType {
     const ownInput = previous.runtime.pendingInput === nextRange.source;
     const sameOptions = previous.options.resolveImageSrc === this.options.resolveImageSrc && JSON.stringify(previous.labels) === JSON.stringify(this.labels);
     const active = dom.ownerDocument.activeElement;
-    const activeContent = active instanceof HTMLElement && dom.contains(active) && active.classList.contains("cm-markra-html-cell-content") ? active : null;
+    const activeContent = active instanceof HTMLElement && dom.contains(active) && active.classList.contains("cm-helbaron-html-cell-content") ? active : null;
     const focus = previous.runtime.focus ?? (activeContent ? contentPoint(activeContent) : null);
     // Input transactions must reuse their native editing host, particularly while an IME owns the caret.
     this.runtime = previous.runtime;
@@ -129,8 +129,8 @@ export class HtmlTableWidget extends WidgetType {
     if (view.state.readOnly) return;
     const cell = this.runtime.tables[focus.table]?.grid[focus.row]?.[focus.column];
     const selector = focus.resize
-      ? `.cm-markra-html-table[data-table="${focus.table}"] [role="separator"][data-column="${focus.column}"]`
-      : `.cm-markra-html-cell-content[data-table="${focus.table}"][data-row="${cell?.row ?? focus.row}"][data-column="${cell?.column ?? focus.column}"]`;
+      ? `.cm-helbaron-html-table[data-table="${focus.table}"] [role="separator"][data-column="${focus.column}"]`
+      : `.cm-helbaron-html-cell-content[data-table="${focus.table}"][data-row="${cell?.row ?? focus.row}"][data-column="${cell?.column ?? focus.column}"]`;
     const target = this.runtime.root?.querySelector<HTMLElement>(selector);
     if (target instanceof HTMLTableCellElement) placeTableCellCaret(target, tableCellCaretOffset(target));
     else target?.focus({ preventScroll: true });
@@ -174,16 +174,16 @@ export class HtmlTableWidget extends WidgetType {
 
   private cellHtml(content: HTMLElement) {
     const clone = content.cloneNode(true) as HTMLElement;
-    clone.querySelectorAll("[data-markra-table-caret-host]").forEach(host => host.replaceWith(content.ownerDocument.createTextNode((host.textContent ?? "").replaceAll(tableCaretPlaceholder, ""))));
-    clone.querySelectorAll("[data-markra-caret-break]").forEach(element => element.remove());
+    clone.querySelectorAll("[data-helbaron-table-caret-host]").forEach(host => host.replaceWith(content.ownerDocument.createTextNode((host.textContent ?? "").replaceAll(tableCaretPlaceholder, ""))));
+    clone.querySelectorAll("[data-helbaron-caret-break]").forEach(element => element.remove());
     const renderedImages = content.querySelectorAll("img");
     clone.querySelectorAll("img").forEach((image, index) => {
       const original = this.runtime.images.get(renderedImages[index]!);
       if (original !== undefined) image.setAttribute("src", original);
     });
     // A browser-created lone break is an empty caret host; authored breaks carry an internal marker.
-    const placeholder = clone.childNodes.length === 1 && clone.firstElementChild?.tagName === "BR" && !clone.firstElementChild.hasAttribute("data-markra-source-break");
-    clone.querySelectorAll("[data-markra-source-break]").forEach(element => element.removeAttribute("data-markra-source-break"));
+    const placeholder = clone.childNodes.length === 1 && clone.firstElementChild?.tagName === "BR" && !clone.firstElementChild.hasAttribute("data-helbaron-source-break");
+    clone.querySelectorAll("[data-helbaron-source-break]").forEach(element => element.removeAttribute("data-helbaron-source-break"));
     const safe = content.ownerDocument.createElement("div");
     if (!placeholder) safe.append(...sanitizeRawHtml(clone.innerHTML, content.ownerDocument));
     return safe.innerHTML;
@@ -208,7 +208,7 @@ export class HtmlTableWidget extends WidgetType {
     if (!root) return;
     this.runtime.controls.forEach(control => control.update());
     this.runtime.tables.forEach((table, index) => {
-      const wrapper = root.querySelector<HTMLElement>(`.cm-markra-html-table[data-table="${index}"]`);
+      const wrapper = root.querySelector<HTMLElement>(`.cm-helbaron-html-table[data-table="${index}"]`);
       if (!wrapper) return;
       const current = this.runtime.selections.get(index);
       const selection = current ? htmlTableSelection(table, current.anchor, current.head) : null;
@@ -262,7 +262,7 @@ export class HtmlTableWidget extends WidgetType {
     });
     const active = () => {
       const cell = activeTableCell(table);
-      if (cell?.classList.contains("cm-markra-html-cell-content")) return cell;
+      if (cell?.classList.contains("cm-helbaron-html-cell-content")) return cell;
       const session = this.runtime.editSession;
       return session?.table === index
         ? table.querySelector<HTMLTableCellElement>(`[data-row="${session.row}"][data-column="${session.column}"]`)
@@ -334,7 +334,7 @@ export class HtmlTableWidget extends WidgetType {
     });
     table.addEventListener("input", event => {
       event.stopPropagation();
-      const cell = event.target instanceof HTMLElement && event.target.classList.contains("cm-markra-html-cell-content") ? event.target : active();
+      const cell = event.target instanceof HTMLElement && event.target.classList.contains("cm-helbaron-html-cell-content") ? event.target : active();
       if (!cell) return;
       this.runtime.dirty.add(cell);
       if (this.runtime.composing || (event instanceof InputEvent && event.isComposing)) return;
@@ -393,7 +393,7 @@ export class HtmlTableWidget extends WidgetType {
       }
       if (event.key === "Tab" && !event.altKey && !event.ctrlKey && !event.metaKey) {
         this.commitCell(view, cell);
-        const cells = [...table.querySelectorAll<HTMLTableCellElement>(".cm-markra-html-cell-content")].filter(cell => cell.closest("table") === table);
+        const cells = [...table.querySelectorAll<HTMLTableCellElement>(".cm-helbaron-html-cell-content")].filter(cell => cell.closest("table") === table);
         const next = cells[cells.indexOf(cell) + (event.shiftKey ? -1 : 1)];
         if (!next) return;
         event.preventDefault();
@@ -434,7 +434,7 @@ export class HtmlTableWidget extends WidgetType {
     if (rendered.length !== this.runtime.tables.length) { this.runtime.rendering = false; return; }
     rendered.forEach((table, index) => {
       const model = this.runtime.tables[index]!;
-      const wrapper = document.createElement("div"); wrapper.className = "cm-markra-html-table cm-markra-table-wrap tableWrapper markra-table-controls-wrapper"; wrapper.dataset.table = String(index);
+      const wrapper = document.createElement("div"); wrapper.className = "cm-helbaron-html-table cm-helbaron-table-wrap tableWrapper helbaron-table-controls-wrapper"; wrapper.dataset.table = String(index);
       const merge = () => {
         const selected = this.runtime.selections.get(index); if (!selected) return;
         const selection = htmlTableSelection(this.runtime.tables[index]!, selected.anchor, selected.head); if (!selection?.mergeable) return;
@@ -449,10 +449,10 @@ export class HtmlTableWidget extends WidgetType {
         this.runtime.selections.set(index, { anchor: point, head: point }); this.runtime.focus = { table: index, ...point };
         this.change(view, splitHtmlCell(this.runtime.range.source, document, index, point));
       };
-      const scroll = document.createElement("div"); scroll.className = "markra-table-scroll";
-      const grid = document.createElement("div"); grid.className = "cm-markra-html-table-grid";
+      const scroll = document.createElement("div"); scroll.className = "helbaron-table-scroll";
+      const grid = document.createElement("div"); grid.className = "cm-helbaron-html-table-grid";
       table.replaceWith(wrapper); grid.append(table); scroll.append(grid); wrapper.append(scroll);
-      table.classList.add("cm-markra-table");
+      table.classList.add("cm-helbaron-table");
       table.setAttribute("contenteditable", String(!this.readOnly && model.valid));
       // Only cell edits have a source transaction; captions remain selectable preview content.
       table.caption?.setAttribute("contenteditable", "false");
@@ -462,7 +462,7 @@ export class HtmlTableWidget extends WidgetType {
       model.cells.forEach((cell, cellIndex) => {
         const td = renderedCells[cellIndex]; if (!td) return;
         td.dataset.htmlCell = "true"; td.dataset.row = String(cell.row); td.dataset.column = String(cell.column);
-        const content = td; content.classList.add("cm-markra-html-cell-content");
+        const content = td; content.classList.add("cm-helbaron-html-cell-content");
         content.replaceChildren();
         content.dataset.table = String(index); content.dataset.row = String(cell.row); content.dataset.column = String(cell.column);
         content.tabIndex = this.readOnly || !model.valid ? -1 : 0;
@@ -472,7 +472,7 @@ export class HtmlTableWidget extends WidgetType {
           imageSources.push(source); return this.options.resolveImageSrc?.(source) ?? source;
         } }));
         content.querySelectorAll("img[src]").forEach((image, i) => { if (imageSources[i] !== undefined) this.runtime.images.set(image, imageSources[i]!); });
-        content.querySelectorAll("br").forEach(br => { br.dataset.markraSourceBreak = "true"; });
+        content.querySelectorAll("br").forEach(br => { br.dataset.helbaronSourceBreak = "true"; });
         content.querySelectorAll("table").forEach(nested => { nested.setAttribute("contenteditable", "false"); });
         if (!this.readOnly && model.valid) refreshCellCaret(content);
         this.bindContent(view, content, index, cell);
@@ -510,8 +510,8 @@ export class HtmlTableWidget extends WidgetType {
         cellPosition: cell => ({ row: Number(cell.dataset.row), column: Number(cell.dataset.column), header: cell.dataset.row === "0" }),
         focusEditor: () => view.focus(),
         extras: [
-          { label: this.labels.mergeCells, action: "merge", run: merge, icon: createLucideIcon(document, TableCellsMerge, "markra-table-control-icon"), enabled: () => !this.runtime.composing && Boolean(selection()?.mergeable) },
-          { label: this.labels.splitCell, action: "split", run: split, icon: createLucideIcon(document, TableCellsSplit, "markra-table-control-icon"), enabled: () => {
+          { label: this.labels.mergeCells, action: "merge", run: merge, icon: createLucideIcon(document, TableCellsMerge, "helbaron-table-control-icon"), enabled: () => !this.runtime.composing && Boolean(selection()?.mergeable) },
+          { label: this.labels.splitCell, action: "split", run: split, icon: createLucideIcon(document, TableCellsSplit, "helbaron-table-control-icon"), enabled: () => {
             const selected = selection();
             return !this.runtime.composing && selected?.cells.length === 1 && (selected.cells[0]!.rowSpan > 1 || selected.cells[0]!.columnSpan > 1);
           } },
@@ -530,7 +530,7 @@ export class HtmlTableWidget extends WidgetType {
 
   toDOM(view: EditorView) {
     const root = view.dom.ownerDocument.createElement("div");
-    root.className = "markra-html-node"; root.setAttribute("contenteditable", "false");
+    root.className = "helbaron-html-node"; root.setAttribute("contenteditable", "false");
     root.dataset.type = "html"; root.dataset.value = this.runtime.range.source;
     this.runtime.root = root;
     root.addEventListener("keydown", event => {
@@ -540,8 +540,8 @@ export class HtmlTableWidget extends WidgetType {
       event.preventDefault();
       event.stopPropagation();
       const target = event.target instanceof HTMLElement ? event.target : null;
-      const table = Number(target?.closest<HTMLElement>(".cm-markra-html-table")?.dataset.table ?? 0);
-      const resize = target?.closest<HTMLElement>(".cm-markra-html-column-resize");
+      const table = Number(target?.closest<HTMLElement>(".cm-helbaron-html-table")?.dataset.table ?? 0);
+      const resize = target?.closest<HTMLElement>(".cm-helbaron-html-column-resize");
       const selected = this.runtime.selections.get(table)?.anchor ?? { row: 0, column: 0 };
       const focus = { table, ...selected, ...(resize ? { column: Number(resize.dataset.column), resize: true } : {}) };
       if (key === "y" || event.shiftKey) redo(view); else undo(view);

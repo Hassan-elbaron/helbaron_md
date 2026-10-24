@@ -1,4 +1,4 @@
-import { normalizeNullableString, pathNameFromPath } from "@markra/shared";
+import { normalizeNullableString, pathNameFromPath } from "@helbaron/shared";
 
 export type StoredWorkspaceState = {
   activeDraftId?: string | null;

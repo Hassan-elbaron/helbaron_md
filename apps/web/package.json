@@ -1,5 +1,5 @@
 {
-  "name": "@markra/web",
+  "name": "@helbaron/web",
   "version": "2.14.0",
   "license": "AGPL-3.0-only",
   "private": true,
@@ -12,16 +12,16 @@
     "typecheck:test": "tsc -p tsconfig.test.json --noEmit"
   },
   "dependencies": {
-    "@markra/app": "workspace:*",
-    "@markra/editor": "workspace:*",
-    "@markra/markdown": "workspace:*",
-    "@markra/shared": "workspace:*",
+    "@helbaron/app": "workspace:*",
+    "@helbaron/editor": "workspace:*",
+    "@helbaron/markdown": "workspace:*",
+    "@helbaron/shared": "workspace:*",
     "ignore": "7.0.5",
     "react": "19.2.5",
     "react-dom": "19.2.5"
   },
   "devDependencies": {
-    "@markra/scripts": "workspace:*",
+    "@helbaron/scripts": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "@types/node": "24.10.0",
     "@types/react": "19.2.7",

@@ -31,7 +31,7 @@ use tauri::{
     Emitter, Manager, WebviewUrl, WebviewWindowBuilder,
 };
 
-const BLANK_EDITOR_WINDOW_LABEL_PREFIX: &str = "markra-editor-";
+const BLANK_EDITOR_WINDOW_LABEL_PREFIX: &str = "helbaron-editor-";
 const BLANK_EDITOR_WINDOW_URL: &str = "index.html?blank=1";
 const MAIN_WINDOW_LABEL: &str = "main";
 const RESTORABLE_EDITOR_WINDOW_URL: &str = "index.html";
@@ -41,9 +41,9 @@ pub(crate) const MINIMIZE_CURRENT_WINDOW_COMMAND: &str = "minimize_current_windo
 pub(crate) const OPEN_BLANK_EDITOR_WINDOW_COMMAND: &str = "open_blank_editor_window";
 #[cfg(test)]
 pub(crate) const OPEN_SETTINGS_WINDOW_COMMAND: &str = "open_settings_window";
-const SETTINGS_WINDOW_LABEL: &str = "markra-settings";
+const SETTINGS_WINDOW_LABEL: &str = "helbaron-settings";
 const SETTINGS_WINDOW_URL: &str = "index.html?settings=1";
-const SETTINGS_WINDOW_TARGET_EVENT: &str = "markra://settings-window-target";
+const SETTINGS_WINDOW_TARGET_EVENT: &str = "helbaron://settings-window-target";
 const SETTINGS_WINDOW_TARGET_EXPORT_PANDOC_PATH: &str = "exportPandocPath";
 const SETTINGS_STARTUP_LANGUAGE_PARAM: &str = "startupLanguage";
 const SETTINGS_STARTUP_APPEARANCE_MODE_PARAM: &str = "startupAppearanceMode";
@@ -1681,7 +1681,7 @@ mod tests {
         ));
         assert!(should_hide_native_menu_for_window_label_on_platform(
             "windows",
-            "markra-editor-1"
+            "helbaron-editor-1"
         ));
         assert!(!should_hide_native_menu_for_window_label_on_platform(
             "macos",
@@ -1693,7 +1693,7 @@ mod tests {
         ));
         assert!(should_hide_native_menu_for_window_label_on_platform(
             "linux",
-            "markra-editor-1"
+            "helbaron-editor-1"
         ));
     }
 
@@ -1759,7 +1759,7 @@ mod tests {
             NativeMenuWindowAction::Hide
         );
         assert_eq!(
-            native_menu_window_action_for_platform("linux", "markra-editor-1"),
+            native_menu_window_action_for_platform("linux", "helbaron-editor-1"),
             NativeMenuWindowAction::Hide
         );
         assert_eq!(
@@ -1897,8 +1897,8 @@ mod tests {
     #[test]
     fn editor_window_labels_exclude_settings_window() {
         assert!(is_editor_window_label("main"));
-        assert!(is_editor_window_label("markra-editor-1"));
-        assert!(!is_editor_window_label("markra-settings"));
+        assert!(is_editor_window_label("helbaron-editor-1"));
+        assert!(!is_editor_window_label("helbaron-settings"));
     }
 
     #[test]

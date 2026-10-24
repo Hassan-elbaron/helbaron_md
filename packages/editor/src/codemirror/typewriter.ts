@@ -184,7 +184,7 @@ class CodeMirrorTypewriterView {
         ? measuredLineHeight
         : 16) / 2;
     const halfViewportHeight = this.scrollContainer.clientHeight / 2;
-    // CodeMirror is rendered inside Markra's external paper scroller. Real
+    // CodeMirror is rendered inside Helbaron's external paper scroller. Real
     // content padding is required so even the first and last lines can center.
     const bottomPadding = Math.max(
       0,

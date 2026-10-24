@@ -28,6 +28,6 @@ describe("QuickLookPreview", () => {
 
     expect(getByRole("heading", { name: "mock.md", level: 1 })).toBeInTheDocument();
     expect(getByText("Synthetic heading")).toBeInTheDocument();
-    expect(container.querySelector(".markra-quicklook-document .markdown-preview-paper")).not.toBeNull();
+    expect(container.querySelector(".helbaron-quicklook-document .markdown-preview-paper")).not.toBeNull();
   });
 });

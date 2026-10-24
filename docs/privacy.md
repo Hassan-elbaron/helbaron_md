@@ -1,6 +1,6 @@
 # Privacy And Data Flow
 
-Markra is local-first. You can open, edit, and save Markdown without an account, cloud workspace, or Markra-hosted sync service.
+Helbaron is local-first. You can open, edit, and save Markdown without an account, cloud workspace, or Helbaron-hosted sync service.
 
 This document explains what stays local and what can leave the device when optional features are configured.
 
@@ -11,11 +11,11 @@ This document explains what stays local and what can leave the device when optio
 - Web settings are stored in the browser through IndexedDB.
 - The web editor caches its built application resources for offline use. Its Service Worker does not cache document contents, provider requests, WebDAV responses, or remote images.
 - AI providers, web search, remote image upload, backup, and sync only run when configured or triggered.
-- Markra does not provide an account system or hosted document storage.
+- Helbaron does not provide an account system or hosted document storage.
 
 ## Local Data
 
-Markra may store these items locally:
+Helbaron may store these items locally:
 
 - editor preferences, theme choices, keyboard shortcuts, and export settings
 - recent files and folders
@@ -26,7 +26,7 @@ Markra may store these items locally:
 
 Clearing browser site data removes the web app's offline resources, saved file handles, settings, and unsaved drafts. It does not delete documents already saved to disk; select their original files or folders again to resume access.
 
-Provider API keys and tokens are saved in local Markra settings. Treat the local user profile and device storage as sensitive. Markra does not claim that these settings are separately encrypted by the app.
+Provider API keys and tokens are saved in local Helbaron settings. Treat the local user profile and device storage as sensitive. Helbaron does not claim that these settings are separately encrypted by the app.
 
 Desktop launches with `--user-data-dir` store settings and other persistent app data in the selected directory, including any configured credentials. This supports keeping a profile on removable storage. It does not move Markdown documents or rewrite paths to external files. See [Custom User Data Directory](../README.md#custom-user-data-directory) for launch examples and platform details.
 
@@ -54,9 +54,9 @@ Search queries and fetched result content are sent to the configured search prov
 
 ## Spellcheck Dictionaries
 
-Desktop spellcheck uses local dictionary files. Language packs are not bundled with the app; when you download or refresh one, Markra requests the spellcheck manifest and dictionary files from the Markra dictionaries GitHub Releases. Downloaded dictionaries are cached in the Tauri app data directory and verified with SHA-256 before use.
+Desktop spellcheck uses local dictionary files. Language packs are not bundled with the app; when you download or refresh one, Helbaron requests the spellcheck manifest and dictionary files from the Helbaron dictionaries GitHub Releases. Downloaded dictionaries are cached in the Tauri app data directory and verified with SHA-256 before use.
 
-Dictionary downloads do not include document content. Personal spellcheck words are stored locally with Markra settings.
+Dictionary downloads do not include document content. Personal spellcheck words are stored locally with Helbaron settings.
 
 ## Remote Image Storage
 
@@ -69,7 +69,7 @@ Supported storage paths include:
 - PicGo/PicList through a local server
 - S3-compatible object storage in the desktop runtime
 
-Remote upload settings, credentials, and public base URLs are stored locally in Markra settings.
+Remote upload settings, credentials, and public base URLs are stored locally in Helbaron settings.
 
 ## Backup
 
@@ -87,7 +87,7 @@ AI keys, custom provider headers, and remote storage credentials are excluded by
 
 Desktop WebDAV sync is optional and disabled by default. When enabled, it keeps the current notes folder and a configured remote WebDAV folder aligned.
 
-Sync can upload, download, delete, and preserve conflict copies. Sync metadata is stored in the notes folder under `.markra-sync`.
+Sync can upload, download, delete, and preserve conflict copies. Sync metadata is stored in the notes folder under `.helbaron-sync`.
 
 ## Desktop And Web Differences
 

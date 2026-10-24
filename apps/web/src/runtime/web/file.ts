@@ -1,4 +1,4 @@
-import { assetFolderMatchesPath, resolveAssetFolder } from "@markra/markdown";
+import { assetFolderMatchesPath, resolveAssetFolder } from "@helbaron/markdown";
 import type {
   AppFileRuntime,
   AppSettingsRuntime,
@@ -22,7 +22,7 @@ import type {
   SaveNativeMarkdownFileInput,
   SaveNativePdfFileInput,
   SaveNativeSettingsFileInput
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import {
   confirmWithBrowser,
   createBrowserDownload,
@@ -75,7 +75,7 @@ const settingsFilePickerTypes = [{
   accept: {
     "application/json": [".json"]
   },
-  description: "Markra settings"
+  description: "Helbaron settings"
 }];
 const webDavTextFileMaxCharacters = 2 * 1024 * 1024;
 
@@ -417,6 +417,28 @@ function createUploadedDirectoryHandle(files: File[]) {
   }
 
   return uploadedDirectoryNodeAsHandle(root);
+}
+
+function pickBrowserFile(documentOverride: Document | undefined, accept: string): Promise<File | null> {
+  const documentTarget = documentOverride ?? globalThis.document;
+  if (!documentTarget) return Promise.resolve(null);
+
+  return new Promise((resolve) => {
+    const input = documentTarget.createElement("input");
+    input.type = "file";
+    input.accept = accept;
+    input.style.display = "none";
+    input.addEventListener("change", () => {
+      resolve(input.files?.[0] ?? null);
+      input.remove();
+    }, { once: true });
+    input.addEventListener("cancel", () => {
+      resolve(null);
+      input.remove();
+    }, { once: true });
+    documentTarget.body.appendChild(input);
+    input.click();
+  });
 }
 
 export function createWebFileRuntime(
@@ -1378,6 +1400,48 @@ export function createWebFileRuntime(
       return saveDownload(input, markdownFileType);
     },
     savePandocFile: async () => null,
+    async openWordFile() {
+      const accept = { "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"] };
+      let file: File | null = null;
+
+      if (showOpenFilePicker) {
+        const [handle] = await showOpenFilePicker({
+          multiple: false,
+          types: [{ accept, description: "Word" }]
+        });
+        file = handle ? await handle.getFile() : null;
+      } else {
+        file = await pickBrowserFile(options.document, ".docx");
+      }
+      if (!file) return null;
+
+      return {
+        bytes: new Uint8Array(await file.arrayBuffer()),
+        name: file.name,
+        path: `web-upload://${encodeURIComponent(file.name)}`
+      };
+    },
+    async saveWordFile(input) {
+      const type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      const blob = new Blob([input.bytes as BlobPart], { type });
+
+      if (showSaveFilePicker) {
+        const handle = await showSaveFilePicker({
+          suggestedName: input.suggestedName,
+          types: [{ accept: { [type]: [".docx"] }, description: "Word" }]
+        });
+        await writeFileHandle(handle, blob);
+
+        return { name: handle.name, path: await registerFileHandle(handle) };
+      }
+
+      await downloadFile({ contents: blob, name: input.suggestedName, type });
+
+      return {
+        name: input.suggestedName,
+        path: `web-download://${encodeURIComponent(input.suggestedName)}`
+      };
+    },
     async savePdfFile(input: SaveNativePdfFileInput): Promise<SavedNativePdfFile> {
       await printFile({
         contents: input.contents,

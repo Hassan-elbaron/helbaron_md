@@ -1,11 +1,13 @@
 @import "tailwindcss";
 @import "@fontsource-variable/noto-sans/wght.css";
 @import "@fontsource-variable/noto-sans-sc/wght.css";
+@import "@fontsource-variable/noto-sans-arabic/wght.css";
+@import "@fontsource-variable/noto-naskh-arabic/wght.css";
 @source ".";
 @source "../../../packages/ui/src";
 @import "katex/dist/katex.css";
 
-@keyframes markra-history-panel-in {
+@keyframes helbaron-history-panel-in {
   from {
     opacity: 0;
     transform: translateY(-4px);
@@ -17,7 +19,7 @@
   }
 }
 
-@keyframes markra-ai-float-in {
+@keyframes helbaron-ai-float-in {
   from {
     opacity: 0;
     transform: translateY(8px) scale(0.98);
@@ -29,7 +31,7 @@
   }
 }
 
-@keyframes markra-ai-float-out {
+@keyframes helbaron-ai-float-out {
   from {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -41,7 +43,7 @@
   }
 }
 
-@keyframes markra-ai-command-open {
+@keyframes helbaron-ai-command-open {
   0% {
     opacity: 0;
     transform: translateY(10px) scale(0.96);
@@ -58,7 +60,7 @@
   }
 }
 
-@keyframes markra-ai-command-close {
+@keyframes helbaron-ai-command-close {
   from {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -70,7 +72,7 @@
   }
 }
 
-@keyframes markra-ai-thinking-breathe {
+@keyframes helbaron-ai-thinking-breathe {
   0% {
     opacity: 0.52;
   }
@@ -84,7 +86,7 @@
   }
 }
 
-@keyframes markra-ai-inline-shimmer {
+@keyframes helbaron-ai-inline-shimmer {
   0% {
     opacity: 0;
     transform: translateX(-80%) skewX(-10deg);
@@ -104,19 +106,19 @@
   }
 }
 
-@property --markra-ai-agent-border-angle {
+@property --helbaron-ai-agent-border-angle {
   syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
 }
 
-@keyframes markra-ai-agent-border-run {
+@keyframes helbaron-ai-agent-border-run {
   to {
-    --markra-ai-agent-border-angle: 360deg;
+    --helbaron-ai-agent-border-angle: 360deg;
   }
 }
 
-@keyframes markra-ai-preview-spin {
+@keyframes helbaron-ai-preview-spin {
   to {
     transform: rotate(360deg);
   }
@@ -207,7 +209,7 @@
     --ai-border: #dddddd;
 
     /* SC includes full-width curly quotes, so Latin text must resolve before the CJK fallback. */
-    --font-ui: "Noto Sans Variable", "Noto Sans SC Variable", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
+    --font-ui: "Noto Sans Variable", "Noto Sans Arabic Variable", "Noto Sans SC Variable", "Noto Sans SC", "Noto Sans CJK SC", sans-serif;
 
     font-family: var(--font-ui);
     color: var(--text-primary);
@@ -761,42 +763,42 @@
     }
   }
 
-  .markra-slash-menu {
+  .helbaron-slash-menu {
     @apply fixed z-[60] w-60 rounded-lg border border-(--border-default) bg-(--bg-primary) p-1 text-[13px] leading-5 text-(--text-primary);
     box-shadow: var(--ai-command-popover-shadow);
   }
 
-  .markra-slash-menu-option {
-    @apply flex h-8 w-full cursor-pointer items-center rounded-md border-0 bg-transparent px-2.5 text-left text-[13px] leading-5 font-[560] tracking-normal text-(--text-primary) outline-none transition-[background-color,color] duration-150 ease-out;
+  .helbaron-slash-menu-option {
+    @apply flex h-8 w-full cursor-pointer items-center rounded-md border-0 bg-transparent px-2.5 text-start text-[13px] leading-5 font-[560] tracking-normal text-(--text-primary) outline-none transition-[background-color,color] duration-150 ease-out;
   }
 
-  .markra-slash-menu-option:hover,
-  .markra-slash-menu-option[aria-selected="true"] {
+  .helbaron-slash-menu-option:hover,
+  .helbaron-slash-menu-option[aria-selected="true"] {
     @apply bg-(--bg-active) text-(--text-heading);
   }
 
-  .markra-slash-menu-empty {
+  .helbaron-slash-menu-empty {
     @apply px-2.5 py-2 text-[12px] leading-5 font-[560] text-(--text-secondary);
   }
 
-  .markra-plugin-toolbar {
-    @apply fixed top-12 right-4 z-[55] flex items-center gap-1 rounded-lg border border-(--border-default) bg-(--bg-primary) p-1 shadow-(--ai-command-popover-shadow);
+  .helbaron-plugin-toolbar {
+    @apply fixed top-12 end-4 z-[55] flex items-center gap-1 rounded-lg border border-(--border-default) bg-(--bg-primary) p-1 shadow-(--ai-command-popover-shadow);
   }
 
-  .markra-plugin-selection-toolbar,
-  .markra-plugin-context-menu {
+  .helbaron-plugin-selection-toolbar,
+  .helbaron-plugin-context-menu {
     @apply fixed z-[65] flex min-w-40 flex-col gap-0.5 rounded-lg border border-(--border-default) bg-(--bg-primary) p-1 shadow-(--ai-command-popover-shadow);
   }
 
-  .markra-plugin-toolbar button,
-  .markra-plugin-selection-toolbar button,
-  .markra-plugin-context-menu button {
-    @apply min-h-8 rounded-md border-0 bg-transparent px-2.5 text-left text-[13px] font-[560] text-(--text-primary);
+  .helbaron-plugin-toolbar button,
+  .helbaron-plugin-selection-toolbar button,
+  .helbaron-plugin-context-menu button {
+    @apply min-h-8 rounded-md border-0 bg-transparent px-2.5 text-start text-[13px] font-[560] text-(--text-primary);
   }
 
-  .markra-plugin-toolbar button:hover,
-  .markra-plugin-selection-toolbar button:hover,
-  .markra-plugin-context-menu button:hover {
+  .helbaron-plugin-toolbar button:hover,
+  .helbaron-plugin-selection-toolbar button:hover,
+  .helbaron-plugin-context-menu button:hover {
     @apply bg-(--bg-active) text-(--text-heading);
   }
 
@@ -900,15 +902,15 @@
     font-family: inherit;
   }
 
-  .markdown-paper .cm-markra-syntax-character {
+  .markdown-paper .cm-helbaron-syntax-character {
     color: var(--editor-markdown-syntax-color) !important;
   }
 
-  .markdown-source-paper .cm-markra-syntax-character {
+  .markdown-source-paper .cm-helbaron-syntax-character {
     color: var(--source-markdown-syntax-color) !important;
   }
 
-  .markdown-source-paper .cm-markra-source-metadata {
+  .markdown-source-paper .cm-helbaron-source-metadata {
     color: var(--text-primary) !important;
   }
 
@@ -958,15 +960,15 @@
     letter-spacing: 0.04em;
   }
 
-  .markdown-paper .markra-vim-hint,
-  .markdown-source-paper .markra-vim-hint {
+  .markdown-paper .helbaron-vim-hint,
+  .markdown-source-paper .helbaron-vim-hint {
     color: var(--editor-text-secondary, var(--text-secondary));
     opacity: 0.82;
     white-space: nowrap;
   }
 
-  .markdown-paper .markra-vim-feedback,
-  .markdown-source-paper .markra-vim-feedback {
+  .markdown-paper .helbaron-vim-feedback,
+  .markdown-source-paper .helbaron-vim-feedback {
     color: var(--editor-text-primary, var(--text-primary));
     white-space: nowrap;
   }
@@ -984,13 +986,13 @@
     max-width: none !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h1,
-  .markdown-paper .cm-line.cm-markra-h2,
-  .markdown-paper .cm-line.cm-markra-h3,
-  .markdown-paper .cm-line.cm-markra-h4,
-  .markdown-paper .cm-line.cm-markra-h5,
-  .markdown-paper .cm-line.cm-markra-h6 {
-    --markra-heading-toolbar-inline-start: -78px;
+  .markdown-paper .cm-line.cm-helbaron-h1,
+  .markdown-paper .cm-line.cm-helbaron-h2,
+  .markdown-paper .cm-line.cm-helbaron-h3,
+  .markdown-paper .cm-line.cm-helbaron-h4,
+  .markdown-paper .cm-line.cm-helbaron-h5,
+  .markdown-paper .cm-line.cm-helbaron-h6 {
+    --helbaron-heading-toolbar-inline-start: -78px;
     font-family: var(--editor-heading-font-family) !important;
     letter-spacing: var(--editor-heading-letter-spacing) !important;
     text-wrap: balance;
@@ -998,89 +1000,89 @@
 
   /* Heading controls follow typography even when the final heading has no
      foldable content and therefore no fold-toggle decoration. */
-  .markdown-paper .cm-line.cm-markra-h1 {
-    --markra-heading-control-center-offset: 0px;
+  .markdown-paper .cm-line.cm-helbaron-h1 {
+    --helbaron-heading-control-center-offset: 0px;
     color: var(--editor-h1-color) !important;
     font-size: var(--editor-h1-font-size) !important;
     font-weight: var(--editor-h1-font-weight) !important;
     line-height: var(--editor-h1-line-height) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h2 {
-    --markra-heading-control-center-offset: 0px;
+  .markdown-paper .cm-line.cm-helbaron-h2 {
+    --helbaron-heading-control-center-offset: 0px;
     color: var(--editor-h2-color) !important;
     font-size: var(--editor-h2-font-size) !important;
     font-weight: var(--editor-h2-font-weight) !important;
     line-height: var(--editor-h2-line-height) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h3 {
-    --markra-heading-control-center-offset: 0px;
+  .markdown-paper .cm-line.cm-helbaron-h3 {
+    --helbaron-heading-control-center-offset: 0px;
     color: var(--editor-h3-color) !important;
     font-size: var(--editor-h3-font-size) !important;
     font-weight: var(--editor-h3-font-weight) !important;
     line-height: var(--editor-h3-line-height) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h4 {
-    --markra-heading-control-center-offset: 0px;
+  .markdown-paper .cm-line.cm-helbaron-h4 {
+    --helbaron-heading-control-center-offset: 0px;
     color: var(--editor-h4-color) !important;
     font-size: var(--editor-h4-font-size) !important;
     font-weight: var(--editor-h4-font-weight) !important;
     line-height: var(--editor-h4-line-height) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h5,
-  .markdown-paper .cm-line.cm-markra-h6 {
-    --markra-heading-control-center-offset: 0px;
+  .markdown-paper .cm-line.cm-helbaron-h5,
+  .markdown-paper .cm-line.cm-helbaron-h6 {
+    --helbaron-heading-control-center-offset: 0px;
   }
 
-  .markdown-paper .cm-line.cm-markra-h5 {
+  .markdown-paper .cm-line.cm-helbaron-h5 {
     color: var(--editor-h5-color) !important;
     font-size: var(--editor-h5-font-size) !important;
     font-weight: var(--editor-h5-font-weight) !important;
     line-height: var(--editor-h5-line-height) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h6 {
+  .markdown-paper .cm-line.cm-helbaron-h6 {
     color: var(--editor-h6-color) !important;
     font-size: var(--editor-h6-font-size) !important;
     font-weight: var(--editor-h6-font-weight) !important;
     line-height: var(--editor-h6-line-height) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h1 > span:not(.cm-markra-link):not(.cm-markra-link-source-label):not(.cm-markra-strikethrough),
-  .markdown-paper .cm-line.cm-markra-h2 > span:not(.cm-markra-link):not(.cm-markra-link-source-label):not(.cm-markra-strikethrough),
-  .markdown-paper .cm-line.cm-markra-h3 > span:not(.cm-markra-link):not(.cm-markra-link-source-label):not(.cm-markra-strikethrough),
-  .markdown-paper .cm-line.cm-markra-h4 > span:not(.cm-markra-link):not(.cm-markra-link-source-label):not(.cm-markra-strikethrough),
-  .markdown-paper .cm-line.cm-markra-h5 > span:not(.cm-markra-link):not(.cm-markra-link-source-label):not(.cm-markra-strikethrough),
-  .markdown-paper .cm-line.cm-markra-h6 > span:not(.cm-markra-link):not(.cm-markra-link-source-label):not(.cm-markra-strikethrough) {
+  .markdown-paper .cm-line.cm-helbaron-h1 > span:not(.cm-helbaron-link):not(.cm-helbaron-link-source-label):not(.cm-helbaron-strikethrough),
+  .markdown-paper .cm-line.cm-helbaron-h2 > span:not(.cm-helbaron-link):not(.cm-helbaron-link-source-label):not(.cm-helbaron-strikethrough),
+  .markdown-paper .cm-line.cm-helbaron-h3 > span:not(.cm-helbaron-link):not(.cm-helbaron-link-source-label):not(.cm-helbaron-strikethrough),
+  .markdown-paper .cm-line.cm-helbaron-h4 > span:not(.cm-helbaron-link):not(.cm-helbaron-link-source-label):not(.cm-helbaron-strikethrough),
+  .markdown-paper .cm-line.cm-helbaron-h5 > span:not(.cm-helbaron-link):not(.cm-helbaron-link-source-label):not(.cm-helbaron-strikethrough),
+  .markdown-paper .cm-line.cm-helbaron-h6 > span:not(.cm-helbaron-link):not(.cm-helbaron-link-source-label):not(.cm-helbaron-strikethrough) {
     text-decoration: none !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-h1 > span,
-  .markdown-paper .cm-line.cm-markra-h2 > span,
-  .markdown-paper .cm-line.cm-markra-h3 > span,
-  .markdown-paper .cm-line.cm-markra-h4 > span,
-  .markdown-paper .cm-line.cm-markra-h5 > span,
-  .markdown-paper .cm-line.cm-markra-h6 > span {
+  .markdown-paper .cm-line.cm-helbaron-h1 > span,
+  .markdown-paper .cm-line.cm-helbaron-h2 > span,
+  .markdown-paper .cm-line.cm-helbaron-h3 > span,
+  .markdown-paper .cm-line.cm-helbaron-h4 > span,
+  .markdown-paper .cm-line.cm-helbaron-h5 > span,
+  .markdown-paper .cm-line.cm-helbaron-h6 > span {
     font-family: inherit !important;
     font-weight: inherit !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-paragraph {
+  .markdown-paper .cm-line.cm-helbaron-paragraph {
     color: var(--editor-text-primary);
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item {
+  .markdown-paper .cm-line.cm-helbaron-list-item {
     position: relative;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-markra-list-source="hidden"] {
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-helbaron-list-source="hidden"] {
     padding-inline-start: 1.55em !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-markra-list-source="hidden"]::before {
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-helbaron-list-source="hidden"]::before {
     position: absolute;
     inset-inline-start: 0;
     width: 1.2em;
@@ -1089,36 +1091,36 @@
     text-align: center;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-markra-list-marker-selected="true"]::before {
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-helbaron-list-marker-selected="true"]::before {
     background: color-mix(in srgb, var(--editor-caret-color, var(--accent)) 20%, transparent);
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-kind="task"][data-markra-list-source="hidden"] {
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-kind="task"][data-helbaron-list-source="hidden"] {
     padding-inline-start: 0 !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-kind="task"][data-markra-list-source="hidden"]::before {
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-kind="task"][data-helbaron-list-source="hidden"]::before {
     content: none;
   }
 
-  .markdown-paper .cm-markra-strong {
+  .markdown-paper .cm-helbaron-strong {
     color: inherit;
     font-weight: 700;
   }
 
-  .markdown-paper .cm-markra-emphasis {
+  .markdown-paper .cm-helbaron-emphasis {
     font-style: italic;
     /* CJK system fonts often lack italic faces, so live Markdown needs local style synthesis. */
     font-synthesis: style;
   }
 
-  .markdown-paper .cm-markra-inline-code {
+  .markdown-paper .cm-helbaron-inline-code {
     font-family: var(--editor-code-font-family, ui-monospace, SFMono-Regular, Menlo, monospace) !important;
     background: var(--editor-inline-code-bg) !important;
     color: var(--editor-inline-code-text) !important;
   }
 
-  .markdown-paper .cm-markra-link {
+  .markdown-paper .cm-helbaron-link {
     color: var(--editor-link-color) !important;
     cursor: var(--editor-text-cursor);
     text-decoration: underline;
@@ -1126,74 +1128,74 @@
     -webkit-user-drag: none;
   }
 
-  .markdown-paper .cm-line.cm-markra-blockquote {
-    border-left: 1px solid var(--editor-border-strong) !important;
-    padding-left: 20px !important;
+  .markdown-paper .cm-line.cm-helbaron-blockquote {
+    border-inline-start: 1px solid var(--editor-border-strong) !important;
+    padding-inline-start: 20px !important;
     color: var(--editor-text-secondary) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item + .cm-line.cm-markra-list-item {
-    --markra-block-toolbar-block-offset: 4px;
+  .markdown-paper .cm-line.cm-helbaron-list-item + .cm-line.cm-helbaron-list-item {
+    --helbaron-block-toolbar-block-offset: 4px;
     padding-block-start: 4px !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-depth="0"] +
-    .cm-line.cm-markra-list-item[data-list-depth="1"] {
-    --markra-block-toolbar-block-offset: 8px;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-depth="0"] +
+    .cm-line.cm-helbaron-list-item[data-list-depth="1"] {
+    --helbaron-block-toolbar-block-offset: 8px;
     padding-block-start: 8px !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-depth="1"] +
-    .cm-line.cm-markra-list-item[data-list-depth="0"],
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-kind="bullet"] +
-    .cm-line.cm-markra-list-item[data-list-kind="ordered"],
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-kind="ordered"] +
-    .cm-line.cm-markra-list-item[data-list-kind="task"] {
-    --markra-block-toolbar-block-offset: 12px;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-depth="1"] +
+    .cm-line.cm-helbaron-list-item[data-list-depth="0"],
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-kind="bullet"] +
+    .cm-line.cm-helbaron-list-item[data-list-kind="ordered"],
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-kind="ordered"] +
+    .cm-line.cm-helbaron-list-item[data-list-kind="task"] {
+    --helbaron-block-toolbar-block-offset: 12px;
     padding-block-start: 12px !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-markra-list-source="hidden"] {
-    --markra-list-depth-offset: 0em;
-    padding-inline-start: calc(1.4em + var(--markra-list-depth-offset)) !important;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-helbaron-list-source="hidden"] {
+    --helbaron-list-depth-offset: 0em;
+    padding-inline-start: calc(1.4em + var(--helbaron-list-depth-offset)) !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-depth="1"] {
-    --markra-list-depth-offset: 1.35em;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-depth="1"] {
+    --helbaron-list-depth-offset: 1.35em;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-depth="2"] {
-    --markra-list-depth-offset: 2.7em;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-depth="2"] {
+    --helbaron-list-depth-offset: 2.7em;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-depth="3"] {
-    --markra-list-depth-offset: 4.05em;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-depth="3"] {
+    --helbaron-list-depth-offset: 4.05em;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-markra-list-source="hidden"]::before {
-    inset-inline-start: var(--markra-list-depth-offset);
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-helbaron-list-source="hidden"]::before {
+    inset-inline-start: var(--helbaron-list-depth-offset);
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-kind="ordered"][data-markra-list-source="hidden"]::before {
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-kind="ordered"][data-helbaron-list-source="hidden"]::before {
     /* Keep multi-digit markers whole and grow into the gutter, away from editable text. */
     inset-inline-start: auto;
-    inset-inline-end: calc(100% - var(--markra-list-depth-offset) - 1.2em);
+    inset-inline-end: calc(100% - var(--helbaron-list-depth-offset) - 1.2em);
     width: max-content;
     min-width: 1.2em;
     white-space: nowrap;
     text-align: end;
   }
 
-  .markdown-paper .cm-line.cm-markra-list-item[data-list-kind="task"][data-markra-list-source="hidden"] {
-    padding-inline-start: calc(1.4em + var(--markra-list-depth-offset)) !important;
+  .markdown-paper .cm-line.cm-helbaron-list-item[data-list-kind="task"][data-helbaron-list-source="hidden"] {
+    padding-inline-start: calc(1.4em + var(--helbaron-list-depth-offset)) !important;
   }
 
   /* The opening fence is folded into this zero-height line. Keep controls
      over the first code row: vertical height or margins on the hidden line
      accumulate across blocks and shift WebKit's pointer mapping away from
      the rendered caret. */
-  .markdown-paper .cm-line.cm-markra-code-header-line {
-    --markra-block-toolbar-block-offset: 12px;
+  .markdown-paper .cm-line.cm-helbaron-code-header-line {
+    --helbaron-block-toolbar-block-offset: 12px;
     position: relative !important;
     height: 0 !important;
     min-height: 0 !important;
@@ -1206,12 +1208,12 @@
     line-height: 0 !important;
   }
 
-  .markdown-paper .cm-markra-code-header-wrap {
+  .markdown-paper .cm-helbaron-code-header-wrap {
     display: block !important;
     height: 0 !important;
   }
 
-  .markdown-paper .cm-markra-code-top-gap {
+  .markdown-paper .cm-helbaron-code-top-gap {
     box-sizing: border-box;
     width: 100% !important;
     height: 12px !important;
@@ -1224,7 +1226,7 @@
     pointer-events: none;
   }
 
-  .markdown-paper .cm-markra-code-top-gap[data-code-line-numbers="true"] {
+  .markdown-paper .cm-helbaron-code-top-gap[data-code-line-numbers="true"] {
     background: linear-gradient(
       90deg,
       var(--editor-code-line-bg) 0 43px,
@@ -1233,11 +1235,11 @@
     );
   }
 
-  .markdown-paper .cm-markra-code-header {
+  .markdown-paper .cm-helbaron-code-header {
     display: none !important;
   }
 
-  .markdown-paper .cm-markra-code-header-actions {
+  .markdown-paper .cm-helbaron-code-header-actions {
     position: absolute !important;
     top: 0;
     right: 8px;
@@ -1251,15 +1253,15 @@
     transition: opacity 150ms ease-out, transform 150ms ease-out;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-header-line[data-code-block-hovered="true"]
-    .cm-markra-code-header-actions,
-  .markdown-paper .cm-markra-code-header-actions:focus-within {
+  .markdown-paper .cm-line.cm-helbaron-code-header-line[data-code-block-hovered="true"]
+    .cm-helbaron-code-header-actions,
+  .markdown-paper .cm-helbaron-code-header-actions:focus-within {
     opacity: 1 !important;
     pointer-events: auto !important;
     transform: none;
   }
 
-  .markdown-paper .cm-markra-code-header-actions .markra-code-language-control {
+  .markdown-paper .cm-helbaron-code-header-actions .helbaron-code-language-control {
     position: relative !important;
     display: flex !important;
     padding: 0 !important;
@@ -1268,7 +1270,7 @@
     transform: none !important;
   }
 
-  .markdown-paper .cm-markra-code-header-actions .markra-code-language-select {
+  .markdown-paper .cm-helbaron-code-header-actions .helbaron-code-language-select {
     -webkit-appearance: none;
     appearance: none;
     height: 24px !important;
@@ -1282,7 +1284,7 @@
     text-align-last: center;
   }
 
-  .markdown-paper .cm-markra-code-header-actions .markra-code-language-control::after {
+  .markdown-paper .cm-helbaron-code-header-actions .helbaron-code-language-control::after {
     position: absolute;
     top: 50%;
     right: 10px;
@@ -1296,7 +1298,7 @@
     transform: translateY(-25%);
   }
 
-  .markdown-paper .cm-markra-code-header-actions .markra-code-copy-button {
+  .markdown-paper .cm-helbaron-code-header-actions .helbaron-code-copy-button {
     position: relative !important;
     top: auto !important;
     right: auto !important;
@@ -1310,7 +1312,7 @@
     transform: none !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-content-line {
+  .markdown-paper .cm-line.cm-helbaron-code-content-line {
     position: relative;
     box-sizing: border-box;
     padding-inline: 16px 16px !important;
@@ -1328,7 +1330,7 @@
     line-height: 24px !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-content-line[data-code-line-numbers="true"] {
+  .markdown-paper .cm-line.cm-helbaron-code-content-line[data-code-line-numbers="true"] {
     /* The inline line-number marker only occupies the first visual row.
        A hanging indent keeps soft-wrapped continuations out of the gutter. */
     padding-inline: 59px 16px !important;
@@ -1337,7 +1339,7 @@
 
   /* CodeMirror draws selections at z-index -1. Keeping the code surface at
      -2 leaves selections visible without placing them over tokens or gutters. */
-  .markdown-paper .cm-line.cm-markra-code-content-line::after {
+  .markdown-paper .cm-line.cm-helbaron-code-content-line::after {
     position: absolute;
     inset: 0;
     z-index: -2;
@@ -1349,7 +1351,7 @@
     pointer-events: none;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-content-line[data-code-line-numbers="true"]::after {
+  .markdown-paper .cm-line.cm-helbaron-code-content-line[data-code-line-numbers="true"]::after {
     background: linear-gradient(
       90deg,
       var(--editor-code-line-bg) 0 43px,
@@ -1360,7 +1362,7 @@
 
   /* The backdrop owns the continuous gutter divider. Keep this pseudo-element
      inside the number column so it cannot cover that divider on text rows. */
-  .markdown-paper .cm-line.cm-markra-code-content-line[data-code-line-number]::before {
+  .markdown-paper .cm-line.cm-helbaron-code-content-line[data-code-line-number]::before {
     position: relative;
     z-index: 1;
     box-sizing: border-box;
@@ -1374,12 +1376,12 @@
     font: inherit;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-header-line +
-    .cm-line.cm-markra-code-content-line {
+  .markdown-paper .cm-line.cm-helbaron-code-header-line +
+    .cm-line.cm-helbaron-code-content-line {
     padding-inline-end: 220px !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-closing-line {
+  .markdown-paper .cm-line.cm-helbaron-code-closing-line {
     position: relative !important;
     box-sizing: border-box;
     height: 12px !important;
@@ -1395,7 +1397,7 @@
     overflow: visible !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-code-closing-line[data-code-line-numbers="true"] {
+  .markdown-paper .cm-line.cm-helbaron-code-closing-line[data-code-line-numbers="true"] {
     background: linear-gradient(
       90deg,
       var(--editor-code-line-bg) 0 43px,
@@ -1404,20 +1406,20 @@
     ) !important;
   }
 
-  .markdown-paper .cm-markra-code-exit-wrap {
+  .markdown-paper .cm-helbaron-code-exit-wrap {
     display: inline-block !important;
     width: 100% !important;
     height: 12px !important;
   }
 
-  .markdown-paper .cm-markra-code-exit {
+  .markdown-paper .cm-helbaron-code-exit {
     display: inline-block !important;
     width: 100% !important;
     height: 12px !important;
     cursor: var(--editor-text-cursor);
   }
 
-  .markdown-paper .cm-markra-table-wrap {
+  .markdown-paper .cm-helbaron-table-wrap {
     display: block !important;
     margin: 0 !important;
     padding: 28px 36px 12px 0 !important;
@@ -1428,83 +1430,83 @@
     line-height: 1.65 !important;
   }
 
-  .markdown-paper .cm-line:has(> .cm-markra-table-wrap) {
+  .markdown-paper .cm-line:has(> .cm-helbaron-table-wrap) {
     /* The source line has zero height, so center block tools inside the
        reserved 24px table-control row instead of the preceding block. */
-    --markra-block-toolbar-block-offset: 12px;
+    --helbaron-block-toolbar-block-offset: 12px;
     font-size: 0 !important;
     line-height: 0 !important;
   }
 
   /* HTML tables retain authored widths and their draggable column layout. */
-  .markdown-paper .cm-markra-table-wrap[data-table-from] .cm-markra-table {
+  .markdown-paper .cm-helbaron-table-wrap[data-table-from] .cm-helbaron-table {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
   }
 
-  .markdown-paper .cm-markra-table-wrap[data-table-from] .cm-markra-table[data-width-mode="auto"] {
+  .markdown-paper .cm-helbaron-table-wrap[data-table-from] .cm-helbaron-table[data-width-mode="auto"] {
     table-layout: auto !important;
   }
 
-  .markdown-paper .cm-markra-table-wrap[data-table-from] .cm-markra-table[data-width-mode="even"] {
+  .markdown-paper .cm-helbaron-table-wrap[data-table-from] .cm-helbaron-table[data-width-mode="even"] {
     table-layout: fixed !important;
   }
 
-  .markdown-paper .cm-markra-table th,
-  .markdown-paper .cm-markra-table td {
+  .markdown-paper .cm-helbaron-table th,
+  .markdown-paper .cm-helbaron-table td {
     padding: 8px 12px !important;
     border: 1px solid var(--editor-border-strong) !important;
     caret-color: var(--editor-caret-color) !important;
     outline: none !important;
   }
 
-  .markdown-paper .cm-markra-table th[contenteditable="true"]:focus,
-  .markdown-paper .cm-markra-table td[contenteditable="true"]:focus {
+  .markdown-paper .cm-helbaron-table th[contenteditable="true"]:focus,
+  .markdown-paper .cm-helbaron-table td[contenteditable="true"]:focus {
     box-shadow: inset 0 0 0 2px var(--editor-caret-color) !important;
   }
 
-  .markdown-paper .cm-markra-table th {
+  .markdown-paper .cm-helbaron-table th {
     background: var(--editor-bg-secondary) !important;
     color: var(--editor-text-heading) !important;
   }
 
-  .markdown-paper .cm-markra-table td {
+  .markdown-paper .cm-helbaron-table td {
     background: var(--editor-paper-bg) !important;
   }
 
-  .markdown-paper .cm-markra-table tbody tr:nth-child(even) td {
+  .markdown-paper .cm-helbaron-table tbody tr:nth-child(even) td {
     background: var(--editor-bg-secondary) !important;
   }
 
-  .markdown-paper[data-editor-theme="github"] .cm-markra-table-wrap,
-  .markdown-paper[data-editor-theme="github-dark"] .cm-markra-table-wrap {
+  .markdown-paper[data-editor-theme="github"] .cm-helbaron-table-wrap,
+  .markdown-paper[data-editor-theme="github-dark"] .cm-helbaron-table-wrap {
     margin: 0 0 16px !important;
     padding: 28px 0 0 !important;
   }
 
-  .markdown-paper[data-editor-theme="github"] .cm-markra-table th,
-  .markdown-paper[data-editor-theme="github"] .cm-markra-table td,
-  .markdown-paper[data-editor-theme="github-dark"] .cm-markra-table th,
-  .markdown-paper[data-editor-theme="github-dark"] .cm-markra-table td {
+  .markdown-paper[data-editor-theme="github"] .cm-helbaron-table th,
+  .markdown-paper[data-editor-theme="github"] .cm-helbaron-table td,
+  .markdown-paper[data-editor-theme="github-dark"] .cm-helbaron-table th,
+  .markdown-paper[data-editor-theme="github-dark"] .cm-helbaron-table td {
     padding: 6px 13px !important;
     border-color: var(--editor-border) !important;
   }
 
-  .markdown-paper .cm-line:has(> .cm-markra-horizontal-rule) {
-    --markra-block-toolbar-block-offset: 22px;
+  .markdown-paper .cm-line:has(> .cm-helbaron-horizontal-rule) {
+    --helbaron-block-toolbar-block-offset: 22px;
     font-size: 0 !important;
     line-height: 0 !important;
   }
 
-  .markdown-paper .cm-markra-horizontal-rule {
+  .markdown-paper .cm-helbaron-horizontal-rule {
     /* The app draws the rule with the shared hr background; suppress the
        renderer theme's border so one Markdown block produces one line. */
     border-top: 0 !important;
     margin: 16px 0 12px !important;
   }
 
-  .markdown-paper .cm-markra-task-checkbox {
+  .markdown-paper .cm-helbaron-task-checkbox {
     width: 1rem;
     height: 1rem;
     margin: 0 0.5em 0 0;
@@ -1513,34 +1515,34 @@
   }
 
   @media (max-width: 900px) {
-    .markdown-paper .cm-line.cm-markra-h1 {
+    .markdown-paper .cm-line.cm-helbaron-h1 {
       font-size: var(--editor-h1-font-size-compact) !important;
     }
 
-    .markdown-paper .cm-line.cm-markra-h2 {
+    .markdown-paper .cm-line.cm-helbaron-h2 {
       font-size: var(--editor-h2-font-size-compact) !important;
     }
   }
 
-  .markdown-paper .markra-task-list-checkbox {
+  .markdown-paper .helbaron-task-list-checkbox {
     @apply h-4 w-4 shrink-0 cursor-pointer rounded-sm border border-(--border-strong) accent-(--accent);
     line-height: inherit;
     margin-top: calc((1lh - 1rem) / 2);
   }
 
-  .markdown-paper .markra-task-list-checkbox:disabled {
+  .markdown-paper .helbaron-task-list-checkbox:disabled {
     @apply cursor-not-allowed opacity-55;
   }
 
-  .markdown-paper .markra-task-list-content {
+  .markdown-paper .helbaron-task-list-content {
     @apply min-w-0 flex-1;
   }
 
-  .markdown-paper .markra-task-list-content > p:first-child {
+  .markdown-paper .helbaron-task-list-content > p:first-child {
     @apply mt-0;
   }
 
-  .markdown-paper .markra-task-list-content > p:last-child {
+  .markdown-paper .helbaron-task-list-content > p:last-child {
     @apply mb-0;
   }
 
@@ -1548,7 +1550,7 @@
     @apply outline-none;
   }
 
-  .markdown-paper .markra-block-toolbar {
+  .markdown-paper .helbaron-block-toolbar {
     @apply fixed z-50 flex h-6 items-center gap-0 rounded-md border border-transparent bg-transparent p-0 text-(--text-secondary) outline-none transition-[opacity,color,background-color,border-color,box-shadow] duration-150 ease-out;
     display: flex !important;
     gap: 0 !important;
@@ -1558,16 +1560,16 @@
     transform: translate(-50%, -50%);
   }
 
-  .markdown-paper .cm-line[data-markra-block-from] {
+  .markdown-paper .cm-line[data-helbaron-block-from] {
     position: relative;
   }
 
-  .markdown-paper .cm-markra-block-toolbar {
+  .markdown-paper .cm-helbaron-block-toolbar {
     /* Keep block tools anchored to the shared line gutter. List and callout
        padding must move content without pulling controls into the block. */
     position: absolute !important;
-    inset-inline-start: var(--markra-block-toolbar-inline-start, -54px);
-    top: calc(0.5lh + var(--markra-block-toolbar-block-offset, 0px));
+    inset-inline-start: var(--helbaron-block-toolbar-inline-start, -54px);
+    top: calc(0.5lh + var(--helbaron-block-toolbar-block-offset, 0px));
     z-index: 5;
     display: inline-flex !important;
     flex: none;
@@ -1577,29 +1579,29 @@
     transform: translateY(-50%);
   }
 
-  .markdown-paper .cm-line.cm-markra-h1 > .cm-markra-block-toolbar,
-  .markdown-paper .cm-line.cm-markra-h2 > .cm-markra-block-toolbar,
-  .markdown-paper .cm-line.cm-markra-h3 > .cm-markra-block-toolbar,
-  .markdown-paper .cm-line.cm-markra-h4 > .cm-markra-block-toolbar,
-  .markdown-paper .cm-line.cm-markra-h5 > .cm-markra-block-toolbar,
-  .markdown-paper .cm-line.cm-markra-h6 > .cm-markra-block-toolbar {
-    inset-inline-start: var(--markra-heading-toolbar-inline-start);
-    top: calc(50% + var(--markra-heading-control-center-offset));
+  .markdown-paper .cm-line.cm-helbaron-h1 > .cm-helbaron-block-toolbar,
+  .markdown-paper .cm-line.cm-helbaron-h2 > .cm-helbaron-block-toolbar,
+  .markdown-paper .cm-line.cm-helbaron-h3 > .cm-helbaron-block-toolbar,
+  .markdown-paper .cm-line.cm-helbaron-h4 > .cm-helbaron-block-toolbar,
+  .markdown-paper .cm-line.cm-helbaron-h5 > .cm-helbaron-block-toolbar,
+  .markdown-paper .cm-line.cm-helbaron-h6 > .cm-helbaron-block-toolbar {
+    inset-inline-start: var(--helbaron-heading-toolbar-inline-start);
+    top: calc(50% + var(--helbaron-heading-control-center-offset));
   }
 
-  .markdown-paper .cm-line.cm-markra-h1 > .cm-markra-block-toolbar::after,
-  .markdown-paper .cm-line.cm-markra-h2 > .cm-markra-block-toolbar::after,
-  .markdown-paper .cm-line.cm-markra-h3 > .cm-markra-block-toolbar::after,
-  .markdown-paper .cm-line.cm-markra-h4 > .cm-markra-block-toolbar::after,
-  .markdown-paper .cm-line.cm-markra-h5 > .cm-markra-block-toolbar::after,
-  .markdown-paper .cm-line.cm-markra-h6 > .cm-markra-block-toolbar::after {
+  .markdown-paper .cm-line.cm-helbaron-h1 > .cm-helbaron-block-toolbar::after,
+  .markdown-paper .cm-line.cm-helbaron-h2 > .cm-helbaron-block-toolbar::after,
+  .markdown-paper .cm-line.cm-helbaron-h3 > .cm-helbaron-block-toolbar::after,
+  .markdown-paper .cm-line.cm-helbaron-h4 > .cm-helbaron-block-toolbar::after,
+  .markdown-paper .cm-line.cm-helbaron-h5 > .cm-helbaron-block-toolbar::after,
+  .markdown-paper .cm-line.cm-helbaron-h6 > .cm-helbaron-block-toolbar::after {
     inset-inline-end: -8px;
     width: 8px;
   }
 
   /* The controls sit outside the line box. This invisible bridge keeps the
      line hovered while the pointer crosses the 12px gutter to the buttons. */
-  .markdown-paper .cm-markra-block-toolbar::after {
+  .markdown-paper .cm-helbaron-block-toolbar::after {
     content: "";
     position: absolute;
     inset-block: 0;
@@ -1607,14 +1609,14 @@
     width: 12px;
   }
 
-  .markdown-paper .cm-line:hover > .cm-markra-block-toolbar,
-  .markdown-paper .cm-markra-block-toolbar:focus-within,
-  .markdown-paper .cm-markra-block-toolbar[data-dragging="true"] {
+  .markdown-paper .cm-line:hover > .cm-helbaron-block-toolbar,
+  .markdown-paper .cm-helbaron-block-toolbar:focus-within,
+  .markdown-paper .cm-helbaron-block-toolbar[data-dragging="true"] {
     opacity: 0.58 !important;
     pointer-events: auto;
   }
 
-  .markdown-paper .cm-markra-block-toolbar > button {
+  .markdown-paper .cm-helbaron-block-toolbar > button {
     width: 20px;
     height: 20px;
     padding: 0 !important;
@@ -1624,30 +1626,30 @@
     line-height: 1 !important;
   }
 
-  .markdown-paper .markra-block-toolbar[data-show="true"] {
+  .markdown-paper .helbaron-block-toolbar[data-show="true"] {
     opacity: 0.58 !important;
     pointer-events: auto;
   }
 
-  .markdown-paper .markra-block-toolbar:hover,
-  .markdown-paper .markra-block-toolbar:focus-within,
-  .markdown-paper .markra-block-toolbar[data-dragging="true"] {
+  .markdown-paper .helbaron-block-toolbar:hover,
+  .markdown-paper .helbaron-block-toolbar:focus-within,
+  .markdown-paper .helbaron-block-toolbar[data-dragging="true"] {
     @apply bg-(--bg-hover) text-(--text-heading);
     opacity: 1 !important;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   }
 
-  .markdown-paper .markra-block-tool-button {
+  .markdown-paper .helbaron-block-tool-button {
     @apply grid h-5 w-5 cursor-pointer place-content-center rounded-sm border-0 bg-transparent p-0 text-(--text-secondary) outline-none transition-[color,background-color] duration-150 ease-out hover:bg-(--bg-active) hover:text-(--text-heading) focus-visible:bg-(--bg-active) focus-visible:text-(--text-heading);
     display: grid !important;
   }
 
-  .markdown-paper .markra-block-add-button {
+  .markdown-paper .helbaron-block-add-button {
     @apply relative;
   }
 
-  .markdown-paper .markra-block-add-button::before,
-  .markdown-paper .markra-block-add-button::after {
+  .markdown-paper .helbaron-block-add-button::before,
+  .markdown-paper .helbaron-block-add-button::after {
     content: "";
     position: absolute;
     left: 50%;
@@ -1659,34 +1661,34 @@
     transform: translate(-50%, -50%);
   }
 
-  .markdown-paper .markra-block-add-button::after {
+  .markdown-paper .helbaron-block-add-button::after {
     transform: translate(-50%, -50%) rotate(90deg);
   }
 
-  .markdown-paper .markra-block-drag-handle {
+  .markdown-paper .helbaron-block-drag-handle {
     @apply cursor-grab;
     grid-template-columns: repeat(2, 2.5px);
     column-gap: 4px;
     row-gap: 3px;
   }
 
-  .markdown-paper .markra-block-drag-handle[data-dragging="true"] {
+  .markdown-paper .helbaron-block-drag-handle[data-dragging="true"] {
     @apply cursor-grabbing;
   }
 
-  .markdown-paper .markra-block-drag-dot {
+  .markdown-paper .helbaron-block-drag-dot {
     @apply block rounded-full bg-current;
     width: 2.5px;
     height: 2.5px;
     opacity: 0.78;
   }
 
-  .markdown-paper .markra-block-drag-source {
+  .markdown-paper .helbaron-block-drag-source {
     opacity: 0.42;
     transition: opacity 120ms ease-out;
   }
 
-  .markdown-paper .markra-block-drop-indicator {
+  .markdown-paper .helbaron-block-drop-indicator {
     @apply fixed z-40 h-0.5 rounded-full bg-(--accent);
     opacity: 0;
     pointer-events: none;
@@ -1698,12 +1700,12 @@
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markdown-paper .markra-block-drop-indicator[data-show="true"] {
+  .markdown-paper .helbaron-block-drop-indicator[data-show="true"] {
     opacity: 1;
     transform: translateY(-50%) scaleX(1);
   }
 
-  .markdown-paper .markra-block-drag-ghost {
+  .markdown-paper .helbaron-block-drag-ghost {
     @apply fixed z-50 max-w-80 truncate rounded-sm border border-(--border-default) bg-(--bg-primary) px-2 py-1 text-sm leading-5 text-(--text-heading);
     left: 0;
     opacity: 0;
@@ -1718,7 +1720,7 @@
     will-change: transform;
   }
 
-  .markdown-paper .markra-block-drag-ghost[data-show="true"] {
+  .markdown-paper .helbaron-block-drag-ghost[data-show="true"] {
     opacity: 0.94;
   }
 
@@ -1726,8 +1728,8 @@
     cursor: grabbing;
   }
 
-  html[data-markra-block-dragging="true"],
-  html[data-markra-block-dragging="true"] body,
+  html[data-helbaron-block-dragging="true"],
+  html[data-helbaron-block-dragging="true"] body,
   .markdown-paper[data-block-dragging="true"],
   .markdown-paper[data-block-dragging="true"] * {
     cursor: grabbing;
@@ -1743,19 +1745,19 @@
     user-select: none;
   }
 
-  .markra-cm-source-search-match,
-  .markra-search-match {
+  .helbaron-cm-source-search-match,
+  .helbaron-search-match {
     border-radius: 2px;
     background: color-mix(in srgb, var(--accent) 16%, transparent);
   }
 
-  .markra-cm-source-search-match-current,
-  .markra-search-match-current {
+  .helbaron-cm-source-search-match-current,
+  .helbaron-search-match-current {
     background: color-mix(in srgb, var(--accent) 30%, transparent);
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
   }
 
-  .markra-spellcheck-error {
+  .helbaron-spellcheck-error {
     text-decoration-line: underline;
     text-decoration-style: wavy;
     text-decoration-color: var(--danger);
@@ -1892,22 +1894,22 @@
   }
 
   .markdown-paper[data-editor-theme="gothic"] {
-    --editor-font-family: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
-    --editor-heading-font-family: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+    --editor-font-family: "Avenir Next", "Noto Sans Arabic Variable", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+    --editor-heading-font-family: "Avenir Next", "Noto Sans Arabic Variable", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
   }
 
   .markdown-paper[data-editor-theme="newsprint"] {
-    --editor-font-family: Georgia, "Times New Roman", serif;
-    --editor-heading-font-family: Georgia, "Times New Roman", serif;
+    --editor-font-family: Georgia, "Noto Naskh Arabic Variable", "Times New Roman", serif;
+    --editor-heading-font-family: Georgia, "Noto Naskh Arabic Variable", "Times New Roman", serif;
   }
 
   .markdown-paper[data-editor-theme="pixyll"] {
-    --editor-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --editor-font-family: "Helvetica Neue", "Noto Sans Arabic Variable", Helvetica, Arial, sans-serif;
   }
 
   .markdown-paper[data-editor-theme="academic"] {
-    --editor-font-family: Georgia, "Times New Roman", serif;
-    --editor-heading-font-family: Georgia, "Times New Roman", serif;
+    --editor-font-family: Georgia, "Noto Naskh Arabic Variable", "Times New Roman", serif;
+    --editor-heading-font-family: Georgia, "Noto Naskh Arabic Variable", "Times New Roman", serif;
   }
 
   .markdown-paper[data-editor-theme="minimal"] {
@@ -2388,21 +2390,21 @@
     font-size: 1.5em;
   }
 
-  .markdown-paper .markra-heading-editing {
+  .markdown-paper .helbaron-heading-editing {
     @apply relative;
   }
 
-  .markdown-paper .markra-heading-level-control {
+  .markdown-paper .helbaron-heading-level-control {
     position: absolute;
-    left: -28px;
-    top: calc(50% + var(--markra-heading-control-center-offset));
+    inset-inline-start: -28px;
+    top: calc(50% + var(--helbaron-heading-control-center-offset));
     z-index: 5;
     display: inline-grid;
     margin: 0;
     transform: translateY(-50%);
   }
 
-  .markdown-paper .markra-heading-level-button {
+  .markdown-paper .helbaron-heading-level-button {
     display: grid;
     place-content: center;
     width: 1.75rem;
@@ -2423,19 +2425,19 @@
       color 150ms ease-out;
   }
 
-  .markdown-paper .markra-heading-level-button::before {
+  .markdown-paper .helbaron-heading-level-button::before {
     content: attr(data-heading-level);
   }
 
-  .markdown-paper .markra-heading-level-button:hover,
-  .markdown-paper .markra-heading-level-button:focus-visible {
+  .markdown-paper .helbaron-heading-level-button:hover,
+  .markdown-paper .helbaron-heading-level-button:focus-visible {
     border-color: var(--editor-border);
     background: var(--editor-bg-secondary);
     color: var(--editor-text-secondary);
     outline: none;
   }
 
-  .markdown-paper .markra-heading-level-list {
+  .markdown-paper .helbaron-heading-level-list {
     position: absolute;
     z-index: 70;
     inset-block-start: calc(100% + 4px);
@@ -2451,7 +2453,7 @@
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
   }
 
-  .markdown-paper .markra-heading-level-list [role="option"] {
+  .markdown-paper .helbaron-heading-level-list [role="option"] {
     display: grid;
     height: 1.5rem;
     cursor: pointer;
@@ -2467,52 +2469,52 @@
     line-height: 1;
   }
 
-  .markdown-paper .markra-heading-level-list [data-heading-level="paragraph"] {
+  .markdown-paper .helbaron-heading-level-list [data-heading-level="paragraph"] {
     grid-column: 1 / -1;
     padding-inline: 0.5rem;
   }
 
-  .markdown-paper .markra-heading-level-list [role="option"]:hover,
-  .markdown-paper .markra-heading-level-list [role="option"]:focus-visible {
+  .markdown-paper .helbaron-heading-level-list [role="option"]:hover,
+  .markdown-paper .helbaron-heading-level-list [role="option"]:focus-visible {
     background: var(--editor-bg-secondary);
     color: var(--editor-text-heading);
     outline: none;
   }
 
-  .markdown-paper .markra-heading-level-list [role="option"][aria-selected="true"] {
+  .markdown-paper .helbaron-heading-level-list [role="option"][aria-selected="true"] {
     background: var(--editor-bg-secondary);
     color: var(--editor-text-heading);
   }
 
-  .markdown-paper .cm-line.markra-heading-toggle-heading {
+  .markdown-paper .cm-line.helbaron-heading-toggle-heading {
     @apply relative;
-    --markra-heading-toolbar-inline-start: -104px;
+    --helbaron-heading-toolbar-inline-start: -104px;
   }
 
-  .markdown-paper .markra-heading-toggle-button {
+  .markdown-paper .helbaron-heading-toggle-button {
     @apply absolute inline-flex size-5 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 outline-none transition-[opacity,color,background-color] duration-150 ease-out focus-visible:bg-(--bg-hover) focus-visible:outline-none;
     color: color-mix(in srgb, var(--editor-text-secondary) 62%, transparent);
-    left: -54px;
+    inset-inline-start: -54px;
     display: inline-flex !important;
     margin: 0 !important;
     padding: 0 !important;
     opacity: 0 !important;
-    top: calc(50% + var(--markra-heading-control-center-offset));
+    top: calc(50% + var(--helbaron-heading-control-center-offset));
     transform: translateY(-50%);
   }
 
-  .markdown-paper .markra-heading-toggle-heading:hover > .markra-heading-toggle-button,
-  .markdown-paper .markra-heading-toggle-heading:focus-within > .markra-heading-toggle-button {
+  .markdown-paper .helbaron-heading-toggle-heading:hover > .helbaron-heading-toggle-button,
+  .markdown-paper .helbaron-heading-toggle-heading:focus-within > .helbaron-heading-toggle-button {
     opacity: 0.72 !important;
   }
 
-  .markdown-paper .markra-heading-toggle-button:hover,
-  .markdown-paper .markra-heading-toggle-button:focus-visible {
+  .markdown-paper .helbaron-heading-toggle-button:hover,
+  .markdown-paper .helbaron-heading-toggle-button:focus-visible {
     color: var(--editor-text-secondary);
     opacity: 1 !important;
   }
 
-  .markdown-paper .markra-heading-toggle-button::before {
+  .markdown-paper .helbaron-heading-toggle-button::before {
     content: "" !important;
     width: 7px;
     height: 7px;
@@ -2523,22 +2525,22 @@
     transition: transform 120ms ease-out;
   }
 
-  .markdown-paper .markra-heading-toggle-button[data-collapsed="true"]::before {
+  .markdown-paper .helbaron-heading-toggle-button[data-collapsed="true"]::before {
     transform: rotate(-45deg);
   }
 
-  .markdown-paper .markra-heading-collapsed-content {
+  .markdown-paper .helbaron-heading-collapsed-content {
     display: none !important;
   }
 
-  .markdown-paper .markra-list-toggle-item {
+  .markdown-paper .helbaron-list-toggle-item {
     /* Reserve the toolbar, its 12px hover bridge, and a 4px gap before the
        fold button so invisible hit areas cannot cover either control. */
-    --markra-block-toolbar-inline-start: -94px;
+    --helbaron-block-toolbar-inline-start: -94px;
     position: relative;
   }
 
-  .markdown-paper .markra-list-toggle-button {
+  .markdown-paper .helbaron-list-toggle-button {
     @apply absolute inline-flex size-4 cursor-pointer items-center justify-center rounded-sm border-0 bg-transparent p-0 outline-none transition-[opacity,color,background-color] duration-150 ease-out focus-visible:bg-(--bg-hover) focus-visible:outline-none;
     color: color-mix(in srgb, var(--editor-text-secondary) 62%, transparent);
     inset-inline-start: -36px;
@@ -2549,19 +2551,19 @@
     top: calc((1lh - 1rem) / 2);
   }
 
-  .markdown-paper .markra-list-toggle-item:hover > .markra-list-toggle-button,
-  .markdown-paper .markra-list-toggle-item:focus-within > .markra-list-toggle-button,
-  .markdown-paper .markra-list-toggle-item[data-list-collapsed="true"] > .markra-list-toggle-button {
+  .markdown-paper .helbaron-list-toggle-item:hover > .helbaron-list-toggle-button,
+  .markdown-paper .helbaron-list-toggle-item:focus-within > .helbaron-list-toggle-button,
+  .markdown-paper .helbaron-list-toggle-item[data-list-collapsed="true"] > .helbaron-list-toggle-button {
     opacity: 0.72 !important;
   }
 
-  .markdown-paper .markra-list-toggle-button:hover,
-  .markdown-paper .markra-list-toggle-button:focus-visible {
+  .markdown-paper .helbaron-list-toggle-button:hover,
+  .markdown-paper .helbaron-list-toggle-button:focus-visible {
     color: var(--editor-text-secondary);
     opacity: 1 !important;
   }
 
-  .markdown-paper .markra-list-toggle-button::before {
+  .markdown-paper .helbaron-list-toggle-button::before {
     content: "" !important;
     width: 6px;
     height: 6px;
@@ -2572,17 +2574,17 @@
     transition: transform 120ms ease-out;
   }
 
-  .markdown-paper .markra-list-toggle-button[data-collapsed="true"]::before {
+  .markdown-paper .helbaron-list-toggle-button[data-collapsed="true"]::before {
     transform: rotate(-45deg);
   }
 
-  .markdown-paper .markra-list-toggle-item > ul,
-  .markdown-paper .markra-list-toggle-item > ol {
+  .markdown-paper .helbaron-list-toggle-item > ul,
+  .markdown-paper .helbaron-list-toggle-item > ol {
     margin-left: 0.15em;
     padding-left: 1.2em;
   }
 
-  .markdown-paper .markra-list-collapsed-content {
+  .markdown-paper .helbaron-list-collapsed-content {
     display: none !important;
   }
 
@@ -2592,12 +2594,12 @@
   }
 
   .markdown-paper blockquote {
-    @apply my-4.5 mr-0 border-l border-(--border-strong) py-0 pr-0 pl-5 text-(--text-secondary);
+    @apply my-4.5 me-0 border-s border-(--border-strong) py-0 pe-0 ps-5 text-(--text-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-secondary);
   }
 
-  .markdown-paper blockquote.markra-callout {
+  .markdown-paper blockquote.helbaron-callout {
     --callout-color: oklch(57% 0.11 252);
     --callout-bg: color-mix(in srgb, var(--callout-color) 5%, var(--editor-paper-bg));
     --callout-border: color-mix(in srgb, var(--callout-color) 22%, var(--editor-border));
@@ -2608,43 +2610,43 @@
     color: var(--editor-text-primary);
   }
 
-  .markdown-paper blockquote.markra-callout-tip {
+  .markdown-paper blockquote.helbaron-callout-tip {
     --callout-color: oklch(56% 0.11 154);
   }
 
-  .markdown-paper blockquote.markra-callout-important {
+  .markdown-paper blockquote.helbaron-callout-important {
     --callout-color: oklch(55% 0.12 292);
   }
 
-  .markdown-paper blockquote.markra-callout-warning {
+  .markdown-paper blockquote.helbaron-callout-warning {
     --callout-color: oklch(62% 0.12 72);
   }
 
-  .markdown-paper blockquote.markra-callout-caution {
+  .markdown-paper blockquote.helbaron-callout-caution {
     --callout-color: oklch(57% 0.13 28);
   }
 
-  [data-theme="dark"] .markdown-paper blockquote.markra-callout,
-  [data-theme="github-dark"] .markdown-paper blockquote.markra-callout,
-  [data-theme="night"] .markdown-paper blockquote.markra-callout,
-  [data-theme="one-dark"] .markdown-paper blockquote.markra-callout,
-  [data-theme="one-dark-pro"] .markdown-paper blockquote.markra-callout,
-  [data-theme="solarized-dark"] .markdown-paper blockquote.markra-callout,
-  [data-theme="nord"] .markdown-paper blockquote.markra-callout,
-  [data-theme="catppuccin-mocha"] .markdown-paper blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="dark"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="github-dark"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="night"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="one-dark"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="one-dark-pro"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="solarized-dark"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="nord"] blockquote.markra-callout,
-  .markdown-paper[data-editor-theme="catppuccin-mocha"] blockquote.markra-callout {
+  [data-theme="dark"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="github-dark"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="night"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="one-dark"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="one-dark-pro"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="solarized-dark"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="nord"] .markdown-paper blockquote.helbaron-callout,
+  [data-theme="catppuccin-mocha"] .markdown-paper blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="dark"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="github-dark"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="night"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="one-dark"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="one-dark-pro"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="solarized-dark"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="nord"] blockquote.helbaron-callout,
+  .markdown-paper[data-editor-theme="catppuccin-mocha"] blockquote.helbaron-callout {
     --callout-bg: color-mix(in srgb, var(--callout-color) 10%, var(--editor-paper-bg));
     --callout-border: color-mix(in srgb, var(--callout-color) 32%, var(--editor-border));
   }
 
-  .markdown-paper .cm-line.cm-markra-callout {
+  .markdown-paper .cm-line.cm-helbaron-callout {
     --callout-color: oklch(57% 0.11 252) !important;
     --callout-bg: color-mix(in srgb, var(--callout-color) 5%, var(--editor-paper-bg));
     --callout-border: color-mix(in srgb, var(--callout-color) 22%, var(--editor-border));
@@ -2662,126 +2664,126 @@
     color: var(--editor-text-primary) !important;
   }
 
-  .markdown-paper .cm-line.markra-callout-first {
-    --markra-block-toolbar-block-offset: 14px;
+  .markdown-paper .cm-line.helbaron-callout-first {
+    --helbaron-block-toolbar-block-offset: 14px;
     border-block-start: 1px solid var(--callout-border) !important;
     border-start-start-radius: 7px;
     border-start-end-radius: 7px;
     padding-block-start: 14px !important;
   }
 
-  .markdown-paper .cm-line.markra-callout-last {
+  .markdown-paper .cm-line.helbaron-callout-last {
     border-block-end: 1px solid var(--callout-border) !important;
     border-end-start-radius: 7px;
     border-end-end-radius: 7px;
     padding-block-end: 14px !important;
   }
 
-  .markdown-paper .markra-callout-spacer {
+  .markdown-paper .helbaron-callout-spacer {
     height: 20px;
   }
 
-  .markdown-paper .cm-line.markra-callout-tip {
+  .markdown-paper .cm-line.helbaron-callout-tip {
     --callout-color: oklch(56% 0.11 154) !important;
   }
 
-  .markdown-paper .cm-line.markra-callout-important {
+  .markdown-paper .cm-line.helbaron-callout-important {
     --callout-color: oklch(55% 0.12 292) !important;
   }
 
-  .markdown-paper .cm-line.markra-callout-warning {
+  .markdown-paper .cm-line.helbaron-callout-warning {
     --callout-color: oklch(62% 0.12 72) !important;
   }
 
-  .markdown-paper .cm-line.markra-callout-caution {
+  .markdown-paper .cm-line.helbaron-callout-caution {
     --callout-color: oklch(57% 0.13 28) !important;
   }
 
-  [data-theme="dark"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="github-dark"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="night"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="one-dark"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="one-dark-pro"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="solarized-dark"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="nord"] .markdown-paper .cm-line.cm-markra-callout,
-  [data-theme="catppuccin-mocha"] .markdown-paper .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="dark"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="github-dark"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="night"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="one-dark"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="one-dark-pro"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="solarized-dark"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="nord"] .cm-line.cm-markra-callout,
-  .markdown-paper[data-editor-theme="catppuccin-mocha"] .cm-line.cm-markra-callout {
+  [data-theme="dark"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="github-dark"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="night"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="one-dark"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="one-dark-pro"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="solarized-dark"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="nord"] .markdown-paper .cm-line.cm-helbaron-callout,
+  [data-theme="catppuccin-mocha"] .markdown-paper .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="dark"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="github-dark"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="night"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="one-dark"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="one-dark-pro"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="solarized-dark"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="nord"] .cm-line.cm-helbaron-callout,
+  .markdown-paper[data-editor-theme="catppuccin-mocha"] .cm-line.cm-helbaron-callout {
     --callout-bg: color-mix(in srgb, var(--callout-color) 10%, var(--editor-paper-bg));
     --callout-border: color-mix(in srgb, var(--callout-color) 32%, var(--editor-border));
   }
 
-  .markdown-paper .markra-callout-header {
+  .markdown-paper .helbaron-callout-header {
     @apply mb-2 inline-flex min-h-5 items-center gap-2 text-[0.76em] leading-5 font-[720] tracking-normal;
     color: var(--callout-color);
   }
 
-  .markdown-paper .cm-line.markra-callout-first .markra-callout-type-select {
+  .markdown-paper .cm-line.helbaron-callout-first .helbaron-callout-type-select {
     position: absolute;
     inset-block-start: 14px;
     inset-inline-end: 16px;
   }
 
-  .markdown-paper .markra-callout-icon {
+  .markdown-paper .helbaron-callout-icon {
     @apply relative inline-grid size-4 shrink-0 place-items-center rounded-full;
     background: color-mix(in srgb, currentColor 11%, var(--editor-paper-bg));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 24%, transparent);
   }
 
-  .markdown-paper .markra-callout-icon::before {
+  .markdown-paper .helbaron-callout-icon::before {
     @apply block size-1.5 rounded-full;
     content: "";
     background: currentColor;
   }
 
-  .markdown-paper .markra-callout-tip .markra-callout-icon::before {
+  .markdown-paper .helbaron-callout-tip .helbaron-callout-icon::before {
     @apply size-1.75 rounded-[2px];
     transform: rotate(45deg);
   }
 
-  .markdown-paper .markra-callout-important .markra-callout-icon::before {
+  .markdown-paper .helbaron-callout-important .helbaron-callout-icon::before {
     @apply h-2.25 w-1 rounded-full;
   }
 
-  .markdown-paper .markra-callout-warning .markra-callout-icon::before {
+  .markdown-paper .helbaron-callout-warning .helbaron-callout-icon::before {
     @apply size-2.5 rounded-none;
     clip-path: polygon(50% 4%, 96% 92%, 4% 92%);
   }
 
-  .markdown-paper .markra-callout-caution .markra-callout-icon::before {
+  .markdown-paper .helbaron-callout-caution .helbaron-callout-icon::before {
     @apply size-2 rounded-[2px];
   }
 
-  .markdown-paper .markra-callout-title {
+  .markdown-paper .helbaron-callout-title {
     @apply shrink-0;
   }
 
-  .markdown-paper .markra-callout-type-select {
-    @apply ml-auto h-6 max-w-30 rounded-md border border-(--border-default) px-2 text-[12px] leading-4 font-[520] text-(--text-secondary) outline-none transition-[opacity,border-color,color,background-color] duration-150 ease-out;
+  .markdown-paper .helbaron-callout-type-select {
+    @apply ms-auto h-6 max-w-30 rounded-md border border-(--border-default) px-2 text-[12px] leading-4 font-[520] text-(--text-secondary) outline-none transition-[opacity,border-color,color,background-color] duration-150 ease-out;
     background: color-mix(in srgb, var(--editor-paper-bg) 86%, var(--callout-bg));
     border-color: color-mix(in srgb, var(--callout-color) 18%, var(--editor-border));
     opacity: 0;
     pointer-events: none;
   }
 
-  .markdown-paper .markra-callout:hover .markra-callout-type-select,
-  .markdown-paper .markra-callout:focus-within .markra-callout-type-select,
-  .markdown-paper .markra-callout-active .markra-callout-type-select {
+  .markdown-paper .helbaron-callout:hover .helbaron-callout-type-select,
+  .markdown-paper .helbaron-callout:focus-within .helbaron-callout-type-select,
+  .markdown-paper .helbaron-callout-active .helbaron-callout-type-select {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .markdown-paper blockquote.markra-callout:focus-within {
+  .markdown-paper blockquote.helbaron-callout:focus-within {
     border-color: var(--callout-border-focus);
   }
 
-  .markdown-paper .cm-line.markra-callout-active {
+  .markdown-paper .cm-line.helbaron-callout-active {
     border-color: var(--callout-border-focus) !important;
   }
 
@@ -2801,80 +2803,80 @@
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-h1.cm-activeLine {
+    .cm-line.cm-helbaron-h1.cm-activeLine {
     --typewriter-active-line-offset: -8px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-h2.cm-activeLine {
+    .cm-line.cm-helbaron-h2.cm-activeLine {
     --typewriter-active-line-offset: 8px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-h3.cm-activeLine {
+    .cm-line.cm-helbaron-h3.cm-activeLine {
     --typewriter-active-line-offset: 9px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-h4.cm-activeLine {
+    .cm-line.cm-helbaron-h4.cm-activeLine {
     --typewriter-active-line-offset: 8px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-h5.cm-activeLine,
+    .cm-line.cm-helbaron-h5.cm-activeLine,
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-h6.cm-activeLine {
+    .cm-line.cm-helbaron-h6.cm-activeLine {
     --typewriter-active-line-offset: 7px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-list-item +
-    .cm-line.cm-markra-list-item.cm-activeLine {
+    .cm-line.cm-helbaron-list-item +
+    .cm-line.cm-helbaron-list-item.cm-activeLine {
     --typewriter-active-line-offset: 4px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-list-item[data-list-depth="0"] +
-    .cm-line.cm-markra-list-item[data-list-depth="1"].cm-activeLine {
+    .cm-line.cm-helbaron-list-item[data-list-depth="0"] +
+    .cm-line.cm-helbaron-list-item[data-list-depth="1"].cm-activeLine {
     --typewriter-active-line-offset: 6px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-list-item[data-list-depth="1"] +
-    .cm-line.cm-markra-list-item[data-list-depth="0"].cm-activeLine,
+    .cm-line.cm-helbaron-list-item[data-list-depth="1"] +
+    .cm-line.cm-helbaron-list-item[data-list-depth="0"].cm-activeLine,
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-list-item[data-list-kind="bullet"] +
-    .cm-line.cm-markra-list-item[data-list-kind="ordered"].cm-activeLine,
+    .cm-line.cm-helbaron-list-item[data-list-kind="bullet"] +
+    .cm-line.cm-helbaron-list-item[data-list-kind="ordered"].cm-activeLine,
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-markra-list-item[data-list-kind="ordered"] +
-    .cm-line.cm-markra-list-item[data-list-kind="task"].cm-activeLine {
+    .cm-line.cm-helbaron-list-item[data-list-kind="ordered"] +
+    .cm-line.cm-helbaron-list-item[data-list-kind="task"].cm-activeLine {
     --typewriter-active-line-offset: 12px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-activeLine.markra-callout-first {
+    .cm-line.cm-activeLine.helbaron-callout-first {
     --typewriter-active-line-offset: 7px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-activeLine.markra-callout-last {
+    .cm-line.cm-activeLine.helbaron-callout-last {
     --typewriter-active-line-offset: -7px;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-activeLine.markra-callout-first.markra-callout-last {
+    .cm-line.cm-activeLine.helbaron-callout-first.helbaron-callout-last {
     --typewriter-active-line-offset: 0px;
   }
 
   /* The code backdrop is a negative-z pseudo-element, so its active band must
      be composed into that same surface rather than painted on the parent. */
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-activeLine.cm-markra-code-content-line {
+    .cm-line.cm-activeLine.cm-helbaron-code-content-line {
     background: transparent !important;
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-activeLine.cm-markra-code-content-line::after {
+    .cm-line.cm-activeLine.cm-helbaron-code-content-line::after {
     background:
       linear-gradient(
         var(--typewriter-active-line-color),
@@ -2890,7 +2892,7 @@
   }
 
   .markdown-paper .cm-editor[data-typewriter-mode="true"].cm-focused
-    .cm-line.cm-activeLine.cm-markra-callout {
+    .cm-line.cm-activeLine.cm-helbaron-callout {
     background:
       linear-gradient(
         var(--typewriter-active-line-color),
@@ -2900,35 +2902,35 @@
       var(--callout-bg) !important;
   }
 
-  .markdown-paper .markra-callout-type-select:focus {
+  .markdown-paper .helbaron-callout-type-select:focus {
     border-color: var(--callout-color);
     color: var(--editor-text-primary);
   }
 
-  .markdown-paper .markra-callout-marker-line {
+  .markdown-paper .helbaron-callout-marker-line {
     @apply hidden;
   }
 
-  .markdown-paper .markra-callout-source-marker {
+  .markdown-paper .helbaron-callout-source-marker {
     @apply hidden;
   }
 
-  .markdown-paper .markra-callout-source-marker + br {
+  .markdown-paper .helbaron-callout-source-marker + br {
     @apply hidden;
   }
 
-  .markdown-paper blockquote.markra-callout p {
+  .markdown-paper blockquote.helbaron-callout p {
     @apply mb-3;
     color: var(--editor-text-primary);
     cursor: text;
     min-height: 1lh;
   }
 
-  .markdown-paper blockquote.markra-callout p:first-of-type {
+  .markdown-paper blockquote.helbaron-callout p:first-of-type {
     @apply mt-0;
   }
 
-  .markdown-paper blockquote.markra-callout p:last-child {
+  .markdown-paper blockquote.helbaron-callout p:last-child {
     @apply mb-0;
   }
 
@@ -2937,7 +2939,7 @@
   }
 
   .markdown-paper ul {
-    @apply mt-3 mb-6 list-disc pl-[1.4em] marker:text-(--text-secondary);
+    @apply mt-3 mb-6 list-disc ps-[1.4em] marker:text-(--text-secondary);
     color: var(--editor-text-primary);
   }
 
@@ -2950,7 +2952,7 @@
   }
 
   .markdown-paper ol {
-    @apply mt-3 mb-6 list-decimal pl-[1.4em] marker:text-(--text-secondary);
+    @apply mt-3 mb-6 list-decimal ps-[1.4em] marker:text-(--text-secondary);
     color: var(--editor-text-primary);
   }
 
@@ -2988,7 +2990,7 @@
   }
 
   .markdown-paper.settings-template-preview blockquote {
-    @apply my-3 pl-3.5;
+    @apply my-3 ps-3.5;
   }
 
   .markdown-paper.settings-template-preview pre {
@@ -3003,40 +3005,40 @@
     @apply my-6 overflow-x-auto;
   }
 
-  .markdown-paper .markra-table-controls-wrapper {
+  .markdown-paper .helbaron-table-controls-wrapper {
     /* Center add controls against the table viewport, excluding the asymmetric control gutters. */
-    --markra-table-control-inline-center-offset: -1.125rem;
-    --markra-table-control-block-center-offset: -0.25rem;
-    @apply relative overflow-visible pt-7 pr-9 pb-9;
+    --helbaron-table-control-inline-center-offset: -1.125rem;
+    --helbaron-table-control-block-center-offset: -0.25rem;
+    @apply relative overflow-visible pt-7 pe-9 pb-9;
   }
 
-  .markdown-paper .markra-table-scroll {
+  .markdown-paper .helbaron-table-scroll {
     @apply overflow-x-auto;
   }
 
   .markdown-paper table {
-    @apply my-6 w-full border-collapse overflow-hidden text-left text-[0.95em] leading-[1.55];
+    @apply my-6 w-full border-collapse overflow-hidden text-start text-[0.95em] leading-[1.55];
     table-layout: fixed;
   }
 
-  .markdown-paper .markra-table-scroll > table {
+  .markdown-paper .helbaron-table-scroll > table {
     @apply my-0;
   }
 
-  .markdown-paper .markra-table-controls-wrapper[data-width-mode="auto"] .markra-table-scroll > table {
+  .markdown-paper .helbaron-table-controls-wrapper[data-width-mode="auto"] .helbaron-table-scroll > table {
     width: 100%;
     max-width: 100%;
     table-layout: auto;
   }
 
-  .markdown-paper .markra-table-controls-wrapper[data-width-mode="auto"][data-table-alignment="center"]
-    .markra-table-scroll
+  .markdown-paper .helbaron-table-controls-wrapper[data-width-mode="auto"][data-table-alignment="center"]
+    .helbaron-table-scroll
     > table {
     margin-inline: auto;
   }
 
-  .markdown-paper .markra-table-controls-wrapper[data-width-mode="auto"][data-table-alignment="right"]
-    .markra-table-scroll
+  .markdown-paper .helbaron-table-controls-wrapper[data-width-mode="auto"][data-table-alignment="right"]
+    .helbaron-table-scroll
     > table {
     margin-left: auto;
   }
@@ -3046,10 +3048,10 @@
     margin-block: 1rem;
   }
 
-  .markdown-paper[data-editor-theme="github"] .markra-table-controls-wrapper,
-  .markdown-paper[data-editor-theme="github-dark"] .markra-table-controls-wrapper {
-    --markra-table-control-inline-center-offset: 0rem;
-    --markra-table-control-block-center-offset: 0rem;
+  .markdown-paper[data-editor-theme="github"] .helbaron-table-controls-wrapper,
+  .markdown-paper[data-editor-theme="github-dark"] .helbaron-table-controls-wrapper {
+    --helbaron-table-control-inline-center-offset: 0rem;
+    --helbaron-table-control-block-center-offset: 0rem;
     padding: 0;
   }
 
@@ -3074,8 +3076,8 @@
     border-color: var(--editor-border);
   }
 
-  .markdown-paper .markra-table-controls-wrapper[data-width-mode="auto"] .markra-table-scroll th,
-  .markdown-paper .markra-table-controls-wrapper[data-width-mode="auto"] .markra-table-scroll td {
+  .markdown-paper .helbaron-table-controls-wrapper[data-width-mode="auto"] .helbaron-table-scroll th,
+  .markdown-paper .helbaron-table-controls-wrapper[data-width-mode="auto"] .helbaron-table-scroll td {
     max-width: 32rem;
     overflow-wrap: anywhere;
     word-break: normal;
@@ -3117,7 +3119,7 @@
     @apply m-0;
   }
 
-  .markdown-paper .markra-table-control {
+  .markdown-paper .helbaron-table-control {
     @apply absolute inline-flex size-6 cursor-pointer items-center justify-center rounded-full border border-(--border-default) p-0 text-[18px] leading-none font-[420] transition-[opacity,color,background-color,border-color,box-shadow,scale] duration-150 ease-out hover:border-(--border-strong) hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:border-(--border-strong) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none;
     background: color-mix(in srgb, var(--bg-primary) 94%, var(--bg-secondary));
     box-shadow:
@@ -3129,28 +3131,28 @@
     scale: 0.9;
   }
 
-  .markdown-paper .markra-table-controls-wrapper:hover .markra-table-control,
-  .markdown-paper .markra-table-controls-wrapper:focus-within .markra-table-control {
+  .markdown-paper .helbaron-table-controls-wrapper:hover .helbaron-table-control,
+  .markdown-paper .helbaron-table-controls-wrapper:focus-within .helbaron-table-control {
     opacity: 1;
     pointer-events: auto;
     scale: 1;
   }
 
-  .markdown-paper .markra-table-control:hover,
-  .markdown-paper .markra-table-control:focus-visible {
+  .markdown-paper .helbaron-table-control:hover,
+  .markdown-paper .helbaron-table-control:focus-visible {
     box-shadow:
       0 12px 30px rgba(0, 0, 0, 0.12),
       0 0 0 3px color-mix(in srgb, var(--text-secondary) 14%, transparent);
   }
 
-  .markdown-paper .markra-table-fragment-merge {
+  .markdown-paper .helbaron-table-fragment-merge {
     @apply relative z-20 h-0 w-full overflow-visible;
     color: var(--editor-text-secondary);
     pointer-events: none;
   }
 
-  .markdown-paper .markra-table-fragment-merge-button {
-    @apply absolute top-0 left-0 inline-flex size-6 cursor-pointer items-center justify-center overflow-visible rounded-[7px] border p-0 text-xs font-semibold whitespace-nowrap focus-visible:outline-none;
+  .markdown-paper .helbaron-table-fragment-merge-button {
+    @apply absolute top-0 start-0 inline-flex size-6 cursor-pointer items-center justify-center overflow-visible rounded-[7px] border p-0 text-xs font-semibold whitespace-nowrap focus-visible:outline-none;
     border-color: color-mix(in srgb, var(--editor-border-strong) 78%, transparent);
     background: color-mix(in srgb, var(--editor-paper-bg) 94%, var(--editor-bg-secondary));
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
@@ -3167,23 +3169,23 @@
       transform 120ms ease-out;
   }
 
-  .markdown-paper .markra-table-fragment-merge-button::before {
+  .markdown-paper .helbaron-table-fragment-merge-button::before {
     position: absolute;
     inset: -0.25rem 0 -0.25rem -0.25rem;
     content: "";
   }
 
-  .markdown-paper .markra-table-fragment-merge:has(+ p:hover) .markra-table-fragment-merge-button,
-  .markdown-paper .markra-table-fragment-merge:focus-within .markra-table-fragment-merge-button,
-  .markdown-paper .markra-table-fragment-merge-button:hover,
-  .markdown-paper .markra-table-fragment-merge-button:focus-visible {
+  .markdown-paper .helbaron-table-fragment-merge:has(+ p:hover) .helbaron-table-fragment-merge-button,
+  .markdown-paper .helbaron-table-fragment-merge:focus-within .helbaron-table-fragment-merge-button,
+  .markdown-paper .helbaron-table-fragment-merge-button:hover,
+  .markdown-paper .helbaron-table-fragment-merge-button:focus-visible {
     opacity: 1;
     pointer-events: auto;
     transform: translate(-1.5rem, 0.125rem) scale(1);
   }
 
-  .markdown-paper .markra-table-fragment-merge-button:hover,
-  .markdown-paper .markra-table-fragment-merge-button:focus-visible {
+  .markdown-paper .helbaron-table-fragment-merge-button:hover,
+  .markdown-paper .helbaron-table-fragment-merge-button:focus-visible {
     border-color: var(--editor-border-strong);
     background: var(--editor-bg-secondary);
     box-shadow:
@@ -3192,13 +3194,13 @@
     color: var(--editor-text-heading);
   }
 
-  .markdown-paper .markra-table-fragment-merge-icon {
+  .markdown-paper .helbaron-table-fragment-merge-icon {
     @apply size-3.5 shrink-0;
     pointer-events: none;
   }
 
-  .markdown-paper .markra-table-fragment-merge-label {
-    @apply absolute left-1 rounded-[7px] px-2 py-1 text-[11px] leading-tight font-medium;
+  .markdown-paper .helbaron-table-fragment-merge-label {
+    @apply absolute start-1 rounded-[7px] px-2 py-1 text-[11px] leading-tight font-medium;
     bottom: calc(100% + 0.5rem);
     background: var(--editor-text-heading);
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.16);
@@ -3213,7 +3215,7 @@
     visibility: hidden;
   }
 
-  .markdown-paper .markra-table-fragment-merge-label::after {
+  .markdown-paper .helbaron-table-fragment-merge-label::after {
     position: absolute;
     top: 100%;
     left: 0.625rem;
@@ -3222,71 +3224,71 @@
     content: "";
   }
 
-  .markdown-paper .markra-table-fragment-merge-button:hover .markra-table-fragment-merge-label,
-  .markdown-paper .markra-table-fragment-merge-button:focus-visible .markra-table-fragment-merge-label {
+  .markdown-paper .helbaron-table-fragment-merge-button:hover .helbaron-table-fragment-merge-label,
+  .markdown-paper .helbaron-table-fragment-merge-button:focus-visible .helbaron-table-fragment-merge-label {
     opacity: 1;
     transform: translateY(0);
     transition-delay: 0ms;
     visibility: visible;
   }
 
-  .markdown-paper .cm-content[contenteditable="false"] .markra-table-fragment-merge {
+  .markdown-paper .cm-content[contenteditable="false"] .helbaron-table-fragment-merge {
     display: none;
   }
 
-  .markdown-paper .markra-table-delete-control {
+  .markdown-paper .helbaron-table-delete-control {
     @apply hover:border-red-400/70 hover:bg-red-500/10 hover:text-red-600 focus-visible:border-red-400/70 focus-visible:bg-red-500/10 focus-visible:text-red-600;
     transform: translate(-50%, -50%);
   }
 
-  .markdown-paper .markra-table-delete-control:hover,
-  .markdown-paper .markra-table-delete-control:focus-visible {
+  .markdown-paper .helbaron-table-delete-control:hover,
+  .markdown-paper .helbaron-table-delete-control:focus-visible {
     box-shadow:
       0 12px 30px rgba(0, 0, 0, 0.12),
       0 0 0 3px color-mix(in srgb, oklch(63.7% 0.237 25.331) 14%, transparent);
   }
 
-  .markdown-paper .markra-table-delete-column {
+  .markdown-paper .helbaron-table-delete-column {
     @apply z-10;
   }
 
-  .markdown-paper .markra-table-delete-row {
+  .markdown-paper .helbaron-table-delete-row {
     @apply z-10;
   }
 
-  .markdown-paper .markra-table-align-controls {
-    @apply absolute left-1.5 z-10 flex items-center gap-0.5;
+  .markdown-paper .helbaron-table-align-controls {
+    @apply absolute start-1.5 z-10 flex items-center gap-0.5;
     height: 24px;
     top: 0 !important;
   }
 
-  .markdown-paper .markra-table-size-controls {
+  .markdown-paper .helbaron-table-size-controls {
     @apply relative flex items-center;
   }
 
-  .markdown-paper .markra-table-size-button {
+  .markdown-paper .helbaron-table-size-button {
     @apply static size-6 rounded-md border-transparent text-[0] shadow-none hover:border-(--border-default) focus-visible:border-(--border-default);
     background: transparent;
     box-shadow: none;
   }
 
-  .markdown-paper .markra-table-size-button:hover,
-  .markdown-paper .markra-table-size-button:focus-visible,
-  .markdown-paper .markra-table-size-button[aria-expanded="true"] {
+  .markdown-paper .helbaron-table-size-button:hover,
+  .markdown-paper .helbaron-table-size-button:focus-visible,
+  .markdown-paper .helbaron-table-size-button[aria-expanded="true"] {
     background: var(--bg-hover);
     box-shadow: none;
     color: var(--text-heading);
   }
 
-  .markdown-paper .markra-table-size-icon {
+  .markdown-paper .helbaron-table-size-icon {
     @apply grid size-4 grid-cols-2 gap-0.75;
   }
 
-  .markdown-paper .markra-table-size-icon-square {
+  .markdown-paper .helbaron-table-size-icon-square {
     @apply block rounded-[1px] border border-current;
   }
 
-  .markra-table-size-popover {
+  .helbaron-table-size-popover {
     @apply fixed z-70 rounded-lg border border-(--border-default) p-3;
     background: color-mix(in srgb, var(--bg-primary) 98%, var(--bg-secondary));
     box-shadow:
@@ -3294,93 +3296,93 @@
       0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
-  .markra-table-size-grid {
+  .helbaron-table-size-grid {
     @apply grid gap-1;
     grid-template-columns: repeat(8, 0.875rem);
   }
 
-  .markra-table-size-cell {
+  .helbaron-table-size-cell {
     @apply size-3.5 rounded-[2px] border border-(--border-default) p-0 transition-[background-color,border-color] duration-100 ease-out;
     background: var(--bg-secondary);
   }
 
-  .markra-table-size-cell:hover,
-  .markra-table-size-cell:focus-visible {
+  .helbaron-table-size-cell:hover,
+  .helbaron-table-size-cell:focus-visible {
     @apply outline-none;
     border-color: var(--text-secondary);
   }
 
-  .markra-table-size-cell-active {
+  .helbaron-table-size-cell-active {
     background: color-mix(in srgb, var(--text-secondary) 46%, var(--bg-secondary));
     border-color: color-mix(in srgb, var(--text-secondary) 66%, var(--border-default));
   }
 
-  .markra-table-size-footer {
+  .helbaron-table-size-footer {
     @apply mt-3 flex items-center justify-center gap-2 border-t border-(--border-default) pt-3;
   }
 
-  .markra-table-size-input {
+  .helbaron-table-size-input {
     @apply h-7 w-10 rounded-sm border border-(--border-default) bg-(--bg-primary) px-1 text-center text-sm leading-none text-(--text-primary) outline-none focus-visible:border-(--border-strong);
   }
 
-  .markra-table-size-input::-webkit-outer-spin-button,
-  .markra-table-size-input::-webkit-inner-spin-button {
+  .helbaron-table-size-input::-webkit-outer-spin-button,
+  .helbaron-table-size-input::-webkit-inner-spin-button {
     margin: 0;
     appearance: none;
   }
 
-  .markra-table-size-input[type="number"] {
+  .helbaron-table-size-input[type="number"] {
     appearance: textfield;
   }
 
-  .markra-table-size-separator {
+  .helbaron-table-size-separator {
     @apply text-sm text-(--text-secondary);
   }
 
-  .markdown-paper .markra-table-align-button,
-  .markdown-paper .markra-table-width-button {
+  .markdown-paper .helbaron-table-align-button,
+  .markdown-paper .helbaron-table-width-button {
     @apply static size-6 rounded-md border-transparent text-[0] shadow-none hover:border-(--border-default) focus-visible:border-(--border-default);
     background: transparent;
     box-shadow: none;
   }
 
-  .markdown-paper .markra-table-align-button:hover,
-  .markdown-paper .markra-table-align-button:focus-visible,
-  .markdown-paper .markra-table-align-button[aria-pressed="true"],
-  .markdown-paper .markra-table-width-button:hover,
-  .markdown-paper .markra-table-width-button:focus-visible,
-  .markdown-paper .markra-table-width-button[aria-pressed="true"] {
+  .markdown-paper .helbaron-table-align-button:hover,
+  .markdown-paper .helbaron-table-align-button:focus-visible,
+  .markdown-paper .helbaron-table-align-button[aria-pressed="true"],
+  .markdown-paper .helbaron-table-width-button:hover,
+  .markdown-paper .helbaron-table-width-button:focus-visible,
+  .markdown-paper .helbaron-table-width-button[aria-pressed="true"] {
     background: var(--bg-hover);
     box-shadow: none;
     color: var(--text-heading);
   }
 
-  .markdown-paper .markra-table-width-button {
+  .markdown-paper .helbaron-table-width-button {
     @apply text-(--text-secondary);
   }
 
-  .markdown-paper .markra-table-width-button[aria-pressed="true"] {
+  .markdown-paper .helbaron-table-width-button[aria-pressed="true"] {
     background: var(--accent-soft);
     color: var(--accent);
   }
 
-  .markdown-paper .markra-table-width-icon {
+  .markdown-paper .helbaron-table-width-icon {
     @apply flex items-center gap-px;
     width: 1.125rem;
     height: 0.875rem;
   }
 
-  .markdown-paper .markra-table-width-edge {
+  .markdown-paper .helbaron-table-width-edge {
     @apply h-3 w-px rounded-full bg-current;
   }
 
-  .markdown-paper .markra-table-width-arrow {
+  .markdown-paper .helbaron-table-width-arrow {
     @apply h-px flex-1 bg-current;
     position: relative;
   }
 
-  .markdown-paper .markra-table-width-arrow::before,
-  .markdown-paper .markra-table-width-arrow::after {
+  .markdown-paper .helbaron-table-width-arrow::before,
+  .markdown-paper .helbaron-table-width-arrow::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -3391,84 +3393,84 @@
     transform: translateY(-50%) rotate(45deg);
   }
 
-  .markdown-paper .markra-table-width-arrow::before {
+  .markdown-paper .helbaron-table-width-arrow::before {
     left: 0;
     border-width: 0 0 1px 1px;
   }
 
-  .markdown-paper .markra-table-width-arrow::after {
+  .markdown-paper .helbaron-table-width-arrow::after {
     right: 0;
     border-width: 1px 1px 0 0;
   }
 
-  .markdown-paper .markra-table-width-letter {
+  .markdown-paper .helbaron-table-width-letter {
     font-size: 0.55rem;
     font-weight: 720;
     line-height: 1;
   }
 
-  .markdown-paper .markra-table-delete-table {
+  .markdown-paper .helbaron-table-delete-table {
     @apply static size-6 rounded-md border-transparent text-[0] shadow-none;
     background: transparent;
     box-shadow: none;
     color: var(--text-secondary);
   }
 
-  .markdown-paper .markra-table-delete-table:hover,
-  .markdown-paper .markra-table-delete-table:focus-visible {
+  .markdown-paper .helbaron-table-delete-table:hover,
+  .markdown-paper .helbaron-table-delete-table:focus-visible {
     background: color-mix(in srgb, oklch(63.7% 0.237 25.331) 10%, transparent);
     border-color: color-mix(in srgb, oklch(63.7% 0.237 25.331) 70%, transparent);
     box-shadow: none;
     color: oklch(57.7% 0.245 27.325);
   }
 
-  .markdown-paper .markra-table-align-icon {
+  .markdown-paper .helbaron-table-align-icon {
     @apply flex w-3.5 flex-col gap-0.75;
   }
 
-  .markdown-paper .markra-table-align-icon-line {
+  .markdown-paper .helbaron-table-align-icon-line {
     @apply block h-0.5 rounded-full bg-current;
   }
 
-  .markdown-paper .markra-table-align-icon-line:nth-child(1) {
+  .markdown-paper .helbaron-table-align-icon-line:nth-child(1) {
     width: 0.875rem;
   }
 
-  .markdown-paper .markra-table-align-icon-line:nth-child(2) {
+  .markdown-paper .helbaron-table-align-icon-line:nth-child(2) {
     width: 0.625rem;
   }
 
-  .markdown-paper .markra-table-align-icon-line:nth-child(3) {
+  .markdown-paper .helbaron-table-align-icon-line:nth-child(3) {
     width: 0.75rem;
   }
 
-  .markdown-paper .markra-table-align-icon-left .markra-table-align-icon-line {
-    @apply mr-auto;
+  .markdown-paper .helbaron-table-align-icon-left .helbaron-table-align-icon-line {
+    @apply me-auto;
   }
 
-  .markdown-paper .markra-table-align-icon-center .markra-table-align-icon-line {
+  .markdown-paper .helbaron-table-align-icon-center .helbaron-table-align-icon-line {
     @apply mx-auto;
   }
 
-  .markdown-paper .markra-table-align-icon-right .markra-table-align-icon-line {
-    @apply ml-auto;
+  .markdown-paper .helbaron-table-align-icon-right .helbaron-table-align-icon-line {
+    @apply ms-auto;
   }
 
-  .markdown-paper .markra-table-add-column {
-    @apply right-1.5 -translate-y-1/2;
-    top: calc(50% + var(--markra-table-control-block-center-offset));
+  .markdown-paper .helbaron-table-add-column {
+    @apply end-1.5 -translate-y-1/2;
+    top: calc(50% + var(--helbaron-table-control-block-center-offset));
   }
 
-  .markdown-paper .markra-table-add-row {
+  .markdown-paper .helbaron-table-add-row {
     @apply -bottom-3 -translate-x-1/2;
-    left: calc(50% + var(--markra-table-control-inline-center-offset));
+    left: calc(50% + var(--helbaron-table-control-inline-center-offset));
   }
 
-  .markdown-paper .markra-lucide-icon {
+  .markdown-paper .helbaron-lucide-icon {
     pointer-events: none;
   }
 
-  .markdown-paper .markra-table-control-icon {
+  .markdown-paper .helbaron-table-control-icon {
     @apply size-3.5 shrink-0;
   }
 
@@ -3479,32 +3481,32 @@
     user-select: text;
   }
 
-  .markdown-paper .markra-live-link-label {
+  .markdown-paper .helbaron-live-link-label {
     @apply text-(--editor-link-color) underline underline-offset-2;
     cursor: var(--editor-text-cursor);
     -webkit-user-drag: none;
     user-select: text;
   }
 
-  .markdown-paper .markra-live-link-source-label {
+  .markdown-paper .helbaron-live-link-source-label {
     @apply text-(--editor-link-color) underline underline-offset-2;
     cursor: var(--editor-text-cursor);
   }
 
-  .markdown-paper .cm-markra-link-source,
-  .markdown-paper .cm-markra-link-source * {
+  .markdown-paper .cm-helbaron-link-source,
+  .markdown-paper .cm-helbaron-link-source * {
     color: var(--editor-markdown-syntax-color) !important;
     text-decoration: none !important;
   }
 
-  .markdown-paper .cm-markra-link-source-label {
+  .markdown-paper .cm-helbaron-link-source-label {
     @apply underline underline-offset-2;
     color: var(--editor-link-color) !important;
     cursor: var(--editor-text-cursor);
   }
 
   .markdown-paper a[href]::after,
-  .markdown-paper .markra-live-link-label::after {
+  .markdown-paper .helbaron-live-link-label::after {
     content: none !important;
     display: none !important;
   }
@@ -3516,7 +3518,7 @@
     text-decoration: none;
   }
 
-  .markdown-paper .markra-footnote-preview {
+  .markdown-paper .helbaron-footnote-preview {
     position: fixed;
     z-index: 80;
     max-width: min(20rem, calc(100vw - 1.5rem));
@@ -3535,7 +3537,7 @@
     box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
   }
 
-  .markdown-paper .markra-live-link-icon {
+  .markdown-paper .helbaron-live-link-icon {
     @apply inline-block text-(--editor-link-color);
     margin-left: 0.18em;
     pointer-events: none;
@@ -3544,7 +3546,7 @@
     -webkit-user-drag: none;
   }
 
-  .markdown-paper .markra-live-link-icon::before {
+  .markdown-paper .helbaron-live-link-icon::before {
     content: "↗";
     display: inline-block;
     transform: translateY(-0.08em);
@@ -3554,11 +3556,11 @@
     opacity: 0.7;
   }
 
-  .markdown-paper .markra-live-link-icon + .markra-live-link-icon {
+  .markdown-paper .helbaron-live-link-icon + .helbaron-live-link-icon {
     @apply hidden;
   }
 
-  .markdown-paper .cm-markra-link-icon {
+  .markdown-paper .cm-helbaron-link-icon {
     @apply inline-block text-(--editor-link-color);
     margin-left: 0.18em;
     pointer-events: none;
@@ -3567,7 +3569,7 @@
     -webkit-user-drag: none;
   }
 
-  .markdown-paper .cm-markra-link-icon::before {
+  .markdown-paper .cm-helbaron-link-icon::before {
     content: "↗";
     display: inline-block;
     transform: translateY(-0.08em);
@@ -3577,78 +3579,78 @@
     opacity: 0.7;
   }
 
-  .markra-document-link-menu {
+  .helbaron-document-link-menu {
     @apply fixed z-[60] min-w-60 max-w-[22rem] rounded-lg border border-(--border-default) bg-(--bg-primary) p-1 shadow-(--ai-command-expanded-shadow);
   }
 
-  .markra-document-link-option {
-    @apply flex cursor-pointer flex-col gap-0.5 rounded-md px-2.5 py-1.5 text-left;
+  .helbaron-document-link-option {
+    @apply flex cursor-pointer flex-col gap-0.5 rounded-md px-2.5 py-1.5 text-start;
   }
 
-  .markra-document-link-option[aria-selected="true"] {
+  .helbaron-document-link-option[aria-selected="true"] {
     @apply bg-(--bg-hover);
   }
 
-  .markra-document-link-title {
+  .helbaron-document-link-title {
     @apply truncate text-sm font-medium leading-5 text-(--text-heading);
   }
 
-  .markra-document-link-path {
+  .helbaron-document-link-path {
     @apply truncate text-xs leading-4 text-(--text-secondary);
   }
 
-  .markdown-paper .markra-html-node {
+  .markdown-paper .helbaron-html-node {
     @apply max-w-full outline-none;
     white-space: normal;
   }
 
-  .markdown-paper .markra-html-node:has(table) {
+  .markdown-paper .helbaron-html-node:has(table) {
     @apply overflow-x-auto;
     /* A wide table must scroll here instead of setting CodeMirror's minimum content width. */
     contain: inline-size;
   }
 
-  .markdown-paper .markra-html-node table {
+  .markdown-paper .helbaron-html-node table {
     table-layout: auto;
     overflow-wrap: normal;
     word-break: normal;
   }
 
-  .markdown-paper .markra-html-node img {
+  .markdown-paper .helbaron-html-node img {
     @apply m-0 inline-block max-w-full rounded-none border-0 align-middle;
   }
 
-  .markdown-paper .markra-html-node:has(.cm-markra-html-table) {
+  .markdown-paper .helbaron-html-node:has(.cm-helbaron-html-table) {
     overflow: visible;
   }
 
-  .markdown-paper .markra-table-extra-control {
+  .markdown-paper .helbaron-table-extra-control {
     @apply relative rounded-md;
     position: static;
   }
 
-  .markdown-paper .cm-markra-html-table-grid {
+  .markdown-paper .cm-helbaron-html-table-grid {
     @apply relative pt-5;
   }
 
-  .markdown-paper .cm-markra-html-table table {
+  .markdown-paper .cm-helbaron-html-table table {
     @apply my-0;
   }
 
-  .markdown-paper .cm-markra-html-cell-content {
+  .markdown-paper .cm-helbaron-html-cell-content {
     min-width: 3rem;
     outline: none;
   }
 
-  .markdown-paper .cm-markra-html-cell-content:focus {
+  .markdown-paper .cm-helbaron-html-cell-content:focus {
     box-shadow: inset 0 0 0 2px currentColor;
   }
 
-  .markdown-paper .cm-markra-html-table [data-selected] {
+  .markdown-paper .cm-helbaron-html-table [data-selected] {
     background: color-mix(in srgb, var(--accent) 10%, var(--editor-paper-bg));
   }
 
-  .markdown-paper .cm-markra-html-column-resize {
+  .markdown-paper .cm-helbaron-html-column-resize {
     /* Keep drag targets above cells so invisible boundaries never intercept a merged cell's clicks. */
     @apply absolute top-0 z-10 h-5 w-2 cursor-col-resize touch-none;
     transform: translateX(-50%);
@@ -3656,38 +3658,38 @@
     pointer-events: none;
   }
 
-  .markdown-paper .cm-markra-html-table:hover .cm-markra-html-column-resize,
-  .markdown-paper .cm-markra-html-table:focus-within .cm-markra-html-column-resize {
+  .markdown-paper .cm-helbaron-html-table:hover .cm-helbaron-html-column-resize,
+  .markdown-paper .cm-helbaron-html-table:focus-within .cm-helbaron-html-column-resize {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .markdown-paper .cm-markra-html-column-resize::after {
+  .markdown-paper .cm-helbaron-html-column-resize::after {
     content: "";
     @apply absolute inset-y-1 left-1/2 w-px;
     background: var(--editor-border-strong);
   }
 
-  .markdown-paper .cm-markra-html-column-resize:last-child {
+  .markdown-paper .cm-helbaron-html-column-resize:last-child {
     transform: translateX(-100%);
   }
 
-  .markdown-paper .cm-markra-html-column-resize:hover,
-  .markdown-paper .cm-markra-html-column-resize:focus-visible {
+  .markdown-paper .cm-helbaron-html-column-resize:hover,
+  .markdown-paper .cm-helbaron-html-column-resize:focus-visible {
     background: color-mix(in srgb, var(--accent) 20%, transparent);
     outline: 1px solid var(--accent);
     outline-offset: -3px;
   }
 
-  .markdown-paper .cm-markra-html-resizing {
+  .markdown-paper .cm-helbaron-html-resizing {
     @apply cursor-col-resize select-none;
   }
 
-  .markdown-paper .markra-html-node pre {
+  .markdown-paper .helbaron-html-node pre {
     white-space: pre-wrap;
   }
 
-  .markdown-paper .markra-html-node-source {
+  .markdown-paper .helbaron-html-node-source {
     @apply relative z-10 block min-h-24 w-full resize-y rounded-none border-0 bg-transparent px-3 py-3 font-mono text-[0.9em] leading-5 text-transparent outline-none;
     -webkit-text-fill-color: transparent;
     box-shadow: none;
@@ -3695,57 +3697,57 @@
     cursor: var(--editor-text-cursor);
   }
 
-  .markdown-paper .markra-html-node-source:focus {
+  .markdown-paper .helbaron-html-node-source:focus {
     @apply border-0 outline-none;
     box-shadow: none;
   }
 
-  .markdown-paper .markra-html-node-source::selection {
+  .markdown-paper .helbaron-html-node-source::selection {
     background: color-mix(in srgb, var(--accent) 24%, transparent);
     -webkit-text-fill-color: transparent;
   }
 
-  .markdown-paper .markra-html-node-source-layer {
+  .markdown-paper .helbaron-html-node-source-layer {
     @apply relative;
   }
 
-  .markdown-paper .markra-html-node-highlight {
+  .markdown-paper .helbaron-html-node-highlight {
     @apply pointer-events-none absolute inset-0 z-0 m-0 overflow-hidden whitespace-pre px-3 py-3 font-mono text-[0.9em] leading-5 text-(--text-primary);
   }
 
-  .markdown-paper .markra-html-node-highlight code {
+  .markdown-paper .helbaron-html-node-highlight code {
     @apply font-mono;
   }
 
-  .markdown-paper .markra-html-token-tag {
+  .markdown-paper .helbaron-html-token-tag {
     color: oklch(45% 0.16 145);
   }
 
-  .markdown-paper .markra-html-token-attr {
+  .markdown-paper .helbaron-html-token-attr {
     color: oklch(43% 0.15 258);
   }
 
-  .markdown-paper .markra-html-token-string {
+  .markdown-paper .helbaron-html-token-string {
     color: oklch(42% 0.14 29);
   }
 
-  .markdown-paper .markra-html-token-comment {
+  .markdown-paper .helbaron-html-token-comment {
     color: var(--text-tertiary);
   }
 
-  .markdown-paper .markra-html-node-editor {
+  .markdown-paper .helbaron-html-node-editor {
     @apply relative my-5 w-full bg-[color:color-mix(in_oklab,var(--bg-secondary)_70%,var(--bg-primary))] pt-6 text-(--text-primary);
   }
 
-  .markdown-paper .markra-html-node-editor-toolbar {
-    @apply absolute top-0 right-0 z-10 flex h-7 items-center bg-[color:color-mix(in_oklab,var(--bg-secondary)_82%,var(--bg-primary))] text-[0.78em] leading-none text-(--text-secondary);
+  .markdown-paper .helbaron-html-node-editor-toolbar {
+    @apply absolute top-0 end-0 z-10 flex h-7 items-center bg-[color:color-mix(in_oklab,var(--bg-secondary)_82%,var(--bg-primary))] text-[0.78em] leading-none text-(--text-secondary);
   }
 
-  .markdown-paper .markra-html-node-editor-label {
+  .markdown-paper .helbaron-html-node-editor-label {
     @apply px-2 font-[520] tracking-normal;
   }
 
-  .markdown-paper .markra-html-node-editor-apply {
+  .markdown-paper .helbaron-html-node-editor-apply {
     @apply flex h-7 w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-[1em] font-[760] text-(--text-heading) outline-none transition-colors duration-150 ease-out hover:bg-(--bg-hover) focus-visible:bg-(--bg-hover);
   }
 
@@ -3753,42 +3755,42 @@
     @apply my-6 block max-w-full rounded-[3px] border border-(--border-default);
   }
 
-  .markdown-paper .cm-markra-table img.cm-markra-table-image {
+  .markdown-paper .cm-helbaron-table img.cm-helbaron-table-image {
     @apply my-1 max-h-48 border-0;
     object-fit: contain;
   }
 
-  .markdown-paper .cm-line.cm-markra-image-line {
+  .markdown-paper .cm-line.cm-helbaron-image-line {
     line-height: 0 !important;
   }
 
-  .markdown-paper .cm-line.cm-markra-image-line > .markra-image-node {
+  .markdown-paper .cm-line.cm-helbaron-image-line > .helbaron-image-node {
     display: inline-block;
     width: 100%;
     vertical-align: top;
   }
 
-  .markdown-paper .markra-image-node {
+  .markdown-paper .helbaron-image-node {
     @apply block max-w-full outline-none;
     line-height: 1.65;
     -webkit-user-drag: none;
     user-select: text;
   }
 
-  .markdown-paper .markra-image-node.markra-image-node-selected {
+  .markdown-paper .helbaron-image-node.helbaron-image-node-selected {
     outline: 2px solid #8cf;
     outline-offset: 3px;
   }
 
-  .markdown-paper .markra-image-node-source-row {
+  .markdown-paper .helbaron-image-node-source-row {
     @apply m-0 flex w-full min-w-0 items-center gap-1.5 p-0 text-(--text-primary);
   }
 
-  .markdown-paper .markra-image-node-source-icon {
+  .markdown-paper .helbaron-image-node-source-icon {
     @apply shrink-0 text-(--text-secondary);
   }
 
-  .markdown-paper .markra-image-node-source {
+  .markdown-paper .helbaron-image-node-source {
     @apply m-0 block w-full min-w-0 appearance-none rounded-none border-0 bg-transparent p-0 font-mono text-(--text-primary) outline-none;
     box-shadow: none;
     cursor: var(--editor-text-cursor);
@@ -3797,25 +3799,25 @@
     line-height: 1.5rem;
   }
 
-  .markdown-paper .markra-image-node-source:focus {
+  .markdown-paper .helbaron-image-node-source:focus {
     @apply border-0 outline-none;
     box-shadow: none;
   }
 
-  .markdown-paper .markra-image-frame {
+  .markdown-paper .helbaron-image-frame {
     @apply relative inline-block max-w-full align-top;
     line-height: 0;
   }
 
-  .markdown-paper .markra-image-frame > img {
+  .markdown-paper .helbaron-image-frame > img {
     @apply my-0 border-0;
     display: block;
     -webkit-user-drag: none;
     user-select: none;
   }
 
-  .markdown-paper .markra-image-viewer-button {
-    @apply absolute top-2 right-2 z-[3] grid size-7 cursor-pointer place-items-center rounded-md border border-(--border-default) p-0 outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
+  .markdown-paper .helbaron-image-viewer-button {
+    @apply absolute top-2 end-2 z-[3] grid size-7 cursor-pointer place-items-center rounded-md border border-(--border-default) p-0 outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
     background: var(--editor-code-control-bg);
     border-color: var(--editor-border);
     color: var(--editor-text-secondary);
@@ -3824,73 +3826,73 @@
     transform: translateY(-0.125rem);
   }
 
-  .markdown-paper .markra-image-frame:hover .markra-image-viewer-button,
-  .markdown-paper .markra-image-viewer-button:focus-visible {
+  .markdown-paper .helbaron-image-frame:hover .helbaron-image-viewer-button,
+  .markdown-paper .helbaron-image-viewer-button:focus-visible {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
   }
 
-  .markdown-paper .markra-image-viewer-button:hover {
+  .markdown-paper .helbaron-image-viewer-button:hover {
     background: var(--editor-bg-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-heading);
   }
 
-  .markdown-paper .markra-image-viewer-button:focus-visible {
+  .markdown-paper .helbaron-image-viewer-button:focus-visible {
     background: var(--editor-bg-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-heading);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markdown-paper .markra-image-upload-placeholder {
+  .markdown-paper .helbaron-image-upload-placeholder {
     @apply my-6 inline-flex min-h-18 max-w-full items-center gap-2 rounded-[3px] border border-dashed border-(--border-default) bg-(--bg-secondary) px-3.5 py-3 text-[0.92em] font-medium text-(--text-secondary);
     cursor: progress;
     user-select: none;
     vertical-align: middle;
   }
 
-  .markdown-paper .markra-image-upload-placeholder-spinner {
+  .markdown-paper .helbaron-image-upload-placeholder-spinner {
     @apply block size-4 shrink-0 rounded-full border-2 border-(--border-default);
-    animation: markra-ai-preview-spin 0.82s linear infinite;
+    animation: helbaron-ai-preview-spin 0.82s linear infinite;
     border-top-color: var(--accent);
   }
 
-  .markdown-paper .markra-image-upload-placeholder-label {
+  .markdown-paper .helbaron-image-upload-placeholder-label {
     @apply min-w-0 truncate;
   }
 
-  .markdown-paper .markra-image-node-source::selection {
+  .markdown-paper .helbaron-image-node-source::selection {
     background: color-mix(in srgb, var(--accent) 28%, transparent);
   }
 
-  .markdown-paper .markra-image-node-source-invalid .markra-image-node-source {
+  .markdown-paper .helbaron-image-node-source-invalid .helbaron-image-node-source {
     @apply text-red-600;
   }
 
-  .markdown-paper .markra-live-image-preview {
+  .markdown-paper .helbaron-live-image-preview {
     @apply my-6 block max-w-full rounded-[3px] border border-(--border-default);
   }
 
-  .markdown-paper .markra-math-render {
+  .markdown-paper .helbaron-math-render {
     color: var(--text-primary);
     letter-spacing: 0;
     cursor: var(--editor-text-cursor);
     user-select: text;
   }
 
-  .markdown-paper .markra-math-render .katex {
+  .markdown-paper .helbaron-math-render .katex {
     font-size: 1em;
   }
 
-  .markdown-paper .markra-math-render-inline {
+  .markdown-paper .helbaron-math-render-inline {
     display: inline-flex;
     margin: 0 0.08em;
     vertical-align: -0.08em;
   }
 
-  .markdown-paper .markra-math-render-display {
+  .markdown-paper .helbaron-math-render-display {
     display: block;
     max-width: 100%;
     margin: 0.85em 0;
@@ -3899,27 +3901,27 @@
     text-align: center;
   }
 
-  .markdown-paper .cm-content .markra-math-render-display {
-    --markra-math-block-spacing: 0.85em;
+  .markdown-paper .cm-content .helbaron-math-render-display {
+    --helbaron-math-block-spacing: 0.85em;
   }
 
-  .markdown-paper .markra-math-render-display .katex-display {
+  .markdown-paper .helbaron-math-render-display .katex-display {
     margin: 0;
     overflow-x: auto;
     overflow-y: hidden;
   }
 
-  .markdown-paper .markra-math-render-invalid {
+  .markdown-paper .helbaron-math-render-invalid {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     color: var(--text-secondary);
   }
 
-  .markdown-paper p:has(.markra-math-source-active-display) {
+  .markdown-paper p:has(.helbaron-math-source-active-display) {
     margin-top: 0.85em;
     margin-bottom: 0.85em;
   }
 
-  .markdown-paper .markra-math-source-active {
+  .markdown-paper .helbaron-math-source-active {
     border-radius: 3px;
     background: color-mix(in srgb, var(--accent) 8%, transparent);
     color: var(--editor-text-primary);
@@ -3931,7 +3933,7 @@
     box-decoration-break: clone;
   }
 
-  .markdown-paper .markra-math-source-active[data-type="hardbreak"] {
+  .markdown-paper .helbaron-math-source-active[data-type="hardbreak"] {
     display: inline;
     overflow: visible;
     background: transparent;
@@ -3940,29 +3942,29 @@
     line-height: inherit;
   }
 
-  .markdown-paper .markra-math-token-delimiter {
+  .markdown-paper .helbaron-math-token-delimiter {
     color: var(--accent);
   }
 
-  .markdown-paper .markra-math-token-command {
+  .markdown-paper .helbaron-math-token-command {
     color: var(--editor-hl-keyword);
     font-weight: 620;
   }
 
-  .markdown-paper .markra-math-token-brace {
+  .markdown-paper .helbaron-math-token-brace {
     color: var(--editor-hl-type);
   }
 
-  .markdown-paper .markra-math-token-operator {
+  .markdown-paper .helbaron-math-token-operator {
     color: var(--editor-hl-number);
   }
 
-  .markdown-paper .markra-math-render-active-preview {
+  .markdown-paper .helbaron-math-render-active-preview {
     margin-top: 1em;
     opacity: 0.96;
   }
 
-  .markdown-paper .markra-math-macro-fold {
+  .markdown-paper .helbaron-math-macro-fold {
     display: inline-flex;
     max-width: 100%;
     align-items: center;
@@ -3979,12 +3981,12 @@
     vertical-align: 0.08em;
   }
 
-  .markdown-paper .markra-math-macro-fold:hover {
+  .markdown-paper .helbaron-math-macro-fold:hover {
     border-color: color-mix(in srgb, var(--accent) 42%, var(--editor-border));
     color: var(--editor-text-primary);
   }
 
-  .markdown-paper .markra-math-macro-fold:focus-visible {
+  .markdown-paper .helbaron-math-macro-fold:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--accent) 64%, transparent);
     outline-offset: 2px;
   }
@@ -3998,11 +4000,11 @@
     font-synthesis: style;
   }
 
-  .markdown-paper .markra-md-delimiter {
+  .markdown-paper .helbaron-md-delimiter {
     @apply text-(--editor-markdown-syntax-color);
   }
 
-  .markdown-paper .markra-md-hidden-delimiter {
+  .markdown-paper .helbaron-md-hidden-delimiter {
     display: inline-block;
     width: 0;
     max-width: 0;
@@ -4013,7 +4015,7 @@
     -webkit-text-fill-color: transparent;
   }
 
-  .markdown-paper .markra-math-source-hidden-display.markra-md-hidden-delimiter {
+  .markdown-paper .helbaron-math-source-hidden-display.helbaron-md-hidden-delimiter {
     display: inline-block;
     position: absolute;
     top: 50%;
@@ -4032,33 +4034,33 @@
     caret-color: var(--accent);
   }
 
-  .markdown-paper .markra-live-mark-strong {
+  .markdown-paper .helbaron-live-mark-strong {
     @apply text-(--text-heading) font-[760];
   }
 
-  .markdown-paper .markra-live-mark-emphasis {
+  .markdown-paper .helbaron-live-mark-emphasis {
     @apply italic;
     /* CJK system fonts often lack italic faces, so live Markdown needs local style synthesis. */
     font-synthesis: style;
   }
 
-  .markdown-paper .markra-live-mark-strikethrough {
+  .markdown-paper .helbaron-live-mark-strikethrough {
     @apply line-through;
   }
 
-  .markdown-paper .markra-live-mark-highlight {
+  .markdown-paper .helbaron-live-mark-highlight {
     @apply rounded-[3px] px-[0.12em] py-[0.02em];
     background: color-mix(in srgb, #d4a72c 28%, transparent);
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
   }
 
-  .markdown-paper .markra-live-mark-inlineCode {
+  .markdown-paper .helbaron-live-mark-inlineCode {
     @apply rounded-[3px] border border-(--border-default) bg-(--bg-code) px-[0.28em] py-[0.12em] text-[0.88em] text-(--text-primary);
     font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
   }
 
-  .markdown-paper code .markra-live-mark-inlineCode {
+  .markdown-paper code .helbaron-live-mark-inlineCode {
     border: 0;
     background: transparent;
     box-shadow: none;
@@ -4067,19 +4069,19 @@
     font-size: inherit;
   }
 
-  .markdown-paper .markra-ai-preview-delete {
+  .markdown-paper .helbaron-ai-preview-delete {
     @apply rounded-[3px] text-(--text-secondary) line-through decoration-red-500/50 decoration-1;
     background: color-mix(in srgb, oklch(63.7% 0.237 25.331) 7%, transparent);
   }
 
-  .markdown-paper .markra-ai-selection-hold {
+  .markdown-paper .helbaron-ai-selection-hold {
     @apply rounded-[3px];
     background: color-mix(in srgb, var(--accent) 18%, transparent);
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
 
-  .markdown-paper .markra-ai-preview-widget {
+  .markdown-paper .helbaron-ai-preview-widget {
     @apply relative my-1 inline-flex max-w-full items-start align-baseline;
     color: inherit;
     font-family: inherit;
@@ -4095,15 +4097,15 @@
     z-index: 30;
   }
 
-  .markdown-paper .markra-ai-preview-widget-block {
+  .markdown-paper .helbaron-ai-preview-widget-block {
     @apply my-4 flex w-full max-w-full items-start;
     font-size: 16px;
     font-weight: 520;
     line-height: 1.65;
   }
 
-  .markdown-paper .markra-ai-preview-scope {
-    @apply mr-1 inline-flex shrink-0 items-center rounded border border-(--border-default) bg-(--bg-secondary) px-1.5 py-0.5 text-(--text-secondary);
+  .markdown-paper .helbaron-ai-preview-scope {
+    @apply me-1 inline-flex shrink-0 items-center rounded border border-(--border-default) bg-(--bg-secondary) px-1.5 py-0.5 text-(--text-secondary);
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0;
@@ -4111,11 +4113,11 @@
     white-space: nowrap;
   }
 
-  .markdown-paper .markra-ai-preview-widget-block .markra-ai-preview-scope {
+  .markdown-paper .helbaron-ai-preview-widget-block .helbaron-ai-preview-scope {
     @apply mt-0;
   }
 
-  .markdown-paper .markra-ai-preview-insert {
+  .markdown-paper .helbaron-ai-preview-insert {
     @apply inline-block max-w-full rounded-[3px];
     background: color-mix(in srgb, oklch(69.6% 0.17 162.48) 9%, transparent);
     color: inherit;
@@ -4130,26 +4132,26 @@
     white-space: pre-wrap;
   }
 
-  .markdown-paper .markra-ai-preview-insert-rendered {
+  .markdown-paper .helbaron-ai-preview-insert-rendered {
     @apply block min-w-0 overflow-x-auto;
     font-weight: initial;
     text-decoration: none;
     white-space: normal;
   }
 
-  .markdown-paper .markra-ai-preview-insert-rendered table {
+  .markdown-paper .helbaron-ai-preview-insert-rendered table {
     @apply my-0;
   }
 
-  .markdown-paper .markra-ai-preview-actions {
-    @apply absolute right-0 bottom-[calc(100%+6px)] inline-flex items-center gap-0.5 rounded-md border border-(--border-default) bg-(--bg-primary) p-0.5 shadow-[var(--ai-preview-action-shadow)];
+  .markdown-paper .helbaron-ai-preview-actions {
+    @apply absolute end-0 bottom-[calc(100%+6px)] inline-flex items-center gap-0.5 rounded-md border border-(--border-default) bg-(--bg-primary) p-0.5 shadow-[var(--ai-preview-action-shadow)];
     font-size: 12px;
     line-height: 1;
     white-space: nowrap;
     z-index: 60;
   }
 
-  .markdown-paper .markra-ai-preview-actions-quiet {
+  .markdown-paper .helbaron-ai-preview-actions-quiet {
     @apply scale-[0.98] border-transparent transition-[opacity,transform,border-color,background-color] duration-150 ease-out;
     opacity: 0.58;
     background: color-mix(in srgb, var(--bg-primary) 92%, var(--bg-secondary));
@@ -4157,35 +4159,35 @@
     transform-origin: right bottom;
   }
 
-  .markdown-paper .markra-ai-preview-widget:hover .markra-ai-preview-actions-quiet,
-  .markdown-paper .markra-ai-preview-widget:focus-within .markra-ai-preview-actions-quiet {
+  .markdown-paper .helbaron-ai-preview-widget:hover .helbaron-ai-preview-actions-quiet,
+  .markdown-paper .helbaron-ai-preview-widget:focus-within .helbaron-ai-preview-actions-quiet {
     @apply scale-100 border-(--border-default);
     opacity: 1;
   }
 
-  .markdown-paper .markra-ai-preview-action {
+  .markdown-paper .helbaron-ai-preview-action {
     @apply inline-flex size-6 cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-(--text-secondary) transition-colors duration-150 ease-out hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-hover) focus-visible:text-(--text-heading) focus-visible:outline-none;
   }
 
-  .markdown-paper .markra-ai-preview-apply {
+  .markdown-paper .helbaron-ai-preview-apply {
     @apply text-(--accent) hover:bg-(--accent-soft) hover:text-(--accent-hover) focus-visible:bg-(--accent-soft) focus-visible:text-(--accent-hover);
   }
 
-  .markdown-paper .markra-ai-preview-applying {
+  .markdown-paper .helbaron-ai-preview-applying {
     @apply cursor-default bg-(--accent-soft) text-(--accent);
   }
 
-  .markdown-paper .markra-ai-preview-copied {
+  .markdown-paper .helbaron-ai-preview-copied {
     @apply bg-emerald-500/12 text-emerald-600 hover:bg-emerald-500/16 hover:text-emerald-700 focus-visible:bg-emerald-500/16 focus-visible:text-emerald-700;
   }
 
-  .markdown-paper .markra-ai-preview-icon {
+  .markdown-paper .helbaron-ai-preview-icon {
     @apply pointer-events-none;
   }
 
-  .markdown-paper .markra-ai-preview-spinner {
+  .markdown-paper .helbaron-ai-preview-spinner {
     transform-origin: center;
-    animation: markra-ai-preview-spin 0.82s linear infinite;
+    animation: helbaron-ai-preview-spin 0.82s linear infinite;
   }
 
   .markdown-paper code {
@@ -4210,15 +4212,15 @@
     box-shadow: none;
   }
 
-  .markdown-paper .markra-code-block {
+  .markdown-paper .helbaron-code-block {
     @apply relative mt-5 mb-7 grid overflow-visible rounded border border-(--border-default) bg-(--bg-code);
     background: var(--editor-code-bg);
     border-color: var(--editor-border);
     grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .markdown-paper .markra-code-copy-button {
-    @apply absolute top-2 right-2 z-[3] grid size-7 cursor-pointer place-items-center rounded-md border border-(--border-default) p-0 outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
+  .markdown-paper .helbaron-code-copy-button {
+    @apply absolute top-2 end-2 z-[3] grid size-7 cursor-pointer place-items-center rounded-md border border-(--border-default) p-0 outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
     background: var(--editor-code-control-bg);
     border-color: var(--editor-border);
     color: var(--editor-text-secondary);
@@ -4227,68 +4229,68 @@
     transform: translateY(-0.125rem);
   }
 
-  .markdown-paper .markra-code-copy-button svg {
+  .markdown-paper .helbaron-code-copy-button svg {
     @apply absolute;
     transition:
       opacity 140ms ease-out,
       transform 140ms ease-out;
   }
 
-  .markdown-paper .markra-code-copy-check-icon {
+  .markdown-paper .helbaron-code-copy-check-icon {
     opacity: 0;
     transform: scale(0.72);
   }
 
-  .markdown-paper .markra-code-block:hover .markra-code-copy-button,
-  .markdown-paper .markra-code-block:focus-within .markra-code-copy-button {
+  .markdown-paper .helbaron-code-block:hover .helbaron-code-copy-button,
+  .markdown-paper .helbaron-code-block:focus-within .helbaron-code-copy-button {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
   }
 
-  .markdown-paper .markra-code-block[data-mermaid-mode="source"] .markra-code-copy-button {
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="source"] .helbaron-code-copy-button {
     right: 5.75rem;
   }
 
-  .markdown-paper .markra-code-copy-button:hover,
-  .markdown-paper .markra-code-copy-button:focus-visible {
+  .markdown-paper .helbaron-code-copy-button:hover,
+  .markdown-paper .helbaron-code-copy-button:focus-visible {
     background: var(--editor-bg-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-heading);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markdown-paper .markra-code-copy-button[data-copied="true"] {
+  .markdown-paper .helbaron-code-copy-button[data-copied="true"] {
     background: color-mix(in srgb, oklch(69.6% 0.17 162.48) 14%, var(--editor-code-control-bg));
     border-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 62%, var(--editor-border));
     color: oklch(50% 0.13 151);
   }
 
-  .markdown-paper .markra-code-copy-button[data-copied="true"] .markra-code-copy-icon {
+  .markdown-paper .helbaron-code-copy-button[data-copied="true"] .helbaron-code-copy-icon {
     opacity: 0;
     transform: scale(0.72);
   }
 
-  .markdown-paper .markra-code-copy-button[data-copied="true"] .markra-code-copy-check-icon {
+  .markdown-paper .helbaron-code-copy-button[data-copied="true"] .helbaron-code-copy-check-icon {
     opacity: 1;
     transform: scale(1);
   }
 
-  .markdown-paper .markra-code-language-control {
-    @apply absolute right-0 z-[2] flex items-center justify-end pt-1.5 transition-[opacity,transform] duration-150 ease-out;
+  .markdown-paper .helbaron-code-language-control {
+    @apply absolute end-0 z-[2] flex items-center justify-end pt-1.5 transition-[opacity,transform] duration-150 ease-out;
     top: 100%;
     opacity: 0;
     pointer-events: none;
     transform: translateY(-0.125rem);
   }
 
-  .markdown-paper .markra-code-block:hover .markra-code-language-control {
+  .markdown-paper .helbaron-code-block:hover .helbaron-code-language-control {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
   }
 
-  .markdown-paper .markra-code-language-select {
+  .markdown-paper .helbaron-code-language-select {
     @apply h-8 min-w-40 cursor-pointer rounded-md border border-(--border-default) bg-(--bg-primary)/96 px-3 text-[0.82rem] font-medium text-(--text-secondary) shadow-sm outline-none transition-[border-color,color,background-color,box-shadow];
     background: var(--editor-code-control-bg);
     border-color: var(--editor-border);
@@ -4298,15 +4300,15 @@
     line-height: 1;
   }
 
-  .markdown-paper .markra-code-language-select:focus {
+  .markdown-paper .helbaron-code-language-select:focus {
     @apply border-(--border-focus) bg-(--bg-primary) text-(--text-primary);
     background: var(--editor-code-control-bg);
     color: var(--editor-text-primary);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--border-focus) 18%, transparent);
   }
 
-  .markdown-paper .markra-code-line-numbers {
-    @apply rounded-l border-r border-(--border-default) px-3 py-4 text-right text-[0.9em] leading-[1.65] text-(--text-secondary);
+  .markdown-paper .helbaron-code-line-numbers {
+    @apply rounded-l border-e border-(--border-default) px-3 py-4 text-end text-[0.9em] leading-[1.65] text-(--text-secondary);
     background: var(--editor-code-line-bg);
     border-color: var(--editor-border);
     color: var(--editor-text-secondary);
@@ -4314,16 +4316,16 @@
     user-select: none;
   }
 
-  .markdown-paper .markra-code-line-number {
+  .markdown-paper .helbaron-code-line-number {
     display: block;
     min-width: 2ch;
   }
 
-  .markdown-paper .markra-code-block pre {
+  .markdown-paper .helbaron-code-block pre {
     @apply m-0 min-w-0 overflow-auto rounded-none border-0 bg-transparent px-4 py-4;
   }
 
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"] {
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"] {
     display: block;
     background: transparent;
     border-color: transparent;
@@ -4333,38 +4335,38 @@
     will-change: transform;
   }
 
-  .markdown-paper .cm-markra-code-top-gap:has(+ .cm-line .markra-code-block[data-mermaid-mode="preview"]) {
+  .markdown-paper .cm-helbaron-code-top-gap:has(+ .cm-line .helbaron-code-block[data-mermaid-mode="preview"]) {
     display: none;
   }
 
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"] .markra-code-line-numbers,
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"] pre,
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"] .markra-code-copy-button,
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"] .markra-code-language-control {
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"] .helbaron-code-line-numbers,
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"] pre,
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"] .helbaron-code-copy-button,
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"] .helbaron-code-language-control {
     display: none;
   }
 
-  .markdown-paper .markra-mermaid-preview-button {
-    @apply absolute top-2 right-2 z-[3] h-7 cursor-pointer rounded-md border border-(--border-default) px-2.5 text-[0.74rem] font-medium outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
+  .markdown-paper .helbaron-mermaid-preview-button {
+    @apply absolute top-2 end-2 z-[3] h-7 cursor-pointer rounded-md border border-(--border-default) px-2.5 text-[0.74rem] font-medium outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
     background: var(--editor-code-control-bg);
     border-color: var(--editor-border);
     color: var(--editor-text-secondary);
   }
 
-  .markdown-paper .markra-mermaid-preview-button[hidden] {
+  .markdown-paper .helbaron-mermaid-preview-button[hidden] {
     display: none;
   }
 
-  .markdown-paper .markra-mermaid-preview-button:hover,
-  .markdown-paper .markra-mermaid-preview-button:focus-visible {
+  .markdown-paper .helbaron-mermaid-preview-button:hover,
+  .markdown-paper .helbaron-mermaid-preview-button:focus-visible {
     background: var(--editor-bg-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-heading);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markdown-paper .markra-mermaid-zoom-button {
-    @apply absolute top-4 right-2 z-[3] grid size-7 cursor-pointer place-items-center rounded-md border border-(--border-default) p-0 outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
+  .markdown-paper .helbaron-mermaid-zoom-button {
+    @apply absolute top-4 end-2 z-[3] grid size-7 cursor-pointer place-items-center rounded-md border border-(--border-default) p-0 outline-none transition-[opacity,transform,color,background-color,border-color,box-shadow] duration-150 ease-out;
     background: var(--editor-code-control-bg);
     border-color: var(--editor-border);
     color: var(--editor-text-secondary);
@@ -4373,30 +4375,30 @@
     transform: translateY(-0.125rem);
   }
 
-  .markdown-paper .markra-mermaid-zoom-button[hidden] {
+  .markdown-paper .helbaron-mermaid-zoom-button[hidden] {
     display: none;
   }
 
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"]:hover .markra-mermaid-zoom-button {
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"]:hover .helbaron-mermaid-zoom-button {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
   }
 
-  .markdown-paper .markra-mermaid-zoom-button:hover {
+  .markdown-paper .helbaron-mermaid-zoom-button:hover {
     background: var(--editor-bg-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-heading);
   }
 
-  .markdown-paper .markra-mermaid-zoom-button:focus-visible {
+  .markdown-paper .helbaron-mermaid-zoom-button:focus-visible {
     background: var(--editor-bg-secondary);
     border-color: var(--editor-border-strong);
     color: var(--editor-text-heading);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markdown-paper .markra-mermaid-render {
+  .markdown-paper .helbaron-mermaid-render {
     @apply mx-4 mb-4 rounded border border-(--border-default) bg-(--bg-primary) p-4;
     grid-column: 1 / -1;
     border-color: var(--editor-border);
@@ -4404,26 +4406,26 @@
     text-align: center;
   }
 
-  .markdown-paper .markra-code-block[data-mermaid-mode="preview"] .markra-mermaid-render {
+  .markdown-paper .helbaron-code-block[data-mermaid-mode="preview"] .helbaron-mermaid-render {
     margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
   }
 
-  .markdown-paper .markra-mermaid-render[hidden],
-  .markdown-paper .markra-mermaid-render-empty {
+  .markdown-paper .helbaron-mermaid-render[hidden],
+  .markdown-paper .helbaron-mermaid-render-empty {
     display: none;
   }
 
-  .markdown-paper .markra-mermaid-render svg {
+  .markdown-paper .helbaron-mermaid-render svg {
     display: block;
     max-width: 100%;
     height: auto;
     margin: 0 auto;
   }
 
-  .markdown-paper .markra-mermaid-render-invalid {
+  .markdown-paper .helbaron-mermaid-render-invalid {
     @apply max-h-[18em] overflow-auto font-mono text-[0.86em] whitespace-pre-wrap;
     background: color-mix(in srgb, var(--danger) 8%, var(--editor-code-bg));
     color: var(--danger);
@@ -4431,12 +4433,12 @@
     text-align: left;
   }
 
-  .markra-media-viewer-dialog {
+  .helbaron-media-viewer-dialog {
     @apply fixed inset-0 z-50 grid place-items-center p-4;
     background: color-mix(in srgb, oklch(23% 0.02 260) 72%, transparent);
   }
 
-  .markra-media-viewer-panel {
+  .helbaron-media-viewer-panel {
     @apply relative flex max-h-[88vh] w-full flex-col overflow-hidden rounded-lg border border-(--border-default) bg-(--bg-primary) shadow-2xl;
     background: var(--editor-paper-bg, var(--bg-primary));
     border-color: color-mix(in srgb, var(--editor-border-strong, var(--border-strong)) 82%, transparent);
@@ -4446,11 +4448,11 @@
     min-height: min(28rem, 88vh);
   }
 
-  .markra-media-viewer-dialog[data-fullscreen="true"] {
+  .helbaron-media-viewer-dialog[data-fullscreen="true"] {
     padding: 0;
   }
 
-  .markra-media-viewer-dialog[data-fullscreen="true"] .markra-media-viewer-panel {
+  .helbaron-media-viewer-dialog[data-fullscreen="true"] .helbaron-media-viewer-panel {
     width: 100%;
     height: 100%;
     max-width: none;
@@ -4461,66 +4463,66 @@
     box-shadow: none;
   }
 
-  .markra-media-viewer-toolbar {
+  .helbaron-media-viewer-toolbar {
     @apply relative z-[2] flex items-center justify-end gap-1 border-b border-(--border-default) px-3 py-2;
     background: color-mix(in srgb, var(--editor-paper-bg, var(--bg-primary)) 94%, transparent);
     border-color: color-mix(in srgb, var(--editor-border, var(--border-default)) 82%, transparent);
   }
 
-  .markra-media-viewer-zoom-value {
+  .helbaron-media-viewer-zoom-value {
     @apply min-w-12 px-1 text-center text-[12px] leading-5 font-[650] tabular-nums text-(--text-secondary);
     color: var(--editor-text-secondary, var(--text-secondary));
   }
 
-  .markra-media-viewer-control-button,
-  .markra-media-viewer-close-button {
+  .helbaron-media-viewer-control-button,
+  .helbaron-media-viewer-close-button {
     @apply grid size-8 cursor-pointer place-items-center rounded-md border border-(--border-default) bg-(--bg-primary) p-0 text-(--text-secondary) outline-none transition-[color,background-color,border-color,box-shadow] duration-150 ease-out;
     background: var(--editor-code-control-bg, var(--bg-primary));
     border-color: var(--editor-border, var(--border-default));
     color: var(--editor-text-secondary, var(--text-secondary));
   }
 
-  .markra-media-viewer-control-button:hover,
-  .markra-media-viewer-close-button:hover {
+  .helbaron-media-viewer-control-button:hover,
+  .helbaron-media-viewer-close-button:hover {
     background: var(--editor-bg-secondary, var(--bg-hover));
     border-color: var(--editor-border-strong, var(--border-strong));
     color: var(--editor-text-heading, var(--text-heading));
   }
 
-  .markra-media-viewer-control-button:focus-visible,
-  .markra-media-viewer-close-button:focus-visible {
+  .helbaron-media-viewer-control-button:focus-visible,
+  .helbaron-media-viewer-close-button:focus-visible {
     background: var(--editor-bg-secondary, var(--bg-hover));
     border-color: var(--editor-border-strong, var(--border-strong));
     color: var(--editor-text-heading, var(--text-heading));
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markra-media-viewer-content {
+  .helbaron-media-viewer-content {
     @apply relative min-h-0 flex-1 overflow-hidden px-8 py-8 outline-none;
     cursor: grab;
     touch-action: none;
   }
 
-  .markra-media-viewer-content:focus-visible {
+  .helbaron-media-viewer-content:focus-visible {
     box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
-  .markra-media-viewer-content[data-dragging="true"] {
+  .helbaron-media-viewer-content[data-dragging="true"] {
     cursor: grabbing;
   }
 
-  .markra-media-viewer-canvas {
+  .helbaron-media-viewer-canvas {
     @apply flex min-h-full items-center justify-center;
     transform-origin: center center;
     transition: transform 90ms ease-out;
     will-change: transform;
   }
 
-  .markra-media-viewer-content[data-dragging="true"] .markra-media-viewer-canvas {
+  .helbaron-media-viewer-content[data-dragging="true"] .helbaron-media-viewer-canvas {
     transition: none;
   }
 
-  .markra-media-viewer-media {
+  .helbaron-media-viewer-media {
     display: block;
     flex: 0 0 auto;
     max-width: none;
@@ -4528,8 +4530,8 @@
     margin: 0 auto;
   }
 
-  .markra-media-viewer-image,
-  .markdown-paper img.markra-media-viewer-image {
+  .helbaron-media-viewer-image,
+  .markdown-paper img.helbaron-media-viewer-image {
     width: auto;
     max-width: min(100%, 72rem);
     max-height: calc(88vh - 7rem);
@@ -4539,11 +4541,11 @@
     object-fit: contain;
   }
 
-  .markra-media-viewer-dialog[data-fullscreen="true"] .markra-media-viewer-image {
+  .helbaron-media-viewer-dialog[data-fullscreen="true"] .helbaron-media-viewer-image {
     max-height: calc(100vh - 7rem);
   }
 
-  .markdown-paper .markra-code-block code {
+  .markdown-paper .helbaron-code-block code {
     @apply block border-0 bg-transparent p-0 text-[0.9em];
     color: var(--editor-code-text);
     font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
@@ -4552,11 +4554,11 @@
     white-space: pre-wrap;
   }
 
-  .markdown-paper[data-code-block-wrap="false"] .markra-code-block pre {
+  .markdown-paper[data-code-block-wrap="false"] .helbaron-code-block pre {
     overflow-x: auto;
   }
 
-  .markdown-paper[data-code-block-wrap="false"] .markra-code-block code {
+  .markdown-paper[data-code-block-wrap="false"] .helbaron-code-block code {
     overflow-wrap: normal;
     white-space: pre;
   }
@@ -4649,7 +4651,7 @@
 
   .ai-chat-markdown-thinking strong,
   .ai-chat-markdown-thinking b,
-  .ai-chat-markdown-thinking .markra-live-mark-strong {
+  .ai-chat-markdown-thinking .helbaron-live-mark-strong {
     color: color-mix(in srgb, var(--text-secondary) 78%, transparent);
   }
 
@@ -4672,7 +4674,7 @@
 
   .ai-chat-markdown ul,
   .ai-chat-markdown ol {
-    @apply my-2 pl-[1.2em];
+    @apply my-2 ps-[1.2em];
   }
 
   .ai-chat-markdown li {
@@ -4680,7 +4682,7 @@
   }
 
   .ai-chat-markdown blockquote {
-    @apply my-2 pl-3;
+    @apply my-2 ps-3;
   }
 
   .ai-chat-markdown table {
@@ -4720,19 +4722,19 @@
     background: transparent;
   }
 
-  .editor-content-slot[data-document-search-open="true"] .markdown-paper .markra-math-caret-anchor,
-  .editor-content-slot[data-document-search-open="true"] .markdown-paper .markra-image-node-source-row {
+  .editor-content-slot[data-document-search-open="true"] .markdown-paper .helbaron-math-caret-anchor,
+  .editor-content-slot[data-document-search-open="true"] .markdown-paper .helbaron-image-node-source-row {
     display: none !important;
   }
 
-  .editor-content-slot[data-document-search-open="true"] .markdown-paper .markra-image-node.markra-image-node-selected {
+  .editor-content-slot[data-document-search-open="true"] .markdown-paper .helbaron-image-node.helbaron-image-node-selected {
     outline: none !important;
     box-shadow: none !important;
   }
 
   .ai-command-thinking-text {
     color: color-mix(in srgb, var(--text-secondary) 68%, transparent);
-    animation: markra-ai-thinking-breathe 1.8s ease-in-out infinite;
+    animation: helbaron-ai-thinking-breathe 1.8s ease-in-out infinite;
   }
 
   .ai-command-inline-loading-text {
@@ -4757,7 +4759,7 @@
     filter: blur(10px);
     opacity: 0;
     transform: translateX(-80%) skewX(-10deg);
-    animation: markra-ai-inline-shimmer 1.9s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+    animation: helbaron-ai-inline-shimmer 1.9s cubic-bezier(0.33, 0, 0.2, 1) infinite;
     pointer-events: none;
   }
 
@@ -4774,7 +4776,7 @@
     border-radius: inherit;
     padding: 1.5px;
     background: conic-gradient(
-      from var(--markra-ai-agent-border-angle),
+      from var(--helbaron-ai-agent-border-angle),
       transparent 0deg,
       transparent 218deg,
       color-mix(in srgb, var(--accent) 14%, transparent) 256deg,
@@ -4782,7 +4784,7 @@
       color-mix(in srgb, var(--accent) 18%, transparent) 338deg,
       transparent 360deg
     );
-    animation: markra-ai-agent-border-run 1.65s linear infinite;
+    animation: helbaron-ai-agent-border-run 1.65s linear infinite;
     mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
@@ -4809,12 +4811,59 @@
       animation: none;
     }
 
-    .markdown-paper .markra-ai-preview-spinner {
+    .markdown-paper .helbaron-ai-preview-spinner {
       animation: none;
     }
 
-    .markdown-paper .markra-image-upload-placeholder-spinner {
+    .markdown-paper .helbaron-image-upload-placeholder-spinner {
       animation: none;
     }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Right-to-left (Arabic) polish.
+   Layout uses logical properties, so most of the UI mirrors automatically.
+   These rules cover what logical properties cannot express.
+   ------------------------------------------------------------------------- */
+@layer base {
+  /* Directional icons point the other way when the surrounding text is RTL. */
+  :where(:dir(rtl)) > .lucide-chevron-right,
+  :where(:dir(rtl)) > .lucide-chevron-left,
+  :where(:dir(rtl)) > .lucide-arrow-right,
+  :where(:dir(rtl)) > .lucide-arrow-left,
+  :where(:dir(rtl)) > .lucide-corner-down-left,
+  :where(:dir(rtl)) > .lucide-undo-2,
+  :where(:dir(rtl)) > .lucide-redo-2,
+  :where(:dir(rtl)) > .lucide-list,
+  :where(:dir(rtl)) > .lucide-list-ordered,
+  :where(:dir(rtl)) > .lucide-indent-increase,
+  :where(:dir(rtl)) > .lucide-indent-decrease {
+    transform: scaleX(-1);
+  }
+
+  /* Arabic script has no italic tradition; slant stays readable but lighter. */
+  .markdown-paper .cm-line:dir(rtl) .cm-helbaron-emphasis {
+    font-synthesis: style;
+  }
+
+  /* Numbers inside Arabic paragraphs keep their natural LTR order. */
+  .markdown-paper .cm-line:dir(rtl) .cm-helbaron-inline-code {
+    unicode-bidi: isolate;
+    direction: ltr;
+  }
+}
+
+/* Word-style toolbar: push the page below it so the first line is never covered.
+   Unlayered so it wins over the pt-* utility on the paper element. */
+[data-word-toolbar="true"] .markdown-paper,
+[data-word-toolbar="true"] .markdown-source-paper {
+  padding-top: 6.75rem;
+}
+
+@media (max-width: 900px) {
+  [data-word-toolbar="true"] .markdown-paper,
+  [data-word-toolbar="true"] .markdown-source-paper {
+    padding-top: 6rem;
   }
 }

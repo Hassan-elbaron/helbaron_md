@@ -6,8 +6,8 @@ import {
   providerRequiresApiKey,
   requestStyleForProviderType,
   type AiProviderConfig
-} from "@markra/providers";
-import type { I18nKey } from "@markra/shared";
+} from "@helbaron/providers";
+import type { I18nKey } from "@helbaron/shared";
 
 type Translate = (key: I18nKey) => string;
 

@@ -1,8 +1,8 @@
-import type { AiDiffResult } from "@markra/ai";
+import type { AiDiffResult } from "@helbaron/ai";
 
-export const AI_EDITOR_PREVIEW_ACTION_EVENT = "markra-ai-preview-action";
-export const AI_EDITOR_PREVIEW_APPLIED_EVENT = "markra-ai-preview-applied";
-export const AI_EDITOR_PREVIEW_RESTORE_EVENT = "markra-ai-preview-restore";
+export const AI_EDITOR_PREVIEW_ACTION_EVENT = "helbaron-ai-preview-action";
+export const AI_EDITOR_PREVIEW_APPLIED_EVENT = "helbaron-ai-preview-applied";
+export const AI_EDITOR_PREVIEW_RESTORE_EVENT = "helbaron-ai-preview-restore";
 
 export type AiTextDiffResult = Extract<
   AiDiffResult,

@@ -684,7 +684,7 @@ describe("MarkdownTabsBar", () => {
 
     fireEvent.contextMenu(screen.getByRole("tab", { name: /Alpha\.md/ }));
 
-    expect(document.querySelector("[data-markra-context-menu]")).not.toBeNull();
+    expect(document.querySelector("[data-helbaron-context-menu]")).not.toBeNull();
   });
 
   it("reveals a markdown tab in the file tree from the tab actions menu", () => {

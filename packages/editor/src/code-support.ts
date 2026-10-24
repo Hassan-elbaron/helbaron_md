@@ -7,18 +7,18 @@ type HighlightAstNode = {
   value?: string;
 };
 
-export interface MarkraCodeHighlightSpan {
+export interface HelbaronCodeHighlightSpan {
   readonly className: string;
   readonly from: number;
   readonly to: number;
 }
 
-export interface MarkraCodeLanguageOption {
+export interface HelbaronCodeLanguageOption {
   readonly label: string;
   readonly value: string;
 }
 
-export const markraCodeLanguageOptions: readonly MarkraCodeLanguageOption[] = [
+export const helbaronCodeLanguageOptions: readonly HelbaronCodeLanguageOption[] = [
   { label: "Plain Text", value: "" },
   { label: "Bash", value: "bash" },
   { label: "C", value: "c" },
@@ -65,7 +65,7 @@ export const markraCodeLanguageOptions: readonly MarkraCodeLanguageOption[] = [
 
 const lowlight = createLowlight(common);
 
-export function normalizeMarkraCodeLanguage(language: unknown) {
+export function normalizeHelbaronCodeLanguage(language: unknown) {
   if (typeof language !== "string") return "";
   return language.trim().replace(/[\s`]+/gu, "-");
 }
@@ -80,7 +80,7 @@ function collectHighlightRanges(
   node: HighlightAstNode,
   offset: number,
   inheritedClassNames: string[],
-  ranges: MarkraCodeHighlightSpan[],
+  ranges: HelbaronCodeHighlightSpan[],
 ) {
   if (node.type === "text") {
     const value = node.value ?? "";
@@ -102,11 +102,11 @@ function collectHighlightRanges(
   return cursor;
 }
 
-export function highlightMarkraCode(language: string, code: string) {
+export function highlightHelbaronCode(language: string, code: string) {
   if (!code.trim()) return [];
 
-  const normalizedLanguage = normalizeMarkraCodeLanguage(language);
-  const ranges: MarkraCodeHighlightSpan[] = [];
+  const normalizedLanguage = normalizeHelbaronCodeLanguage(language);
+  const ranges: HelbaronCodeHighlightSpan[] = [];
   try {
     const tree = normalizedLanguage && lowlight.registered(normalizedLanguage)
       ? lowlight.highlight(normalizedLanguage, code)

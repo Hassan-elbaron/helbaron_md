@@ -1,5 +1,5 @@
-import type { AppLanguage } from "@markra/shared";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AppLanguage } from "@helbaron/shared";
+import type { AiProviderConfig } from "@helbaron/providers";
 import type { AppFeatureRuntime } from "../../runtime";
 import type { DesktopPlatform } from "../platform";
 import type {
@@ -59,7 +59,7 @@ export function generateDiagnosticsReport({
   const enabledAiProviderCount = aiSettings.providers.filter((provider) => provider.enabled).length;
 
   return [
-    "## Markra Diagnostics",
+    "## Helbaron Diagnostics",
     "",
     "### App",
     line("Report time", reportTime),
@@ -138,7 +138,7 @@ export function generateCrashDiagnosticsReport({
   const normalizedError = normalizeCrashError(error);
 
   return [
-    "## Markra Crash Report",
+    "## Helbaron Crash Report",
     "",
     "### Error",
     line("Error name", normalizedError.name),

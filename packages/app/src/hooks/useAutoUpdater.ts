@@ -1,5 +1,5 @@
 import { createElement, useCallback, useEffect, useRef, useState } from "react";
-import { diagnosticErrorMessage, t, type AppLanguage } from "@markra/shared";
+import { diagnosticErrorMessage, t, type AppLanguage } from "@helbaron/shared";
 import { UpdateProgressToast } from "../components/UpdateProgressToast";
 import {
   clearDiscoveredAppUpdateVersion,

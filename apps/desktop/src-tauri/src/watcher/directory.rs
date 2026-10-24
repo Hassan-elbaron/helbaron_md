@@ -198,7 +198,7 @@ impl LinuxDirectoryWatcher {
         let coordinator_root = root.to_path_buf();
         let coordinator_rules = Arc::clone(&ignore_rules);
         let coordinator = std::thread::Builder::new()
-            .name("markra-directory-watcher".to_string())
+            .name("helbaron-directory-watcher".to_string())
             .spawn(move || {
                 run_linux_coordinator(
                     watcher,
@@ -358,7 +358,7 @@ mod tests {
 
     fn test_root(name: &str) -> PathBuf {
         std::env::temp_dir().join(format!(
-            "markra-directory-watcher-{name}-{}",
+            "helbaron-directory-watcher-{name}-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -440,7 +440,7 @@ mod tests {
         let directory_event =
             Event::new(EventKind::Create(CreateKind::Folder)).add_path(root.join("notes"));
         let control_event = Event::new(EventKind::Modify(ModifyKind::Data(DataChange::Content)))
-            .add_path(root.join(".markraignore"));
+            .add_path(root.join(".helbaronignore"));
         let file_event = Event::new(EventKind::Modify(ModifyKind::Data(DataChange::Content)))
             .add_path(root.join("note.md"));
 

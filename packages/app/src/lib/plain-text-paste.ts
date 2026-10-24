@@ -3,7 +3,7 @@ import {
   createPlainTextPasteInserter,
   markNextPlainTextPaste,
   parseMarkdownShortcut,
-} from "@markra/editor";
+} from "@helbaron/editor";
 import { getAppRuntime } from "../runtime";
 
 export type ClipboardTextReader = () =>

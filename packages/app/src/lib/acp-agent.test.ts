@@ -43,7 +43,7 @@ describe("ACP agent helpers", () => {
     )).toBe("/mock-workspace/notes");
   });
 
-  it("identifies the Markra version when initializing an ACP agent", async () => {
+  it("identifies the Helbaron version when initializing an ACP agent", async () => {
     let handleAgentMessage: ((event: AppAcpAgentMessageEvent) => unknown) | null = null;
     let initializeParams: unknown;
     const runtime = createDefaultAppRuntime();
@@ -108,8 +108,8 @@ describe("ACP agent helpers", () => {
 
     expect(initializeParams).toMatchObject({
       clientInfo: {
-        name: "markra",
-        title: "Markra",
+        name: "helbaron",
+        title: "Helbaron",
         version: appVersion
       }
     });
@@ -198,7 +198,7 @@ describe("ACP agent helpers", () => {
     const historyImageIndex = promptBlocks.findIndex((block) => (
       typeof block === "object" && block !== null && "resource" in block
       && typeof block.resource === "object" && block.resource !== null
-      && "uri" in block.resource && block.resource.uri === "markra://chat-attachment/history-image"
+      && "uri" in block.resource && block.resource.uri === "helbaron://chat-attachment/history-image"
     ));
     const currentTextIndex = promptBlocks.findIndex((block) => (
       typeof block === "object" && block !== null && "text" in block
@@ -207,14 +207,14 @@ describe("ACP agent helpers", () => {
     const currentImageIndex = promptBlocks.findIndex((block) => (
       typeof block === "object" && block !== null && "resource" in block
       && typeof block.resource === "object" && block.resource !== null
-      && "uri" in block.resource && block.resource.uri === "markra://chat-attachment/current-image"
+      && "uri" in block.resource && block.resource.uri === "helbaron://chat-attachment/current-image"
     ));
 
     expect(promptBlocks[historyImageIndex]).toEqual({
       resource: {
         blob: "aGlzdG9yeQ==",
         mimeType: "image/png",
-        uri: "markra://chat-attachment/history-image"
+        uri: "helbaron://chat-attachment/history-image"
       },
       type: "resource"
     });
@@ -222,7 +222,7 @@ describe("ACP agent helpers", () => {
       resource: {
         blob: "Y3VycmVudA==",
         mimeType: "image/webp",
-        uri: "markra://chat-attachment/current-image"
+        uri: "helbaron://chat-attachment/current-image"
       },
       type: "resource"
     });
@@ -286,7 +286,7 @@ describe("ACP agent helpers", () => {
     ])).rejects.toThrow("synthetic adapter failed");
   });
 
-  it("turns ACP current-document writes into Markra editor previews", async () => {
+  it("turns ACP current-document writes into Helbaron editor previews", async () => {
     let handleAgentMessage: ((event: AppAcpAgentMessageEvent) => unknown) | null = null;
     const runtime = createDefaultAppRuntime();
     const onPreviewResult = vi.fn();
@@ -393,7 +393,7 @@ describe("ACP agent helpers", () => {
     const onTextDelta = vi.fn();
     const suggestedResponse = [
       "```markdown",
-      "Markra 是一个本地优先、开源的 Markdown 编辑器。",
+      "Helbaron 是一个本地优先、开源的 Markdown 编辑器。",
       "```"
     ].join("\n");
 
@@ -458,7 +458,7 @@ describe("ACP agent helpers", () => {
     });
 
     const result = await runAcpDocumentAgent({
-      documentContent: "# Draft\n\nMarkra 是一个 Markdown 编辑器。",
+      documentContent: "# Draft\n\nHelbaron 是一个 Markdown 编辑器。",
       documentPath: "/mock-workspace/current.md",
       history: [],
       onPreviewResult,
@@ -468,7 +468,7 @@ describe("ACP agent helpers", () => {
         cursor: 29,
         from: 9,
         source: "selection",
-        text: "Markra 是一个 Markdown 编辑器。",
+        text: "Helbaron 是一个 Markdown 编辑器。",
         to: 29
       },
       settings: {
@@ -498,10 +498,10 @@ describe("ACP agent helpers", () => {
       "建议替换为：",
       "",
       "```markdown",
-      "Markra 是一个本地优先、开源的 Markdown 编辑器。",
+      "Helbaron 是一个本地优先、开源的 Markdown 编辑器。",
       "```",
       "",
-      "这只是普通说明，不是 Markra 编辑预览输出。"
+      "这只是普通说明，不是 Helbaron 编辑预览输出。"
     ].join("\n");
 
     configureAppRuntime({
@@ -565,7 +565,7 @@ describe("ACP agent helpers", () => {
     });
 
     const result = await runAcpDocumentAgent({
-      documentContent: "# Draft\n\nMarkra 是一个 Markdown 编辑器。",
+      documentContent: "# Draft\n\nHelbaron 是一个 Markdown 编辑器。",
       documentPath: "/mock-workspace/current.md",
       history: [],
       onPreviewResult,
@@ -575,7 +575,7 @@ describe("ACP agent helpers", () => {
         cursor: 29,
         from: 9,
         source: "selection",
-        text: "Markra 是一个 Markdown 编辑器。",
+        text: "Helbaron 是一个 Markdown 编辑器。",
         to: 29
       },
       settings: {
@@ -672,10 +672,10 @@ describe("ACP agent helpers", () => {
     expect(promptBlocks).toEqual(expect.any(Array));
     const textBlocks = promptBlocks as Array<{ text?: string; type?: string }>;
     const previewPolicyBlock = textBlocks.find((block) =>
-      block.type === "text" && block.text?.includes("Markra edit preview policy:")
+      block.type === "text" && block.text?.includes("Helbaron edit preview policy:")
     );
     const contextBlock = textBlocks.find((block) =>
-      block.type === "text" && block.text?.includes("Markra editor context:")
+      block.type === "text" && block.text?.includes("Helbaron editor context:")
     );
 
     expect(previewPolicyBlock).toBeUndefined();
@@ -776,7 +776,7 @@ describe("ACP agent helpers", () => {
       workspaceKey: "/mock-workspace"
     });
 
-    expect(promptText).toContain("Markra inline edit task:");
+    expect(promptText).toContain("Helbaron inline edit task:");
     expect(promptText).toContain("Return only the Markdown fragment");
     expect(promptText).toContain("Target scope:\nSelected text");
     expect(promptText).toContain("Edit mode:\nReplace the target");
@@ -1130,7 +1130,7 @@ describe("ACP agent helpers", () => {
     expect(stopAgent).toHaveBeenCalledWith("acp-1");
   });
 
-  it("surfaces ACP permission requests as rejected Markra activities", async () => {
+  it("surfaces ACP permission requests as rejected Helbaron activities", async () => {
     let handleAgentMessage: ((event: AppAcpAgentMessageEvent) => unknown) | null = null;
     const runtime = createDefaultAppRuntime();
     const onEvent = vi.fn();
@@ -1226,7 +1226,7 @@ describe("ACP agent helpers", () => {
     expect(onEvent).toHaveBeenNthCalledWith(1, expect.objectContaining({
       args: expect.objectContaining({
         kind: "edit",
-        summary: "Permission rejected by Markra.",
+        summary: "Permission rejected by Helbaron.",
         title: "Permission requested: Write file"
       }),
       toolCallId: "acp-permission-1",
@@ -1238,7 +1238,7 @@ describe("ACP agent helpers", () => {
       result: expect.objectContaining({
         details: expect.objectContaining({
           kind: "edit",
-          summary: "Permission rejected by Markra.",
+          summary: "Permission rejected by Helbaron.",
           title: "Permission requested: Write file"
         })
       }),

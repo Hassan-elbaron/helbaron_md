@@ -47,7 +47,7 @@ describe("markdown image dragging", () => {
     const dataTransfer = createDragDataTransfer();
     const originalSetData = dataTransfer.setData.bind(dataTransfer);
     dataTransfer.setData = (type: string, value: string) => {
-      if (type === "application/x-markra-markdown-image") throw new Error("custom data unavailable");
+      if (type === "application/x-helbaron-markdown-image") throw new Error("custom data unavailable");
 
       originalSetData(type, value);
     };

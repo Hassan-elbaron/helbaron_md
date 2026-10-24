@@ -141,7 +141,7 @@ mod tests {
             .expect("system clock should follow Unix epoch")
             .as_nanos();
 
-        std::env::temp_dir().join(format!("markra-ai-chat-attachment-{name}-{nanos}"))
+        std::env::temp_dir().join(format!("helbaron-ai-chat-attachment-{name}-{nanos}"))
     }
 
     #[test]

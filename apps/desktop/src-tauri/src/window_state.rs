@@ -128,7 +128,7 @@ mod tests {
     #[test]
     fn normalizes_editor_window_restore_entries() {
         let entry = editor_window_restore_entry(
-            "markra-editor-1".to_string(),
+            "helbaron-editor-1".to_string(),
             Some(" /mock-files/active.md ".to_string()),
             vec![
                 "/mock-files/notes.md".to_string(),
@@ -142,7 +142,7 @@ mod tests {
             entry,
             EditorWindowRestoreEntry {
                 file_path: Some("/mock-files/active.md".to_string()),
-                label: "markra-editor-1".to_string(),
+                label: "helbaron-editor-1".to_string(),
                 open_file_paths: vec![
                     "/mock-files/notes.md".to_string(),
                     "/mock-files/active.md".to_string()

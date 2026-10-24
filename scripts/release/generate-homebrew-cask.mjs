@@ -45,7 +45,7 @@ function findFileByBasename(rootDir, fileName) {
 }
 
 function requireDmg(rootDir, version, arch) {
-  const fileName = `Markra_${version}_macos_${arch}.dmg`;
+  const fileName = `Helbaron_${version}_macos_${arch}.dmg`;
   const filePath = findFileByBasename(rootDir, fileName);
 
   if (!filePath) {
@@ -67,16 +67,16 @@ async function sha256File(filePath) {
 }
 
 function renderCask({ armSha256, intelSha256, repository, version }) {
-  return `cask "markra" do
+  return `cask "helbaron" do
   arch arm: "arm64", intel: "x64"
 
   version "${version}"
   sha256 arm: "${armSha256}",
          intel: "${intelSha256}"
 
-  url "https://github.com/${repository}/releases/download/v#{version}/Markra_#{version}_macos_#{arch}.dmg"
+  url "https://github.com/${repository}/releases/download/v#{version}/Helbaron_#{version}_macos_#{arch}.dmg"
 
-  name "Markra"
+  name "Helbaron"
   desc "AI-native Markdown editor"
   homepage "https://github.com/${repository}"
 
@@ -87,7 +87,7 @@ function renderCask({ armSha256, intelSha256, repository, version }) {
 
   auto_updates true
 
-  app "Markra.app"
+  app "Helbaron.app"
 end
 `;
 }
@@ -96,7 +96,7 @@ async function main() {
   const root = process.env.RELEASE_ASSETS_ROOT || "release-assets";
   const version = requireEnv("RELEASE_VERSION").replace(/^v/, "");
   const repository = process.env.GITHUB_REPOSITORY?.trim() || "markrahq/markra";
-  const outputPath = process.env.OUTPUT_PATH || path.join("generated", "homebrew", "Casks", "markra.rb");
+  const outputPath = process.env.OUTPUT_PATH || path.join("generated", "homebrew", "Casks", "helbaron.rb");
   const armDmg = requireDmg(root, version, "arm64");
   const intelDmg = requireDmg(root, version, "x64");
   const cask = renderCask({

@@ -29,8 +29,8 @@ vi.mock("./tauri/logs", () => ({
   writeNativeLog: vi.fn()
 }));
 
-vi.mock("@markra/shared", async (importOriginal) => ({
-  ...await importOriginal<typeof import("@markra/shared")>(),
+vi.mock("@helbaron/shared", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@helbaron/shared")>(),
   hasTauriRuntime: vi.fn(() => true)
 }));
 
@@ -45,7 +45,7 @@ describe("desktop runtime events", () => {
     const cleanup = vi.fn().mockRejectedValue(new Error("undefined is not an object (evaluating 'listeners[eventId].handlerId')"));
     mockedListen.mockResolvedValue(cleanup);
 
-    const stopListening = await desktopRuntime.events.listen("markra://synthetic-event", () => {});
+    const stopListening = await desktopRuntime.events.listen("helbaron://synthetic-event", () => {});
 
     await expect(Promise.resolve(stopListening())).resolves.toBeUndefined();
     await expect(Promise.resolve(stopListening())).resolves.toBeUndefined();

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/desktop/app-icon.svg" width="96" alt="Markra logo" />
+  <img src="apps/desktop/app-icon.svg" width="96" alt="Helbaron logo" />
 </p>
 
 <p align="center">
@@ -56,18 +56,18 @@
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" width="195" height="54" />
   </a>
   <a href="https://www.producthunt.com/products/markra">
-    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=markra&theme=light" width="250" height="54" alt="在 Product Hunt 上查看 Markra" />
+    <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=markra&theme=light" width="250" height="54" alt="在 Product Hunt 上查看 Helbaron" />
   </a>
 </p>
 
-Markra 是一个本地优先的开源 Markdown 编辑器，把 AI 融入写作流程。支持所见即所得和源码两种模式，文件以纯 `.md` 格式保存在本地，AI 可以帮你润色、改写或扩写内容——所有修改都先预览，确认后才写入。
+Helbaron 是一个本地优先的开源 Markdown 编辑器，把 AI 融入写作流程。支持所见即所得和源码两种模式，文件以纯 `.md` 格式保存在本地，AI 可以帮你润色、改写或扩写内容——所有修改都先预览，确认后才写入。
 
 无需注册账号。文件默认留在磁盘上；可选的 WebDAV 同步、远程图片存储和 AI 请求只会访问你配置的服务。
 
 ## 截图
 
 <p align="center">
-  <img src="assets/screenshots/editor-workspace.png" alt="Markra 所见即所得 Markdown 工作区" />
+  <img src="assets/screenshots/editor-workspace.png" alt="Helbaron 所见即所得 Markdown 工作区" />
 </p>
 
 <p align="center">
@@ -76,20 +76,20 @@ Markra 是一个本地优先的开源 Markdown 编辑器，把 AI 融入写作�
 
 | 原生 AI 命令 | 审阅 AI 修改 |
 | --- | --- |
-| ![Markra inline AI command bar](assets/screenshots/inline-ai-command.png) | ![Markra AI edit preview](assets/screenshots/ai-edit-preview.png) |
+| ![Helbaron inline AI command bar](assets/screenshots/inline-ai-command.png) | ![Helbaron AI edit preview](assets/screenshots/ai-edit-preview.png) |
 
-| Markra AI 侧边栏 | 多服务商 AI 设置 |
+| Helbaron AI 侧边栏 | 多服务商 AI 设置 |
 | --- | --- |
-| ![Markra AI side panel with document context](assets/screenshots/ai-agent-panel.png) | ![Markra AI provider settings](assets/screenshots/ai-provider-settings.png) |
+| ![Helbaron AI side panel with document context](assets/screenshots/ai-agent-panel.png) | ![Helbaron AI provider settings](assets/screenshots/ai-provider-settings.png) |
 
 ## 下载
 
-使用 Web 版编辑器：[editor.markra.app](https://editor.markra.app/)。
+使用 Web 版编辑器：[editor.helbaron.app](https://editor.markra.app/)。
 
 macOS 用户也可以通过 Homebrew 安装：
 
 ```sh
-brew install --cask markrahq/tap/markra
+brew install --cask markrahq/tap/helbaron
 ```
 
 从 [GitHub Releases](https://github.com/markrahq/markra/releases/latest) 下载最新桌面版：macOS Apple Silicon/Intel、Windows 安装包/便携包，以及 Linux AppImage、DEB、RPM 和 Arch Linux 安装包。
@@ -97,26 +97,26 @@ brew install --cask markrahq/tap/markra
 在 Arch Linux 上，下载 x64 安装包后运行：
 
 ```sh
-sudo pacman -U ./Markra_<版本号>_linux_x64.pkg.tar.zst
+sudo pacman -U ./Helbaron_<版本号>_linux_x64.pkg.tar.zst
 ```
 
 ### 自定义应用数据目录
 
 桌面版支持 `--user-data-dir=<路径>` 和 `--user-data-dir <路径>`。相对路径以启动时的工作目录为基准。目录不存在时会自动创建，设置、AI 会话与附件、主题、模板、文档历史、拼写词典、日志和窗口状态都会保存在该目录。不传参数时，继续使用现有系统目录。
 
-将 Windows 便携包放在 U 盘的 `Markra` 文件夹内，并在旁边放置以下启动脚本：
+将 Windows 便携包放在 U 盘的 `Helbaron` 文件夹内，并在旁边放置以下启动脚本：
 
 ```bat
 @echo off
 cd /d "%~dp0"
-start "" "Markra\Markra.exe" "--user-data-dir=.\Markra_Data"
+start "" "Helbaron\Helbaron.exe" "--user-data-dir=.\Helbaron_Data"
 ```
 
-macOS/Linux 可通过已安装的命令行入口或可执行文件运行 `markra --user-data-dir "./Markra_Data"`。参数后可以继续指定要打开的文件或文件夹。
+macOS/Linux 可通过已安装的命令行入口或可执行文件运行 `helbaron --user-data-dir "./Helbaron_Data"`。参数后可以继续指定要打开的文件或文件夹。
 
-切换数据目录前，请完全退出 Markra。新目录使用独立配置，不会自动迁移原有数据；Markdown 文档和外部文件路径仍使用原来的保存位置。需要沿用已有设置时，可以在新配置中恢复设置备份。
+切换数据目录前，请完全退出 Helbaron。新目录使用独立配置，不会自动迁移原有数据；Markdown 文档和外部文件路径仍使用原来的保存位置。需要沿用已有设置时，可以在新配置中恢复设置备份。
 
-Windows/Linux 的 WebView 数据也会保存在指定目录。macOS 的 WKWebView 不支持任意缓存目录，因此自定义配置使用临时 WebView 缓存，Markra 的持久数据仍保存在指定目录。
+Windows/Linux 的 WebView 数据也会保存在指定目录。macOS 的 WKWebView 不支持任意缓存目录，因此自定义配置使用临时 WebView 缓存，Helbaron 的持久数据仍保存在指定目录。
 
 ## 演示
 
@@ -145,7 +145,7 @@ Windows/Linux 的 WebView 数据也会保存在指定目录。macOS 的 WKWebVie
 | 文件树操作 | 新建、重命名、移动、删除、排序、定位和多选 | 在浏览器权限允许时新建、重命名、移动和删除 |
 | 自动保存和状态恢复 | 已有文件、标签页、草稿和工作区窗口 | 支持浏览器文件句柄和 IndexedDB 状态时可用 |
 | AI 服务商 | 通过原生运行时请求，支持应用代理设置 | 浏览器直接请求，受服务商 CORS 支持限制 |
-| 拼写检查 | Markra 自维护本地拼写检查，支持按需下载语言包和个人白名单 | 暂不可用 |
+| 拼写检查 | Helbaron 自维护本地拼写检查，支持按需下载语言包和个人白名单 | 暂不可用 |
 | 图片存储 | 本地文件夹、WebDAV、PicGo/PicList 和 S3 兼容存储 | 本地/浏览器文件句柄，以及 CORS 允许时的 WebDAV |
 | 备份与同步 | 本地备份、WebDAV 笔记同步，以及本地文件、WebDAV 或 S3 兼容存储的配置备份 | 支持本地文件配置备份，并在 CORS 允许时支持 WebDAV；不支持笔记备份与同步 |
 | 自定义主题 | 主题文件夹、独立浅色/深色 CSS 文件、手动刷新，以及 Typora 基础兼容 | 自定义 CSS 编辑、导入/导出，以及 Typora 基础兼容 |
@@ -155,14 +155,14 @@ Windows/Linux 的 WebView 数据也会保存在指定目录。macOS 的 WKWebVie
 
 ## 对照
 
-Markra 并不是想替代所有 Markdown 工具。它更接近一个安静的本地文档编辑器，并把 AI 编辑流做成原生能力。
+Helbaron 并不是想替代所有 Markdown 工具。它更接近一个安静的本地文档编辑器，并把 AI 编辑流做成原生能力。
 
-| 关注点 | Markra | Typora | Obsidian |
+| 关注点 | Helbaron | Typora | Obsidian |
 | --- | --- | --- | --- |
 | 主要适合 | 本地优先 Markdown 写作，内置 AI 编辑 | 极简 live-preview Markdown 写作 | 个人知识库和双链笔记 |
 | 编辑模型 | 所见即所得文档表面，加完整源码模式 | 写作时隐藏 Markdown 语法的实时预览 | Markdown 笔记，支持阅读/实时预览编辑模式 |
 | AI 工作流 | 原生内联操作、侧边栏和 ACP 本地 Agent，修改先预览再应用 | 不是核心产品工作流 | 不是核心产品工作流；插件能力因配置而异 |
-| 拼写检查 | Markra 自维护本地词典，语言包按需下载，支持修正建议和个人白名单 | 支持平台系统拼写检查，必要时使用 Hunspell 词典 | Electron/Chromium 风格的编辑器拼写检查，可配置检查语言 |
+| 拼写检查 | Helbaron 自维护本地词典，语言包按需下载，支持修正建议和个人白名单 | 支持平台系统拼写检查，必要时使用 Hunspell 词典 | Electron/Chromium 风格的编辑器拼写检查，可配置检查语言 |
 | 文件模型 | 普通 `.md` 文件，支持单文件或文件夹工作区 | 普通 Markdown 文件和文件夹/文件树工作流 | 使用开放文件格式的本地 vault |
 | 知识组织 | 标签页、大纲、全局搜索和双链补全 | 大纲、文件树、内部链接和偏写作/导出的工具 | 反向链接、图谱视图、Canvas 和大型插件生态 |
 | 同步与存储 | 可选 WebDAV 同步、本地备份和可配置图片存储 | 使用本地文件，可配合外部同步服务 | 可选付费 Obsidian Sync 和 Publish 服务 |
@@ -176,7 +176,7 @@ Markra 并不是想替代所有 Markdown 工具。它更接近一个安静的本
 - 斜杠菜单和拖拽手柄进行块级编辑，一键切换完整源码模式。
 - 可调整正文宽度、字号和行高。
 - 桌面版拼写检查会标记疑似错误，默认按 `Ctrl/Cmd+.` 查看建议或加入个人白名单；建议菜单快捷键可在键盘快捷键设置里修改。
-- Markra 自维护本地词典，不依赖系统或 Electron 拼写检查，让桌面端跨平台行为更一致；语言包按需下载，不打进安装包。
+- Helbaron 自维护本地词典，不依赖系统或 Electron 拼写检查，让桌面端跨平台行为更一致；语言包按需下载，不打进安装包。
 
 ### 原生 AI
 
@@ -224,7 +224,7 @@ Markra 并不是想替代所有 Markdown 工具。它更接近一个安静的本
 
 桌面版和 Web 版也可以在同一设置区域使用 **导入 CSS**。支持最大 **1 MiB** 的 UTF-8 CSS 文件。主题文件保存在本机，不包含在可移植配置备份中。
 
-一次使用一个目录。切换到不同目录后，需要重新选择其中的主题文件；点击 **恢复默认文件夹** 可回到 Markra 的默认目录。自定义目录只读取，不会移动文件或写入模板。
+一次使用一个目录。切换到不同目录后，需要重新选择其中的主题文件；点击 **恢复默认文件夹** 可回到 Helbaron 的默认目录。自定义目录只读取，不会移动文件或写入模板。
 
 Typora 兼容以基础外观为范围：复杂布局、条件规则、主题附带字体/图片和导入的样式表暂不处理，设置中会显示提示。完整变量和兼容范围见[主题说明](packages/app/src/themes/README.md)。
 
@@ -267,11 +267,11 @@ Typora 兼容以基础外观为范围：复杂布局、条件规则、主题附�
 
 ## 贡献者
 
-感谢每一位通过代码、文档、设计、测试和反馈帮助 Markra 变得更好的人。
+感谢每一位通过代码、文档、设计、测试和反馈帮助 Helbaron 变得更好的人。
 
 <p align="center">
   <a href="https://github.com/markrahq/markra/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=markrahq/markra" alt="Markra 贡献者" />
+    <img src="https://contrib.rocks/image?repo=markrahq/markra" alt="Helbaron 贡献者" />
   </a>
 </p>
 
@@ -281,4 +281,4 @@ Typora 兼容以基础外观为范围：复杂布局、条件规则、主题附�
 
 ## 许可证
 
-Markra 使用 AGPL-3.0 许可证。
+Helbaron 使用 AGPL-3.0 许可证。

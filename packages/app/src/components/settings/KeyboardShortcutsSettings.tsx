@@ -7,8 +7,8 @@ import {
   parseMarkdownShortcut,
   type MarkdownShortcutAction,
   type MarkdownShortcutBindings
-} from "@markra/editor";
-import type { I18nKey } from "@markra/shared";
+} from "@helbaron/editor";
+import type { I18nKey } from "@helbaron/shared";
 import { showAppToast } from "../../lib/app-toast";
 import type { EditorPreferences } from "../../lib/settings/app-settings";
 import type { DesktopPlatform } from "../../lib/platform";

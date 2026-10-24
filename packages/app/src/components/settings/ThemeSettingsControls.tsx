@@ -5,10 +5,10 @@ import {
   customThemeCssMaxBytes,
   type EditorTheme
 } from "../../lib/settings/app-settings";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 import { mergeClassNames } from "./class-names";
 import { SettingsButton, SettingsTextarea } from "./SettingsControls";
-import { Tooltip } from "@markra/ui";
+import { Tooltip } from "@helbaron/ui";
 
 type Translate = (key: I18nKey) => string;
 
@@ -283,7 +283,7 @@ export function ThemePreviewGrid<Theme extends EditorTheme>({
                   aria-hidden="true"
                 >
                   <Code2 size={15} strokeWidth={2.2} />
-                  <span className="absolute right-0.5 bottom-0.5 size-1.5 rounded-full bg-(--accent)" />
+                  <span className="absolute end-0.5 bottom-0.5 size-1.5 rounded-full bg-(--accent)" />
                 </span>
               ) : (
                 <span
@@ -295,24 +295,24 @@ export function ThemePreviewGrid<Theme extends EditorTheme>({
                   aria-hidden="true"
                 >
                   <span
-                    className="absolute top-1 left-1 h-1 w-3 rounded-full"
+                    className="absolute top-1 start-1 h-1 w-3 rounded-full"
                     style={{ background: "var(--theme-preview-text)" }}
                   />
                   <span
-                    className="absolute top-2.5 left-1 h-1 w-3.5 rounded-full"
+                    className="absolute top-2.5 start-1 h-1 w-3.5 rounded-full"
                     style={{ background: "var(--theme-preview-muted)" }}
                   />
                   <span
-                    className="absolute right-1 bottom-1 h-2 w-2 rounded-full"
+                    className="absolute end-1 bottom-1 h-2 w-2 rounded-full"
                     style={{ background: "var(--theme-preview-accent)" }}
                   />
                   <span
-                    className="absolute bottom-1 left-1 h-1.5 w-3.5 rounded-sm"
+                    className="absolute bottom-1 start-1 h-1.5 w-3.5 rounded-sm"
                     style={{ background: "var(--theme-preview-panel)" }}
                   />
                 </span>
               )}
-              {selected ? <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-(--accent)" aria-hidden="true" /> : null}
+              {selected ? <span className="absolute -top-0.5 -end-0.5 h-2 w-2 rounded-full bg-(--accent)" aria-hidden="true" /> : null}
             </button>
           </Tooltip>
         );
@@ -327,7 +327,7 @@ function exportCustomThemeCss(css: string) {
   const link = document.createElement("a");
 
   link.href = objectUrl;
-  link.download = "markra-custom-theme.css";
+  link.download = "helbaron-custom-theme.css";
   link.rel = "noopener";
   link.style.display = "none";
   document.body.append(link);

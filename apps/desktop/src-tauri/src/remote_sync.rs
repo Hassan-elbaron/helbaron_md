@@ -14,7 +14,7 @@ use time::OffsetDateTime;
 use crate::network::{apply_network_settings, NetworkSettings};
 
 const REMOTE_SYNC_TIMEOUT_SECS: u64 = 60;
-const SYNC_METADATA_DIR: &str = ".markra-sync";
+const SYNC_METADATA_DIR: &str = ".helbaron-sync";
 const WEBDAV_MANIFEST_FILE: &str = "webdav-manifest.json";
 
 #[derive(Debug, Deserialize)]
@@ -1706,7 +1706,7 @@ mod tests {
 
     fn temp_root(name: &str) -> PathBuf {
         let root = std::env::temp_dir().join(format!(
-            "markra-{name}-{}",
+            "helbaron-{name}-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

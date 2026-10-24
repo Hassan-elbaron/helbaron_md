@@ -1,6 +1,6 @@
 import { AlertTriangle, Check, Download, LoaderCircle, Plus, RefreshCw, Trash2 } from "lucide-react";
 import { type FormEvent, useEffect, useRef, useState } from "react";
-import { Button, IconButton } from "@markra/ui";
+import { Button, IconButton } from "@helbaron/ui";
 import type { EditorPreferences } from "../../lib/settings/app-settings";
 import { normalizeSpellcheckIgnoredWords } from "../../lib/settings/app-settings";
 import {
@@ -257,7 +257,7 @@ export function SpellcheckSettings({
             return (
               <div
                 key={word}
-                className="inline-flex max-w-full items-center gap-1 rounded-full border border-(--border-default) bg-(--bg-primary) py-0.5 pr-0.5 pl-2 text-(--text-heading)"
+                className="inline-flex max-w-full items-center gap-1 rounded-full border border-(--border-default) bg-(--bg-primary) py-0.5 pe-0.5 ps-2 text-(--text-heading)"
                 role="listitem"
               >
                 <span className="max-w-48 truncate text-[12px] leading-5 font-[560]">{word}</span>
@@ -274,7 +274,7 @@ export function SpellcheckSettings({
             );
           })}
           <form
-            className="inline-flex w-28 max-w-full flex-none items-center gap-1 rounded-full border border-(--border-default) bg-(--bg-primary) py-0.5 pr-0.5 pl-2"
+            className="inline-flex w-28 max-w-full flex-none items-center gap-1 rounded-full border border-(--border-default) bg-(--bg-primary) py-0.5 pe-0.5 ps-2"
             role="listitem"
             onSubmit={handleAddIgnoredWord}
           >

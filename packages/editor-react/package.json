@@ -1,5 +1,5 @@
 {
-  "name": "@markra/editor-react",
+  "name": "@helbaron/editor-react",
   "version": "0.0.1",
   "license": "AGPL-3.0-only",
   "private": true,
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@codemirror/view": "6.41.1",
-    "@markra/editor": "workspace:*"
+    "@helbaron/editor": "workspace:*"
   },
   "peerDependencies": {
     "react": "19.2.5"

@@ -1,5 +1,5 @@
 import type { AgentEvent } from "@earendil-works/pi-agent-core";
-import type { I18nKey } from "@markra/shared";
+import type { I18nKey } from "@helbaron/shared";
 
 export type AiAgentProcessKind = "ai_call" | "assistant_message" | "tool_call";
 export type AiAgentProcessStatus = "cancelled" | "completed" | "error" | "running";

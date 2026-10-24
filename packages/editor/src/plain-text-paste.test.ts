@@ -163,6 +163,6 @@ describe("escapePlainTextMarkdown", () => {
     expect(dispatchPlainTextPaste(content, "Line one\nLine two")).toBe(true);
 
     expect(cell.textContent).toBe("BeforeLine oneLine two");
-    expect(cell.querySelector('br[data-markra-source-break="true"]')).not.toBeNull();
+    expect(cell.querySelector('br[data-helbaron-source-break="true"]')).not.toBeNull();
   });
 });

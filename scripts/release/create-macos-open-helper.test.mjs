@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 function makeTempDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), "markra-macos-open-helper-"));
+  return fs.mkdtempSync(path.join(os.tmpdir(), "helbaron-macos-open-helper-"));
 }
 
 function runHelperScript(env) {
@@ -25,7 +25,7 @@ function runHelperScript(env) {
 
 test("create-macos-open-helper writes an executable quarantine repair script", () => {
   const rootDir = makeTempDir();
-  const outputPath = path.join(rootDir, "Markra-macOS-Open-Anyway.command");
+  const outputPath = path.join(rootDir, "Helbaron-macOS-Open-Anyway.command");
 
   const result = runHelperScript({
     OUTPUT_PATH: outputPath,
@@ -38,7 +38,7 @@ test("create-macos-open-helper writes an executable quarantine repair script", (
 
   assert.equal(mode & 0o111, 0o111);
   assert.match(script, /^#!\/bin\/bash/);
-  assert.match(script, /APP_PATH="\/Applications\/Markra\.app"/);
+  assert.match(script, /APP_PATH="\/Applications\/Helbaron\.app"/);
   assert.match(script, /only removes the macOS quarantine flag/);
   assert.match(script, /Continue\? \[y\/N\]/);
   assert.match(script, /xattr -dr com\.apple\.quarantine "\$APP_PATH"/);

@@ -3,17 +3,17 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { Annotation, Compartment, EditorSelection, EditorState, Prec, Transaction, type Extension } from "@codemirror/state";
 import { Decoration, EditorView, keymap, lineNumbers } from "@codemirror/view";
 import { minimalSetup } from "codemirror";
-import { t, type AppLanguage, type SearchRange } from "@markra/shared";
+import { t, type AppLanguage, type SearchRange } from "@helbaron/shared";
 import {
   codeMirrorLocationCue,
   codeMirrorTypewriterMode,
   markdownShortcutsPlugin,
   markdownSourceSyntaxHighlighting,
   markdownSyntaxHighlighting,
-  markraHighlight,
+  helbaronHighlight,
   reconfigureCodeMirrorVimMode
-} from "@markra/editor/codemirror";
-import type { MarkdownShortcutMap } from "@markra/editor";
+} from "@helbaron/editor/codemirror";
+import type { MarkdownShortcutMap } from "@helbaron/editor";
 import {
   editorContentWidthPixels,
   editorCustomContentWidthMax,
@@ -164,8 +164,8 @@ function markdownSourceSearchExtension(matches: SearchRange[] = [], activeIndex 
       if (to <= from) return [];
 
       return Decoration.mark({
-        class: `markra-cm-source-search-match ${
-          index === activeIndex ? "markra-cm-source-search-match-current" : ""
+        class: `helbaron-cm-source-search-match ${
+          index === activeIndex ? "helbaron-cm-source-search-match-current" : ""
         }`
       }).range(from, to);
     });
@@ -348,7 +348,7 @@ export function MarkdownSourceEditor({
       markdown({
         base: markdownLanguage,
         codeLanguages: [],
-        extensions: [markraHighlight]
+        extensions: [helbaronHighlight]
       }),
       markdownSyntaxHighlighting,
       markdownSourceSyntaxHighlighting,

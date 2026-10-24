@@ -1,7 +1,7 @@
 import {
   createDefaultAppRuntime,
   type AppRuntime
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import {
   createBrowserEventsRuntime,
   createIndexedDbAiChatAttachmentRuntime,

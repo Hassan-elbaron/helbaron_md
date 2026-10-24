@@ -107,7 +107,7 @@ function normalizeColumns(table: HTMLTableElement) {
 
 function updateColumnLayout(table: HTMLTableElement, count: number, removed?: number) {
   const { groups, columns } = normalizeColumns(table);
-  if (!groups.length && table.dataset.markraWidthMode !== "even") return;
+  if (!groups.length && table.dataset.helbaronWidthMode !== "even") return;
   if (removed !== undefined) columns.splice(removed, 1)[0]?.remove();
   for (const column of columns.splice(count)) column.remove();
   if (!groups.length) {
@@ -117,14 +117,14 @@ function updateColumnLayout(table: HTMLTableElement, count: number, removed?: nu
   }
   while (columns.length < count) {
     const col = table.ownerDocument.createElement("col");
-    if (table.dataset.markraWidthMode === "manual") col.style.width = "100px";
+    if (table.dataset.helbaronWidthMode === "manual") col.style.width = "100px";
     groups.at(-1)!.append(col);
     columns.push(col);
   }
   for (const group of groups) if (!group.children.length) group.remove();
-  if (table.dataset.markraWidthMode === "even") {
+  if (table.dataset.helbaronWidthMode === "even") {
     for (const col of columns) col.style.width = `${100 / count}%`;
-  } else if (table.dataset.markraWidthMode === "manual" && columns.every(col => col.style.width.endsWith("px"))) {
+  } else if (table.dataset.helbaronWidthMode === "manual" && columns.every(col => col.style.width.endsWith("px"))) {
     table.style.width = `${columns.reduce((sum, col) => sum + Number.parseFloat(col.style.width), 0)}px`;
   }
 }
@@ -153,7 +153,7 @@ export function transformHtmlTable(source: string, document: Document, index: nu
       break;
     case "width-mode": {
       const element = table.element;
-      element.dataset.markraWidthMode = action.mode;
+      element.dataset.helbaronWidthMode = action.mode;
       element.style.tableLayout = action.mode === "auto" ? "auto" : "fixed";
       element.style.width = "100%";
       element.style.removeProperty("min-width");

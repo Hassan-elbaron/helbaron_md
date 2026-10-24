@@ -15,7 +15,7 @@ describe("webSearch", () => {
       [
         "<html><head><title>Ignored shell title</title></head><body>",
         "<nav>navigation</nav>",
-        "<article><h1>Launch notes</h1><p>Markra can now read pages.</p><script>bad()</script></article>",
+        "<article><h1>Launch notes</h1><p>Helbaron can now read pages.</p><script>bad()</script></article>",
         "</body></html>"
       ].join(""),
       "https://example.com/post",
@@ -24,7 +24,7 @@ describe("webSearch", () => {
 
     expect(extracted.title).toBe("Launch notes");
     expect(extracted.content).toContain("# Launch notes");
-    expect(extracted.content).toContain("Markra can now read pages.");
+    expect(extracted.content).toContain("Helbaron can now read pages.");
     expect(extracted.content).not.toContain("navigation");
     expect(extracted.content).not.toContain("bad()");
   });
@@ -104,7 +104,7 @@ describe("webSearch", () => {
       };
     });
 
-    const response = await runCherryStyleWebSearch("markra search", {
+    const response = await runCherryStyleWebSearch("helbaron search", {
       contentMaxChars: 12000,
       enabled: true,
       maxResults: 5,
@@ -113,7 +113,7 @@ describe("webSearch", () => {
     }, transport);
 
     expect(response).toEqual({
-      query: "markra search",
+      query: "helbaron search",
       results: [
         {
           content: expect.stringContaining("Useful web content."),
@@ -124,7 +124,7 @@ describe("webSearch", () => {
     });
     expect(transport).toHaveBeenCalledWith(expect.objectContaining({
       allowLocalhost: false,
-      url: expect.stringContaining("https://www.bing.com/search?format=rss&q=markra%20search")
+      url: expect.stringContaining("https://www.bing.com/search?format=rss&q=helbaron%20search")
     }));
     expect(transport).toHaveBeenCalledWith(expect.objectContaining({
       allowLocalhost: false,

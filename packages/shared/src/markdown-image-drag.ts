@@ -1,4 +1,4 @@
-export const markdownImageDragMime = "application/x-markra-markdown-image";
+export const markdownImageDragMime = "application/x-helbaron-markdown-image";
 
 export type MarkdownImageDragPayload = {
   alt: string;

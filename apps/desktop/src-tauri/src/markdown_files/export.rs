@@ -245,7 +245,7 @@ fn unique_pandoc_export_temp_dir() -> PathBuf {
         .unwrap_or(0);
 
     std::env::temp_dir().join(format!(
-        "markra-pandoc-export-{}-{nanos}",
+        "helbaron-pandoc-export-{}-{nanos}",
         std::process::id()
     ))
 }
@@ -325,7 +325,7 @@ fn unique_pdf_export_temp_dir() -> PathBuf {
         .map(|duration| duration.as_nanos())
         .unwrap_or(0);
 
-    std::env::temp_dir().join(format!("markra-pdf-export-{}-{nanos}", std::process::id()))
+    std::env::temp_dir().join(format!("helbaron-pdf-export-{}-{nanos}", std::process::id()))
 }
 
 fn pdf_output_file_size(path: &Path) -> Option<u64> {
@@ -717,7 +717,7 @@ mod tests {
     #[test]
     fn renders_pdf_html_with_browser_renderer() {
         let root = std::env::temp_dir().join(format!(
-            "markra-pdf-export-test-{}",
+            "helbaron-pdf-export-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -761,7 +761,7 @@ mod tests {
     #[test]
     fn rejects_empty_pdf_export_html() {
         let root = std::env::temp_dir().join(format!(
-            "markra-pdf-empty-test-{}",
+            "helbaron-pdf-empty-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -815,7 +815,7 @@ mod tests {
     #[test]
     fn detects_first_existing_pandoc_candidate() {
         let root = std::env::temp_dir().join(format!(
-            "markra-pandoc-detect-test-{}",
+            "helbaron-pandoc-detect-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -838,7 +838,7 @@ mod tests {
     #[test]
     fn exports_markdown_with_pandoc_runner() {
         let root = std::env::temp_dir().join(format!(
-            "markra-pandoc-export-test-{}",
+            "helbaron-pandoc-export-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -1007,7 +1007,7 @@ mod tests {
     #[test]
     fn accepts_stable_pdf_output_when_renderer_keeps_running() {
         let root = std::env::temp_dir().join(format!(
-            "markra-pdf-renderer-hang-test-{}",
+            "helbaron-pdf-renderer-hang-test-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")

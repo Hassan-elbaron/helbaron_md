@@ -14,8 +14,8 @@ use winreg::{
     RegKey, RegValue,
 };
 
-const COMMAND_NAME: &str = "markra";
-const MANAGED_MARKER: &str = "Managed by Markra";
+const COMMAND_NAME: &str = "helbaron";
+const MANAGED_MARKER: &str = "Managed by Helbaron";
 const TARGET_PREFIX: &str = "target: ";
 
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
@@ -28,7 +28,7 @@ pub(crate) struct ShellCommandStatus {
 
 fn shell_command_file_name() -> &'static str {
     if cfg!(windows) {
-        "markra.cmd"
+        "helbaron.cmd"
     } else {
         COMMAND_NAME
     }
@@ -57,7 +57,7 @@ fn path_entries() -> Vec<PathBuf> {
 
 fn command_candidates_for_dir(dir: &Path) -> Vec<PathBuf> {
     if cfg!(windows) {
-        ["markra.cmd", "markra.exe", "markra.bat", "markra"]
+        ["helbaron.cmd", "helbaron.exe", "helbaron.bat", "helbaron"]
             .into_iter()
             .map(|file_name| dir.join(file_name))
             .collect()
@@ -102,7 +102,7 @@ fn standard_install_dirs() -> Vec<PathBuf> {
     if cfg!(windows) {
         #[cfg(windows)]
         if let Some(local_app_data) = env::var_os("LOCALAPPDATA") {
-            dirs.push(PathBuf::from(local_app_data).join("Markra").join("bin"));
+            dirs.push(PathBuf::from(local_app_data).join("Helbaron").join("bin"));
         }
     } else {
         if let Some(home) = dirs::home_dir() {
@@ -119,7 +119,7 @@ fn standard_install_dirs() -> Vec<PathBuf> {
 }
 
 fn preferred_install_dir() -> Option<PathBuf> {
-    if let Some(dir) = env::var_os("MARKRA_SHELL_COMMAND_DIR").map(PathBuf::from) {
+    if let Some(dir) = env::var_os("HELBARON_SHELL_COMMAND_DIR").map(PathBuf::from) {
         return Some(dir);
     }
 
@@ -406,7 +406,7 @@ fn shell_command_status() -> ShellCommandStatus {
 fn install_command_at(command_path: &Path, target_path: &Path) -> Result<(), String> {
     if command_path.is_file() && managed_target_from_command(command_path).is_none() {
         return Err(format!(
-            "A different markra command already exists at {}.",
+            "A different helbaron command already exists at {}.",
             path_to_string(command_path)
         ));
     }
@@ -442,7 +442,7 @@ pub(crate) fn install_shell_command() -> Result<ShellCommandStatus, String> {
     let status = shell_command_status_for_target(&target_path);
 
     if status.status == "conflict" {
-        return Err("A different markra command already exists on PATH.".to_string());
+        return Err("A different helbaron command already exists on PATH.".to_string());
     }
 
     let command_path = status
@@ -451,7 +451,7 @@ pub(crate) fn install_shell_command() -> Result<ShellCommandStatus, String> {
         .map(PathBuf::from)
         .or_else(preferred_command_path)
         .ok_or_else(|| {
-            "No writable PATH directory is available for installing markra.".to_string()
+            "No writable PATH directory is available for installing helbaron.".to_string()
         })?;
 
     install_command_at(&command_path, &target_path)?;
@@ -473,7 +473,7 @@ pub(crate) fn uninstall_shell_command() -> Result<ShellCommandStatus, String> {
 
     if command_path.is_file() {
         if managed_target_from_command(&command_path).is_none() {
-            return Err("The markra command on PATH is not managed by Markra.".to_string());
+            return Err("The helbaron command on PATH is not managed by Helbaron.".to_string());
         }
 
         fs::remove_file(&command_path).map_err(|error| error.to_string())?;
@@ -488,7 +488,7 @@ mod tests {
 
     fn test_root(name: &str) -> PathBuf {
         let root = std::env::temp_dir().join(format!(
-            "markra-shell-command-{name}-{}",
+            "helbaron-shell-command-{name}-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -499,16 +499,16 @@ mod tests {
     }
 
     #[test]
-    fn creates_a_managed_shell_script_for_the_markra_executable() {
-        let target = PathBuf::from("/mock-app/Markra.app/Contents/MacOS/markra");
+    fn creates_a_managed_shell_script_for_the_helbaron_executable() {
+        let target = PathBuf::from("/mock-app/Helbaron.app/Contents/MacOS/helbaron");
         let script = command_script(&target);
 
         assert!(script.contains(MANAGED_MARKER));
-        assert!(script.contains("target: /mock-app/Markra.app/Contents/MacOS/markra"));
+        assert!(script.contains("target: /mock-app/Helbaron.app/Contents/MacOS/helbaron"));
         if cfg!(windows) {
-            assert!(script.contains("\"/mock-app/Markra.app/Contents/MacOS/markra\" %*"));
+            assert!(script.contains("\"/mock-app/Helbaron.app/Contents/MacOS/helbaron\" %*"));
         } else {
-            assert!(script.contains("exec '/mock-app/Markra.app/Contents/MacOS/markra' \"$@\""));
+            assert!(script.contains("exec '/mock-app/Helbaron.app/Contents/MacOS/helbaron' \"$@\""));
         }
     }
 
@@ -516,8 +516,8 @@ mod tests {
     fn detects_repair_when_a_managed_command_points_to_an_old_target() {
         let root = test_root("repair");
         let command_path = root.join(shell_command_file_name());
-        let old_target = root.join("old-markra");
-        let next_target = root.join("next-markra");
+        let old_target = root.join("old-helbaron");
+        let next_target = root.join("next-helbaron");
         fs::write(&old_target, "").expect("old target should be created");
         fs::write(&next_target, "").expect("next target should be created");
         install_command_at(&command_path, &old_target).expect("command should install");
@@ -541,8 +541,8 @@ mod tests {
     #[test]
     fn detects_repair_when_a_managed_command_is_not_available_from_the_shell() {
         let root = test_root("path-repair");
-        let command_path = root.join("markra.cmd");
-        let target = root.join("markra.exe");
+        let command_path = root.join("helbaron.cmd");
+        let target = root.join("helbaron.exe");
         fs::write(&target, "").expect("target should be created");
 
         let status = managed_command_status(&command_path, &target, &target, true);
@@ -554,17 +554,17 @@ mod tests {
 
     #[test]
     fn appends_windows_install_dir_to_user_path_once() {
-        let install_dir = PathBuf::from(r"C:\Users\Mock\AppData\Local\Markra\bin");
+        let install_dir = PathBuf::from(r"C:\Users\Mock\AppData\Local\Helbaron\bin");
         let original_path = r"C:\Windows\System32;C:\Tools";
         let next_path = windows_path_with_dir(original_path, &install_dir);
 
         assert_eq!(
             next_path,
-            r"C:\Windows\System32;C:\Tools;C:\Users\Mock\AppData\Local\Markra\bin"
+            r"C:\Windows\System32;C:\Tools;C:\Users\Mock\AppData\Local\Helbaron\bin"
         );
         assert_eq!(windows_path_with_dir(&next_path, &install_dir), next_path);
         assert!(windows_path_contains_dir(
-            r"C:\WINDOWS\system32;c:\users\mock\appdata\local\markra\bin\",
+            r"C:\WINDOWS\system32;c:\users\mock\appdata\local\helbaron\bin\",
             &install_dir
         ));
     }

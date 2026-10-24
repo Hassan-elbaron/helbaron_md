@@ -14,8 +14,8 @@ import {
   type ViewUpdate,
 } from "@codemirror/view";
 import { readCodeMirrorFrontmatter } from "./frontmatter-preview.ts";
-import { defineMarkraPlugin } from "./plugin.ts";
-import { openMarkraSlashMenu } from "./slash-menu.ts";
+import { defineHelbaronPlugin } from "./plugin.ts";
+import { openHelbaronSlashMenu } from "./slash-menu.ts";
 import {
   syntaxTreeChanged,
   updateOnlyInsertsPlainText,
@@ -39,7 +39,7 @@ export interface CodeMirrorBlockDragPluginOptions {
 
 export type CodeMirrorBlockDropSide = "after" | "before";
 
-const blockDragMime = "application/x-markra-codemirror-block";
+const blockDragMime = "application/x-helbaron-codemirror-block";
 const pointerDragThreshold = 4;
 const defaultLabels: CodeMirrorBlockDragLabels = {
   addBlock: "Add block below",
@@ -374,7 +374,7 @@ export function addCodeMirrorBlockBelow(
     scrollIntoView: true,
     userEvent: "input",
   });
-  openMarkraSlashMenu(view);
+  openHelbaronSlashMenu(view);
   return true;
 }
 
@@ -438,19 +438,19 @@ class BlockToolbarWidget extends WidgetType {
     const add = blockControl(
       document,
       this.labels.addBlock,
-      "markra-block-tool-button markra-block-add-button",
+      "helbaron-block-tool-button helbaron-block-add-button",
     );
     const drag = blockControl(
       document,
       this.labels.dragBlock,
-      "markra-block-tool-button markra-block-drag-handle",
+      "helbaron-block-tool-button helbaron-block-drag-handle",
     );
-    toolbar.className = "cm-markra-block-toolbar markra-block-toolbar";
+    toolbar.className = "cm-helbaron-block-toolbar helbaron-block-toolbar";
     toolbar.dataset.blockFrom = String(this.blockFrom);
     this.runtime.toolbar = toolbar;
     for (let index = 0; index < 6; index += 1) {
       const dot = document.createElement("span");
-      dot.className = "markra-block-drag-dot";
+      dot.className = "helbaron-block-drag-dot";
       drag.append(dot);
     }
     drag.draggable = true;
@@ -485,7 +485,7 @@ function blockDecorationsFromRanges(
 ) {
   const decorations = blocks.flatMap((block) => [
     Decoration.line({
-      attributes: { "data-markra-block-from": String(block.from) },
+      attributes: { "data-helbaron-block-from": String(block.from) },
     }).range(block.from),
     Decoration.widget({
       // Block tools must be the outermost start-of-line widget. Heading-level
@@ -536,10 +536,10 @@ function eventElement(event: Event) {
 
 function dropTarget(event: MouseEvent, view: CodeMirrorView) {
   const element = eventElement(event)?.closest<HTMLElement>(
-    "[data-markra-block-from], [data-block-from]",
+    "[data-helbaron-block-from], [data-block-from]",
   );
   const from = Number(
-    element?.dataset.markraBlockFrom ?? element?.dataset.blockFrom,
+    element?.dataset.helbaronBlockFrom ?? element?.dataset.blockFrom,
   );
   if (Number.isInteger(from)) {
     const rect = element?.getBoundingClientRect();
@@ -582,12 +582,12 @@ const blockDragUi = new WeakMap<CodeMirrorView, BlockDragUi>();
 function clearBlockDragUi(view: CodeMirrorView) {
   const ui = blockDragUi.get(view);
   if (!ui) return;
-  ui.source?.classList.remove("markra-block-drag-source");
+  ui.source?.classList.remove("helbaron-block-drag-source");
   ui.indicator.remove();
   ui.ghost.remove();
   view.dom.removeAttribute("data-dragging");
   view.dom.ownerDocument.documentElement.removeAttribute(
-    "data-markra-block-dragging",
+    "data-helbaron-block-dragging",
   );
   blockDragUi.delete(view);
 }
@@ -599,22 +599,22 @@ function startBlockDragUi(
 ) {
   clearBlockDragUi(view);
   const source = view.dom.querySelector<HTMLElement>(
-    `.cm-line[data-markra-block-from="${sourceFrom}"]`,
+    `.cm-line[data-helbaron-block-from="${sourceFrom}"]`,
   );
   const indicator = view.dom.ownerDocument.createElement("span");
   const ghost = view.dom.ownerDocument.createElement("span");
-  indicator.className = "markra-block-drop-indicator";
+  indicator.className = "helbaron-block-drop-indicator";
   indicator.dataset.show = "false";
-  ghost.className = "markra-block-drag-ghost";
+  ghost.className = "helbaron-block-drag-ghost";
   ghost.dataset.show = "true";
   ghost.textContent = source?.textContent?.trim() || "Markdown block";
   ghost.style.left = `${event.clientX + 12}px`;
   ghost.style.top = `${event.clientY + 12}px`;
   ghost.style.transform = "translate(0, 0)";
   view.dom.append(indicator, ghost);
-  source?.classList.add("markra-block-drag-source");
+  source?.classList.add("helbaron-block-drag-source");
   view.dom.dataset.dragging = "true";
-  view.dom.ownerDocument.documentElement.dataset.markraBlockDragging = "true";
+  view.dom.ownerDocument.documentElement.dataset.helbaronBlockDragging = "true";
   if ("dataTransfer" in event) {
     (event as DragEvent).dataTransfer?.setDragImage?.(ghost, 12, 12);
   }
@@ -755,7 +755,7 @@ class BlockDragViewPlugin {
 }
 
 const blockDragTheme = EditorView.baseTheme({
-  ".cm-markra-block-toolbar": {
+  ".cm-helbaron-block-toolbar": {
     display: "inline-flex",
     gap: "0.15em",
     marginInlineStart: "-3.2em",
@@ -763,17 +763,17 @@ const blockDragTheme = EditorView.baseTheme({
     opacity: "0.15",
     verticalAlign: "middle",
   },
-  ".cm-line:hover > .cm-markra-block-toolbar, .cm-markra-block-toolbar:focus-within": {
+  ".cm-line:hover > .cm-helbaron-block-toolbar, .cm-helbaron-block-toolbar:focus-within": {
     opacity: "1",
   },
-  ".cm-markra-block-toolbar > button": {
+  ".cm-helbaron-block-toolbar > button": {
     background: "transparent",
     border: "0",
     color: "inherit",
     cursor: "pointer",
     padding: "0 0.15em",
   },
-  ".cm-markra-block-toolbar > .markra-block-drag-handle": {
+  ".cm-helbaron-block-toolbar > .helbaron-block-drag-handle": {
     cursor: "grab",
   },
 });
@@ -782,8 +782,8 @@ export function codeMirrorBlockDragPlugin(
   options: CodeMirrorBlockDragPluginOptions = {},
 ) {
   const labels = { ...defaultLabels, ...options.labels };
-  return defineMarkraPlugin({
-    id: "markra.block-drag",
+  return defineHelbaronPlugin({
+    id: "helbaron.block-drag",
     extension: [
       ViewPlugin.define(
         (view) => new BlockDragViewPlugin(view, labels),

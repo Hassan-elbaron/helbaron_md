@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use tauri::Emitter;
 
-const ACP_AGENT_MESSAGE_EVENT: &str = "markra://acp-agent-message";
+const ACP_AGENT_MESSAGE_EVENT: &str = "helbaron://acp-agent-message";
 
 #[derive(Clone, Debug, PartialEq, Eq, serde::Deserialize)]
 pub(crate) struct AcpAgentEnvVariable {

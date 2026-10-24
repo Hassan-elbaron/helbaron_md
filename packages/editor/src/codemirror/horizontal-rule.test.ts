@@ -32,19 +32,19 @@ describe("horizontalRulePlugin", () => {
     const doc = "First\n\n---\n\nSecond";
     const view = createView(doc);
 
-    expect(view.dom.querySelector("hr.cm-markra-horizontal-rule")).not.toBeNull();
+    expect(view.dom.querySelector("hr.cm-helbaron-horizontal-rule")).not.toBeNull();
     expect(view.state.doc.toString()).toBe(doc);
   });
 
   it("reveals the exact source only when the rendered line is activated", () => {
     const doc = "First\n\n---\n\nSecond";
     const view = createView(doc);
-    const rule = view.dom.querySelector<HTMLElement>("hr.cm-markra-horizontal-rule");
+    const rule = view.dom.querySelector<HTMLElement>("hr.cm-helbaron-horizontal-rule");
 
     rule?.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
 
     expect(view.state.selection.main.head).toBe(doc.indexOf("---"));
-    expect(view.dom.querySelector("hr.cm-markra-horizontal-rule")).toBeNull();
+    expect(view.dom.querySelector("hr.cm-helbaron-horizontal-rule")).toBeNull();
     expect(view.dom.textContent).toContain("---");
   });
 
@@ -57,7 +57,7 @@ describe("horizontalRulePlugin", () => {
     view.dispatch({ selection: EditorSelection.cursor(anchor) });
     view.dispatch({ selection: EditorSelection.range(anchor, anchor + 2) });
 
-    expect(view.dom.querySelector("hr.cm-markra-horizontal-rule")).toBeNull();
+    expect(view.dom.querySelector("hr.cm-helbaron-horizontal-rule")).toBeNull();
     expect(view.dom.textContent).toContain("---");
   });
 
@@ -76,7 +76,7 @@ describe("horizontalRulePlugin", () => {
     }
 
     expect(view.state.selection.main.head).toBe(4);
-    expect(view.dom.querySelector("hr.cm-markra-horizontal-rule")).toBeNull();
+    expect(view.dom.querySelector("hr.cm-helbaron-horizontal-rule")).toBeNull();
     expect(view.dom.textContent).toContain("****");
 
     view.dispatch({ selection: EditorSelection.cursor(2) });

@@ -1,5 +1,5 @@
 import { runDocumentAiAgent, type DocumentAiHistoryMessage } from "./document-agent";
-import type { AiProviderConfig } from "@markra/providers";
+import type { AiProviderConfig } from "@helbaron/providers";
 import type { ChatMessage } from "./chat/types";
 import {
   buildDocumentAgentMessages,

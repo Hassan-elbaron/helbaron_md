@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import type { AppAiChatAttachmentRuntime } from "@markra/app/runtime";
+import type { AppAiChatAttachmentRuntime } from "@helbaron/app/runtime";
 import { desktopRuntime } from "../index";
 
 vi.mock("@tauri-apps/api/core", async (importOriginal) => {

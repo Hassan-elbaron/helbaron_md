@@ -1,4 +1,4 @@
-import { defaultMarkdownShortcuts } from "@markra/editor";
+import { defaultMarkdownShortcuts } from "@helbaron/editor";
 import { createSettingsStoreHarness, resetSettingsStoreRuntime, setupSettingsStoreHarness } from "../../test/settings-store";
 import { defaultAiQuickActionPrompt, defaultAiQuickActionPrompts } from "../ai-actions";
 import {
@@ -142,7 +142,7 @@ describe("editor preferences", () => {
           password: "secret",
           publicBaseUrl: " https://cdn.example.com/images/ ",
           serverUrl: " https://dav.example.com/remote.php/dav/files/me/ ",
-          uploadPath: " Markra/screenshots ",
+          uploadPath: " Helbaron/screenshots ",
           username: " ada "
         }
       },
@@ -211,7 +211,7 @@ describe("editor preferences", () => {
           password: "secret",
           publicBaseUrl: "https://cdn.example.com/images",
           serverUrl: "https://dav.example.com/remote.php/dav/files/me",
-          uploadPath: "Markra/screenshots",
+          uploadPath: "Helbaron/screenshots",
           username: "ada"
         }
       },
@@ -587,9 +587,9 @@ describe("editor preferences", () => {
     expect(normalizeEditorPreferences({ spellcheckLanguage: "zh-CN" }).spellcheckLanguage).toBe("en");
     expect(normalizeEditorPreferences({ spellcheckLanguage: "native" }).spellcheckLanguage).toBe("en");
     expect(normalizeEditorPreferences({
-      spellcheckIgnoredWords: ["MarkraTerm", "markraterm", "  CustomTerm  ", "", 42]
-    }).spellcheckIgnoredWords).toEqual(["markraterm", "customterm"]);
-    expect(normalizeEditorPreferences({ spellcheckIgnoredWords: "MarkraTerm" }).spellcheckIgnoredWords).toEqual([]);
+      spellcheckIgnoredWords: ["HelbaronTerm", "helbaronterm", "  CustomTerm  ", "", 42]
+    }).spellcheckIgnoredWords).toEqual(["helbaronterm", "customterm"]);
+    expect(normalizeEditorPreferences({ spellcheckIgnoredWords: "HelbaronTerm" }).spellcheckIgnoredWords).toEqual([]);
   });
 
   it("migrates previous app shortcut defaults to the current defaults", () => {
@@ -665,7 +665,7 @@ describe("editor preferences", () => {
         provider: "s3",
         s3: {
           accessKeyId: " access-key ",
-          bucket: " markra-images ",
+          bucket: " helbaron-images ",
           endpointUrl: " https://s3.example.com/ ",
           publicBaseUrl: " https://cdn.example.com/images/ ",
           region: " us-east-1 ",
@@ -682,7 +682,7 @@ describe("editor preferences", () => {
       },
       s3: {
         accessKeyId: "access-key",
-        bucket: "markra-images",
+        bucket: "helbaron-images",
         endpointUrl: "https://s3.example.com",
         publicBaseUrl: "https://cdn.example.com/images",
         region: "us-east-1",

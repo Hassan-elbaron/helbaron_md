@@ -4,7 +4,7 @@ import type {
   NativeAiHttpRequest,
   NativeAiHttpResponse,
   NativeAiStreamResponse
-} from "@markra/app/runtime";
+} from "@helbaron/app/runtime";
 import type { WebRuntimeOptions } from "./types";
 
 async function responseBody(response: Response) {

@@ -17,7 +17,7 @@ import {
   type DecorationSet,
   type EditorView as CodeMirrorView,
 } from "@codemirror/view";
-import type { AiDiffResult } from "@markra/ai";
+import type { AiDiffResult } from "@helbaron/ai";
 import {
   AI_EDITOR_PREVIEW_ACTION_EVENT,
   AI_EDITOR_PREVIEW_APPLIED_EVENT,
@@ -549,7 +549,7 @@ function previewAppendPosition(
 function createActionIcon(document: Document, action: AiEditorPreviewAction) {
   const svgNamespace = "http://www.w3.org/2000/svg";
   const icon = document.createElementNS(svgNamespace, "svg");
-  icon.classList.add("markra-ai-preview-icon");
+  icon.classList.add("helbaron-ai-preview-icon");
   icon.setAttribute("aria-hidden", "true");
   icon.setAttribute("fill", "none");
   icon.setAttribute("height", "15");
@@ -581,7 +581,7 @@ function createLoadingIcon(document: Document) {
   const svgNamespace = "http://www.w3.org/2000/svg";
   const icon = document.createElementNS(svgNamespace, "svg");
   const circle = document.createElementNS(svgNamespace, "circle");
-  icon.classList.add("markra-ai-preview-icon", "markra-ai-preview-spinner");
+  icon.classList.add("helbaron-ai-preview-icon", "helbaron-ai-preview-spinner");
   icon.setAttribute("aria-hidden", "true");
   icon.setAttribute("fill", "none");
   icon.setAttribute("height", "15");
@@ -602,7 +602,7 @@ function createLoadingIcon(document: Document) {
 function markActionButtonBusy(document: Document, button: HTMLButtonElement) {
   button.dataset.applying = "true";
   button.disabled = true;
-  button.classList.add("markra-ai-preview-applying");
+  button.classList.add("helbaron-ai-preview-applying");
   button.setAttribute("aria-busy", "true");
   button.replaceChildren(createLoadingIcon(document));
 }
@@ -614,13 +614,13 @@ function showCopySuccessFeedback(
   copyLabel: string,
 ) {
   button.dataset.copied = "true";
-  button.classList.add("markra-ai-preview-copied");
+  button.classList.add("helbaron-ai-preview-copied");
   button.ariaLabel = copiedLabel;
   button.title = copiedLabel;
   button.replaceChildren(createActionIcon(document, "apply"));
   document.defaultView?.setTimeout(() => {
     delete button.dataset.copied;
-    button.classList.remove("markra-ai-preview-copied");
+    button.classList.remove("helbaron-ai-preview-copied");
     button.ariaLabel = copyLabel;
     button.title = copyLabel;
     button.replaceChildren(createActionIcon(document, "copy"));
@@ -637,7 +637,7 @@ function createActionButton(
   const button = document.createElement("button");
   let pointerHandled = false;
   button.type = "button";
-  button.className = `markra-ai-preview-action markra-ai-preview-${action}`;
+  button.className = `helbaron-ai-preview-action helbaron-ai-preview-${action}`;
   button.ariaLabel = label;
   button.title = label;
   button.append(createActionIcon(document, action));
@@ -698,15 +698,15 @@ class AiPreviewWidget extends WidgetType {
     const scope = document.createElement("span");
 
     widget.className = isBlockReplacement(this.snapshot.result)
-      ? "markra-ai-preview-widget markra-ai-preview-widget-block"
-      : "markra-ai-preview-widget";
+      ? "helbaron-ai-preview-widget helbaron-ai-preview-widget-block"
+      : "helbaron-ai-preview-widget";
     widget.contentEditable = "false";
-    widget.dataset.markraAiPreviewId = this.snapshot.id;
-    insertion.className = "markra-ai-preview-insert";
+    widget.dataset.helbaronAiPreviewId = this.snapshot.id;
+    insertion.className = "helbaron-ai-preview-insert";
     insertion.textContent = this.snapshot.result.replacement;
-    actions.className = "markra-ai-preview-actions markra-ai-preview-actions-quiet";
+    actions.className = "helbaron-ai-preview-actions helbaron-ai-preview-actions-quiet";
     actions.contentEditable = "false";
-    scope.className = "markra-ai-preview-scope";
+    scope.className = "helbaron-ai-preview-scope";
     scope.textContent = formatPreviewScope(this.snapshot.result, labels, {
       docSize: view.state.doc.length,
       from,
@@ -755,7 +755,7 @@ function buildPreviewDecorations(state: EditorState) {
     const { from, to } = normalizeResultRange(state, snapshot.result);
     if (from < to) {
       ranges.push(
-        Decoration.mark({ class: "markra-ai-preview-delete" }).range(from, to),
+        Decoration.mark({ class: "helbaron-ai-preview-delete" }).range(from, to),
       );
     }
     ranges.push(
@@ -820,29 +820,29 @@ const aiPreviewRestoreEvents = ViewPlugin.fromClass(class {
 });
 
 const aiPreviewTheme = EditorView.baseTheme({
-  ".markra-ai-preview-delete": {
+  ".helbaron-ai-preview-delete": {
     background: "color-mix(in srgb, #d73a49 12%, transparent)",
     textDecoration: "line-through",
     textDecorationColor: "#d73a49",
   },
-  ".markra-ai-preview-widget": {
+  ".helbaron-ai-preview-widget": {
     display: "inline-flex",
     position: "relative",
     margin: "0 0.2em",
     maxWidth: "100%",
     verticalAlign: "baseline",
   },
-  ".markra-ai-preview-widget-block": {
+  ".helbaron-ai-preview-widget-block": {
     display: "flex",
     margin: "1em 0",
     width: "100%",
   },
-  ".markra-ai-preview-insert": {
+  ".helbaron-ai-preview-insert": {
     background: "color-mix(in srgb, #2da44e 12%, transparent)",
     borderRadius: "0.25em",
     whiteSpace: "pre-wrap",
   },
-  ".markra-ai-preview-actions": {
+  ".helbaron-ai-preview-actions": {
     alignItems: "center",
     background: "Canvas",
     border: "1px solid color-mix(in srgb, currentColor 18%, transparent)",
@@ -851,13 +851,13 @@ const aiPreviewTheme = EditorView.baseTheme({
     gap: "0.25em",
     padding: "0.125em",
   },
-  ".markra-ai-preview-scope": {
+  ".helbaron-ai-preview-scope": {
     fontSize: "0.75em",
     opacity: "0.7",
     padding: "0 0.25em",
     whiteSpace: "nowrap",
   },
-  ".markra-ai-preview-action": {
+  ".helbaron-ai-preview-action": {
     alignItems: "center",
     background: "transparent",
     border: "0",
@@ -866,10 +866,10 @@ const aiPreviewTheme = EditorView.baseTheme({
     justifyContent: "center",
     padding: "0.2em",
   },
-  ".markra-ai-preview-action:disabled": {
+  ".helbaron-ai-preview-action:disabled": {
     cursor: "default",
   },
-  ".markra-ai-preview-spinner": {
+  ".helbaron-ai-preview-spinner": {
     opacity: "0.7",
   },
 });
@@ -1021,8 +1021,8 @@ export function scrollCodeMirrorAiPreviewIntoView(
   const position = previewAppendPosition(view.state, preview.result);
   view.dispatch({ effects: EditorView.scrollIntoView(position, { y: "center" }) });
   const widget = Array.from(
-    view.dom.querySelectorAll<HTMLElement>(".markra-ai-preview-widget"),
-  ).find((element) => element.dataset.markraAiPreviewId === preview.id);
+    view.dom.querySelectorAll<HTMLElement>(".helbaron-ai-preview-widget"),
+  ).find((element) => element.dataset.helbaronAiPreviewId === preview.id);
   widget?.scrollIntoView({ block: "center", inline: "nearest" });
   return true;
 }

@@ -9,6 +9,7 @@ const LANGUAGE_KEY: &str = "language";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum AppLanguage {
+    Ar,
     En,
     ZhCn,
     ZhTw,
@@ -25,6 +26,7 @@ pub(crate) enum AppLanguage {
 impl AppLanguage {
     pub(crate) fn as_code(self) -> &'static str {
         match self {
+            Self::Ar => "ar",
             Self::En => "en",
             Self::ZhCn => "zh-CN",
             Self::ZhTw => "zh-TW",
@@ -41,6 +43,7 @@ impl AppLanguage {
 
     pub(crate) fn from_code(value: &str) -> Option<Self> {
         match value {
+            "ar" => Some(Self::Ar),
             "en" => Some(Self::En),
             "zh-CN" => Some(Self::ZhCn),
             "zh-TW" => Some(Self::ZhTw),
@@ -85,8 +88,16 @@ pub(crate) fn language_for_initial_launch(
         return language;
     }
 
+    // Helbaron is an Arabic-first edition: the first launch is Arabic whatever the
+    // system locale. Users can switch language in Settings, and it is remembered.
+    if ARABIC_FIRST_EDITION {
+        return AppLanguage::Ar;
+    }
+
     language_from_system_locales(system_locales).unwrap_or(AppLanguage::En)
 }
+
+const ARABIC_FIRST_EDITION: bool = true;
 
 fn system_locale_candidates() -> Vec<String> {
     sys_locale::get_locales().collect()
@@ -128,6 +139,7 @@ fn language_from_locale(locale: &str) -> Option<AppLanguage> {
     let language = normalized.split('-').next().unwrap_or_default();
 
     match language {
+        "ar" => Some(AppLanguage::Ar),
         "en" => Some(AppLanguage::En),
         "ja" => Some(AppLanguage::Ja),
         "ko" => Some(AppLanguage::Ko),
@@ -198,24 +210,18 @@ mod tests {
     }
 
     #[test]
-    fn missing_language_uses_supported_system_locale() {
-        let language = language_for_initial_launch(None, &["zh_Hant_TW"]);
-
-        assert_eq!(language, AppLanguage::ZhTw);
+    fn missing_language_starts_in_arabic_for_this_edition() {
+        assert_eq!(language_for_initial_launch(None, &["zh_Hant_TW"]), AppLanguage::Ar);
+        assert_eq!(language_for_initial_launch(None, &["en_US"]), AppLanguage::Ar);
+        assert_eq!(language_for_initial_launch(None, &[]), AppLanguage::Ar);
     }
 
     #[test]
-    fn unsupported_system_locale_defaults_to_english() {
-        let language = language_for_initial_launch(None, &["nl_NL"]);
-
-        assert_eq!(language, AppLanguage::En);
-    }
-
-    #[test]
-    fn locale_matching_uses_the_first_supported_system_language() {
-        let language = language_for_initial_launch(None, &["nl_NL", "ja_JP"]);
-
-        assert_eq!(language, AppLanguage::Ja);
+    fn system_locale_matching_still_maps_supported_languages() {
+        assert_eq!(language_from_system_locales(&["zh_Hant_TW"]), Some(AppLanguage::ZhTw));
+        assert_eq!(language_from_system_locales(&["nl_NL", "ja_JP"]), Some(AppLanguage::Ja));
+        assert_eq!(language_from_system_locales(&["ar_EG"]), Some(AppLanguage::Ar));
+        assert_eq!(language_from_system_locales(&["nl_NL"]), None);
     }
 
     #[test]

@@ -38,6 +38,9 @@ import {
   type MarkdownTabsBarDocumentItem
 } from "./components/MarkdownTabsBar";
 import { NativeTitleBar } from "./components/NativeTitleBar";
+import { WordToolbar } from "./components/WordToolbar";
+import { applyTextDirection, readStoredTextDirection } from "./lib/text-direction";
+import { exportMarkdownAsWord, importWordAsMarkdown } from "./lib/word-documents";
 import { QuietStatus } from "./components/QuietStatus";
 import { QuickOpenPanel } from "./components/QuickOpenPanel";
 import { SideDocumentPane } from "./components/SideDocumentPane";
@@ -111,14 +114,14 @@ import {
   t,
   type AppLanguage,
   type I18nKey
-} from "@markra/shared";
+} from "@helbaron/shared";
 import { showAppToast } from "./lib/app-toast";
 import { appVersion } from "./lib/app-version";
 import {
   createMarkdownImageSrcResolver,
   getWordCount,
   parseMarkdownLocalResourceReferences
-} from "@markra/markdown";
+} from "@helbaron/markdown";
 import { buildMarkdownHtmlDocument, exportDocumentFileName, localFileUrlFromPath } from "./lib/document-export";
 import {
   generateCrashDiagnosticsReport,
@@ -179,7 +182,7 @@ import {
   type AiSelectionContext,
   type WorkspaceChangePlanArgs,
   type WorkspacePlanVisualEvent
-} from "@markra/ai";
+} from "@helbaron/ai";
 import {
   AI_EDITOR_PREVIEW_APPLIED_EVENT,
   AI_EDITOR_PREVIEW_ACTION_EVENT,
@@ -188,8 +191,8 @@ import {
   type AiEditorPreviewActionDetail,
   type AiEditorPreviewRestoreDetail,
   type RemoteClipboardImage
-} from "@markra/editor";
-import { showCodeMirrorLocationCue } from "@markra/editor/codemirror";
+} from "@helbaron/editor";
+import { showCodeMirrorLocationCue } from "@helbaron/editor/codemirror";
 import {
   createAiAgentSessionId,
   defaultSplitVisualPanePercent,
@@ -2106,7 +2109,7 @@ function WorkspaceApp() {
 
     const result = restoredResult ?? aiResults.at(-1) ?? null;
     if (!result) {
-      console.warn("[markra-ai-preview] apply ignored: no pending result", {
+      console.warn("[helbaron-ai-preview] apply ignored: no pending result", {
         aiResults,
         previewId,
         restoredResult
@@ -2114,7 +2117,7 @@ function WorkspaceApp() {
       return;
     }
 
-    debug(() => ["[markra-ai-preview] app handle apply", {
+    debug(() => ["[helbaron-ai-preview] app handle apply", {
       from: result.type === "error" ? null : result.from,
       mode,
       replacementLength: result.type === "error" ? null : result.replacement.length,
@@ -2124,7 +2127,7 @@ function WorkspaceApp() {
 
     const actionKey = aiPreviewActionKey(result, previewId);
     if (appliedAiPreviewKeysRef.current.has(actionKey)) {
-      debug(() => ["[markra-ai-preview] apply ignored: duplicate result", {
+      debug(() => ["[helbaron-ai-preview] apply ignored: duplicate result", {
         previewId,
         type: result.type
       }]);
@@ -2134,7 +2137,7 @@ function WorkspaceApp() {
 
     appliedAiPreviewKeysRef.current.add(actionKey);
     const applied = editor.applyAiResult(result, { mode, previewId });
-    debug(() => ["[markra-ai-preview] app apply result", { applied }]);
+    debug(() => ["[helbaron-ai-preview] app apply result", { applied }]);
 
     if (!applied) {
       appliedAiPreviewKeysRef.current.delete(actionKey);
@@ -2939,7 +2942,7 @@ function WorkspaceApp() {
     setDocumentHistoryOpen((current) => !current);
   }, [documentHistoryAvailable]);
   const handleDocumentHistoryRestore = useCallback(async (contents: string, historyId: string) => {
-    debug(() => ["[markra-history] app restore requested", {
+    debug(() => ["[helbaron-history] app restore requested", {
       contentsChars: contents.length,
       currentDirty: document.dirty,
       currentPath: document.path,
@@ -2950,7 +2953,7 @@ function WorkspaceApp() {
     if (document.dirty) {
       const savedCurrent = await saveCurrentDocument();
       if (!savedCurrent) {
-        debug(() => ["[markra-history] app restore canceled", {
+        debug(() => ["[helbaron-history] app restore canceled", {
           historyId,
           reason: "current document was not saved"
         }]);
@@ -2959,24 +2962,24 @@ function WorkspaceApp() {
     }
 
     const restored = restoreDocumentContent(contents);
-    debug(() => ["[markra-history] app restore state result", {
+    debug(() => ["[helbaron-history] app restore state result", {
       restored
     }]);
     if (!restored) return false;
 
     const editorReplaced = replaceEditorMarkdown(contents);
-    debug(() => ["[markra-history] editor replace requested", {
+    debug(() => ["[helbaron-history] editor replace requested", {
       editorReplaced
     }]);
     try {
       // A normal save snapshots the version that was current immediately before this restore.
       const savedFile = await saveCurrentDocumentContent(contents);
-      debug(() => ["[markra-history] save restored document success", {
+      debug(() => ["[helbaron-history] save restored document success", {
         savedPath: savedFile?.path ?? null
       }]);
       return savedFile !== null;
     } catch (error: unknown) {
-      debug(() => ["[markra-history] save restored document failed", {
+      debug(() => ["[helbaron-history] save restored document failed", {
         error: error instanceof Error ? error.message : String(error)
       }]);
       return false;
@@ -4029,9 +4032,50 @@ function WorkspaceApp() {
     readCurrentMarkdownForDocument,
     translate
   ]);
-  const exportDocxDocument = useCallback(() => exportPandocDocument("docx"), [exportPandocDocument]);
   const exportEpubDocument = useCallback(() => exportPandocDocument("epub"), [exportPandocDocument]);
   const exportLatexDocument = useCallback(() => exportPandocDocument("latex"), [exportPandocDocument]);
+  const [textDirection, setTextDirection] = useState(readStoredTextDirection);
+  const handleTextDirectionChange = useCallback((direction: Parameters<typeof applyTextDirection>[0]) => {
+    setTextDirection(direction);
+    applyTextDirection(direction);
+  }, []);
+  const handleExportWordDocument = useCallback(() => {
+    const context = exportContextRef.current;
+    if (!context.hasOpenDocument || context.activeImageFile) return;
+
+    // Built-in converter: no Pandoc install needed, and Arabic paragraphs export as RTL.
+    exportMarkdownAsWord({
+      direction: textDirection,
+      documentName: context.name,
+      documentPath: context.path,
+      markdown: readCurrentMarkdownForDocument(context.content)
+    }).then((file) => {
+      if (!file) return;
+      if (file.path.startsWith("web-download://")) {
+        showAppToast({ message: translate("docx.exported"), status: "success", surface: "notice" });
+        return;
+      }
+      notifyExportSaved(file);
+    }).catch(() => {
+      showAppToast({ message: translate("docx.exportFailed"), status: "error", surface: "notice" });
+    });
+  }, [notifyExportSaved, readCurrentMarkdownForDocument, textDirection, translate]);
+  const handleImportWordDocument = useCallback(() => {
+    importWordAsMarkdown(translate("wordToolbar.openWord")).then(async (imported) => {
+      if (!imported) return;
+
+      const created = await createBlankDocument({ content: imported.markdown, name: imported.name });
+      if (!created) return;
+      showAppToast({
+        description: imported.warnings.length > 0 ? translate("docx.importWarnings") : imported.name,
+        message: translate("docx.imported"),
+        status: "success",
+        surface: "notice"
+      });
+    }).catch(() => {
+      showAppToast({ message: translate("docx.importFailed"), status: "error", surface: "notice" });
+    });
+  }, [createBlankDocument, translate]);
   useEffect(() => {
     if (sourceModeAvailable) return;
 
@@ -4161,7 +4205,7 @@ function WorkspaceApp() {
   const nativeMenuHandlers = useNativeMenuHandlers({
     checkForUpdates: updaterFeatureEnabled ? appUpdater.checkForUpdates : undefined,
     closeDocument: handleCloseCurrentFile,
-    exportDocx: exportFeatureEnabled && pandocFeatureEnabled ? exportDocxDocument : undefined,
+    exportDocx: exportFeatureEnabled ? handleExportWordDocument : undefined,
     exportEpub: exportFeatureEnabled && pandocFeatureEnabled ? exportEpubDocument : undefined,
     exportHtml: exportFeatureEnabled ? exportHtmlDocument : undefined,
     exportLatex: exportFeatureEnabled && pandocFeatureEnabled ? exportLatexDocument : undefined,
@@ -4241,7 +4285,7 @@ function WorkspaceApp() {
     const handlePreviewAction = (event: Event) => {
       const detail = (event as CustomEvent<Partial<AiEditorPreviewActionDetail>>).detail;
       const action = detail?.action;
-      debug(() => ["[markra-ai-preview] app received action event", detail]);
+      debug(() => ["[helbaron-ai-preview] app received action event", detail]);
 
       if (action === "apply") {
         handleApplyAiResult(detail.result, detail.previewId);
@@ -4278,7 +4322,7 @@ function WorkspaceApp() {
       const actionKey = aiPreviewActionKey(result, detail?.previewId);
       if (!appliedAiPreviewKeysRef.current.has(actionKey)) return;
 
-      debug(() => ["[markra-ai-preview] app observed preview applied", {
+      debug(() => ["[helbaron-ai-preview] app observed preview applied", {
         actionKey,
         pendingPreviewCount: detail?.previews?.length ?? 0,
         previewId: detail?.previewId,
@@ -4305,7 +4349,7 @@ function WorkspaceApp() {
       const result = detail?.result;
       if (!result || (result.type !== "insert" && result.type !== "replace")) return;
 
-      debug(() => ["[markra-ai-preview] app observed preview restore", {
+      debug(() => ["[helbaron-ai-preview] app observed preview restore", {
         pendingPreviewCount: detail?.previews?.length ?? 0,
         previewId: detail?.previewId,
         resultSignature: aiResultSignature(result)
@@ -4769,6 +4813,10 @@ function WorkspaceApp() {
     />
   ) : null;
 
+  // Word-style toolbar for the main document. Hidden for image tabs and
+  // distraction-free view modes that hide the rest of the chrome.
+  const wordToolbarVisible = hasOpenDocument && !activeImageFile && viewModeChrome.statusBar;
+
   return (
     <>
       <AppToaster language={appLanguage.language} />
@@ -5025,9 +5073,45 @@ function WorkspaceApp() {
                 >
                   <div
                     className="relative grid h-full min-h-0 grid-rows-[minmax(0,1fr)_auto] overflow-hidden"
+                    data-word-toolbar={wordToolbarVisible ? "true" : undefined}
                     ref={mainDocumentPaneRef}
                     onFocusCapture={handleMainDocumentPaneFocus}
                   >
+                    {wordToolbarVisible ? (
+                      <div className="word-toolbar-slot pointer-events-none absolute inset-x-0 top-10.5 z-30 flex justify-center px-3">
+                        <WordToolbar
+                          direction={textDirection}
+                          disabled={readOnlyMode}
+                          getFormattingState={editor.getSelectionFormattingState}
+                          language={appLanguage.language}
+                          onDirectionChange={handleTextDirectionChange}
+                          onExportPdf={exportFeatureEnabled ? exportPdfDocument : undefined}
+                          onExportWord={exportFeatureEnabled ? handleExportWordDocument : undefined}
+                          onInsertHorizontalRule={() => handleInsertMarkdownSnippet("\n\n---\n\n", "", "")}
+                          onInsertImage={handleInsertMarkdownImage}
+                          onInsertLink={handleInsertMarkdownLink}
+                          onInsertTable={handleInsertMarkdownTable}
+                          onOpenWord={handleImportWordDocument}
+                          onRedo={() => handleRunEditorShortcut("z", { shiftKey: true })}
+                          onRunCommand={(commandId) => {
+                            if (readOnlyMode) return;
+                            editor.runEditorCommand(commandId);
+                            syncVisualMarkdownAfterEditorCommand();
+                          }}
+                          onRunFormatting={(action) => {
+                            if (readOnlyMode) return;
+                            editor.runSelectionFormattingAction(action);
+                            syncVisualMarkdownAfterEditorCommand();
+                          }}
+                          onSetHeadingLevel={(level) => {
+                            if (readOnlyMode) return;
+                            editor.setSelectionHeadingLevel(level);
+                            syncVisualMarkdownAfterEditorCommand();
+                          }}
+                          onUndo={() => handleRunEditorShortcut("z")}
+                        />
+                      </div>
+                    ) : null}
                     {splitMode ? (
                     <div
                       className="editor-split-surface grid h-full min-h-0 grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] divide-y divide-(--border-default) min-[900px]:grid-cols-[minmax(0,var(--split-visual-pane))_8px_minmax(0,var(--split-source-pane))] min-[900px]:grid-rows-[minmax(0,1fr)] min-[900px]:divide-y-0"

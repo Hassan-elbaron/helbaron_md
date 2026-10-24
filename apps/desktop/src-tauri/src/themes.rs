@@ -44,7 +44,7 @@ fn resolve_theme_directory(default: &Path, selected: Option<&str>) -> Result<Pat
 
 fn prepare_theme_directory(default: &Path, selected: Option<&str>) -> Result<PathBuf, String> {
     let root = resolve_theme_directory(default, selected)?;
-    // A selected folder may belong to another app. Only Markra's default directory receives templates.
+    // A selected folder may belong to another app. Only Helbaron's default directory receives templates.
     if selected.is_none() {
         initialize_theme_directory(&root)?;
     }

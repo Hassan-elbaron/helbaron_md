@@ -1,5 +1,5 @@
 import { createTrieRootFromList, serializeTrie } from "cspell-trie-lib";
-import type { AppLanguage } from "@markra/shared";
+import type { AppLanguage } from "@helbaron/shared";
 import { configureAppRuntime, createDefaultAppRuntime, resetAppRuntimeForTests } from "../runtime";
 import {
   createAppSpellcheckerForLanguage,

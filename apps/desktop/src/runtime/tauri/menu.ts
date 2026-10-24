@@ -13,9 +13,9 @@ import {
   type NativeClipboardContent,
   type NativeClipboardContentReader,
   type RecentMarkdownFile
-} from "@markra/app/runtime";
-import type { MarkdownShortcutMap } from "@markra/editor";
-import type { AppLanguage } from "@markra/shared";
+} from "@helbaron/app/runtime";
+import type { MarkdownShortcutMap } from "@helbaron/editor";
+import type { AppLanguage } from "@helbaron/shared";
 import type { NativeMarkdownFolderFile } from "./file";
 import { listenNativeEvent } from "./events";
 
@@ -148,7 +148,7 @@ function runNativeMenuAction(payload: NativeMenuCommandPayload, handlers: Native
 }
 
 export async function listenNativeApplicationMenuCommands(handlers: NativeMenuHandlers) {
-  return listenNativeEvent<NativeMenuCommandPayload>("markra://menu-command", (event) => {
+  return listenNativeEvent<NativeMenuCommandPayload>("helbaron://menu-command", (event) => {
     runNativeMenuAction(event.payload, handlers);
   });
 }
@@ -293,8 +293,8 @@ export async function showNativeMarkdownFileTreeContextMenu(
 }
 
 const desktopContextMenuIdPrefixes: ContextMenuIdPrefixes = {
-  editor: "markra:context",
-  fileTree: "markra:file-tree"
+  editor: "helbaron:context",
+  fileTree: "helbaron:file-tree"
 };
 
 function resolveContextMenuDocument(event: Event) {

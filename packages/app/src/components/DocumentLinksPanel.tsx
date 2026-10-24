@@ -1,5 +1,5 @@
 import { Link2, MessageSquareText } from "lucide-react";
-import { t, type AppLanguage } from "@markra/shared";
+import { t, type AppLanguage } from "@helbaron/shared";
 import type {
   WorkspaceLinkOccurrence,
   WorkspaceUnlinkedMention
@@ -50,7 +50,7 @@ export function DocumentLinksPanel({
           return (
             <li key={`${item.sourceFile.path}:${item.from}:${item.to}`}>
               <button
-                className="grid w-full cursor-pointer gap-1 rounded-sm border-0 bg-transparent px-2 py-1.5 text-left text-[12px] leading-4 text-(--text-secondary) outline-none transition-colors duration-150 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
+                className="grid w-full cursor-pointer gap-1 rounded-sm border-0 bg-transparent px-2 py-1.5 text-start text-[12px] leading-4 text-(--text-secondary) outline-none transition-colors duration-150 hover:bg-(--bg-hover) hover:text-(--text-heading) focus-visible:bg-(--bg-active) focus-visible:ring-2 focus-visible:ring-(--accent)"
                 type="button"
                 aria-label={ariaLabel}
                 onClick={() => onOpenFile(item.sourceFile)}

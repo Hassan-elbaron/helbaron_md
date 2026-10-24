@@ -3,7 +3,7 @@ import type {
   WorkspacePlanVisualEvent,
   WorkspacePlanVisualStepEvent,
   WorkspacePlanVisualTarget
-} from "@markra/ai";
+} from "@helbaron/ai";
 
 type PreparedWorkspacePlanChange = {
   content?: string;

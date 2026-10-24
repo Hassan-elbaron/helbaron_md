@@ -3,13 +3,13 @@ import { EditorView } from "@codemirror/view";
 import {
   blocksPlugin,
   documentLinksPlugin,
-  getMarkraSlashMenuState,
+  getHelbaronSlashMenuState,
   liveMarkdown,
-} from "@markra/editor/codemirror";
+} from "@helbaron/editor/codemirror";
 import {
-  MarkraEditorProvider,
-  markraEditorReactBridge,
-} from "@markra/editor-react";
+  HelbaronEditorProvider,
+  helbaronEditorReactBridge,
+} from "@helbaron/editor-react";
 import { act, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -44,7 +44,7 @@ function createView({ documentLinks = false } = {}) {
       doc,
       extensions: [
         liveMarkdown({ plugins, slashMenu: !documentLinks }),
-        markraEditorReactBridge,
+        helbaronEditorReactBridge,
       ],
       selection: EditorSelection.cursor(doc.length),
     }),
@@ -87,9 +87,9 @@ describe("CodeMirrorEditorFloatingMenus", () => {
   it("renders and runs plugin-contributed slash commands", async () => {
     const view = createView();
     const host = render(
-      <MarkraEditorProvider view={view}>
+      <HelbaronEditorProvider view={view}>
         <CodeMirrorEditorFloatingMenus />
-      </MarkraEditorProvider>,
+      </HelbaronEditorProvider>,
     );
 
     await flushMeasurement();
@@ -97,7 +97,7 @@ describe("CodeMirrorEditorFloatingMenus", () => {
       (button) => button.textContent === "Heading 2",
     );
 
-    expect(host.container.querySelector(".markra-slash-menu")).not.toBeNull();
+    expect(host.container.querySelector(".helbaron-slash-menu")).not.toBeNull();
     act(() => heading2?.click());
     expect(view.state.doc.toString()).toBe("## ");
   });
@@ -105,13 +105,13 @@ describe("CodeMirrorEditorFloatingMenus", () => {
   it("keeps the slash command list compact and scrollable", async () => {
     const view = createView();
     const host = render(
-      <MarkraEditorProvider view={view}>
+      <HelbaronEditorProvider view={view}>
         <CodeMirrorEditorFloatingMenus />
-      </MarkraEditorProvider>,
+      </HelbaronEditorProvider>,
     );
 
     await flushMeasurement();
-    expect(host.container.querySelector(".markra-slash-menu")).toHaveStyle({
+    expect(host.container.querySelector(".helbaron-slash-menu")).toHaveStyle({
       maxHeight: "320px",
       overflowY: "auto",
     });
@@ -120,14 +120,14 @@ describe("CodeMirrorEditorFloatingMenus", () => {
   it("scrolls the keyboard-selected slash command into view", async () => {
     const view = createView();
     const host = render(
-      <MarkraEditorProvider view={view}>
+      <HelbaronEditorProvider view={view}>
         <CodeMirrorEditorFloatingMenus />
-      </MarkraEditorProvider>,
+      </HelbaronEditorProvider>,
     );
 
     await flushMeasurement();
     const options = host.container.querySelectorAll<HTMLButtonElement>(
-      ".markra-slash-menu-option",
+      ".helbaron-slash-menu-option",
     );
     const lastOption = options.item(options.length - 1);
     const scrollIntoView = vi.fn();
@@ -145,30 +145,30 @@ describe("CodeMirrorEditorFloatingMenus", () => {
   it("dismisses slash commands when the user points outside the menu", async () => {
     const view = createView();
     render(
-      <MarkraEditorProvider view={view}>
+      <HelbaronEditorProvider view={view}>
         <CodeMirrorEditorFloatingMenus />
-      </MarkraEditorProvider>,
+      </HelbaronEditorProvider>,
     );
 
     await flushMeasurement();
-    expect(getMarkraSlashMenuState(view).open).toBe(true);
+    expect(getHelbaronSlashMenuState(view).open).toBe(true);
     act(() => {
       document.body.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
     });
-    expect(getMarkraSlashMenuState(view).open).toBe(false);
+    expect(getHelbaronSlashMenuState(view).open).toBe(false);
   });
 
   it("renders and runs document-link completion items", async () => {
     const view = createView({ documentLinks: true });
     const host = render(
-      <MarkraEditorProvider view={view}>
+      <HelbaronEditorProvider view={view}>
         <CodeMirrorEditorFloatingMenus />
-      </MarkraEditorProvider>,
+      </HelbaronEditorProvider>,
     );
 
     await flushMeasurement();
     const item = host.container.querySelector<HTMLButtonElement>(
-      ".markra-document-link-option",
+      ".helbaron-document-link-option",
     );
 
     expect(item?.textContent).toContain("Plugin authoring");

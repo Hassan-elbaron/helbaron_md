@@ -6,10 +6,10 @@ const desktopRoot = process.cwd();
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 
 describe("desktop app package integration", () => {
-  it("renders the frontend from @markra/app", () => {
+  it("renders the frontend from @helbaron/app", () => {
     const entry = readFileSync(resolve(desktopRoot, "src/main.tsx"), "utf8");
 
-    expect(entry).toContain('from "@markra/app"');
+    expect(entry).toContain('from "@helbaron/app"');
     expect(entry).not.toContain('from "./App"');
   });
 

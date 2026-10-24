@@ -2,7 +2,7 @@ import { act, fireEvent, screen, waitFor, within } from "@testing-library/react"
 import { redoDepth } from "@codemirror/commands";
 import { EditorSelection } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
-import { defaultMarkdownShortcuts } from "@markra/editor";
+import { defaultMarkdownShortcuts } from "@helbaron/editor";
 import { it as registerTest } from "vitest";
 import desktopPackage from "../package.json";
 import { defaultAiQuickActionPrompts } from "./lib/ai-actions";
@@ -83,6 +83,7 @@ import {
   mockedSaveNativeMarkdownBundleFile,
   mockedSaveNativeMarkdownFile,
   mockedSaveNativePandocFile,
+  mockedSaveNativeWordFile,
   mockedSaveNativePdfFile,
   mockedSearchNativeMarkdownFilesForPath,
   mockedShowNativePandocSetup,
@@ -131,9 +132,19 @@ vi.mock("./components/LazyMarkdownSourceEditor", async (importOriginal) => {
 installAppTestHarness();
 
 // Vitest shards files only, so CI needs a local registration boundary to split this monolithic suite by test title.
-const it = createShardedTest(registerTest, process.env.MARKRA_APP_TEST_SHARD);
+const it = createShardedTest(registerTest, process.env.HELBARON_APP_TEST_SHARD);
 
 const defaultFileTreeListOptions = { managedAttachmentFolder: "assets" };
+
+// The persistent Word-style toolbar repeats formatting labels ("Bold"), so
+// selection-toolbar assertions are scoped to the floating selection toolbar.
+function findAiSelectionToolbar() {
+  return waitFor(() => {
+    const toolbar = document.querySelector<HTMLElement>(".ai-selection-toolbar");
+    if (!toolbar) throw new Error("Expected the selection toolbar");
+    return toolbar;
+  });
+}
 
 describe("dev mock runtime error preview", () => {
   it("enables the mock runtime error preview only in development with an explicit query param", () => {
@@ -352,7 +363,7 @@ function getVisibleWritingSurface(container: HTMLElement) {
 }
 
 function queryVisibleCodeMirrorTable(container: HTMLElement) {
-  return getVisibleCodeMirrorEditor(container).querySelector(".cm-markra-table");
+  return getVisibleCodeMirrorEditor(container).querySelector(".cm-helbaron-table");
 }
 
 async function expectVisibleCodeMirrorText(container: HTMLElement, text: string) {
@@ -541,7 +552,7 @@ function findEditorTextPosition(view: EditorView, text: string, offset = 0) {
   return result + offset;
 }
 
-describe("Markra workspace", () => {
+describe("Helbaron workspace", () => {
   it("marks macOS 27 windows for the WebKit scrolling workaround", async () => {
     mockedResolveDesktopPlatform.mockReturnValue("macos");
     mockedResolveDesktopOsVersion.mockReturnValue("27.0");
@@ -608,7 +619,7 @@ describe("Markra workspace", () => {
 
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     const view = getVisibleCodeMirrorView(container);
     act(() => {
       view.dispatch({ selection: EditorSelection.cursor(view.state.doc.length) });
@@ -656,7 +667,7 @@ describe("Markra workspace", () => {
 
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     const view = getVisibleCodeMirrorView(container);
     const markdownBeforePaste = view.state.doc.toString();
     fireEvent.keyDown(window, { key: "f", metaKey: true });
@@ -677,7 +688,7 @@ describe("Markra workspace", () => {
   it("leaves the default plain text paste shortcut to the browser runtime", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     const view = getVisibleCodeMirrorView(container);
     const markdownBeforePaste = view.state.doc.toString();
 
@@ -715,7 +726,7 @@ describe("Markra workspace", () => {
 
     expect(screen.getByRole("heading", { name: "Untitled.md" })).toBeInTheDocument();
     expect(screen.getByLabelText("Window drag region")).toBeInTheDocument();
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     expect(screen.getByRole("button", { name: "Open Markdown or Folder" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Save Markdown" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
@@ -789,7 +800,7 @@ describe("Markra workspace", () => {
   it("does not open local import pickers while source mode is active", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await selectEditorViewMode("Source code");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalled());
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls.at(-1)?.[0] as NativeMenuHandlers;
@@ -1031,7 +1042,7 @@ describe("Markra workspace", () => {
 
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalled());
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls.at(-1)?.[0] as NativeMenuHandlers & {
       importLocalFiles?: () => unknown | Promise<unknown>;
@@ -1079,7 +1090,7 @@ describe("Markra workspace", () => {
 
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalled());
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls.at(-1)?.[0] as NativeMenuHandlers;
 
@@ -1120,7 +1131,7 @@ describe("Markra workspace", () => {
 
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalled());
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls.at(-1)?.[0] as NativeMenuHandlers;
     await act(async () => {
@@ -1226,7 +1237,7 @@ describe("Markra workspace", () => {
   it("replaces the document word count with the selected word count in the quiet status line", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
 
@@ -1238,7 +1249,7 @@ describe("Markra workspace", () => {
       view.dispatch({
         selection: {
           anchor: start,
-          head: start + "Welcome to Markra".length
+          head: start + "Welcome to Helbaron".length
         }
       });
     });
@@ -1250,7 +1261,7 @@ describe("Markra workspace", () => {
   it("reserves a separate row for document status instead of overlaying the writing surface", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     const visualStatus = container.querySelector(".quiet-status");
     const visualPaper = container.querySelector(".markdown-paper");
     const visualScroll = visualPaper?.parentElement;
@@ -1298,7 +1309,7 @@ describe("Markra workspace", () => {
     expect(await screen.findByRole("region", { name: "History versions" })).toBeInTheDocument();
     expect(screen.queryByRole("dialog", { name: "History versions" })).not.toBeInTheDocument();
 
-    fireEvent.click(await screen.findByRole("option"));
+    fireEvent.click(await within(await screen.findByRole("region", { name: "History versions" })).findByRole("option"));
     fireEvent.click(await screen.findByRole("button", { name: "Restore version" }));
 
     await waitFor(() => {
@@ -1330,14 +1341,14 @@ describe("Markra workspace", () => {
 
     const { unmount } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
-    expect(screen.queryByRole("button", { name: "Toggle Markra AI" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Toggle Helbaron AI" })).not.toBeInTheDocument();
 
     fireEvent.keyDown(window, { key: "j", altKey: true, metaKey: true });
     fireEvent.keyDown(window, { key: "j", metaKey: true, shiftKey: true });
 
-    expect(screen.queryByRole("complementary", { name: "Markra AI" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("complementary", { name: "Helbaron AI" })).not.toBeInTheDocument();
     expect(screen.queryByRole("textbox", { name: "AI command" })).not.toBeInTheDocument();
 
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
@@ -1362,7 +1373,7 @@ describe("Markra workspace", () => {
     expect(mockedSaveNativeHtmlFile).not.toHaveBeenCalled();
     expect(mockedSaveNativePandocFile).not.toHaveBeenCalled();
     expect(mockedSaveNativePdfFile).not.toHaveBeenCalled();
-    expect(screen.queryByRole("complementary", { name: "Markra AI" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("complementary", { name: "Helbaron AI" })).not.toBeInTheDocument();
     expect(screen.queryByRole("textbox", { name: "AI command" })).not.toBeInTheDocument();
 
     unmount();
@@ -1383,7 +1394,7 @@ describe("Markra workspace", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Keyboard shortcuts" }));
 
-    expect(screen.queryByRole("button", { name: "Toggle Markra AI shortcut" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Toggle Helbaron AI shortcut" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "AI writing command shortcut" })).not.toBeInTheDocument();
   });
 
@@ -1404,14 +1415,15 @@ describe("Markra workspace", () => {
 
     const { unmount } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls[0]?.[0] as NativeMenuHandlers;
 
     expect(menuHandlers.exportHtml).toEqual(expect.any(Function));
     expect(menuHandlers.exportPdf).toEqual(expect.any(Function));
     expect(menuHandlers.exportMarkdown).toBeUndefined();
-    expect(menuHandlers.exportDocx).toBeUndefined();
+    // Word export is built in, so it stays available without Pandoc.
+    expect(menuHandlers.exportDocx).toEqual(expect.any(Function));
     expect(menuHandlers.exportEpub).toBeUndefined();
     expect(menuHandlers.exportLatex).toBeUndefined();
 
@@ -1532,7 +1544,7 @@ describe("Markra workspace", () => {
         "fixed",
         "top-10",
         "bottom-0",
-        "left-0"
+        "start-0"
       );
       expect(container.querySelector(".native-titlebar")).not.toHaveStyle({
         left: "289px"
@@ -1599,9 +1611,9 @@ describe("Markra workspace", () => {
     }));
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
-    const aiButton = screen.getByRole("button", { name: "Toggle Markra AI" });
+    const aiButton = screen.getByRole("button", { name: "Toggle Helbaron AI" });
     mockTitlebarActionRects(["aiAgent", "viewMode", "sourceMode", "save", "theme"]);
 
     fireEvent.mouseDown(aiButton, { button: 0, clientX: 10, clientY: 10 });
@@ -1763,7 +1775,7 @@ describe("Markra workspace", () => {
   it("opens settings from the lower-left settings launcher", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.click(screen.getByRole("button", { name: "Settings" }));
 
@@ -2016,8 +2028,8 @@ describe("Markra workspace", () => {
 
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
-    expect(screen.queryByRole("button", { name: "Toggle Markra AI" })).not.toBeInTheDocument();
+    await expectVisibleMarkdownText("Welcome to Helbaron");
+    expect(screen.queryByRole("button", { name: "Toggle Helbaron AI" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "View mode: Custom" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Editor view mode: Preview" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Save Markdown" })).not.toBeInTheDocument();
@@ -2242,7 +2254,7 @@ describe("Markra workspace", () => {
     expect(screen.getByRole("button", { name: "Toggle file list" })).toHaveAttribute("aria-pressed", "false");
     expect(screen.queryByRole("complementary", { name: "Markdown file tree" })).not.toBeInTheDocument();
     expect(screen.queryByText("No folder")).not.toBeInTheDocument();
-    expect(screen.queryByText("Welcome to Markra")).not.toBeInTheDocument();
+    expect(screen.queryByText("Welcome to Helbaron")).not.toBeInTheDocument();
     expect(mockedConsumeWelcomeDocumentState).not.toHaveBeenCalled();
   });
 
@@ -2420,12 +2432,12 @@ describe("Markra workspace", () => {
 
     await waitFor(() => expect(document.documentElement).toHaveAttribute("data-theme", "custom"));
     expect(container.querySelector(".markdown-paper")).toHaveAttribute("data-editor-theme", "custom");
-    expect(document.getElementById("markra-custom-theme-style")).toHaveTextContent("--bg-primary: #fdf6e3");
+    expect(document.getElementById("helbaron-custom-theme-style")).toHaveTextContent("--bg-primary: #fdf6e3");
 
     fireEvent.click(screen.getByRole("button", { name: "Switch to dark theme" }));
 
     expect(document.documentElement).toHaveAttribute("data-theme", "custom");
-    expect(document.getElementById("markra-custom-theme-style")).toHaveTextContent("--bg-primary: #0d1117");
+    expect(document.getElementById("helbaron-custom-theme-style")).toHaveTextContent("--bg-primary: #0d1117");
   });
 
   it("follows the system color scheme when the stored theme preference is system", async () => {
@@ -2568,7 +2580,7 @@ describe("Markra workspace", () => {
       resolveCss({ light: ':root[data-theme="custom"] { --bg-primary: #fdf6e3; }', dark: "" });
     });
     await waitFor(() => expect(mockedShowNativeWindow).toHaveBeenCalledTimes(1));
-    expect(document.getElementById("markra-custom-theme-style")).toHaveTextContent("#fdf6e3");
+    expect(document.getElementById("helbaron-custom-theme-style")).toHaveTextContent("#fdf6e3");
   });
 
   it("prewarms the settings window after workspace startup is ready", async () => {
@@ -2635,7 +2647,7 @@ describe("Markra workspace", () => {
       "/?settings=1&startupLanguage=zh-CN&startupAppearanceMode=dark&startupLightTheme=light&startupDarkTheme=night"
     );
     const startupStyle = document.createElement("style");
-    startupStyle.id = "markra-startup-theme-style";
+    startupStyle.id = "helbaron-startup-theme-style";
     startupStyle.textContent = "html,body,#root{background:#1e1e1e;color-scheme:dark;}";
     document.head.append(startupStyle);
     document.documentElement.style.backgroundColor = "rgb(30, 30, 30)";
@@ -2645,7 +2657,7 @@ describe("Markra workspace", () => {
 
     await waitFor(() => expect(container.querySelector(".settings-window")).toBeInTheDocument());
     expect(document.documentElement).toHaveAttribute("data-theme", "night");
-    expect(document.getElementById("markra-startup-theme-style")).not.toBeInTheDocument();
+    expect(document.getElementById("helbaron-startup-theme-style")).not.toBeInTheDocument();
     expect(document.documentElement.style.backgroundColor).toBe("");
     expect(document.documentElement.style.colorScheme).toBe("");
   });
@@ -2666,7 +2678,7 @@ describe("Markra workspace", () => {
     expect(container.querySelector(".settings-sidebar nav")).toBeInTheDocument();
     expect(container.querySelector(".settings-layout")).toHaveClass("grid-cols-[180px_minmax(0,1fr)]");
     expect(container.querySelector(".settings-sidebar")).toHaveClass("bg-(--bg-secondary)");
-    expect(container.querySelector(".settings-content")).not.toHaveClass("rounded-tl-md");
+    expect(container.querySelector(".settings-content")).not.toHaveClass("rounded-ss-md");
     expect(container.querySelector(".settings-content-header")).toHaveClass("border-b");
     expect(container.querySelector(".settings-panel-title")).toHaveClass("text-[16px]");
     const settingsGroups = Array.from(container.querySelectorAll(".settings-list-group"));
@@ -2674,8 +2686,8 @@ describe("Markra workspace", () => {
     settingsGroups.forEach((group) => expect(group).not.toHaveClass("border-y"));
     expect(settingsGroups[0]).not.toHaveClass("divide-y");
     expect(settingsGroups.some((group) => group.classList.contains("divide-y"))).toBe(true);
-    expect(screen.getByText(`Markra ${desktopPackage.version}`)).toBeInTheDocument();
-    expect(screen.getByText(`Markra v${desktopPackage.version}`)).toBeInTheDocument();
+    expect(screen.getByText(`Helbaron ${desktopPackage.version}`)).toBeInTheDocument();
+    expect(screen.getByText(`Helbaron v${desktopPackage.version}`)).toBeInTheDocument();
     const categoryButtons = Array.from(container.querySelectorAll(".settings-sidebar nav button"));
     expect(categoryButtons.map((button) => button.textContent)).toEqual([
       "General",
@@ -2741,7 +2753,7 @@ describe("Markra workspace", () => {
     expect(within(darkPalette).getByRole("radio", { name: "Personnalisé" })).toHaveAttribute("aria-checked", "true");
     expect(within(darkPalette).getByRole("radio", { name: "Night" })).toHaveAttribute("aria-checked", "false");
     expect(document.documentElement).toHaveAttribute("data-theme", "custom");
-    expect(document.getElementById("markra-custom-theme-style")).toHaveTextContent("--bg-primary: #0d1117");
+    expect(document.getElementById("helbaron-custom-theme-style")).toHaveTextContent("--bg-primary: #0d1117");
     await waitFor(() => expect(mockedSaveStoredThemePreferences).toHaveBeenCalledWith({
       appearanceMode: "dark",
       customThemeEnabled: true,
@@ -2756,7 +2768,7 @@ describe("Markra workspace", () => {
     });
 
     expect(document.documentElement).toHaveAttribute("data-theme", "custom");
-    expect(document.getElementById("markra-custom-theme-style")).toHaveTextContent("--accent: #0969da");
+    expect(document.getElementById("helbaron-custom-theme-style")).toHaveTextContent("--accent: #0969da");
     await waitFor(() => expect(mockedSaveStoredCustomThemeCss).toHaveBeenCalledWith({
       dark: ":root[data-theme=\"custom\"] { --bg-primary: #0d1117; }",
       light: ":root[data-theme=\"custom\"] { --accent: #0969da; }"
@@ -2926,7 +2938,7 @@ describe("Markra workspace", () => {
     const toolbarGroup = await screen.findByRole("group", { name: "Top-right buttons" });
 
     expect(within(toolbarGroup).getAllByRole("button").map((button) => button.getAttribute("aria-label"))).toEqual([
-      "Toggle Markra AI",
+      "Toggle Helbaron AI",
       "View mode",
       "Editor view mode",
       "Save Markdown",
@@ -2950,7 +2962,7 @@ describe("Markra workspace", () => {
     expect(within(toolbarGroup).getAllByRole("button").map((button) => button.getAttribute("aria-label"))).toEqual([
       "Editor view mode",
       "Save Markdown",
-      "Toggle Markra AI",
+      "Toggle Helbaron AI",
       "View mode",
       "Switch to dark theme",
       "Reset top-right buttons"
@@ -2972,26 +2984,26 @@ describe("Markra workspace", () => {
     expect(settingsChrome).toHaveClass("fixed", "top-0", "h-10", "bg-(--bg-chrome)");
     expect(settingsChrome).not.toHaveClass("border-b");
     expect(settingsChrome).toHaveAttribute("data-tauri-drag-region");
-    expect(within(settingsChrome).getByText("Markra")).toBeInTheDocument();
+    expect(within(settingsChrome).getByText("Helbaron")).toBeInTheDocument();
     expect(within(settingsChrome).getByText("Settings")).toBeInTheDocument();
     expect(within(settingsChrome).getByRole("button", { name: "Minimize window" })).toBeInTheDocument();
     expect(within(settingsChrome).getByRole("button", { name: "Maximize or restore window" })).toBeInTheDocument();
     expect(within(settingsChrome).getByRole("button", { name: "Close window" })).toBeInTheDocument();
     expect(container.querySelector(".settings-layout")).toHaveClass("absolute", "top-10", "bottom-0");
-    expect(container.querySelector(".settings-sidebar")).toHaveClass("border-r-0", "bg-(--bg-chrome)");
-    expect(container.querySelector(".settings-content")).toHaveClass("border-t", "border-l", "rounded-tl-md");
+    expect(container.querySelector(".settings-sidebar")).toHaveClass("border-e-0", "bg-(--bg-chrome)");
+    expect(container.querySelector(".settings-content")).toHaveClass("border-t", "border-s", "rounded-ss-md");
     expect(container.querySelector(".settings-sidebar-header")).toHaveClass("h-14", "items-center");
     expect(container.querySelector(".settings-sidebar-header")).not.toHaveClass("pt-14");
     expect(container.querySelector(".settings-sidebar-title")).toBeInTheDocument();
   });
 
-  it("stores the preference for closing inline AI when the Markra AI panel opens", async () => {
+  it("stores the preference for closing inline AI when the Helbaron AI panel opens", async () => {
     window.history.pushState({}, "", "/?settings=1");
 
     renderApp();
 
     fireEvent.click(await screen.findByRole("button", { name: "AI" }));
-    const closeInlineAiSwitch = screen.getByRole("switch", { name: "Close inline AI when opening Markra AI" });
+    const closeInlineAiSwitch = screen.getByRole("switch", { name: "Close inline AI when opening Helbaron AI" });
 
     expect(closeInlineAiSwitch).toHaveAttribute("aria-checked", "false");
 
@@ -3196,8 +3208,8 @@ describe("Markra workspace", () => {
     expect(toastTitle).not.toHaveClass("break-words");
     expect(toastTitle).not.toHaveClass("truncate");
     expect(document.querySelector(".app-toast-close")).toBeInTheDocument();
-    expect(document.querySelector(".app-toast-close")).toHaveClass("absolute", "right-2");
-    expect(document.querySelector(".app-toast-close")).not.toHaveClass("ml-auto");
+    expect(document.querySelector(".app-toast-close")).toHaveClass("absolute", "end-2");
+    expect(document.querySelector(".app-toast-close")).not.toHaveClass("ms-auto");
     expect(screen.getAllByText("Connected")).toHaveLength(1);
     fireEvent.click(document.querySelector(".app-toast-close") as HTMLElement);
     await waitFor(() => expect(document.querySelector(".app-toast")).not.toBeInTheDocument());
@@ -3298,14 +3310,14 @@ describe("Markra workspace", () => {
 
     renderApp();
 
-    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Markra caught an error."));
+    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Helbaron caught an error."));
     const notice = document.querySelector(".app-toast");
     expect(notice).toHaveClass("app-toast-notice");
     expect(notice).toHaveClass("w-[min(23rem,calc(100vw-1.5rem))]");
     expect(notice).toHaveClass("shadow-[0_2px_6px_rgba(15,23,42,0.08)]");
     expect(notice).not.toHaveClass("app-toast-centered");
     expect(notice).not.toHaveClass("left-1/2", "-translate-x-1/2");
-    expect(screen.queryByRole("heading", { name: "Markra needs to reload" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Helbaron needs to reload" })).not.toBeInTheDocument();
 
     const submitIssueButton = screen.getByRole("button", { name: "Submit issue" });
     expect(submitIssueButton).toHaveClass("bg-(--accent)", "text-(--bg-primary)");
@@ -3318,7 +3330,7 @@ describe("Markra workspace", () => {
 
     expect(issueUrl.pathname).toBe("/markrahq/markra/issues/new");
     expect(issueUrl.searchParams.get("title")).toBe("Runtime error report");
-    expect(issueUrl.searchParams.get("body")).toContain("## Markra Crash Report");
+    expect(issueUrl.searchParams.get("body")).toContain("## Helbaron Crash Report");
     expect(issueUrl.searchParams.get("body")).toContain("- Error message: Mock runtime error preview");
   });
 
@@ -3350,7 +3362,7 @@ describe("Markra workspace", () => {
     fireEvent.click(checkUpdatesButton);
 
     await waitFor(() => expect(mockedCheckNativeAppUpdate).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Checking for Markra updates..."));
+    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Checking for Helbaron updates..."));
     expect(document.querySelector(".app-toast [data-icon]")).toHaveClass(
       "relative",
       "inline-flex",
@@ -3365,7 +3377,7 @@ describe("Markra workspace", () => {
       resolveUpdateCheck(null);
     });
 
-    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Markra is up to date."));
+    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Helbaron is up to date."));
   });
 
   it("stores the automatic update preference from the settings window", async () => {
@@ -3400,7 +3412,7 @@ describe("Markra workspace", () => {
     });
 
     expect(mockedCheckNativeAppUpdate).toHaveBeenCalledTimes(1);
-    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Markra is up to date."));
+    await waitFor(() => expect(document.querySelector(".app-toast")).toHaveTextContent("Helbaron is up to date."));
   });
 
   it("waits for stored automatic update preference before startup update checks", async () => {
@@ -3476,7 +3488,7 @@ describe("Markra workspace", () => {
 
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.click(screen.getByRole("button", { name: "Toggle file list" }));
 
@@ -3552,7 +3564,7 @@ describe("Markra workspace", () => {
   it("resizes the editor writing column and persists the custom width", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     expect(screen.getByLabelText("Markdown editor")).toHaveStyle({
       maxWidth: "860px"
     });
@@ -3601,7 +3613,7 @@ describe("Markra workspace", () => {
     try {
       renderApp();
 
-      await expectVisibleMarkdownText("Welcome to Markra");
+      await expectVisibleMarkdownText("Welcome to Helbaron");
       expect(screen.getByLabelText("Markdown editor")).toHaveStyle({
         maxWidth: "860px"
       });
@@ -3621,7 +3633,7 @@ describe("Markra workspace", () => {
     try {
       renderApp();
 
-      await expectVisibleMarkdownText("Welcome to Markra");
+      await expectVisibleMarkdownText("Welcome to Helbaron");
       expect(screen.getByLabelText("Markdown editor")).toHaveStyle({
         maxWidth: "860px"
       });
@@ -3637,7 +3649,7 @@ describe("Markra workspace", () => {
     try {
       renderApp();
 
-      await expectVisibleMarkdownText("Welcome to Markra");
+      await expectVisibleMarkdownText("Welcome to Helbaron");
       const resizeHandle = await screen.findByRole("separator", { name: "Resize editor width" });
 
       fireEvent.pointerDown(resizeHandle, { clientX: 860, pointerId: 1 });
@@ -3661,15 +3673,15 @@ describe("Markra workspace", () => {
     const { container } = renderApp();
 
     try {
-      await expectVisibleMarkdownText("Welcome to Markra");
+      await expectVisibleMarkdownText("Welcome to Helbaron");
       expect(screen.getByLabelText("Markdown editor")).toHaveStyle({
         maxWidth: "860px"
       });
       expect(screen.getByRole("separator", { name: "Resize editor width" })).toBeInTheDocument();
 
-      fireEvent.click(screen.getByRole("button", { name: "Toggle Markra AI" }));
+      fireEvent.click(screen.getByRole("button", { name: "Toggle Helbaron AI" }));
 
-      expect(await screen.findByRole("complementary", { name: "Markra AI" })).toBeInTheDocument();
+      expect(await screen.findByRole("complementary", { name: "Helbaron AI" })).toBeInTheDocument();
       expect(screen.queryByRole("separator", { name: "Resize editor width" })).not.toBeInTheDocument();
       expect(container.querySelector(".editor-width-resizer-indicator")).not.toBeInTheDocument();
     } finally {
@@ -3682,11 +3694,11 @@ describe("Markra workspace", () => {
     const { container } = renderApp();
 
     try {
-      await expectVisibleMarkdownText("Welcome to Markra");
+      await expectVisibleMarkdownText("Welcome to Helbaron");
 
-      fireEvent.click(screen.getByRole("button", { name: "Toggle Markra AI" }));
+      fireEvent.click(screen.getByRole("button", { name: "Toggle Helbaron AI" }));
 
-      expect(await screen.findByRole("complementary", { name: "Markra AI" })).toBeInTheDocument();
+      expect(await screen.findByRole("complementary", { name: "Helbaron AI" })).toBeInTheDocument();
       expect(screen.getByRole("separator", { name: "Resize editor width" })).toBeInTheDocument();
       expect(container.querySelector(".editor-width-resizer-shell")).toHaveClass("w-8");
       expect(container.querySelector(".editor-width-resizer-indicator")).toHaveClass("opacity-0");
@@ -4593,7 +4605,7 @@ describe("Markra workspace", () => {
 
   it("previews an image asset from a folder-only workspace", async () => {
     const imagePath = "/mock-files/vault/assets/pasted-image.png";
-    const objectUrl = "blob:markra-image-preview";
+    const objectUrl = "blob:helbaron-image-preview";
     const imageFile = new File([new Uint8Array([1, 2, 3])], "pasted-image.png", { type: "image/png" });
     const createObjectUrl = vi.spyOn(URL, "createObjectURL").mockReturnValue(objectUrl);
     const revokeObjectUrl = vi.spyOn(URL, "revokeObjectURL").mockImplementation(() => {});
@@ -6508,14 +6520,14 @@ describe("Markra workspace", () => {
     mockedConsumeWelcomeDocumentState.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
     const firstLaunch = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     firstLaunch.unmount();
     renderApp();
 
     expect(screen.getByRole("heading", { name: "Untitled.md" })).toBeInTheDocument();
     expect(await screen.findByLabelText("Markdown editor")).toHaveTextContent(/^$/);
-    expect(screen.queryByText("Welcome to Markra")).not.toBeInTheDocument();
+    expect(screen.queryByText("Welcome to Helbaron")).not.toBeInTheDocument();
     expect(mockedConsumeWelcomeDocumentState).toHaveBeenCalledTimes(2);
   });
 
@@ -6526,7 +6538,7 @@ describe("Markra workspace", () => {
 
     expect(screen.getByRole("heading", { name: "Untitled.md" })).toBeInTheDocument();
     expect(await screen.findByLabelText("Markdown editor")).toHaveTextContent(/^$/);
-    expect(screen.queryByText("Welcome to Markra")).not.toBeInTheDocument();
+    expect(screen.queryByText("Welcome to Helbaron")).not.toBeInTheDocument();
     expect(mockedConsumeWelcomeDocumentState).not.toHaveBeenCalled();
   });
 
@@ -6566,7 +6578,7 @@ describe("Markra workspace", () => {
     expect(mockedConsumeWelcomeDocumentState).not.toHaveBeenCalled();
   });
 
-  it("loads a markdown file when the operating system opens Markra with a file path", async () => {
+  it("loads a markdown file when the operating system opens Helbaron with a file path", async () => {
     mockedTakeNativeOpenedMarkdownPaths.mockResolvedValue([mockDroppedPath]);
     mockedReadNativeMarkdownFile.mockResolvedValue({
       content: "# Opened from OS\n\nDouble-clicked from Finder or Explorer.",
@@ -6582,7 +6594,7 @@ describe("Markra workspace", () => {
     expect(mockedConsumeWelcomeDocumentState).not.toHaveBeenCalled();
   });
 
-  it("opens a markdown file when the operating system sends a file-open event while Markra is running", async () => {
+  it("opens a markdown file when the operating system sends a file-open event while Helbaron is running", async () => {
     let onOpenedPaths: ((paths: string[]) => unknown) | null = null;
     mockedConsumeWelcomeDocumentState.mockResolvedValue(false);
     mockedListenNativeOpenedMarkdownPaths.mockImplementation(async (listener) => {
@@ -6590,7 +6602,7 @@ describe("Markra workspace", () => {
       return () => {};
     });
     mockedReadNativeMarkdownFile.mockResolvedValue({
-      content: "# Runtime file\n\nOpened while Markra was already running.",
+      content: "# Runtime file\n\nOpened while Helbaron was already running.",
       name: "dropped.md",
       path: mockDroppedPath
     });
@@ -6628,7 +6640,7 @@ describe("Markra workspace", () => {
       }
 
       return {
-        content: "# Runtime file\n\nOpened while Markra was already running.",
+        content: "# Runtime file\n\nOpened while Helbaron was already running.",
         name: "dropped.md",
         path: mockDroppedPath
       };
@@ -6770,7 +6782,7 @@ describe("Markra workspace", () => {
 
   it("opens a dropped markdown file in a new window when the current editor has content", async () => {
     renderApp();
-    await screen.findByRole("heading", { name: "Welcome to Markra" });
+    await screen.findByRole("heading", { name: "Welcome to Helbaron" });
     await waitFor(() => expect(mockedInstallNativeMarkdownFileDrop).toHaveBeenCalled());
     const handleDrop = mockedInstallNativeMarkdownFileDrop.mock.calls.at(-1)?.[0];
 
@@ -6780,7 +6792,7 @@ describe("Markra workspace", () => {
 
     expect(mockedOpenNativeMarkdownFileInNewWindow).toHaveBeenCalledWith(mockDroppedPath);
     expect(mockedReadNativeMarkdownFile).not.toHaveBeenCalledWith(mockDroppedPath);
-    expect(screen.getByRole("heading", { name: "Welcome to Markra" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Welcome to Helbaron" })).toBeInTheDocument();
   });
 
   it("opens a dropped markdown folder into the current empty editor file tree", async () => {
@@ -6816,7 +6828,7 @@ describe("Markra workspace", () => {
 
   it("opens a dropped markdown folder in a new window when the current editor has content", async () => {
     renderApp();
-    await screen.findByRole("heading", { name: "Welcome to Markra" });
+    await screen.findByRole("heading", { name: "Welcome to Helbaron" });
     await waitFor(() => expect(mockedInstallNativeMarkdownFileDrop).toHaveBeenCalled());
     const handleDrop = mockedInstallNativeMarkdownFileDrop.mock.calls.at(-1)?.[0];
 
@@ -6827,7 +6839,7 @@ describe("Markra workspace", () => {
     expect(mockedOpenNativeMarkdownFolderInNewWindow).toHaveBeenCalledWith(mockFolderPath);
     expect(mockedListNativeMarkdownFilesForPath).not.toHaveBeenCalledWith(mockFolderPath, defaultFileTreeListOptions);
     expect(screen.queryByRole("complementary", { name: "Markdown file tree" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Welcome to Markra" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Welcome to Helbaron" })).toBeInTheDocument();
   });
 
   it("saves an untitled document with the native save dialog shortcut", async () => {
@@ -6837,7 +6849,7 @@ describe("Markra workspace", () => {
     });
 
     renderApp();
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "s", metaKey: true });
 
@@ -6927,13 +6939,13 @@ describe("Markra workspace", () => {
   it("switches between the visual editor and markdown source mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
 
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
-    expect(readMarkdownSource(sourceEditor)).toContain("# Welcome to Markra");
-    expect(screen.queryByRole("heading", { name: "Welcome to Markra" })).not.toBeInTheDocument();
+    expect(readMarkdownSource(sourceEditor)).toContain("# Welcome to Helbaron");
+    expect(screen.queryByRole("heading", { name: "Welcome to Helbaron" })).not.toBeInTheDocument();
 
     replaceMarkdownSource(sourceEditor, "# Source edit\n\nUpdated from source mode.");
 
@@ -6944,7 +6956,7 @@ describe("Markra workspace", () => {
     expect(await screen.findByRole("heading", { name: "Source edit" })).toBeInTheDocument();
     expect(screen.getByText("Updated from source mode.")).toBeInTheDocument();
     expect(screen.getByLabelText("Markdown editor")).toHaveAttribute("data-editor-engine", "codemirror");
-    expect(container.querySelectorAll(".cm-markra-empty-line")).toHaveLength(1);
+    expect(container.querySelectorAll(".cm-helbaron-empty-line")).toHaveLength(1);
   });
 
   it("preserves the active selection and editor focus across visual and source modes", async () => {
@@ -6997,7 +7009,7 @@ describe("Markra workspace", () => {
   it("commits pending visual IME content before source mode mounts", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     const visualEditor = screen.getByRole("textbox", { name: "Markdown document" });
     const visualView = getMarkdownSourceView(visualEditor);
     const pendingCompositionTasks: VoidFunction[] = [];
@@ -7156,7 +7168,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     expect(container.querySelector(".cm-lineNumbers")).not.toBeInTheDocument();
 
     await selectEditorViewMode("Source code");
@@ -7164,7 +7176,7 @@ describe("Markra workspace", () => {
 
     await selectEditorViewMode("Preview + Source");
     expect(container.querySelectorAll(".cm-lineNumbers")).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "Welcome to Markra" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Welcome to Helbaron" })).toBeInTheDocument();
   });
 
   it("enables typewriter mode in visual and source editors", async () => {
@@ -7173,7 +7185,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     expect(getVisibleCodeMirrorView(container).dom).toHaveAttribute(
       "data-typewriter-mode",
       "true"
@@ -7191,7 +7203,7 @@ describe("Markra workspace", () => {
   it("highlights the restored cursor line after switching editor views", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     const visualView = getVisibleCodeMirrorView(container);
     const cursor = visualView.state.doc.toString().indexOf("Welcome");
     act(() => {
@@ -7202,7 +7214,7 @@ describe("Markra workspace", () => {
 
     const sourceCue = await waitFor(() => {
       const cue = container.querySelector<HTMLElement>(
-        ".markdown-source-editor .cm-markra-location-cue"
+        ".markdown-source-editor .cm-helbaron-location-cue"
       );
       expect(cue).not.toBeNull();
       return cue!;
@@ -7213,7 +7225,7 @@ describe("Markra workspace", () => {
 
     await waitFor(() => {
       const cue = container.querySelector<HTMLElement>(
-        ".markdown-paper .cm-markra-location-cue"
+        ".markdown-paper .cm-helbaron-location-cue"
       );
       expect(cue).toHaveTextContent("Welcome");
     });
@@ -7225,10 +7237,10 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await selectEditorViewMode("Source code");
 
-    expect(container.querySelector(".cm-markra-location-cue")).not.toBeInTheDocument();
+    expect(container.querySelector(".cm-helbaron-location-cue")).not.toBeInTheDocument();
   });
 
   it("discards a pending mode-switch highlight after changing document tabs", async () => {
@@ -7280,7 +7292,7 @@ describe("Markra workspace", () => {
       )).toContain("# Notes"));
       act(flushFrames);
 
-      expect(container.querySelector(".cm-markra-location-cue")).not.toBeInTheDocument();
+      expect(container.querySelector(".cm-helbaron-location-cue")).not.toBeInTheDocument();
     } finally {
       requestAnimationFrameSpy.mockRestore();
       cancelAnimationFrameSpy.mockRestore();
@@ -7290,7 +7302,7 @@ describe("Markra workspace", () => {
   it("toggles and persists typewriter mode from the keyboard shortcut", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     expect(getVisibleCodeMirrorView(container).dom).not.toHaveAttribute("data-typewriter-mode");
 
     fireEvent.keyDown(window, { key: "Y", metaKey: true, shiftKey: true });
@@ -7315,7 +7327,7 @@ describe("Markra workspace", () => {
     );
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "Y", metaKey: true, shiftKey: true });
 
@@ -7336,7 +7348,7 @@ describe("Markra workspace", () => {
   it("toggles and persists Vim mode from the keyboard shortcut", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     expect(getVisibleCodeMirrorView(container).scrollDOM).not.toHaveClass("cm-vimMode");
 
     fireEvent.keyDown(window, { altKey: true, code: "KeyV", key: "v", metaKey: true });
@@ -7355,7 +7367,7 @@ describe("Markra workspace", () => {
   it("keeps raw source punctuation unchanged while editing in source mode", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
@@ -7369,7 +7381,7 @@ describe("Markra workspace", () => {
   it("keeps source mode typing undoable and redoable before switching back to visual mode", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
@@ -7392,7 +7404,7 @@ describe("Markra workspace", () => {
   it("keeps visual undo history after switching to source mode and back", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls[0]?.[0] as NativeMenuHandlers;
 
@@ -7401,7 +7413,7 @@ describe("Markra workspace", () => {
     });
 
     revealVisualPreviews(container);
-    await waitFor(() => expect(container.querySelector(".cm-markra-table")).toBeInTheDocument());
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-table")).toBeInTheDocument());
     await waitFor(() => expect(screen.getByLabelText("Unsaved changes")).toBeInTheDocument());
 
     await selectEditorViewMode("Source code");
@@ -7410,18 +7422,18 @@ describe("Markra workspace", () => {
 
     await selectEditorViewMode("Preview");
     revealVisualPreviews(container);
-    await waitFor(() => expect(container.querySelector(".cm-markra-table")).toBeInTheDocument());
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-table")).toBeInTheDocument());
 
     act(() => {
       menuHandlers.editUndo?.();
     });
-    await waitFor(() => expect(container.querySelector(".cm-markra-table")).not.toBeInTheDocument());
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-table")).not.toBeInTheDocument());
 
     act(() => {
       menuHandlers.editRedo?.();
     });
     revealVisualPreviews(container);
-    await waitFor(() => expect(container.querySelector(".cm-markra-table")).toBeInTheDocument());
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-table")).toBeInTheDocument());
   });
 
   it("keeps full-document selections visibly highlighted when the selection toolbar opens", async () => {
@@ -7440,7 +7452,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
 
@@ -7452,8 +7464,8 @@ describe("Markra workspace", () => {
     });
 
     await waitFor(() => {
-      expect(container.querySelector(".cm-editor .markra-ai-selection-hold")).toHaveTextContent(
-        "Welcome to Markra"
+      expect(container.querySelector(".cm-editor .helbaron-ai-selection-hold")).toHaveTextContent(
+        "Welcome to Helbaron"
       );
     });
   });
@@ -7465,7 +7477,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
     const from = findEditorTextPosition(visualView, "Welcome");
@@ -7477,12 +7489,12 @@ describe("Markra workspace", () => {
       });
     });
 
-    const bold = await screen.findByRole("button", { name: "Bold" });
+    const bold = await within(await findAiSelectionToolbar()).findByRole("button", { name: "Bold" });
     fireEvent.mouseDown(bold);
     fireEvent.click(bold);
 
     await waitFor(() => {
-      expect(visualView.state.doc.toString()).toContain("**Welcome** to Markra");
+      expect(visualView.state.doc.toString()).toContain("**Welcome** to Helbaron");
     });
     expect(visualView.state.sliceDoc(
       visualView.state.selection.main.from,
@@ -7491,8 +7503,8 @@ describe("Markra workspace", () => {
   });
 
   it.each([
-    { button: "Italic", formatted: "*Welcome* to Markra" },
-    { button: "Strikethrough", formatted: "~~Welcome~~ to Markra" }
+    { button: "Italic", formatted: "*Welcome* to Helbaron" },
+    { button: "Strikethrough", formatted: "~~Welcome~~ to Helbaron" }
   ])("applies $button from the selection toolbar", async ({ button, formatted }) => {
     mockedGetStoredEditorPreferences.mockResolvedValue(createStoredEditorPreferences({
       showAiQuickInputOnSelection: false,
@@ -7500,7 +7512,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
     const from = findEditorTextPosition(visualView, "Welcome");
@@ -7512,7 +7524,7 @@ describe("Markra workspace", () => {
       });
     });
 
-    const action = await screen.findByRole("button", { name: button });
+    const action = await within(await findAiSelectionToolbar()).findByRole("button", { name: button });
     fireEvent.mouseDown(action);
     fireEvent.click(action);
 
@@ -7537,7 +7549,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
 
@@ -7549,8 +7561,8 @@ describe("Markra workspace", () => {
     });
 
     await waitFor(() => {
-      expect(container.querySelector(".cm-editor .markra-ai-selection-hold")).toHaveTextContent(
-        "Welcome to Markra"
+      expect(container.querySelector(".cm-editor .helbaron-ai-selection-hold")).toHaveTextContent(
+        "Welcome to Helbaron"
       );
     });
   });
@@ -7575,7 +7587,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
 
@@ -7587,8 +7599,8 @@ describe("Markra workspace", () => {
     });
 
     await waitFor(() => {
-      expect(container.querySelector(".cm-editor .markra-ai-selection-hold")).toHaveTextContent(
-        "Welcome to Markra"
+      expect(container.querySelector(".cm-editor .helbaron-ai-selection-hold")).toHaveTextContent(
+        "Welcome to Helbaron"
       );
     });
   });
@@ -7609,7 +7621,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
     const from = findEditorTextPosition(visualView, "Welcome");
@@ -7622,7 +7634,7 @@ describe("Markra workspace", () => {
     });
 
     await settleEditorUpdates();
-    expect(container.querySelector(".cm-editor .markra-ai-selection-hold")).not.toBeInTheDocument();
+    expect(container.querySelector(".cm-editor .helbaron-ai-selection-hold")).not.toBeInTheDocument();
   });
 
   it("does not add a fallback highlight over Windows full-document selections", async () => {
@@ -7641,7 +7653,7 @@ describe("Markra workspace", () => {
     }));
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
     const visualView = getVisibleCodeMirrorView(container);
 
@@ -7653,13 +7665,13 @@ describe("Markra workspace", () => {
     });
 
     await settleEditorUpdates();
-    expect(container.querySelector(".cm-editor .markra-ai-selection-hold")).not.toBeInTheDocument();
+    expect(container.querySelector(".cm-editor .helbaron-ai-selection-hold")).not.toBeInTheDocument();
   });
 
   it("inserts the default menu image and renders its preview after leaving the source", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls[0]?.[0] as NativeMenuHandlers;
 
@@ -7695,7 +7707,7 @@ describe("Markra workspace", () => {
   it("keeps source edits undoable after switching back to visual mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls[0]?.[0] as NativeMenuHandlers;
 
@@ -7723,7 +7735,7 @@ describe("Markra workspace", () => {
       menuHandlers.editUndo?.();
     });
     await expectVisibleMarkdownWithout("Source history");
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     expect(getVisibleCodeMirrorView(container)).toBe(visualView);
     expect(redoDepth(visualView.state)).toBeGreaterThan(0);
 
@@ -7740,7 +7752,7 @@ describe("Markra workspace", () => {
   it("keeps callout body line breaks when switching from source to visual mode", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
 
@@ -7750,8 +7762,8 @@ describe("Markra workspace", () => {
     await selectEditorViewMode("Preview");
 
     await waitFor(() => {
-      expect(document.querySelectorAll(".cm-editor .cm-markra-callout")).toHaveLength(4);
-      expect(document.querySelector(".cm-editor .markra-callout-header")).toHaveTextContent("Warning");
+      expect(document.querySelectorAll(".cm-editor .cm-helbaron-callout")).toHaveLength(4);
+      expect(document.querySelector(".cm-editor .helbaron-callout-header")).toHaveTextContent("Warning");
     });
 
     await selectEditorViewMode("Source code");
@@ -7763,7 +7775,7 @@ describe("Markra workspace", () => {
   it("keeps explicit empty callout body lines when switching source and visual modes", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
 
@@ -7773,7 +7785,7 @@ describe("Markra workspace", () => {
     await selectEditorViewMode("Preview");
 
     await waitFor(() => {
-      expect(document.querySelectorAll(".cm-editor .cm-markra-callout")).toHaveLength(3);
+      expect(document.querySelectorAll(".cm-editor .cm-helbaron-callout")).toHaveLength(3);
     });
 
     await selectEditorViewMode("Source code");
@@ -7785,14 +7797,14 @@ describe("Markra workspace", () => {
     await selectEditorViewMode("Preview");
 
     await waitFor(() => {
-      expect(document.querySelectorAll(".cm-editor .cm-markra-callout")).toHaveLength(3);
+      expect(document.querySelectorAll(".cm-editor .cm-helbaron-callout")).toHaveLength(3);
     });
   });
 
   it("keeps trailing empty callout body lines after content when switching source and visual modes", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Source code");
 
@@ -7802,7 +7814,7 @@ describe("Markra workspace", () => {
     await selectEditorViewMode("Preview");
 
     await waitFor(() => {
-      expect(document.querySelectorAll(".cm-editor .cm-markra-callout")).toHaveLength(5);
+      expect(document.querySelectorAll(".cm-editor .cm-helbaron-callout")).toHaveLength(5);
     });
 
     await selectEditorViewMode("Source code");
@@ -7814,7 +7826,7 @@ describe("Markra workspace", () => {
     await selectEditorViewMode("Preview");
 
     await waitFor(() => {
-      expect(document.querySelectorAll(".cm-editor .cm-markra-callout")).toHaveLength(5);
+      expect(document.querySelectorAll(".cm-editor .cm-helbaron-callout")).toHaveLength(5);
     });
   });
 
@@ -7937,7 +7949,7 @@ describe("Markra workspace", () => {
   it("keeps source and visual editors synchronized in split mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await settleEditorUpdates();
 
     await selectEditorViewMode("Preview + Source");
@@ -7974,7 +7986,7 @@ describe("Markra workspace", () => {
   it("keeps a visual update that arrives after source pane focus in split mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
 
     await selectEditorViewMode("Preview + Source");
@@ -8005,7 +8017,7 @@ describe("Markra workspace", () => {
   it("keeps a synced visual edit in source after focusing the source pane in split mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleCodeMirrorText(container, "Welcome to Markra");
+    await expectVisibleCodeMirrorText(container, "Welcome to Helbaron");
     await settleEditorUpdates();
 
     await selectEditorViewMode("Preview + Source");
@@ -8042,7 +8054,7 @@ describe("Markra workspace", () => {
   it("places the visual pane before the source pane in split mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Preview + Source");
 
@@ -8057,7 +8069,7 @@ describe("Markra workspace", () => {
   it("resizes split panes from the center divider and persists the ratio", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Preview + Source");
 
@@ -8097,7 +8109,7 @@ describe("Markra workspace", () => {
   it("links source and visual pane scrolling in split mode", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     await selectEditorViewMode("Preview + Source");
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
@@ -8129,7 +8141,7 @@ describe("Markra workspace", () => {
   it("recalibrates split pane scrolling after target layout changes", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await settleEditorUpdates();
 
     await selectEditorViewMode("Preview + Source");
@@ -8254,12 +8266,12 @@ describe("Markra workspace", () => {
   it("switches source mode from the keyboard shortcut", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "s", altKey: true, metaKey: true });
 
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
-    expect(readMarkdownSource(sourceEditor)).toContain("# Welcome to Markra");
+    expect(readMarkdownSource(sourceEditor)).toContain("# Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "s", altKey: true, metaKey: true });
 
@@ -8269,7 +8281,7 @@ describe("Markra workspace", () => {
   it("opens document search from the keyboard shortcut", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     expect(fireEvent.keyDown(window, { key: "f", metaKey: true })).toBe(false);
 
@@ -8289,7 +8301,7 @@ describe("Markra workspace", () => {
 
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     expect(fireEvent.keyDown(window, { key: "h", ctrlKey: true })).toBe(false);
 
@@ -8301,7 +8313,7 @@ describe("Markra workspace", () => {
   it("opens document replace from the native macOS Cmd+Option+F keyboard shortcut", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     expect(fireEvent.keyDown(window, { altKey: true, code: "KeyF", key: "ƒ", metaKey: true })).toBe(false);
 
@@ -8618,14 +8630,14 @@ describe("Markra workspace", () => {
   it("does not open the AI command when visual document search focuses a match", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "f", metaKey: true });
     fireEvent.change(screen.getByRole("searchbox", { name: "Find in document" }), {
       target: { value: "Welcome" }
     });
 
-    await waitFor(() => expect(container.querySelector(".cm-markra-search-match-current")).toBeInTheDocument());
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-search-match-current")).toBeInTheDocument());
     await settleEditorUpdates();
 
     expect(screen.queryByRole("dialog", { name: "AI writing command" })).not.toBeInTheDocument();
@@ -8634,7 +8646,7 @@ describe("Markra workspace", () => {
   it("does not scroll the visual editor while typing a document search query", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     const view = getVisibleCodeMirrorView(container);
     const selectionBeforeSearch = view.state.selection.main.from;
 
@@ -8642,7 +8654,7 @@ describe("Markra workspace", () => {
     const searchbox = screen.getByRole("searchbox", { name: "Find in document" });
     fireEvent.change(searchbox, { target: { value: "Welcome" } });
 
-    await waitFor(() => expect(container.querySelector(".cm-markra-search-match-current")).toBeInTheDocument());
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-search-match-current")).toBeInTheDocument());
     await settleEditorUpdates();
 
     expect(view.state.selection.main.from).toBe(selectionBeforeSearch);
@@ -8675,7 +8687,7 @@ describe("Markra workspace", () => {
     });
 
     await waitFor(() => expect(screen.getByText("0/0")).toBeInTheDocument());
-    expect(container.querySelector(".cm-editor .markra-search-match-current")).not.toBeInTheDocument();
+    expect(container.querySelector(".cm-editor .helbaron-search-match-current")).not.toBeInTheDocument();
   });
 
   it("keeps the image preview rendered while source editing and document search open", async () => {
@@ -8698,7 +8710,7 @@ describe("Markra workspace", () => {
       view.dispatch({ selection: EditorSelection.cursor(imageFrom + 2) });
     });
     await waitFor(() => {
-      expect(container.querySelector(".markra-image-node-selected")).toBeInTheDocument();
+      expect(container.querySelector(".helbaron-image-node-selected")).toBeInTheDocument();
     });
     expect(container.querySelector('.cm-editor img[src="assets/pasted-image.png"]')).toBeInTheDocument();
 
@@ -8711,7 +8723,7 @@ describe("Markra workspace", () => {
   it("replaces the current source-mode document search match", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "s", altKey: true, metaKey: true });
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
@@ -8730,13 +8742,13 @@ describe("Markra workspace", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Replace" }));
 
-    expect(readMarkdownSource(sourceEditor)).toContain("# Hello to Markra");
+    expect(readMarkdownSource(sourceEditor)).toContain("# Hello to Helbaron");
   });
 
   it("toggles read-only mode from the keyboard shortcut and marks the status area", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "l", altKey: true, metaKey: true });
 
@@ -8754,7 +8766,7 @@ describe("Markra workspace", () => {
   it("keeps source mode read-only while read-only mode is active", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
 
     fireEvent.keyDown(window, { key: "s", altKey: true, metaKey: true });
     fireEvent.keyDown(window, { key: "l", altKey: true, metaKey: true });
@@ -8765,15 +8777,15 @@ describe("Markra workspace", () => {
 
   it("prevents visual table controls from editing after read-only mode is toggled", async () => {
     mockOpenMarkdownFile({
-      content: ["| Field | Value |", "| --- | --- |", "| Name | Markra |"].join("\n"),
+      content: ["| Field | Value |", "| --- | --- |", "| Name | Helbaron |"].join("\n"),
       name: "table.md",
       path: mockNativePath
     });
     const { container } = renderApp();
 
     fireEvent.keyDown(window, { key: "o", metaKey: true });
-    await waitFor(() => expect(container.querySelector(".cm-markra-table")).toBeInTheDocument());
-    const rowCount = () => container.querySelectorAll(".cm-markra-table tr").length;
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-table")).toBeInTheDocument());
+    const rowCount = () => container.querySelectorAll(".cm-helbaron-table tr").length;
 
     expect(rowCount()).toBe(2);
 
@@ -8806,7 +8818,7 @@ describe("Markra workspace", () => {
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
     const cell = await waitFor(() => {
       const nextCell = container.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td:nth-child(2)"
+        ".cm-helbaron-table tbody td:nth-child(2)"
       );
       expect(nextCell).toBeInTheDocument();
       return nextCell!;
@@ -8817,7 +8829,7 @@ describe("Markra workspace", () => {
     fireEvent.input(cell.closest("table")!);
     const editedCell = await waitFor(() => {
       const nextCell = container.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td:nth-child(2)"
+        ".cm-helbaron-table tbody td:nth-child(2)"
       );
       expect(nextCell).toHaveTextContent("After");
       expect(nextCell).toHaveFocus();
@@ -8865,7 +8877,7 @@ describe("Markra workspace", () => {
     const sourceEditor = await screen.findByRole("textbox", { name: "Markdown source" });
     const cell = await waitFor(() => {
       const nextCell = container.querySelector<HTMLTableCellElement>(
-        ".cm-markra-table tbody td:nth-child(2)"
+        ".cm-helbaron-table tbody td:nth-child(2)"
       );
       expect(nextCell).toHaveTextContent("Before");
       return nextCell!;
@@ -8886,7 +8898,7 @@ describe("Markra workspace", () => {
 
     await waitFor(() => expect(readClipboardText).toHaveBeenCalledTimes(1));
     await waitFor(() => {
-      expect(container.querySelector(".cm-markra-table tbody td:nth-child(2)"))
+      expect(container.querySelector(".cm-helbaron-table tbody td:nth-child(2)"))
         .toHaveTextContent("BeforePASTED");
     });
     await waitFor(() => {
@@ -8997,7 +9009,7 @@ describe("Markra workspace", () => {
       intervalMinutes: 0,
       lastSyncAt: null,
       provider: "webdav",
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
     mockedGetStoredEditorPreferences.mockResolvedValue(createStoredEditorPreferences({
       imageUpload: {
@@ -9040,7 +9052,7 @@ describe("Markra workspace", () => {
         sourcePath: mockNativePath,
         webdav: {
           password: "secret",
-          remotePath: "markra",
+          remotePath: "helbaron",
           serverUrl: "https://webdav.example.test/dav",
           username: "mock-user"
         }
@@ -9050,7 +9062,7 @@ describe("Markra workspace", () => {
       enabled: true,
       lastSyncAt: expect.any(Number),
       provider: "webdav",
-      remotePath: "markra"
+      remotePath: "helbaron"
     }));
   });
 
@@ -9069,7 +9081,7 @@ describe("Markra workspace", () => {
       intervalMinutes: 0,
       lastSyncAt: null,
       provider: "webdav",
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
     mockedGetStoredEditorPreferences.mockResolvedValue(createStoredEditorPreferences({
       imageUpload: {
@@ -9105,7 +9117,7 @@ describe("Markra workspace", () => {
       sourcePath: mockNativePath,
       webdav: {
         password: "synthetic-secret",
-        remotePath: "markra",
+        remotePath: "helbaron",
         serverUrl: "https://webdav.example.test/dav",
         username: "synthetic-user"
       }
@@ -9132,7 +9144,7 @@ describe("Markra workspace", () => {
       intervalMinutes: 5,
       lastSyncAt: null,
       provider: "webdav",
-      remotePath: "markra"
+      remotePath: "helbaron"
     });
     mockedGetStoredEditorPreferences.mockResolvedValue(createStoredEditorPreferences({
       imageUpload: {
@@ -9184,7 +9196,7 @@ describe("Markra workspace", () => {
           sourcePath: mockNativePath,
           webdav: {
             password: "secret",
-            remotePath: "markra",
+            remotePath: "helbaron",
             serverUrl: "https://webdav.example.test/dav",
             username: "mock-user"
           }
@@ -9432,7 +9444,8 @@ describe("Markra workspace", () => {
     ["exportHtml", mockedSaveNativeHtmlFile, "html"],
     ["exportPdf", mockedSaveNativePdfFile, "pdf"],
     ["exportMarkdown", mockedSaveNativeMarkdownBundleFile, "md"],
-    ["exportDocx", mockedSaveNativePandocFile, "docx"],
+    // DOCX uses the built-in converter (no Pandoc), saved through the Word bridge.
+    ["exportDocx", mockedSaveNativeWordFile, "docx"],
     ["exportEpub", mockedSaveNativePandocFile, "epub"],
     ["exportLatex", mockedSaveNativePandocFile, "tex"]
   ] as const;
@@ -9692,8 +9705,8 @@ describe("Markra workspace", () => {
 
   it("exports the current markdown document through Pandoc from the native menu", async () => {
     mockedSaveNativePandocFile.mockResolvedValue({
-      name: "portable.docx",
-      path: "/mock-files/portable.docx"
+      name: "portable.epub",
+      path: "/mock-files/portable.epub"
     });
     mockedGetStoredExportSettings.mockResolvedValue({
       fontFamily: null,
@@ -9726,19 +9739,44 @@ describe("Markra workspace", () => {
     expect(await screen.findByRole("heading", { name: "Portable" })).toBeInTheDocument();
 
     await act(async () => {
-      await menuHandlers.exportDocx?.();
+      await menuHandlers.exportEpub?.();
     });
 
     await waitFor(() =>
       expect(mockedSaveNativePandocFile).toHaveBeenCalledWith({
         documentPath: mockNativePath,
-        format: "docx",
+        format: "epub",
         markdown: expect.stringContaining("![Chart](assets/chart.png)"),
         pandocArgs: "--toc",
         pandocPath: "/usr/local/bin/pandoc",
-        suggestedName: "portable.docx"
+        suggestedName: "portable.epub"
       })
     );
+  });
+
+  it("exports DOCX with the built-in converter without needing Pandoc", async () => {
+    mockedSaveNativeWordFile.mockResolvedValue({ name: "portable.docx", path: "/mock-files/portable.docx" });
+    mockOpenMarkdownFile({ content: "# عنوان\n\nExport me.", name: "portable.md", path: mockNativePath });
+
+    renderApp();
+
+    await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
+    const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls[0]?.[0] as NativeMenuHandlers;
+    await act(async () => {
+      await menuHandlers.openDocument?.();
+    });
+    await act(async () => {
+      await menuHandlers.exportDocx?.();
+    });
+
+    await waitFor(() => expect(mockedSaveNativeWordFile).toHaveBeenCalledWith({
+      bytes: expect.any(Uint8Array),
+      suggestedName: "portable.docx"
+    }));
+    expect(mockedSaveNativePandocFile).not.toHaveBeenCalled();
+    const { bytes } = mockedSaveNativeWordFile.mock.calls[0]![0];
+    // DOCX files are zip archives: "PK" signature.
+    expect(Array.from(bytes.subarray(0, 2))).toEqual([0x50, 0x4b]);
   });
 
   it("shows Pandoc setup actions when Pandoc export cannot find Pandoc", async () => {
@@ -9761,7 +9799,7 @@ describe("Markra workspace", () => {
     });
 
     await act(async () => {
-      await menuHandlers.exportDocx?.();
+      await menuHandlers.exportEpub?.();
     });
 
     await waitFor(() =>
@@ -9776,13 +9814,13 @@ describe("Markra workspace", () => {
 
     mockedShowNativePandocSetup.mockResolvedValueOnce("install");
     await act(async () => {
-      await menuHandlers.exportDocx?.();
+      await menuHandlers.exportEpub?.();
     });
     expect(mockedOpenNativeExternalUrl).toHaveBeenCalledWith("https://pandoc.org/installing.html");
 
     mockedShowNativePandocSetup.mockResolvedValueOnce("setPath");
     await act(async () => {
-      await menuHandlers.exportDocx?.();
+      await menuHandlers.exportEpub?.();
     });
     expect(mockedOpenSettingsWindow).toHaveBeenCalledWith("exportPandocPath");
   });
@@ -9921,7 +9959,7 @@ describe("Markra workspace", () => {
   it("inserts a markdown table from the native editor menu handler", async () => {
     const { container } = renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeApplicationMenu).toHaveBeenCalledTimes(1));
     const menuHandlers = mockedInstallNativeApplicationMenu.mock.calls[0]?.[0] as Record<string, () => unknown>;
 
@@ -9930,19 +9968,19 @@ describe("Markra workspace", () => {
     });
 
     revealVisualPreviews(container);
-    await waitFor(() => expect(container.querySelector(".cm-markra-table")).toBeInTheDocument());
-    const headerCells = Array.from(container.querySelectorAll(".cm-markra-table tr:first-child th")).map(
+    await waitFor(() => expect(container.querySelector(".cm-helbaron-table")).toBeInTheDocument());
+    const headerCells = Array.from(container.querySelectorAll(".cm-helbaron-table tr:first-child th")).map(
       (cell) => cell.textContent
     );
     expect(headerCells).toEqual(["", ""]);
-    expect(container.querySelector(".cm-markra-table")).not.toHaveTextContent("Column 1");
-    expect(container.querySelector(".cm-markra-table")).not.toHaveTextContent("Column 2");
+    expect(container.querySelector(".cm-helbaron-table")).not.toHaveTextContent("Column 1");
+    expect(container.querySelector(".cm-helbaron-table")).not.toHaveTextContent("Column 2");
   });
 
   it("does not expose native editor AI context actions without selected text", async () => {
     renderApp();
 
-    await expectVisibleMarkdownText("Welcome to Markra");
+    await expectVisibleMarkdownText("Welcome to Helbaron");
     await waitFor(() => expect(mockedInstallNativeEditorContextMenu).toHaveBeenCalledTimes(1));
     const options = mockedInstallNativeEditorContextMenu.mock.calls[0]?.[3];
 

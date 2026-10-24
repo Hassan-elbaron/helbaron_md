@@ -1,12 +1,12 @@
 import { invoke } from "@tauri-apps/api/core";
-import { appLogger } from "@markra/app/runtime";
+import { appLogger } from "@helbaron/app/runtime";
 import { invokeNative } from "./invoke";
 
 vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn()
 }));
 
-vi.mock("@markra/app/runtime", () => ({
+vi.mock("@helbaron/app/runtime", () => ({
   appLogger: {
     debug: vi.fn(),
     error: vi.fn(),

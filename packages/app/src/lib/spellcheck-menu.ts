@@ -1,4 +1,4 @@
-import type { SpellcheckMatch } from "@markra/editor";
+import type { SpellcheckMatch } from "@helbaron/editor";
 
 type SpellcheckCoordinateReader = {
   coordsAtPos: (position: number) => { bottom: number; left: number } | null;

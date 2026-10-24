@@ -1,4 +1,4 @@
-import type { MarkdownOutlineItem } from "@markra/markdown";
+import type { MarkdownOutlineItem } from "@helbaron/markdown";
 
 export type OutlineRenderItem = {
   hasChildren: boolean;

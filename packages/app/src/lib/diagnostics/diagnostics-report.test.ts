@@ -1,4 +1,4 @@
-import { createDefaultAiSettings } from "@markra/providers";
+import { createDefaultAiSettings } from "@helbaron/providers";
 import {
   defaultBackupSettings,
   defaultEditorPreferences,
@@ -88,7 +88,7 @@ describe("generateDiagnosticsReport", () => {
       }
     });
 
-    expect(report).toContain("## Markra Diagnostics");
+    expect(report).toContain("## Helbaron Diagnostics");
     expect(report).toContain("- App version: 9.9.9");
     expect(report).toContain("- Platform: macos");
     expect(report).toContain("- OS version: 15.5");
@@ -122,7 +122,7 @@ describe("generateDiagnosticsReport", () => {
 describe("generateDiagnosticsIssueUrl", () => {
   it("builds a GitHub issue draft with the diagnostics report prefilled", () => {
     const report = [
-      "## Markra Diagnostics",
+      "## Helbaron Diagnostics",
       "- App version: 9.9.9",
       "- Platform: macos"
     ].join("\n");
@@ -136,7 +136,7 @@ describe("generateDiagnosticsIssueUrl", () => {
   });
 
   it("uses a custom issue title when provided", () => {
-    const issueUrl = new URL(generateDiagnosticsIssueUrl("## Markra Crash Report", { title: "Crash report" }));
+    const issueUrl = new URL(generateDiagnosticsIssueUrl("## Helbaron Crash Report", { title: "Crash report" }));
 
     expect(issueUrl.searchParams.get("title")).toBe("Crash report");
   });
@@ -156,7 +156,7 @@ describe("generateCrashDiagnosticsReport", () => {
       platform: "macos"
     });
 
-    expect(report).toContain("## Markra Crash Report");
+    expect(report).toContain("## Helbaron Crash Report");
     expect(report).toContain("- Error name: Error");
     expect(report).toContain("- Error message: Render exploded");
     expect(report).toContain("- Component stack: available");

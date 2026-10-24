@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use ignore::gitignore::{Gitignore, GitignoreBuilder};
 
-pub(crate) const MARKRA_IGNORE_FILE_NAME: &str = ".markraignore";
+pub(crate) const HELBARON_IGNORE_FILE_NAME: &str = ".helbaronignore";
 
 fn is_builtin_ignored_directory_name(name: &OsStr) -> bool {
     name.to_str().is_some_and(|name| {
@@ -11,7 +11,7 @@ fn is_builtin_ignored_directory_name(name: &OsStr) -> bool {
             name,
             ".codex"
                 | ".git"
-                | ".markra-sync"
+                | ".helbaron-sync"
                 | ".obsidian"
                 | "build"
                 | "dist"
@@ -48,7 +48,7 @@ impl MarkdownIgnoreRules {
         if include_workspace_rules {
             // Workspace rules are added last so their negations can override global defaults.
             // Partial file errors are intentionally ignored to keep the workspace repairable.
-            let _ = builder.add(root.join(MARKRA_IGNORE_FILE_NAME));
+            let _ = builder.add(root.join(HELBARON_IGNORE_FILE_NAME));
         }
         let matcher = builder.build().unwrap_or_else(|_| Gitignore::empty());
 
@@ -97,7 +97,7 @@ impl MarkdownIgnoreRules {
 
     pub(crate) fn is_control_file(&self, path: &Path) -> bool {
         path.parent() == Some(self.root.as_path())
-            && path.file_name() == Some(OsStr::new(MARKRA_IGNORE_FILE_NAME))
+            && path.file_name() == Some(OsStr::new(HELBARON_IGNORE_FILE_NAME))
     }
 }
 
@@ -108,7 +108,7 @@ mod tests {
 
     fn test_root(name: &str) -> PathBuf {
         std::env::temp_dir().join(format!(
-            "markra-ignore-rules-{name}-{}",
+            "helbaron-ignore-rules-{name}-{}",
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
                 .expect("system clock should be after epoch")
@@ -120,7 +120,7 @@ mod tests {
     fn applies_global_rules_before_workspace_rules() {
         let root = test_root("precedence");
         fs::create_dir_all(&root).expect("test root should be created");
-        fs::write(root.join(MARKRA_IGNORE_FILE_NAME), "!keep.md\n")
+        fs::write(root.join(HELBARON_IGNORE_FILE_NAME), "!keep.md\n")
             .expect("workspace rules should be written");
 
         let rules = MarkdownIgnoreRules::for_root(&root, Some("*.md\n"));
@@ -145,7 +145,7 @@ mod tests {
         let root = test_root("built-in-only");
         fs::create_dir_all(root.join("drafts")).expect("draft folder should be created");
         fs::create_dir_all(root.join(".git")).expect("git folder should be created");
-        fs::write(root.join(".markraignore"), "drafts/\n").expect("ignore file should be written");
+        fs::write(root.join(".helbaronignore"), "drafts/\n").expect("ignore file should be written");
 
         let rules = MarkdownIgnoreRules::built_in_only(&root);
 

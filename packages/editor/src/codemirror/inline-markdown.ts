@@ -1,15 +1,15 @@
 import { parser, GFM } from "@lezer/markdown";
 import {
-  createMarkraMathMacros,
-  renderMarkraMathToString,
-  type MarkraMathMacros,
+  createHelbaronMathMacros,
+  renderHelbaronMathToString,
+  type HelbaronMathMacros,
 } from "../math-render.ts";
 import {
-  findMarkraMathRanges,
-  type MarkraMathRange,
-  type MarkraSourceRange,
+  findHelbaronMathRanges,
+  type HelbaronMathRange,
+  type HelbaronSourceRange,
 } from "../math-syntax.ts";
-import { markraHighlight } from "./highlight.ts";
+import { helbaronHighlight } from "./highlight.ts";
 import { resolveSafeImageSource } from "./image.ts";
 import {
   resolveAutolinkTarget,
@@ -17,7 +17,7 @@ import {
 } from "./links.ts";
 import { unescapeMarkdown, unquoteMarkdownTitle } from "./syntax.ts";
 
-const inlineParser = parser.configure([GFM, markraHighlight]);
+const inlineParser = parser.configure([GFM, helbaronHighlight]);
 type InlineNode = ReturnType<typeof inlineParser.parse>["topNode"];
 
 const markdownEscape = /\\([\\`*{}\[\]()#+\-.!_|>~])/gu;
@@ -38,7 +38,7 @@ export interface InlineMarkdownImageDetails {
 }
 
 export interface InlineMarkdownRenderOptions {
-  readonly revealedMathRange?: MarkraSourceRange;
+  readonly revealedMathRange?: HelbaronSourceRange;
   readonly resolveImageSource?: (
     details: InlineMarkdownImageDetails,
   ) => string | null;
@@ -46,10 +46,10 @@ export interface InlineMarkdownRenderOptions {
 }
 
 interface InlineMarkdownRenderContext {
-  readonly mathMacros: MarkraMathMacros;
-  readonly mathRanges: readonly MarkraMathRange[];
+  readonly mathMacros: HelbaronMathMacros;
+  readonly mathRanges: readonly HelbaronMathRange[];
   readonly options: InlineMarkdownRenderOptions;
-  readonly revealedMathRange: MarkraSourceRange | null;
+  readonly revealedMathRange: HelbaronSourceRange | null;
 }
 
 function resolveLinkHref(
@@ -103,7 +103,7 @@ function childNodes(node: InlineNode) {
 }
 
 function inlineCodeRanges(node: InlineNode) {
-  const ranges: MarkraSourceRange[] = [];
+  const ranges: HelbaronSourceRange[] = [];
   const visit = (current: InlineNode) => {
     if (current.name === "InlineCode") {
       ranges.push({ from: current.from, to: current.to });
@@ -118,15 +118,15 @@ function inlineCodeRanges(node: InlineNode) {
 function appendMath(
   parent: Node,
   ownerDocument: Document,
-  range: MarkraMathRange,
+  range: HelbaronMathRange,
   context: InlineMarkdownRenderContext,
 ) {
   const revealed = context.revealedMathRange;
   if (revealed?.from === range.from && revealed.to === range.to) {
     const source = ownerDocument.createElement("span");
-    source.dataset.markraMathFrom = String(range.from);
-    source.dataset.markraMathTo = String(range.to);
-    source.dataset.markraTableMathSource = "true";
+    source.dataset.helbaronMathFrom = String(range.from);
+    source.dataset.helbaronMathTo = String(range.to);
+    source.dataset.helbaronTableMathSource = "true";
     source.textContent = range.source;
     parent.appendChild(source);
     return;
@@ -134,12 +134,12 @@ function appendMath(
 
   const element = ownerDocument.createElement("button");
   element.type = "button";
-  element.className = "markra-math-render markra-math-render-inline";
+  element.className = "helbaron-math-render helbaron-math-render-inline";
   element.contentEditable = "false";
-  element.dataset.markraMathFrom = String(range.from);
-  element.dataset.markraMathMarkdown = range.source;
-  element.dataset.markraMathTo = String(range.to);
-  element.innerHTML = renderMarkraMathToString(
+  element.dataset.helbaronMathFrom = String(range.from);
+  element.dataset.helbaronMathMarkdown = range.source;
+  element.dataset.helbaronMathTo = String(range.to);
+  element.innerHTML = renderHelbaronMathToString(
     range.tex,
     "inline",
     context.mathMacros,
@@ -177,7 +177,7 @@ function mathRangeCrossingChild(
   from: number,
   to: number,
   cursor: number,
-  ranges: readonly MarkraMathRange[],
+  ranges: readonly HelbaronMathRange[],
 ) {
   // TeX punctuation can look like Markdown, so a formula that crosses a parsed
   // child boundary must stay atomic instead of inheriting that child markup.
@@ -294,8 +294,8 @@ function renderLink(
     context.options,
   );
   const element = ownerDocument.createElement(href ? "a" : "span");
-  element.dataset.markraLinkMarkdown = source.slice(node.from, node.to);
-  element.dataset.markraLinkSource = source.slice(url.from, url.to).trim();
+  element.dataset.helbaronLinkMarkdown = source.slice(node.from, node.to);
+  element.dataset.helbaronLinkSource = source.slice(url.from, url.to).trim();
   if (href) {
     element.setAttribute("href", href);
     element.draggable = false;
@@ -314,7 +314,7 @@ function renderLink(
   if (href) {
     const icon = ownerDocument.createElement("span");
     icon.ariaHidden = "true";
-    icon.className = "markra-live-link-icon";
+    icon.className = "helbaron-live-link-icon";
     icon.contentEditable = "false";
     parent.appendChild(icon);
   }
@@ -338,8 +338,8 @@ function renderAutolink(
   const linkSource = unescapeMarkdown(source.slice(url.from, url.to).trim());
   const href = resolveLinkHref(linkSource, true, context.options);
   const element = ownerDocument.createElement(href ? "a" : "span");
-  element.dataset.markraLinkMarkdown = source.slice(node.from, node.to);
-  element.dataset.markraLinkSource = href ?? linkSource;
+  element.dataset.helbaronLinkMarkdown = source.slice(node.from, node.to);
+  element.dataset.helbaronLinkSource = href ?? linkSource;
   if (href) {
     element.setAttribute("href", href);
     element.draggable = false;
@@ -350,7 +350,7 @@ function renderAutolink(
   if (href) {
     const icon = ownerDocument.createElement("span");
     icon.ariaHidden = "true";
-    icon.className = "markra-live-link-icon";
+    icon.className = "helbaron-live-link-icon";
     icon.contentEditable = "false";
     parent.appendChild(icon);
   }
@@ -393,7 +393,7 @@ function renderImage(
 
   if (!resolvedSource) {
     const fallback = ownerDocument.createElement("span");
-    fallback.dataset.markraImageMarkdown = details.markdown;
+    fallback.dataset.helbaronImageMarkdown = details.markdown;
     fallback.textContent = details.alt;
     parent.appendChild(fallback);
     return;
@@ -401,9 +401,9 @@ function renderImage(
 
   const image = ownerDocument.createElement("img");
   image.alt = details.alt;
-  image.className = "cm-markra-image cm-markra-table-image";
+  image.className = "cm-helbaron-image cm-helbaron-table-image";
   image.contentEditable = "false";
-  image.dataset.markraImageMarkdown = details.markdown;
+  image.dataset.helbaronImageMarkdown = details.markdown;
   image.decoding = "async";
   image.draggable = false;
   image.loading = "lazy";
@@ -440,8 +440,8 @@ function renderNode(
       const contentFrom = marks[0]?.to ?? node.from;
       const contentTo = marks.at(-1)?.from ?? node.to;
       element.textContent = source.slice(contentFrom, contentTo);
-      element.dataset.markraCodeMarkdown = source.slice(node.from, node.to);
-      element.dataset.markraCodeText = element.textContent;
+      element.dataset.helbaronCodeMarkdown = source.slice(node.from, node.to);
+      element.dataset.helbaronCodeText = element.textContent;
       parent.appendChild(element);
       return;
     }
@@ -455,7 +455,7 @@ function renderNode(
     case "HardBreak":
       {
         const lineBreak = ownerDocument.createElement("br");
-        lineBreak.dataset.markraSourceBreak = "true";
+        lineBreak.dataset.helbaronSourceBreak = "true";
         parent.appendChild(lineBreak);
       }
       return;
@@ -463,7 +463,7 @@ function renderNode(
     case "HTMLTag":
       if (htmlLineBreak.test(source.slice(from, to))) {
         const lineBreak = ownerDocument.createElement("br");
-        lineBreak.dataset.markraSourceBreak = "true";
+        lineBreak.dataset.helbaronSourceBreak = "true";
         parent.appendChild(lineBreak);
       } else {
         appendText(parent, source, from, to);
@@ -472,11 +472,11 @@ function renderNode(
     case "Escape":
       {
         const element = ownerDocument.createElement("span");
-        element.dataset.markraEscapeMarkdown = source.slice(node.from, node.to);
-        element.dataset.markraEscapeText = unescapeMarkdown(
+        element.dataset.helbaronEscapeMarkdown = source.slice(node.from, node.to);
+        element.dataset.helbaronEscapeText = unescapeMarkdown(
           source.slice(node.from, node.to),
         );
-        element.textContent = element.dataset.markraEscapeText;
+        element.textContent = element.dataset.helbaronEscapeText;
         parent.appendChild(element);
       }
       return;
@@ -503,7 +503,7 @@ export function renderInlineMarkdown(
         to: Math.max(0, Math.min(source.length, requestedRange.to)),
       }
     : null;
-  const detectedMathRanges = findMarkraMathRanges(
+  const detectedMathRanges = findHelbaronMathRanges(
     source,
     inlineCodeRanges(tree.topNode),
   );
@@ -526,7 +526,7 @@ export function renderInlineMarkdown(
       ].sort((left, right) => left.from - right.from)
     : detectedMathRanges;
   const context: InlineMarkdownRenderContext = {
-    mathMacros: createMarkraMathMacros(),
+    mathMacros: createHelbaronMathMacros(),
     mathRanges,
     options,
     revealedMathRange,
@@ -551,8 +551,8 @@ function serializeNode(node: Node): string {
   if (!(node instanceof HTMLElement)) return "";
   // KaTeX emits duplicate visual and accessibility text; only the authored
   // Markdown is a valid table-cell serialization of the formula.
-  if (node.dataset.markraMathMarkdown) {
-    return node.dataset.markraMathMarkdown;
+  if (node.dataset.helbaronMathMarkdown) {
+    return node.dataset.helbaronMathMarkdown;
   }
   const content = Array.from(node.childNodes, serializeNode).join("");
   switch (node.tagName) {
@@ -570,10 +570,10 @@ function serializeNode(node: Node): string {
     case "CODE": {
       const value = node.textContent ?? "";
       if (
-        node.dataset.markraCodeMarkdown &&
-        value === node.dataset.markraCodeText
+        node.dataset.helbaronCodeMarkdown &&
+        value === node.dataset.helbaronCodeText
       ) {
-        return node.dataset.markraCodeMarkdown;
+        return node.dataset.helbaronCodeMarkdown;
       }
       const longestRun = Math.max(
         0,
@@ -588,23 +588,23 @@ function serializeNode(node: Node): string {
       return `${fence}${padding}${value}${padding}${fence}`;
     }
     case "A":
-      return node.dataset.markraLinkMarkdown ??
+      return node.dataset.helbaronLinkMarkdown ??
         `[${content}](${node.getAttribute("href") ?? ""})`;
     case "IMG":
-      return node.dataset.markraImageMarkdown ??
+      return node.dataset.helbaronImageMarkdown ??
         `![${node.getAttribute("alt") ?? ""}](${node.getAttribute("src") ?? ""})`;
     case "SPAN":
-      if (node.dataset.markraTableCaretHost === "true") {
+      if (node.dataset.helbaronTableCaretHost === "true") {
         return content.replace(/^\u200b/u, "");
       }
       if (
-        node.dataset.markraEscapeMarkdown &&
-        node.textContent === node.dataset.markraEscapeText
+        node.dataset.helbaronEscapeMarkdown &&
+        node.textContent === node.dataset.helbaronEscapeText
       ) {
-        return node.dataset.markraEscapeMarkdown;
+        return node.dataset.helbaronEscapeMarkdown;
       }
-      return node.dataset.markraImageMarkdown ??
-        node.dataset.markraLinkMarkdown ??
+      return node.dataset.helbaronImageMarkdown ??
+        node.dataset.helbaronLinkMarkdown ??
         content;
     case "BR":
       return "<br>";

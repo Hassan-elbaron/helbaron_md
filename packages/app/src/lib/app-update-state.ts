@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react";
 
-const discoveredAppUpdateVersionStorageKey = "markra.discoveredAppUpdate.version";
-const discoveredAppUpdateVersionChangedEvent = "markra:discovered-app-update-version-changed";
+const discoveredAppUpdateVersionStorageKey = "helbaron.discoveredAppUpdate.version";
+const discoveredAppUpdateVersionChangedEvent = "helbaron:discovered-app-update-version-changed";
 
 type DiscoveredAppUpdate = {
   currentVersion: string;
