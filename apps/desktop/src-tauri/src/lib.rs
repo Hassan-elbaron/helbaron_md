@@ -4,6 +4,7 @@ mod ai_http;
 mod app_exit;
 mod app_logs;
 mod backup;
+mod brand;
 mod clipboard;
 mod external_urls;
 mod fonts;
@@ -342,6 +343,8 @@ pub fn run() {
             emit_native_menu_command_payload(app, payload);
         })
         .invoke_handler(tauri::generate_handler![
+            brand::brand_identity,
+            brand::verify_brand_mark,
             user_data::resolve_store_path,
             list_themes,
             read_theme,

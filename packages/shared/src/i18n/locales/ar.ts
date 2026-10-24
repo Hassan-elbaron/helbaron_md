@@ -1110,8 +1110,8 @@ const messages: BaseLocaleMessages = {
   "backstage.appearanceHint": "كل شكل له نسخة فاتحة ونسخة داكنة، وتبدّل بينهم من الوضع الليلي.",
   "uiStyle.light": "فاتح",
   "uiStyle.dark": "داكن",
-  "uiStyle.baron": "بارون",
-  "uiStyle.baronDescription": "شكل هيلبارون الخاص: إطار رمادي غامق، ولون أحمر مميز، وورقة على مكتب هادئ.",
+  "uiStyle.baron": "Baron",
+  "uiStyle.baronDescription": "شكل Helbaron الخاص: إطار رمادي غامق، ولون أحمر مميز، وورقة على مكتب هادئ.",
   "uiStyle.glass": "زجاج",
   "uiStyle.glassDescription": "شريط أدوات زجاجي، وزوايا ناعمة، ورمادي دافئ.",
   "uiStyle.slate": "أردواز",
@@ -1123,7 +1123,12 @@ const messages: BaseLocaleMessages = {
   "editor.openLink": "فتح الرابط",
   "app.logoBusy": "جارٍ العمل…",
   "cmd.toolbar": "شريط التنسيق",
-  "cmd.menu": "قائمة هيلبارون"
+  "cmd.menu": "قائمة Helbaron",
+  "backstage.about": "عن Helbaron",
+  "about.createdBy": "صُنع بواسطة",
+  "about.version": "الإصدار",
+  "about.official": "نسخة رسمية",
+  "about.unofficial": "نسخة غير رسمية: تم تغيير شعار Helbaron في هذه النسخة."
 };
 
 export default messages;

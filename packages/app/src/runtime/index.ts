@@ -428,8 +428,14 @@ export type AppThemesRuntime = {
   chooseFolder: (options: { title: string; defaultPath?: string }) => Promise<string | null>;
 };
 
+export type AppBrandRuntime = {
+  identity: () => Promise<import("../lib/brand").BrandIdentity | null>;
+  verifyMark: (fingerprint: string) => Promise<boolean>;
+};
+
 export type AppRuntime = {
   acp: AppAcpRuntime;
+  brand?: AppBrandRuntime;
   ai: AppAiRuntime;
   aiChatAttachments: AppAiChatAttachmentRuntime;
   dialog: AppDialogRuntime;

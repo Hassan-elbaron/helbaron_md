@@ -1,3 +1,4 @@
+import { BrandMark } from "./brand/BrandMark";
 import {
   Bot,
   Check,
@@ -775,6 +776,9 @@ export function NativeTitleBar({
         data-tauri-drag-region={nativeWindowChrome ? true : undefined}
       >
         {showMacWindowControls ? <MacWindowControls /> : null}
+        <span className="titlebar-app-icon inline-grid size-7 shrink-0 place-items-center" data-tauri-drag-region={nativeWindowChrome ? true : undefined} title="Helbaron">
+          <BrandMark mode="idle" size={18} />
+        </span>
         {markdownFilesButtonVisible ? (
           <IconButton
             className={dimTitlebarIconButtonClassName}

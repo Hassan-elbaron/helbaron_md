@@ -47,6 +47,10 @@ function resolveDesktopOsVersion() {
 }
 
 export const desktopRuntime = {
+  brand: {
+    identity: () => invoke("brand_identity"),
+    verifyMark: (fingerprint: string) => invoke<boolean>("verify_brand_mark", { fingerprint })
+  },
   acp: {
     listenAgentMessages: acp.listenNativeAcpAgentMessages,
     startAgent: acp.startNativeAcpAgent,

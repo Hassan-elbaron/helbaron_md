@@ -45,6 +45,7 @@ import { MotionRoot } from "./components/motion/MotionRoot";
 import { LaunchSplash } from "./components/brand/BrandMark";
 import { runViewTransition, transitionOriginFromEvent } from "./lib/view-transition";
 import { applyUiStyle, readStoredUiStyle, storeUiStyle, type UiStyle } from "./lib/ui-style";
+import { fallbackBrandIdentity, loadBrandIdentity, verifyBrandMark, type BrandIdentity } from "./lib/brand";
 import { applyTextDirection, readStoredTextDirection } from "./lib/text-direction";
 import { exportMarkdownAsWord, importWordAsMarkdown, importWordPathAsMarkdown } from "./lib/word-documents";
 import { QuietStatus } from "./components/QuietStatus";
@@ -549,6 +550,20 @@ function WorkspaceApp() {
   const [activeEditorSurface, setActiveEditorSurface] = useState<EditorSurface>("visual");
   const [readOnlyMode, setReadOnlyMode] = useState(false);
   const [backstageOpen, setBackstageOpen] = useState(false);
+  const [brandIdentity, setBrandIdentity] = useState<BrandIdentity>(fallbackBrandIdentity);
+  const [officialBuild, setOfficialBuild] = useState(true);
+  useEffect(() => {
+    let active = true;
+    loadBrandIdentity().then((identity) => {
+      if (active) setBrandIdentity(identity);
+    }).catch(() => {});
+    verifyBrandMark().then((official) => {
+      if (active) setOfficialBuild(official);
+    }).catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
   const openWordDocumentPathRef = useRef<((path: string) => Promise<boolean>) | null>(null);
   const [focusMode, setFocusMode] = useState(false);
   const [quickOpenOpen, setQuickOpenOpen] = useState(false);
@@ -4910,6 +4925,8 @@ function WorkspaceApp() {
         onSettings={handleOpenSettings}
         uiStyle={uiStyle}
         onUiStyle={handleUiStyleSelect}
+        brand={brandIdentity}
+        officialBuild={officialBuild}
       />
       <main data-focus-mode={focusMode ? "true" : undefined} className="app-shell group/app relative grid h-full w-full grid-rows-[minmax(0,1fr)] overflow-hidden overscroll-none bg-(--bg-primary) text-(--text-primary)">
         <NativeTitleBar

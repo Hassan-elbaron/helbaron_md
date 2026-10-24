@@ -1,3 +1,4 @@
+import { BrandMark } from "./brand/BrandMark";
 import { FileText, FolderOpen, ImageIcon, PanelLeft, PanelRight } from "lucide-react";
 import {
   defaultMarkdownShortcuts,
@@ -336,6 +337,9 @@ export function WindowsNativeTitleBar({
         className="relative z-20 flex h-10 min-w-0 items-center gap-1 px-2 text-[12px] leading-none text-(--text-primary)"
         data-tauri-drag-region={nativeWindowChrome ? true : undefined}
       >
+        <span className="windows-app-icon inline-grid size-7 shrink-0 place-items-center" data-tauri-drag-region={nativeWindowChrome ? true : undefined} title="Helbaron">
+          <BrandMark mode="idle" size={18} />
+        </span>
         <div className="windows-app-chrome-tools flex h-10 shrink-0 items-center gap-0.5">
           {markdownFilesButtonVisible ? (
           <button

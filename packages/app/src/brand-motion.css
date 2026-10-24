@@ -196,3 +196,40 @@ button:hover > .hb-brand[data-mode="idle"] .star {
 .backstage-item svg {
   color: var(--text-secondary);
 }
+
+/* About */
+.about-word {
+  font-family: "Helbaron Wordmark", var(--font-ui);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+}
+
+.about-word b {
+  color: #d90a16;
+  font-weight: 600;
+}
+
+.about-author {
+  color: var(--text-heading);
+  font-weight: 650;
+}
+
+.about-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: color-mix(in srgb, #16a34a 12%, transparent);
+  color: #15803d;
+}
+
+.about-badge[data-official="false"] {
+  background: color-mix(in srgb, #d90a16 12%, transparent);
+  color: #b91c1c;
+}

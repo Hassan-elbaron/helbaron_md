@@ -315,11 +315,15 @@ fn app_menu_item_without_accelerator<R: tauri::Runtime, M: Manager<R>>(
 
 fn application_about_metadata() -> AboutMetadata<'static> {
     AboutMetadata {
-        name: Some("Helbaron".into()),
+        name: Some(crate::brand::PRODUCT_NAME.into()),
         version: Some(env!("CARGO_PKG_VERSION").into()),
+        authors: Some(vec![crate::brand::AUTHOR.into()]),
+        copyright: Some(format!("{}\n{}", crate::brand::COPYRIGHT, crate::brand::TRADEMARK_NOTICE)),
+        license: Some(crate::brand::LICENSE.into()),
+        comments: Some(crate::brand::UPSTREAM_CREDIT.into()),
         website: Some(HELBARON_GITHUB_URL.into()),
-        website_label: Some("GitHub".into()),
-        credits: Some(format!("GitHub: {HELBARON_GITHUB_URL}")),
+        website_label: Some("Markra source".into()),
+        credits: Some(format!("Created by {}\n{}", crate::brand::AUTHOR, crate::brand::UPSTREAM_CREDIT)),
         ..Default::default()
     }
 }

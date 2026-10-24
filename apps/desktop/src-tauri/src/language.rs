@@ -6,6 +6,21 @@ use std::{
 use serde_json::{Map, Value};
 
 const LANGUAGE_KEY: &str = "language";
+/// Set once the English-first default has been applied to this install.
+const ENGLISH_DEFAULT_APPLIED_KEY: &str = "englishDefaultApplied";
+
+/// Earlier Arabic-first builds saved "ar" on their first launch without the user
+/// choosing it. The first launch of an English-first build drops that one value;
+/// after that, any language the user picks (Arabic included) is kept.
+fn stored_language_after_english_default(
+    stored_language: Option<&str>,
+    english_default_applied: bool,
+) -> Option<&str> {
+    match stored_language {
+        Some("ar") if !english_default_applied => None,
+        other => other,
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum AppLanguage {
@@ -71,9 +86,17 @@ pub(crate) fn resolve_startup_language(identifier: &str) -> AppLanguage {
     };
 
     let stored_language = read_stored_language_code(&settings_path);
-    let language = language_for_initial_launch(stored_language.as_deref(), &system_locale_refs);
+    let english_default_applied = read_settings_object(&settings_path)
+        .get(ENGLISH_DEFAULT_APPLIED_KEY)
+        .and_then(Value::as_bool)
+        .unwrap_or(false);
+    let effective_stored_language =
+        stored_language_after_english_default(stored_language.as_deref(), english_default_applied);
+    let language = language_for_initial_launch(effective_stored_language, &system_locale_refs);
 
-    if stored_language.as_deref().and_then(AppLanguage::from_code) != Some(language) {
+    if !english_default_applied
+        || stored_language.as_deref().and_then(AppLanguage::from_code) != Some(language)
+    {
         let _ = save_language_to_settings(&settings_path, language);
     }
 
@@ -179,6 +202,7 @@ fn save_language_to_settings(path: &Path, language: AppLanguage) -> io::Result<(
         LANGUAGE_KEY.to_string(),
         Value::String(language.as_code().to_string()),
     );
+    settings.insert(ENGLISH_DEFAULT_APPLIED_KEY.to_string(), Value::Bool(true));
 
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)?;
@@ -202,6 +226,29 @@ fn read_settings_object(path: &Path) -> Map<String, Value> {
 mod tests {
     use super::*;
     use std::path::Path;
+
+    #[test]
+    fn arabic_saved_by_the_arabic_first_build_is_reset_once() {
+        assert_eq!(stored_language_after_english_default(Some("ar"), false), None);
+        assert_eq!(stored_language_after_english_default(Some("ar"), true), Some("ar"));
+        assert_eq!(stored_language_after_english_default(Some("fr"), false), Some("fr"));
+    }
+
+    #[test]
+    fn english_default_marker_is_saved_with_the_language() {
+        let dir = std::env::temp_dir().join(format!("helbaron-lang-{}", std::process::id()));
+        let path = dir.join("settings.json");
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).expect("temp dir");
+        fs::write(&path, r#"{"language":"ar","theme":"dark"}"#).expect("seed settings");
+
+        save_language_to_settings(&path, AppLanguage::En).expect("save");
+        let settings = read_settings_object(&path);
+        assert_eq!(settings.get(LANGUAGE_KEY).and_then(Value::as_str), Some("en"));
+        assert_eq!(settings.get(ENGLISH_DEFAULT_APPLIED_KEY).and_then(Value::as_bool), Some(true));
+        assert_eq!(settings.get("theme").and_then(Value::as_str), Some("dark"));
+        let _ = fs::remove_dir_all(&dir);
+    }
 
     #[test]
     fn stored_language_wins_over_system_locale() {

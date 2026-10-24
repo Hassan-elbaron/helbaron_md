@@ -1123,7 +1123,12 @@ const messages: LocaleMessages = {
   "editor.openLink": "Open link",
   "app.logoBusy": "Working…",
   "cmd.toolbar": "Formatting toolbar",
-  "cmd.menu": "Helbaron menu"
+  "cmd.menu": "Helbaron menu",
+  "backstage.about": "About Helbaron",
+  "about.createdBy": "Created by",
+  "about.version": "Version",
+  "about.official": "Official build",
+  "about.unofficial": "Unofficial build: the Helbaron logo in this copy has been changed."
 };
 
 export default messages;

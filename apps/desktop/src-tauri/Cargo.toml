@@ -2,7 +2,7 @@
 name = "helbaron"
 version = "2.14.0"
 description = "A modern Markdown editor."
-authors = ["Helbaron contributors"]
+authors = ["Hassan Maged Elbaron"]
 license = "AGPL-3.0-only"
 repository = "https://github.com/markrahq/markra"
 edition = "2021"

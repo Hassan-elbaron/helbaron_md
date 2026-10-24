@@ -10,6 +10,7 @@ import {
   FileUp,
   FolderOpen,
   Globe,
+  Info,
   Palette,
   Printer,
   Save,
@@ -21,6 +22,7 @@ import { springs } from "./motion/MotionRoot";
 import { UiStyleCards } from "./UiStylePicker";
 import { BrandMark } from "./brand/BrandMark";
 import type { UiStyle } from "../lib/ui-style";
+import type { BrandIdentity } from "../lib/brand";
 
 export type BackstageRecentFile = { name: string; path: string };
 
@@ -50,6 +52,8 @@ export type BackstageProps = {
   onOpenRecent: (file: BackstageRecentFile) => unknown;
   uiStyle: UiStyle;
   onUiStyle: (style: UiStyle, event: MouseEvent<HTMLElement>) => unknown;
+  brand: BrandIdentity;
+  officialBuild: boolean;
 };
 
 function parentFolder(path: string) {
@@ -64,7 +68,7 @@ export function Backstage(props: BackstageProps) {
   const label = (key: I18nKey) => t(language, key);
   const rtl = isRtlLanguage(language);
   const fromStart = rtl ? 48 : -48;
-  const [page, setPage] = useState<"home" | "appearance">("home");
+  const [page, setPage] = useState<"home" | "appearance" | "about">("home");
 
   useEffect(() => {
     if (open) setPage("home");
@@ -99,7 +103,8 @@ export function Backstage(props: BackstageProps) {
     { id: "exportHtml", key: "backstage.exportHtml", icon: <Globe aria-hidden="true" size={17} />, onSelect: props.onExportHtml },
     { id: "print", key: "backstage.print", icon: <Printer aria-hidden="true" size={17} />, onSelect: props.onPrint },
     { id: "appearance", key: "backstage.appearance", icon: <Palette aria-hidden="true" size={17} />, onSelect: () => setPage("appearance"), separatorBefore: true },
-    { id: "settings", key: "backstage.settings", icon: <Settings aria-hidden="true" size={17} />, onSelect: props.onSettings }
+    { id: "settings", key: "backstage.settings", icon: <Settings aria-hidden="true" size={17} />, onSelect: props.onSettings },
+    { id: "about", key: "backstage.about", icon: <Info aria-hidden="true" size={17} />, onSelect: () => setPage("about") }
   ];
   const visibleActions = actions.filter((action) => action.onSelect);
 
@@ -149,7 +154,7 @@ export function Backstage(props: BackstageProps) {
                   className="backstage-item relative flex h-10 w-full cursor-pointer items-center gap-3 rounded-(--hb-r-s) border-0 bg-transparent px-3 text-start text-[13.5px] text-(--text-primary) hover:bg-(--bg-hover) focus-visible:bg-(--bg-hover) focus-visible:outline-none aria-[current=page]:bg-(--bg-primary) aria-[current=page]:font-semibold aria-[current=page]:text-(--text-heading) aria-[current=page]:shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
                   type="button"
                   aria-current={action.id === page ? "page" : undefined}
-                  onClick={action.id === "appearance" ? () => setPage("appearance") : choose(action.onSelect)}
+                  onClick={action.id === "appearance" || action.id === "about" ? () => setPage(action.id as "appearance" | "about") : choose(action.onSelect)}
                 >
                   {action.icon}
                   {label(action.key)}
@@ -209,7 +214,7 @@ export function Backstage(props: BackstageProps) {
               </ul>
             )}
           </m.section>
-            ) : (
+            ) : page === "appearance" ? (
           <m.section
             animate={{ opacity: 1, y: 0 }}
             className="min-w-0 flex-1 overflow-auto px-12 py-10"
@@ -221,6 +226,35 @@ export function Backstage(props: BackstageProps) {
             <h1 className="m-0 text-[30px] font-light text-(--text-heading)">{label("backstage.appearance")}</h1>
             <p className="mt-2 mb-8 max-w-2xl text-[13px] text-(--text-secondary)">{label("backstage.appearanceHint")}</p>
             <UiStyleCards language={language} value={props.uiStyle} onPick={props.onUiStyle} />
+          </m.section>
+            ) : (
+          <m.section
+            animate={{ opacity: 1, y: 0 }}
+            className="min-w-0 flex-1 overflow-auto px-12 py-10"
+            exit={{ opacity: 0, y: -10, transition: { duration: 0.12 } }}
+            initial={{ opacity: 0, y: 14 }}
+            key="about"
+            transition={springs.soft}
+          >
+            <div className="about-card mx-auto flex max-w-xl flex-col items-center gap-3 py-6 text-center">
+              <BrandMark mode="idle" size={104} />
+              <div className="about-word" dir="ltr"><b>HEl</b>baron</div>
+              {props.brand.version ? (
+                <div className="text-[13px] text-(--text-secondary)">{label("about.version")} <span dir="ltr">{props.brand.version}</span></div>
+              ) : null}
+              <div className="mt-3 text-[15px] text-(--text-primary)">
+                {label("about.createdBy")} <strong className="about-author" dir="ltr">{props.brand.author}</strong>
+              </div>
+              <span className="about-badge" data-official={props.officialBuild ? "true" : "false"}>
+                {props.officialBuild ? label("about.official") : label("about.unofficial")}
+              </span>
+              <div className="mt-6 flex flex-col gap-2 text-[12.5px] leading-6 text-(--text-secondary)" dir="ltr">
+                <p className="m-0">{props.brand.copyright}</p>
+                <p className="m-0">{props.brand.trademarkNotice}</p>
+                <p className="m-0">{props.brand.upstreamCredit}</p>
+                <p className="m-0">{props.brand.license}</p>
+              </div>
+            </div>
           </m.section>
             )}
           </AnimatePresence>

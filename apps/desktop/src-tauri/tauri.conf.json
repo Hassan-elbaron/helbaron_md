@@ -96,7 +96,9 @@
       }
     },
     "shortDescription": "A modern Markdown editor.",
-    "longDescription": "Helbaron is a modern Markdown editor for writing, formatting and sharing documents."
+    "longDescription": "Helbaron is a modern Markdown editor for writing, formatting and sharing documents.",
+    "publisher": "Hassan Maged Elbaron",
+    "copyright": "© 2026 Hassan Maged Elbaron"
   },
   "plugins": {
     "updater": {

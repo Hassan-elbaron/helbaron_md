@@ -37,27 +37,49 @@ export function BrandMark({ className = "", label, mode = "idle", size = 22 }: B
 
 let launchShown = false;
 const launchDurationMs = 1150;
-const launchHoldMs = 180;
-const launchFadeMs = 300;
+const launchHoldMs = 250;
+const launchFadeMs = 320;
+const bootSplashId = "hb-boot-splash";
 
-/** One-time start-up flash: the compass calibrates, then the window is revealed. */
+function prefersReducedMotion() {
+  return typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/**
+ * Start-up flash. The page HTML paints the animated logo on the very first frame
+ * (#hb-boot-splash), before any script loads; once the app has mounted and the
+ * compass has finished calibrating, this fades it out. Without that element
+ * (tests, embedded views) it renders the same splash itself.
+ */
 export function LaunchSplash() {
-  const [phase, setPhase] = useState<"show" | "fade" | "done">(() => (launchShown ? "done" : "show"));
+  const [phase, setPhase] = useState<"show" | "fade" | "done">(() => {
+    if (launchShown) return "done";
+    return typeof document !== "undefined" && document.getElementById(bootSplashId) ? "done" : "show";
+  });
 
   useEffect(() => {
-    if (phase === "done") return;
-    launchShown = true;
-    const reduced = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const visibleFor = reduced ? 350 : launchDurationMs + launchHoldMs;
-    const fadeTimer = window.setTimeout(() => setPhase("fade"), visibleFor);
-    const doneTimer = window.setTimeout(() => setPhase("done"), visibleFor + launchFadeMs);
+    const boot = document.getElementById(bootSplashId);
+    // Only the first mount of a window plays the flash; later mounts render nothing.
+    if (launchShown && !boot) return;
+    const minimumVisible = prefersReducedMotion() ? 600 : launchDurationMs + launchHoldMs;
+    const elapsed = typeof performance !== "undefined" ? performance.now() : 0;
+    // Keep the flash up until its animation has played, however fast the app loaded.
+    const remaining = boot ? Math.max(200, minimumVisible - elapsed) : minimumVisible;
+
+    const fadeTimer = window.setTimeout(() => {
+      if (boot) boot.dataset.phase = "fade";
+      else setPhase("fade");
+    }, remaining);
+    const doneTimer = window.setTimeout(() => {
+      launchShown = true;
+      if (boot) boot.remove();
+      else setPhase("done");
+    }, remaining + launchFadeMs);
 
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(doneTimer);
     };
-    // Runs once per window; the phase change itself must not restart the timers.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (phase === "done") return null;
