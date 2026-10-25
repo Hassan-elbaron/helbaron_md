@@ -1128,7 +1128,17 @@ const messages: BaseLocaleMessages = {
   "about.createdBy": "صُنع بواسطة",
   "about.version": "الإصدار",
   "about.official": "نسخة رسمية",
-  "about.unofficial": "نسخة غير رسمية: تم تغيير شعار Helbaron في هذه النسخة."
+  "about.unofficial": "نسخة غير رسمية: تم تغيير شعار Helbaron في هذه النسخة.",
+  "welcome.title": "اختر شكل Helbaron",
+  "welcome.subtitle": "اختر الوضع والشكل، ويمكنك تغييرهما في أي وقت من قائمة الشعار.",
+  "welcome.mode": "الوضع",
+  "welcome.light": "فاتح",
+  "welcome.dark": "داكن",
+  "welcome.system": "حسب النظام",
+  "welcome.style": "الشكل",
+  "welcome.start": "ابدأ الكتابة",
+  "welcome.skip": "تخطٍّ",
+  "welcome.preview": "معاينة"
 };
 
 export default messages;

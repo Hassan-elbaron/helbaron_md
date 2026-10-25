@@ -43,6 +43,7 @@ import { CommandBar } from "./components/CommandBar";
 import { Backstage } from "./components/Backstage";
 import { MotionRoot } from "./components/motion/MotionRoot";
 import { LaunchSplash } from "./components/brand/BrandMark";
+import { FirstRunWelcome, type WelcomeAppearance } from "./components/FirstRunWelcome";
 import { runViewTransition, transitionOriginFromEvent } from "./lib/view-transition";
 import { applyUiStyle, readStoredUiStyle, storeUiStyle, type UiStyle } from "./lib/ui-style";
 import { fallbackBrandIdentity, loadBrandIdentity, verifyBrandMark, type BrandIdentity } from "./lib/brand";
@@ -384,10 +385,15 @@ export function shouldTriggerDevMockRuntimeError(search: string, dev = import.me
   return new URLSearchParams(search).get("mockError") === "1";
 }
 
-export default function App() {
+export type AppProps = {
+  /** Show the one-time appearance picker on first launch (real app windows only). */
+  firstRunWelcome?: boolean;
+};
+
+export default function App({ firstRunWelcome = false }: AppProps = {}) {
   const isSettingsRoute = useSettingsWindowRoute();
 
-  return isSettingsRoute ? <SettingsRouteApp /> : <WorkspaceApp />;
+  return isSettingsRoute ? <SettingsRouteApp /> : <WorkspaceApp firstRunWelcome={firstRunWelcome} />;
 }
 
 function runtimeErrorFromEvent(event: ErrorEvent | PromiseRejectionEvent) {
@@ -476,7 +482,7 @@ function SettingsRouteApp() {
   );
 }
 
-function WorkspaceApp() {
+function WorkspaceApp({ firstRunWelcome }: { firstRunWelcome: boolean }) {
   const desktopPlatform = resolveDesktopPlatform();
   const [uiStyle, setUiStyle] = useState<UiStyle>(() => readStoredUiStyle());
   useLayoutEffect(() => {
@@ -4106,6 +4112,9 @@ function WorkspaceApp() {
   useLayoutEffect(() => {
     globalThis.document.documentElement.dataset.scheme = appTheme.resolvedTheme;
   }, [appTheme.resolvedTheme]);
+  const handleWelcomeAppearance = useCallback((mode: WelcomeAppearance, event?: { currentTarget?: EventTarget | null }) => {
+    runViewTransition("theme", () => appTheme.selectAppearanceMode(mode), transitionOriginFromEvent(event));
+  }, [appTheme.selectAppearanceMode]);
   const handleFocusModeToggle = useCallback(() => setFocusMode((current) => !current), []);
   const handleBackstageClose = useCallback(() => setBackstageOpen(false), []);
   const handleExportWordDocument = useCallback(() => {
@@ -4907,6 +4916,16 @@ function WorkspaceApp() {
   return (
     <MotionRoot>
       <LaunchSplash />
+      {firstRunWelcome ? (
+        <FirstRunWelcome
+          appearance={appTheme.appearanceMode}
+          language={appLanguage.language}
+          resolvedScheme={appTheme.resolvedTheme}
+          uiStyle={uiStyle}
+          onAppearance={handleWelcomeAppearance}
+          onUiStyle={handleUiStyleSelect}
+        />
+      ) : null}
       <AppToaster language={appLanguage.language} />
       <Backstage
         language={appLanguage.language}

@@ -1,3 +1,23 @@
+# Changelog
+
+## Helbaron 2.14.0 (2026-10-25)
+
+First public release of Helbaron, built on Markra 2.14.0.
+
+### Features
+
+* New interface: a floating command bar with Insert, View and Export menus, a Helbaron menu, a page-on-desk layout and a slim status bar
+* Five interface styles (Baron, Glass, Slate, Paper, Minimal), each in light and dark, with a first-launch picker and live preview
+* Animated El Baron logo: launch screen, title bar mark and busy state
+* Built-in Word import and export (`.docx`), including opening Word files from Explorer
+* Arabic and right-to-left writing: per-paragraph direction, Arabic-tuned typography, Arabic-aware search, full Arabic interface
+* Windows "Open with" and Default apps registration for `.md`, `.markdown`, `.txt` and `.docx`
+* About page and native About with author, trademark notice and credits
+
+---
+
+The entries below are the history of [Markra](https://github.com/markrahq/markra), which Helbaron is built on.
+
 ## [2.14.0](https://github.com/markrahq/markra/compare/v2.13.1...v2.14.0) (2026-10-23)
 
 ### Features

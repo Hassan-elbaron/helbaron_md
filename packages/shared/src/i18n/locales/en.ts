@@ -1128,7 +1128,17 @@ const messages: BaseLocaleMessages = {
   "about.createdBy": "Created by",
   "about.version": "Version",
   "about.official": "Official build",
-  "about.unofficial": "Unofficial build: the Helbaron logo in this copy has been changed."
+  "about.unofficial": "Unofficial build: the Helbaron logo in this copy has been changed.",
+  "welcome.title": "Make Helbaron yours",
+  "welcome.subtitle": "Pick a mode and a style. You can change both anytime from the logo menu.",
+  "welcome.mode": "Mode",
+  "welcome.light": "Light",
+  "welcome.dark": "Dark",
+  "welcome.system": "Match system",
+  "welcome.style": "Style",
+  "welcome.start": "Start writing",
+  "welcome.skip": "Skip",
+  "welcome.preview": "Preview"
 };
 
 export default messages;

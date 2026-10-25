@@ -38,7 +38,7 @@ export type CrashDiagnosticsReportInput = {
   platform: DesktopPlatform | null;
 };
 
-const diagnosticsIssueUrl = "https://github.com/markrahq/markra/issues/new";
+const diagnosticsIssueUrl = "https://github.com/Hassan-elbaron/helbaron/issues/new";
 
 export function generateDiagnosticsReport({
   aiSettings,

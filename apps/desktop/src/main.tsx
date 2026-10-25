@@ -9,7 +9,7 @@ configureAppRuntime(desktopRuntime);
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AppErrorBoundary>
-      <App />
+      <App firstRunWelcome />
     </AppErrorBoundary>
   </StrictMode>
 );

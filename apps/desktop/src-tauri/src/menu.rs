@@ -22,7 +22,7 @@ const PASTE_PLAIN_TEXT_DEFAULT_ACCELERATOR: &str = "CmdOrCtrl+Shift+V";
 const CHECK_FOR_UPDATES_COMMAND: &str = "checkForUpdates";
 const EDIT_UNDO_COMMAND: &str = "editUndo";
 const EDIT_REDO_COMMAND: &str = "editRedo";
-const HELBARON_GITHUB_URL: &str = "https://github.com/markrahq/markra";
+const HELBARON_GITHUB_URL: &str = "https://github.com/Hassan-elbaron/helbaron";
 const OPEN_RECENT_FILE_SUBMENU_ID: &str = "helbaron:file:open-recent";
 const EMPTY_OPEN_RECENT_FILE_COMMAND: &str = "helbaron:file:open-recent:empty";
 
@@ -322,8 +322,12 @@ fn application_about_metadata() -> AboutMetadata<'static> {
         license: Some(crate::brand::LICENSE.into()),
         comments: Some(crate::brand::UPSTREAM_CREDIT.into()),
         website: Some(HELBARON_GITHUB_URL.into()),
-        website_label: Some("Markra source".into()),
-        credits: Some(format!("Created by {}\n{}", crate::brand::AUTHOR, crate::brand::UPSTREAM_CREDIT)),
+        website_label: Some("GitHub".into()),
+        credits: Some(format!(
+            "Created by {}\nGitHub: {HELBARON_GITHUB_URL}\n{}",
+            crate::brand::AUTHOR,
+            crate::brand::UPSTREAM_CREDIT
+        )),
         ..Default::default()
     }
 }
@@ -1254,13 +1258,13 @@ mod tests {
         assert_eq!(metadata.version.as_deref(), Some(env!("CARGO_PKG_VERSION")));
         assert_eq!(
             metadata.website.as_deref(),
-            Some("https://github.com/markrahq/markra")
+            Some("https://github.com/Hassan-elbaron/helbaron")
         );
         assert_eq!(metadata.website_label.as_deref(), Some("GitHub"));
         assert!(metadata
             .credits
             .as_deref()
-            .is_some_and(|credits| credits.contains("https://github.com/markrahq/markra")));
+            .is_some_and(|credits| credits.contains("https://github.com/Hassan-elbaron/helbaron") && credits.contains("Hassan Maged Elbaron")));
     }
 
     #[test]

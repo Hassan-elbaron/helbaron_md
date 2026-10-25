@@ -233,3 +233,261 @@ button:hover > .hb-brand[data-mode="idle"] .star {
   background: color-mix(in srgb, #d90a16 12%, transparent);
   color: #b91c1c;
 }
+
+/* First-run welcome */
+.welcome-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, #000 42%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.welcome-card {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  width: min(1080px, 100%);
+  max-height: min(740px, calc(100vh - 48px));
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 20px;
+  background: var(--bg-primary);
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.55);
+}
+
+.welcome-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 26px;
+  overflow-y: auto;
+}
+
+.welcome-word {
+  font-family: "Helbaron Wordmark", var(--font-ui);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-heading);
+}
+
+.welcome-word b {
+  color: #d90a16;
+  font-weight: 600;
+}
+
+.welcome-title {
+  margin: 0;
+  color: var(--text-heading);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.welcome-subtitle {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.welcome-section {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.welcome-mode,
+.welcome-style {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.welcome-mode {
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  height: 64px;
+  font-size: 12.5px;
+}
+
+.welcome-style {
+  gap: 12px;
+  padding: 7px 12px;
+}
+
+.welcome-mode:hover,
+.welcome-style:hover {
+  background: var(--bg-hover);
+}
+
+.welcome-mode:active,
+.welcome-style:active {
+  transform: scale(0.98);
+}
+
+.welcome-ring {
+  position: absolute;
+  inset: -1px;
+  border: 2px solid var(--hb-accent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.welcome-swatch {
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 7px;
+  transition: background-color 450ms;
+}
+
+.welcome-swatch span {
+  position: absolute;
+  inset: 7px 9px 0;
+  border-radius: 3px 3px 0 0;
+  transition: background-color 450ms;
+}
+
+.welcome-swatch i {
+  position: absolute;
+  top: 12px;
+  inset-inline-start: 14px;
+  width: 18px;
+  height: 4px;
+  border-radius: 99px;
+}
+
+.welcome-style-name {
+  color: var(--text-heading);
+  font-size: 13.5px;
+  font-weight: 650;
+}
+
+.welcome-style-desc {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.welcome-start {
+  height: 40px;
+  padding-inline: 20px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--hb-primary);
+  color: var(--hb-primary-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: filter var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.welcome-start:hover {
+  filter: brightness(1.15);
+}
+
+.welcome-start:active {
+  transform: scale(0.97);
+}
+
+.welcome-skip {
+  height: 40px;
+  padding-inline: 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.welcome-skip:hover {
+  background: var(--bg-hover);
+}
+
+.welcome-start:focus-visible,
+.welcome-skip:focus-visible,
+.welcome-mode:focus-visible,
+.welcome-style:focus-visible {
+  outline: 2px solid var(--hb-accent);
+  outline-offset: 2px;
+}
+
+.welcome-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 32px;
+  background: var(--bg-secondary);
+  border-inline-start: 1px solid var(--border-default);
+}
+
+.welcome-preview {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 1px var(--border-default), 0 30px 70px -30px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-preview-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.welcome-stage-caption {
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .welcome-card {
+    grid-template-columns: minmax(0, 1fr);
+    overflow-y: auto;
+  }
+
+  .welcome-stage {
+    order: -1;
+    padding: 18px;
+    border-inline-start: 0;
+    border-bottom: 1px solid var(--border-default);
+  }
+
+  .welcome-controls {
+    overflow: visible;
+  }
+}
