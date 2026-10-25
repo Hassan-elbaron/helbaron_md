@@ -129,7 +129,7 @@ describe("generateDiagnosticsIssueUrl", () => {
     const issueUrl = new URL(generateDiagnosticsIssueUrl(report));
 
     expect(issueUrl.origin).toBe("https://github.com");
-    expect(issueUrl.pathname).toBe("/Hassan-elbaron/helbaron/issues/new");
+    expect(issueUrl.pathname).toBe("/Hassan-elbaron/helbaron_md/issues/new");
     expect(issueUrl.searchParams.get("title")).toBe("Diagnostics report");
     expect(issueUrl.searchParams.get("body")).toContain("## What happened?");
     expect(issueUrl.searchParams.get("body")).toContain(report);

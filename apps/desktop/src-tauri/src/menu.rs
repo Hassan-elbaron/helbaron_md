@@ -22,7 +22,7 @@ const PASTE_PLAIN_TEXT_DEFAULT_ACCELERATOR: &str = "CmdOrCtrl+Shift+V";
 const CHECK_FOR_UPDATES_COMMAND: &str = "checkForUpdates";
 const EDIT_UNDO_COMMAND: &str = "editUndo";
 const EDIT_REDO_COMMAND: &str = "editRedo";
-const HELBARON_GITHUB_URL: &str = "https://github.com/Hassan-elbaron/helbaron";
+const HELBARON_GITHUB_URL: &str = "https://github.com/Hassan-elbaron/helbaron_md";
 const OPEN_RECENT_FILE_SUBMENU_ID: &str = "helbaron:file:open-recent";
 const EMPTY_OPEN_RECENT_FILE_COMMAND: &str = "helbaron:file:open-recent:empty";
 
@@ -1258,13 +1258,13 @@ mod tests {
         assert_eq!(metadata.version.as_deref(), Some(env!("CARGO_PKG_VERSION")));
         assert_eq!(
             metadata.website.as_deref(),
-            Some("https://github.com/Hassan-elbaron/helbaron")
+            Some("https://github.com/Hassan-elbaron/helbaron_md")
         );
         assert_eq!(metadata.website_label.as_deref(), Some("GitHub"));
         assert!(metadata
             .credits
             .as_deref()
-            .is_some_and(|credits| credits.contains("https://github.com/Hassan-elbaron/helbaron") && credits.contains("Hassan Maged Elbaron")));
+            .is_some_and(|credits| credits.contains("https://github.com/Hassan-elbaron/helbaron_md") && credits.contains("Hassan Maged Elbaron")));
     }
 
     #[test]

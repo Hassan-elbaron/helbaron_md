@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Hassan-elbaron/helbaron/releases/latest"><strong>تنزيل</strong></a> ·
+  <a href="https://github.com/Hassan-elbaron/helbaron_md/releases/latest"><strong>تنزيل</strong></a> ·
   <a href="README.md">English</a>
 </p>
 
@@ -32,7 +32,7 @@
 | ماك (Apple Silicon وIntel) | `.dmg` |
 | لينكس | `.AppImage` أو `.deb` |
 
-كل الملفات في صفحة [الإصدارات](https://github.com/Hassan-elbaron/helbaron/releases/latest).
+كل الملفات في صفحة [الإصدارات](https://github.com/Hassan-elbaron/helbaron_md/releases/latest).
 
 > قد يظهر تحذير SmartScreen أو Gatekeeper في أول تشغيل. على ويندوز اختر **More info ثم Run anyway**، وعلى ماك انقر بالزر الأيمن على البرنامج واختر **Open**.
 
@@ -56,8 +56,8 @@
 المتطلبات: Node.js 24 وpnpm 10 وRust.
 
 ```sh
-git clone https://github.com/Hassan-elbaron/helbaron.git
-cd helbaron
+git clone https://github.com/Hassan-elbaron/helbaron_md.git
+cd helbaron_md
 pnpm install
 pnpm --filter @helbaron/desktop tauri dev
 ```

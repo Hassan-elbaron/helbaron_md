@@ -3338,7 +3338,7 @@ describe("Helbaron workspace", () => {
     await waitFor(() => expect(mockedOpenNativeExternalUrl).toHaveBeenCalledTimes(1));
     const issueUrl = new URL(mockedOpenNativeExternalUrl.mock.calls[0][0]);
 
-    expect(issueUrl.pathname).toBe("/Hassan-elbaron/helbaron/issues/new");
+    expect(issueUrl.pathname).toBe("/Hassan-elbaron/helbaron_md/issues/new");
     expect(issueUrl.searchParams.get("title")).toBe("Runtime error report");
     expect(issueUrl.searchParams.get("body")).toContain("## Helbaron Crash Report");
     expect(issueUrl.searchParams.get("body")).toContain("- Error message: Mock runtime error preview");

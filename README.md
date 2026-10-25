@@ -11,9 +11,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Hassan-elbaron/helbaron/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/Hassan-elbaron/helbaron?label=release&color=c8102e" /></a>
-  <a href="https://github.com/Hassan-elbaron/helbaron/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/Hassan-elbaron/helbaron/total?color=1c1c1f" /></a>
-  <a href="https://github.com/Hassan-elbaron/helbaron/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Hassan-elbaron/helbaron?style=flat&color=c8102e" /></a>
+  <a href="https://github.com/Hassan-elbaron/helbaron_md/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/Hassan-elbaron/helbaron_md?label=release&color=c8102e" /></a>
+  <a href="https://github.com/Hassan-elbaron/helbaron_md/releases"><img alt="Downloads" src="https://img.shields.io/github/downloads/Hassan-elbaron/helbaron_md/total?color=1c1c1f" /></a>
+  <a href="https://github.com/Hassan-elbaron/helbaron_md/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Hassan-elbaron/helbaron_md?style=flat&color=c8102e" /></a>
   <img alt="Platforms" src="https://img.shields.io/badge/Windows%20·%20macOS%20·%20Linux-1c1c1f" />
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-AGPL--3.0-555" /></a>
 </p>
@@ -38,9 +38,9 @@ No account. No cloud. Your files stay yours.
 
 | System | Get it |
 | --- | --- |
-| **Windows 10 / 11** | [`Helbaron_x64-setup.exe`](https://github.com/Hassan-elbaron/helbaron/releases/latest) |
-| **macOS** (Apple Silicon and Intel) | [`.dmg`](https://github.com/Hassan-elbaron/helbaron/releases/latest) |
-| **Linux** | [`.AppImage` / `.deb`](https://github.com/Hassan-elbaron/helbaron/releases/latest) |
+| **Windows 10 / 11** | [`Helbaron_x64-setup.exe`](https://github.com/Hassan-elbaron/helbaron_md/releases/latest) |
+| **macOS** (Apple Silicon and Intel) | [`.dmg`](https://github.com/Hassan-elbaron/helbaron_md/releases/latest) |
+| **Linux** | [`.AppImage` / `.deb`](https://github.com/Hassan-elbaron/helbaron_md/releases/latest) |
 
 > New apps can trigger a SmartScreen or Gatekeeper notice the first time. On Windows choose **More info → Run anyway**; on macOS right-click the app and choose **Open**.
 
@@ -118,8 +118,8 @@ After installing, Helbaron appears in **Open with** for `.md`, `.markdown`, `.tx
 Requirements: Node.js 24, pnpm 10 and the Rust toolchain ([Tauri prerequisites](https://v2.tauri.app/start/prerequisites/)).
 
 ```sh
-git clone https://github.com/Hassan-elbaron/helbaron.git
-cd helbaron
+git clone https://github.com/Hassan-elbaron/helbaron_md.git
+cd helbaron_md
 pnpm install
 pnpm --filter @helbaron/desktop tauri dev     # run the desktop app
 pnpm --filter @helbaron/desktop tauri build   # build an installer for your system
@@ -135,7 +135,7 @@ Pushing a tag such as `v2.14.0` builds Windows, macOS and Linux installers on Gi
 - Richer Word fidelity (comments, tracked changes, page setup)
 - More export templates
 
-Ideas and bug reports are welcome in [Issues](https://github.com/Hassan-elbaron/helbaron/issues).
+Ideas and bug reports are welcome in [Issues](https://github.com/Hassan-elbaron/helbaron_md/issues).
 
 ## Contributing
 

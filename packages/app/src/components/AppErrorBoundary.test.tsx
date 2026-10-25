@@ -54,7 +54,7 @@ describe("AppErrorBoundary", () => {
     expect(issueUrlInput).toBeDefined();
     const issueUrl = new URL(String(issueUrlInput));
 
-    expect(issueUrl.pathname).toBe("/Hassan-elbaron/helbaron/issues/new");
+    expect(issueUrl.pathname).toBe("/Hassan-elbaron/helbaron_md/issues/new");
     expect(issueUrl.searchParams.get("title")).toBe("Crash report");
     expect(issueUrl.searchParams.get("body")).toContain("## Helbaron Crash Report");
     expect(issueUrl.searchParams.get("body")).toContain("- Error message: Render exploded");
