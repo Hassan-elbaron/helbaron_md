@@ -19,6 +19,7 @@
 </p>
 
 <p align="center">
+  <a href="https://hassan-elbaron.github.io/helbaron_md/"><strong>Website</strong></a> ·
   <a href="#download"><strong>Download</strong></a> ·
   <a href="#features">Features</a> ·
   <a href="#screenshots">Screenshots</a> ·
@@ -112,6 +113,26 @@ After installing, Helbaron appears in **Open with** for `.md`, `.markdown`, `.tx
 | Arabic-aware search | **Yes** | No | No | No |
 | Interface styles with light and dark | 5 built in | Themes | Themes | Themes |
 | Optional AI with edit previews | Yes | No | Via plugins | No |
+
+## FAQ
+
+**What is Helbaron?**
+Helbaron is a free, open-source Markdown editor for Windows, macOS and Linux. You write on a page that looks like a finished document while your work is saved as plain `.md` files, with Word import/export and first-class Arabic and right-to-left support.
+
+**What is the best Markdown editor for Arabic?**
+Helbaron is built for Arabic and mixed Arabic–English writing: each paragraph picks its own direction automatically, Arabic text gets tuned typography, and search ignores diacritics so `احمد` finds `أحمد`.
+
+**Is Helbaron free?**
+Yes. It is free and open source under the AGPL-3.0, with no paid tiers, account or subscription.
+
+**Can Helbaron open Word documents?**
+Yes. It opens `.docx` files and exports to Word, PDF and HTML. Arabic paragraphs stay right-to-left in exported Word files.
+
+**Is Helbaron a free alternative to Typora?**
+Yes. Like Typora it edits Markdown with live preview, and it is free and open source, with built-in Word import/export and per-paragraph RTL direction.
+
+**Does it work offline?**
+Yes. No account and no cloud; documents are ordinary files on your disk.
 
 ## Build from source
 

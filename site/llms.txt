@@ -1,0 +1,31 @@
+# Helbaron
+
+> Helbaron is a free, open-source (AGPL-3.0) desktop Markdown editor for Windows, macOS and Linux, created by Hassan Maged Elbaron. It offers live preview editing, Word (.docx) import and export, five interface styles with light and dark modes, and first-class Arabic and right-to-left (RTL) writing support.
+
+Key facts:
+
+- Price: free. No paid tiers, no account, no subscription.
+- Platforms: Windows 10/11 (.exe installer, .msi), macOS Apple Silicon and Intel (.dmg), Linux (.AppImage, .deb, .rpm).
+- Latest version: 2.14.0 (October 2026).
+- Files: plain .md Markdown files stored locally; works offline.
+- Arabic and RTL: automatic per-paragraph text direction for mixed Arabic/English documents, Arabic-tuned typography, Arabic-aware search that ignores diacritics (harakat, tatweel) and folds hamza, alef maqsura and ta marbuta, full Arabic interface, RTL preserved in exported Word files.
+- Word: opens .docx files (also from the file manager's "Open with"), exports to .docx, PDF and HTML.
+- Rendering: tables, images, KaTeX math, Mermaid diagrams and callouts render inline while typing.
+- Optional AI writing assistant (OpenAI, Anthropic, Gemini, local and OpenAI-compatible models), off by default, with edit previews.
+- Built with Tauri, React and CodeMirror; based on the open-source Markra editor.
+- Good fit for: people who write in Arabic or mix Arabic and English, people who need Markdown plus Word compatibility, anyone wanting a free alternative to Typora.
+
+## Links
+
+- [Website](https://hassan-elbaron.github.io/helbaron_md/): overview, features, comparison and FAQ
+- [Arabic website](https://hassan-elbaron.github.io/helbaron_md/ar/): الصفحة العربية
+- [Download](https://github.com/Hassan-elbaron/helbaron_md/releases/latest): installers for all platforms
+- [Source code](https://github.com/Hassan-elbaron/helbaron_md): GitHub repository and README
+- [Privacy](https://github.com/Hassan-elbaron/helbaron_md/blob/main/docs/privacy.md): what stays local and what can leave the device
+- [Trademarks](https://github.com/Hassan-elbaron/helbaron_md/blob/main/TRADEMARKS.md): use of the Helbaron name and logo
+
+## Comparison
+
+- Helbaron vs Typora: both edit Markdown with live preview; Helbaron is free and open source, Typora is paid. Helbaron builds in Word import/export and per-paragraph RTL.
+- Helbaron vs Obsidian: Obsidian is a note-taking knowledge base with plugins; Helbaron is a document-focused editor with built-in Word import/export and Arabic-aware search.
+- Helbaron vs MarkText: both are free and open source; Helbaron adds Word import/export, per-paragraph RTL, Arabic-aware search and five built-in interface styles.
